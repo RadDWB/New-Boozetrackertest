@@ -15,7 +15,7 @@
       --primary:#4f46e5;
       --primary-dark:#4338ca;
       --success:#10b981;
-      --success-dark:#047857;   /* für ≥30 */
+      --success-dark:#047857;   /* ≥30 */
       --warn:#f59e0b;
       --danger:#ef4444;
       --super:#059669;
@@ -121,7 +121,7 @@
       display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom: 12px;
     }
     .stat-card{
-      background:#f9fafb;            /* leicht hinterlegt */
+      background:#f9fafb;
       border:1px solid #e5e7eb;
       border-radius: 14px;
       padding:16px;
@@ -177,27 +177,16 @@
     .support-buttons{
       display:flex; flex-wrap:wrap; gap:12px; justify-content:center; align-items:center;
     }
-    .support-buttons .btn-holder{
-      height:48px; display:flex; align-items:center; justify-content:center;
-    }
+    .support-buttons .btn-holder{ height:48px; display:flex; align-items:center; justify-content:center; }
 
-    /* Einheitliche Button-Höhe */
-    #kofi-holder iframe{
-      height:48px !important; min-height:48px !important;
-    }
-    #bmc-holder img{
-      display:block; height:48px; width:auto; border-radius:12px;
-      box-shadow: 0 8px 18px rgba(0,0,0,.08);
-    }
+    #kofi-holder iframe{ height:48px !important; min-height:48px !important; }
+    #bmc-holder img{ display:block; height:48px; width:auto; border-radius:12px; box-shadow: 0 8px 18px rgba(0,0,0,.08); }
     @media (max-width: 420px){
       #kofi-holder iframe{ height:44px !important; }
       #bmc-holder img{ height:44px; }
     }
 
-    /* Month header + Top Nav */
-    .month-head{
-      display:flex; align-items:center; justify-content:center; gap:10px; margin: 10px 0 6px;
-    }
+    .month-head{ display:flex; align-items:center; justify-content:center; gap:10px; margin: 10px 0 6px; }
     .month-title{ font-weight: 800; font-size: 20px; }
 
     .month-top-nav{
@@ -206,13 +195,13 @@
     .month-top-nav .btn{ width:auto; min-width: 140px; }
     @media (max-width:420px){ .month-top-nav .btn{ min-width: 120px; } }
 
-    /* Edit-Karte (ohne Overlay) — wirklich unsichtbar, bis .active */
+    /* Edit-Karte – unsichtbar bis .active */
     .edit-pop{
       position: fixed; left:50%; top: 18px; transform: translateX(-50%);
       background:#ffffff; border:1px solid #e5e7eb; border-radius:16px; box-shadow: var(--shadow);
-      padding:14px; width: min(560px, 92vw); display:none !important; z-index: 1000;
+      padding:14px; width: min(560px, 92vw); display:none; z-index: 1000;
     }
-    .edit-pop.active{ display:block !important; }
+    .edit-pop.active{ display:block; }
     .edit-title{ font-weight:800; font-size:18px; margin: 4px 0 8px; color:#111827; }
     .edit-grid{ display:grid; grid-template-columns: 1fr 1fr; gap:10px; }
     @media (max-width:560px){ .edit-grid{ grid-template-columns: 1fr; } }
@@ -228,17 +217,13 @@
     .edit-option.superday::after{ content:"⭐"; position:absolute; right:14px; top:50%; transform:translateY(-50%); }
     .edit-option.delete{ border-color:#e2e8f0; background:#f8fafc; }
 
-    footer{
-      margin-top: 18px; text-align:center; color:#475569; font-size: 13px;
-    }
-
-    /* Reset-Bar ganz unten */
+    footer{ margin-top: 18px; text-align:center; color:#475569; font-size: 13px; }
     .reset-bar{ margin-top: 16px; display:flex; justify-content:center; }
   </style>
 </head>
 <body>
   <div class="container">
-    <!-- Tag-Eingabe Ansicht (Start immer heute) -->
+    <!-- Tag-Eingabe Ansicht -->
     <div id="dayInputView" class="view active">
       <h1>🍷 Alkohol Tracker</h1>
       <div class="current-date" id="currentDateDisplay"></div>
@@ -284,7 +269,6 @@
         <div class="month-title" id="monthHeader">—</div>
       </div>
 
-      <!-- Top Navigation: Vorheriger / Nächster -->
       <div class="month-top-nav">
         <button class="btn secondary" onclick="previousMonth()">← Vorheriger</button>
         <button class="btn" onclick="nextMonth()">Nächster →</button>
@@ -313,22 +297,20 @@
 
       <div id="monthGrid" class="cal" aria-label="Kalender"></div>
 
-      <!-- Spenden-Hinweis + Buttons (Ko-fi/PayPal zuerst, dann BMC/Stripe) -->
       <section class="support">
         <p><strong>Anwendung nützlich?</strong> Spendier mir doch einen Kaffee durch Klick auf den Button!</p>
         <div class="support-buttons">
-          <!-- Ko-fi (PayPal) – ERSTER Button -->
+          <!-- Ko-fi (PayPal) zuerst -->
           <div id="kofi-holder" class="btn-holder">
             <div id="kofi-widget" aria-label="Ko-fi Unterstützungsbutton"></div>
           </div>
-          <!-- Buy Me a Coffee (Stripe) – ZWEITER Button -->
+          <!-- Buy Me a Coffee (Stripe) danach -->
           <div id="bmc-holder" class="btn-holder">
             <a href="https://www.buymeacoffee.com/rduwenbecky">
               <img src="https://img.buymeacoffee.com/button-api/?text=Spendier ´n Kaffee (Stripe)&emoji=☕&slug=rduwenbecky&button_colour=5F7FFF&font_colour=ffffff&font_family=Lato&outline_colour=000000&coffee_colour=FFDD00" alt="Buy Me a Coffee Button" />
             </a>
           </div>
         </div>
-        <!-- Ko-fi Widget Script & Init -->
         <script type='text/javascript' src='https://storage.ko-fi.com/cdn/widget/Widget_2.js'></script>
         <script type='text/javascript'>
           try {
@@ -338,13 +320,12 @@
         </script>
       </section>
 
-      <!-- Reset ganz unten -->
       <div class="reset-bar">
         <button class="btn danger" onclick="resetStorage()">🧹 Lokalen Speicher löschen</button>
       </div>
     </div>
 
-    <!-- Edit-Karte (modal, wirklich versteckt bis .active) -->
+    <!-- Edit-Karte -->
     <div id="editPopup" class="edit-pop" aria-hidden="true">
       <div class="edit-title" id="editDate">Datum</div>
       <div class="edit-grid">
@@ -361,8 +342,6 @@
   </div>
 
   <script>
-    console.log('🍷 Alkohol Tracker gestartet');
-
     let currentInputDate = new Date();
     let currentViewDate = new Date();
     let dayData = {};
@@ -374,32 +353,20 @@
 
     function formatDateKey(date){ return `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`; }
     function formatDisplayDate(date){
-      const d = date.getDate();
-      const m = monthNames[date.getMonth()];
-      const y = date.getFullYear();
-      return `${d}. ${m} ${y}`;
+      return `${date.getDate()}. ${monthNames[date.getMonth()]} ${date.getFullYear()}`;
     }
 
     /* Storage */
     function testStorage(){
-      try{
-        localStorage.setItem('__test__','1');
-        localStorage.removeItem('__test__');
-        storageWorking = true;
-        return true;
-      }catch(e){
-        storageWorking = false;
-        return false;
-      }
+      try{ localStorage.setItem('__test__','1'); localStorage.removeItem('__test__'); storageWorking = true; }
+      catch(e){ storageWorking = false; }
     }
-
     function updateStorageStatus(message){
       const status = document.getElementById('storageStatus');
       const count  = document.getElementById('savedDaysCount');
-      if(status) status.textContent = message;
+      if(status) status.textContent = message ?? '';
       if(count)  count.textContent  = Object.keys(dayData).length;
     }
-
     function saveData(){
       if(!storageWorking){ updateStorageStatus('❌ Speichern nicht möglich'); return false; }
       try{
@@ -407,29 +374,21 @@
         localStorage.setItem('alcoholTrackerCurrentDate', currentInputDate.toISOString());
         updateStorageStatus('✅ Daten gespeichert');
         return true;
-      }catch(e){
-        console.error('Storage error', e);
-        updateStorageStatus('❌ Speicher-Fehler');
-        return false;
-      }
+      }catch(e){ updateStorageStatus('❌ Speicher-Fehler'); return false; }
     }
-
     function loadData(){
       if(!storageWorking){ updateStorageStatus('⚠️ Kein persistenter Speicher'); return; }
       try{
         const savedData = localStorage.getItem('alcoholTrackerData');
         dayData = savedData && savedData !== 'null' ? JSON.parse(savedData) : {};
-        currentInputDate = new Date();  // Immer HEUTE starten
+        currentInputDate = new Date(); // Immer HEUTE starten
         updateStorageStatus(`✅ ${Object.keys(dayData).length} Tage geladen`);
       }catch(e){
-        console.error('Laden fehlgeschlagen', e);
-        dayData = {};
-        currentInputDate = new Date();  // Fallback = heute
-        updateStorageStatus('❌ Laden fehlgeschlagen');
+        dayData = {}; currentInputDate = new Date(); updateStorageStatus('❌ Laden fehlgeschlagen');
       }
     }
 
-    /* Metriken: Erfolgsquote */
+    /* Erfolgsquote */
     function setSuccessCardTint(pct){
       const card = document.getElementById('successCard');
       card.classList.remove('rate-good','rate-warn','rate-bad');
@@ -437,16 +396,13 @@
       else if(pct < 75) card.classList.add('rate-warn');
       else              card.classList.add('rate-good');
     }
-
     function calculateSuccessRate(){
       const y = currentViewDate.getFullYear();
       const m = currentViewDate.getMonth();
       let total=0, max=0;
-
       const last = new Date(y, m+1, 0).getDate();
       for(let d=1; d<=last; d++){
-        const key = formatDateKey(new Date(y,m,d));
-        const st = dayData[key];
+        const st = dayData[formatDateKey(new Date(y,m,d))];
         if(!st) continue;
         max += 1;
         if(st==='superday') total += 1.0;
@@ -454,38 +410,37 @@
         else if(st==='moderate') total += 0.4;
       }
       const pct = max>0 ? Math.round((total/max)*100) : 0;
-      const el = document.getElementById('successRate');
-      if(el) el.textContent = pct + '%';
+      document.getElementById('successRate').textContent = pct + '%';
       setSuccessCardTint(pct);
     }
 
-    /* Metriken: Streak */
+    /* Streak (aktuelle Serie ab heute rückwärts, Reset bei moderat/alkohol) */
     function setStreakCardTint(streak){
       const card = document.getElementById('streakCard');
       const numEl = document.getElementById('streakNumber');
       card.classList.remove('streak-bad','streak-warn','streak-good','streak-great');
-
-      let suffix = '';
-      if(streak >= 30){
-        card.classList.add('streak-great');    // dunkelgrün
-        suffix = ' 🎉';
-      }else if(streak >= 21){
-        card.classList.add('streak-good');     // grün
-      }else if(streak >= 11){
-        card.classList.add('streak-warn');     // gelb
-      }else if(streak >= 1){
-        card.classList.add('streak-bad');      // rot
-      }
-      numEl.textContent = String(streak) + suffix;
+      if(streak >= 30)      card.classList.add('streak-great');
+      else if(streak >= 21) card.classList.add('streak-good');
+      else if(streak >= 11) card.classList.add('streak-warn');
+      else if(streak >= 1)  card.classList.add('streak-bad');
+      numEl.textContent = String(streak) + (streak>=30 ? ' 🎉' : '');
     }
-
-    // Aktueller Streak: ab HEUTE rückwärts zählen
     function calculateStreak(){
+      let probe = new Date();          // heute
       let streak = 0;
-      const probe = new Date(); // heute
-      for(let i=0;i<450;i++){
+      const todayKey = formatDateKey(probe);
+      const todayState = dayData[todayKey];
+
+      // Wenn heute nicht grün → Streak = 0
+      if(!(todayState==='sober' || todayState==='superday')){
+        setStreakCardTint(0);
+        return;
+      }
+
+      // Heute ist grün → rückwärts zählen bis zum ersten Nicht-Grün
+      while(true){
         const key = formatDateKey(probe);
-        const st = dayData[key];
+        const st  = dayData[key];
         if(st==='sober' || st==='superday'){
           streak++;
           probe.setDate(probe.getDate()-1);
@@ -500,7 +455,6 @@
     function updateDayInputView(){
       document.getElementById('currentDateDisplay').textContent = formatDisplayDate(currentInputDate);
       updateStorageStatus(`🍷 ${Object.keys(dayData).length} Tage`);
-
       const key = formatDateKey(currentInputDate);
       const existing = dayData[key];
       const btn = document.getElementById('submitDay');
@@ -522,13 +476,13 @@
       calculateStreak();
       calculateSuccessRate();
     }
-
     function showDayInput(){
       document.getElementById('monthView').classList.remove('active');
       document.getElementById('dayInputView').classList.add('active');
       closeEditPopup();
     }
 
+    /* Monatsgrid */
     function updateMonthView(){
       const y = currentViewDate.getFullYear();
       const m = currentViewDate.getMonth();
@@ -537,7 +491,7 @@
       const grid = document.getElementById('monthGrid');
       grid.innerHTML = '';
 
-      // Wochenköpfe
+      // Wochentage
       for(const w of weekdays){
         const h = document.createElement('div');
         h.className = 'weekday';
@@ -559,25 +513,40 @@
 
       const today = new Date();
       for(let d=1; d<=last.getDate(); d++){
+        const dt = new Date(y, m, d);
         const cell = document.createElement('div');
         cell.className = 'day';
-        cell.tabIndex = 0;
         cell.textContent = d;
+        cell.dataset.y = String(y);
+        cell.dataset.m = String(m);  // 0-basiert, wie wir speichern
+        cell.dataset.d = String(d);
 
-        const dt = new Date(y, m, d);
-        const key = formatDateKey(dt);
-        const st = dayData[key];
-
+        const st = dayData[formatDateKey(dt)];
         if(st) cell.classList.add(st);
         if(dt.toDateString() === today.toDateString()) cell.classList.add('today');
 
-        cell.addEventListener('click', ()=>openEditPopup(dt));
-        cell.addEventListener('keydown', (ev)=>{ if(ev.key==='Enter' || ev.key===' ') { ev.preventDefault(); openEditPopup(dt); }});
         grid.appendChild(cell);
       }
     }
 
-    /* Edit ohne Overlay */
+    /* Event-Delegation für sichere Klicks */
+    document.addEventListener('click', (e)=>{
+      const grid = document.getElementById('monthGrid');
+      if(!grid || !grid.contains(e.target)) return;
+      const cell = e.target.closest('.day');
+      if(!cell) return;
+      // versteckte Placeholder ignorieren
+      if(cell.style.visibility === 'hidden') return;
+
+      const y = Number(cell.dataset.y);
+      const m = Number(cell.dataset.m);
+      const d = Number(cell.dataset.d);
+      if(Number.isNaN(y) || Number.isNaN(m) || Number.isNaN(d)) return;
+
+      openEditPopup(new Date(y,m,d));
+    });
+
+    /* Edit */
     function openEditPopup(date){
       editingDate = date;
       const pop = document.getElementById('editPopup');
@@ -631,27 +600,26 @@
       btn.textContent = ok ? '✅ Gespeichert!' : '❌ Fehler!';
       setTimeout(()=>btn.textContent = label, 1200);
 
+      // Streak neu berechnen (Logik wie gewünscht)
       calculateStreak();
 
       // Nächster Tag
       currentInputDate.setDate(currentInputDate.getDate()+1);
       updateDayInputView();
 
-      // Reset
+      // Reset Auswahl
       document.querySelectorAll('input[name="dayChoice"]').forEach(r=>r.checked=false);
       btn.disabled = true;
     }
 
-    /* Reset-Button mit Bestätigung */
+    /* Reset-Button */
     function resetStorage(){
       const ok = confirm('⚠️ Wirklich ALLE lokalen Daten (Tage + Einstellungen) löschen und neu starten?');
       if(!ok) return;
       try{
         localStorage.removeItem('alcoholTrackerData');
         localStorage.removeItem('alcoholTrackerCurrentDate');
-      }catch(e){
-        console.warn('Konnte LocalStorage nicht bereinigen:', e);
-      }
+      }catch(e){ console.warn('LocalStorage-Bereinigung fehlgeschlagen:', e); }
       location.reload();
     }
 
@@ -667,13 +635,8 @@
 
     // Init
     document.addEventListener('DOMContentLoaded', ()=>{
-      // harte Sicherung: Edit-Karte verstecken
-      document.getElementById('editPopup').classList.remove('active');
-      document.getElementById('editPopup').style.display = 'none';
-
       testStorage();
       loadData();
-
       document.querySelectorAll('input[name="dayChoice"]').forEach(radio=>{
         radio.addEventListener('change', ()=>{ document.getElementById('submitDay').disabled = false; });
       });
