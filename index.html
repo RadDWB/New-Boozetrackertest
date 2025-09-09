@@ -155,6 +155,8 @@
       text-align:center; font-weight:700; font-size:12px; color:#475569; padding:6px 0;
       background:#f1f5f9; border-radius:8px; border:1px solid #e7eef6;
     }
+
+    /* Tageszellen */
     .day{
       aspect-ratio:1; display:flex; align-items:center; justify-content:center;
       border-radius:10px; border:1px solid #e7eef6; background:#fff; font-weight:700; cursor:pointer;
@@ -166,7 +168,13 @@
     .day.alcohol{ background:#ef4444; color:#fff; }
     .day.superday{ background:#059669; color:#fff; }
     .day.superday::after{ content:"⭐"; position:absolute; top:4px; right:6px; font-size:12px; }
-    .day.today{ outline:3px solid var(--primary); background:#eef2ff; color:#111827; }
+
+    /* HEUTE: nur Ring, KEIN Hintergrund-Override! */
+    .day.today{
+      outline: 3px solid var(--primary);
+      outline-offset: -3px;
+      /* kein background, keine color hier setzen */
+    }
 
     /* Spendenbereich */
     .support{
@@ -351,16 +359,11 @@
     const monthNames = ['Januar','Februar','März','April','Mai','Juni','Juli','August','September','Oktober','November','Dezember'];
     const weekdays   = ['Mo','Di','Mi','Do','Fr','Sa','So'];
 
-    function formatDateKey(date){ return `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`; }
-    function formatDisplayDate(date){
-      return `${date.getDate()}. ${monthNames[date.getMonth()]} ${date.getFullYear()}`;
-    }
+    const formatDateKey = (date)=> `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`;
+    const formatDisplayDate = (date)=> `${date.getDate()}. ${monthNames[date.getMonth()]} ${date.getFullYear()}`;
 
     /* Storage */
-    function testStorage(){
-      try{ localStorage.setItem('__test__','1'); localStorage.removeItem('__test__'); storageWorking = true; }
-      catch(e){ storageWorking = false; }
-    }
+    function testStorage(){ try{ localStorage.setItem('__test__','1'); localStorage.removeItem('__test__'); storageWorking = true; }catch{ storageWorking=false; } }
     function updateStorageStatus(message){
       const status = document.getElementById('storageStatus');
       const count  = document.getElementById('savedDaysCount');
@@ -372,18 +375,17 @@
       try{
         localStorage.setItem('alcoholTrackerData', JSON.stringify(dayData));
         localStorage.setItem('alcoholTrackerCurrentDate', currentInputDate.toISOString());
-        updateStorageStatus('✅ Daten gespeichert');
-        return true;
-      }catch(e){ updateStorageStatus('❌ Speicher-Fehler'); return false; }
+        updateStorageStatus('✅ Daten gespeichert'); return true;
+      }catch{ updateStorageStatus('❌ Speicher-Fehler'); return false; }
     }
     function loadData(){
       if(!storageWorking){ updateStorageStatus('⚠️ Kein persistenter Speicher'); return; }
       try{
         const savedData = localStorage.getItem('alcoholTrackerData');
         dayData = savedData && savedData !== 'null' ? JSON.parse(savedData) : {};
-        currentInputDate = new Date(); // Immer HEUTE starten
+        currentInputDate = new Date(); // Start immer heute
         updateStorageStatus(`✅ ${Object.keys(dayData).length} Tage geladen`);
-      }catch(e){
+      }catch{
         dayData = {}; currentInputDate = new Date(); updateStorageStatus('❌ Laden fehlgeschlagen');
       }
     }
@@ -397,8 +399,7 @@
       else              card.classList.add('rate-good');
     }
     function calculateSuccessRate(){
-      const y = currentViewDate.getFullYear();
-      const m = currentViewDate.getMonth();
+      const y = currentViewDate.getFullYear(), m = currentViewDate.getMonth();
       let total=0, max=0;
       const last = new Date(y, m+1, 0).getDate();
       for(let d=1; d<=last; d++){
@@ -414,7 +415,7 @@
       setSuccessCardTint(pct);
     }
 
-    /* Streak (aktuelle Serie ab heute rückwärts, Reset bei moderat/alkohol) */
+    /* Streak (heute muss grün sein, sonst 0; dann rückwärts zählen bis erster Nicht-Grün) */
     function setStreakCardTint(streak){
       const card = document.getElementById('streakCard');
       const numEl = document.getElementById('streakNumber');
@@ -426,27 +427,18 @@
       numEl.textContent = String(streak) + (streak>=30 ? ' 🎉' : '');
     }
     function calculateStreak(){
-      let probe = new Date();          // heute
+      let probe = new Date(); // heute
       let streak = 0;
-      const todayKey = formatDateKey(probe);
-      const todayState = dayData[todayKey];
-
-      // Wenn heute nicht grün → Streak = 0
+      // Heute muss grün sein, sonst sofort 0
+      const todayState = dayData[formatDateKey(probe)];
       if(!(todayState==='sober' || todayState==='superday')){
-        setStreakCardTint(0);
-        return;
+        setStreakCardTint(0); return;
       }
-
-      // Heute ist grün → rückwärts zählen bis zum ersten Nicht-Grün
       while(true){
         const key = formatDateKey(probe);
         const st  = dayData[key];
-        if(st==='sober' || st==='superday'){
-          streak++;
-          probe.setDate(probe.getDate()-1);
-        }else{
-          break;
-        }
+        if(st==='sober' || st==='superday'){ streak++; probe.setDate(probe.getDate()-1); }
+        else break;
       }
       setStreakCardTint(streak);
     }
@@ -484,8 +476,7 @@
 
     /* Monatsgrid */
     function updateMonthView(){
-      const y = currentViewDate.getFullYear();
-      const m = currentViewDate.getMonth();
+      const y = currentViewDate.getFullYear(), m = currentViewDate.getMonth();
       document.getElementById('monthHeader').textContent = `${monthNames[m]} ${y}`;
 
       const grid = document.getElementById('monthGrid');
@@ -518,7 +509,7 @@
         cell.className = 'day';
         cell.textContent = d;
         cell.dataset.y = String(y);
-        cell.dataset.m = String(m);  // 0-basiert, wie wir speichern
+        cell.dataset.m = String(m);
         cell.dataset.d = String(d);
 
         const st = dayData[formatDateKey(dt)];
@@ -529,13 +520,12 @@
       }
     }
 
-    /* Event-Delegation für sichere Klicks */
+    /* Event-Delegation (sichere Klicks, auch auf Heute) */
     document.addEventListener('click', (e)=>{
       const grid = document.getElementById('monthGrid');
       if(!grid || !grid.contains(e.target)) return;
       const cell = e.target.closest('.day');
       if(!cell) return;
-      // versteckte Placeholder ignorieren
       if(cell.style.visibility === 'hidden') return;
 
       const y = Number(cell.dataset.y);
@@ -549,8 +539,8 @@
     /* Edit */
     function openEditPopup(date){
       editingDate = date;
-      const pop = document.getElementById('editPopup');
       document.getElementById('editDate').textContent = formatDisplayDate(date);
+      const pop = document.getElementById('editPopup');
       pop.classList.add('active');
       pop.setAttribute('aria-hidden','false');
     }
@@ -569,23 +559,13 @@
 
       saveData();
       closeEditPopup();
-      updateMonthView();
-      calculateStreak();
+      updateMonthView();     // Zellen (inkl. HEUTE) neu einfärben
+      calculateStreak();     // Streak nach neuer Buchung
       calculateSuccessRate();
     }
 
-    function previousMonth(){
-      currentViewDate.setMonth(currentViewDate.getMonth()-1);
-      updateMonthView();
-      calculateStreak();
-      calculateSuccessRate();
-    }
-    function nextMonth(){
-      currentViewDate.setMonth(currentViewDate.getMonth()+1);
-      updateMonthView();
-      calculateStreak();
-      calculateSuccessRate();
-    }
+    function previousMonth(){ currentViewDate.setMonth(currentViewDate.getMonth()-1); updateMonthView(); calculateStreak(); calculateSuccessRate(); }
+    function nextMonth(){     currentViewDate.setMonth(currentViewDate.getMonth()+1); updateMonthView(); calculateStreak(); calculateSuccessRate(); }
 
     /* Save day */
     function saveDay(){
@@ -600,14 +580,11 @@
       btn.textContent = ok ? '✅ Gespeichert!' : '❌ Fehler!';
       setTimeout(()=>btn.textContent = label, 1200);
 
-      // Streak neu berechnen (Logik wie gewünscht)
       calculateStreak();
 
-      // Nächster Tag
       currentInputDate.setDate(currentInputDate.getDate()+1);
       updateDayInputView();
 
-      // Reset Auswahl
       document.querySelectorAll('input[name="dayChoice"]').forEach(r=>r.checked=false);
       btn.disabled = true;
     }
