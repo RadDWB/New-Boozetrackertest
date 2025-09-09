@@ -173,7 +173,6 @@
     .day.today{
       outline: 3px solid var(--primary);
       outline-offset: -3px;
-      /* kein background, keine color hier setzen */
     }
 
     /* Spendenbereich */
@@ -415,7 +414,7 @@
       setSuccessCardTint(pct);
     }
 
-    /* Streak (heute muss grün sein, sonst 0; dann rückwärts zählen bis erster Nicht-Grün) */
+    /* Streak – seit dem letzten grünen Tag (jüngster grüner Tag ≤ heute, dann rückwärts bis Break) */
     function setStreakCardTint(streak){
       const card = document.getElementById('streakCard');
       const numEl = document.getElementById('streakNumber');
@@ -426,18 +425,29 @@
       else if(streak >= 1)  card.classList.add('streak-bad');
       numEl.textContent = String(streak) + (streak>=30 ? ' 🎉' : '');
     }
+    function isGreen(state){ return state==='sober' || state==='superday'; }
     function calculateStreak(){
       let probe = new Date(); // heute
-      let streak = 0;
-      // Heute muss grün sein, sonst sofort 0
-      const todayState = dayData[formatDateKey(probe)];
-      if(!(todayState==='sober' || todayState==='superday')){
-        setStreakCardTint(0); return;
+      // Schritt 1: jüngsten grünen Tag ≤ heute finden
+      for(let i=0;i<600;i++){
+        const st = dayData[formatDateKey(probe)];
+        if(isGreen(st)) break;           // gefunden
+        // wenn explizit moderat/alkohol oder missing -> weiter zurück
+        probe.setDate(probe.getDate()-1);
+        if(i===599){ setStreakCardTint(0); return; }
+        // Falls wir vor dem frühesten Eintrag landen ohne grünen Treffer:
+        const key = formatDateKey(probe);
+        if(!dayData[key] && i>365){ setStreakCardTint(0); return; }
       }
+      // Falls am Ende gar kein grüner Tag existiert:
+      if(!isGreen(dayData[formatDateKey(probe)])){ setStreakCardTint(0); return; }
+
+      // Schritt 2: von diesem Tag rückwärts zählen bis erster Nicht-Grün/Missing
+      let streak = 0;
       while(true){
         const key = formatDateKey(probe);
         const st  = dayData[key];
-        if(st==='sober' || st==='superday'){ streak++; probe.setDate(probe.getDate()-1); }
+        if(isGreen(st)){ streak++; probe.setDate(probe.getDate()-1); }
         else break;
       }
       setStreakCardTint(streak);
@@ -520,7 +530,7 @@
       }
     }
 
-    /* Event-Delegation (sichere Klicks, auch auf Heute) */
+    /* Event-Delegation (Kalenderklicks) */
     document.addEventListener('click', (e)=>{
       const grid = document.getElementById('monthGrid');
       if(!grid || !grid.contains(e.target)) return;
@@ -559,8 +569,8 @@
 
       saveData();
       closeEditPopup();
-      updateMonthView();     // Zellen (inkl. HEUTE) neu einfärben
-      calculateStreak();     // Streak nach neuer Buchung
+      updateMonthView();
+      calculateStreak();
       calculateSuccessRate();
     }
 
