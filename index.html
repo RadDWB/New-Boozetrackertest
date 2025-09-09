@@ -177,29 +177,20 @@
 
     /* Spendenbereich */
     .support{
-      background:#f8fafc; border:1px solid #e5e7eb; border-radius: 14px; 
-      padding: 12px; margin: 12px 0 4px;
+      background:#f8fafc; border:1px solid #e5e7eb; border-radius: 14px; padding: 14px; margin: 12px 0 12px;
       text-align:center; position: relative; z-index: 0;
     }
+    /* enger an den Button */
     .support p{ margin: 0 0 6px; }
-    .support-buttons{ margin: 4px 0 0 0; }
+    .support-buttons{ margin-top: 0; }
 
     .support-buttons{
       display:flex; flex-wrap:wrap; gap:12px; justify-content:center; align-items:center;
     }
     .support-buttons .btn-holder{ height:48px; display:flex; align-items:center; justify-content:center; }
 
-    #kofi-holder, #kofi-holder iframe{ 
-      margin:0 !important; 
-      padding:0 !important;
-      display: block !important;
-    }
-    #kofi-holder iframe{ 
-      height:48px !important; 
-      min-height:48px !important;
-      border: none !important;
-      vertical-align: top !important;
-    }
+    #kofi-holder, #kofi-holder iframe{ margin:0 !important; }
+    #kofi-holder iframe{ height:48px !important; min-height:48px !important; }
     @media (max-width: 420px){
       #kofi-holder iframe{ height:44px !important; }
     }
@@ -236,7 +227,7 @@
     .edit-option.delete{ border-color:#e2e8f0; background:#f8fafc; }
 
     footer{ margin-top: 18px; text-align:center; color:#475569; font-size: 13px; }
-    .reset-bar{ margin-top: 8px; display:flex; justify-content:center; }
+    .reset-bar{ margin-top: 16px; display:flex; justify-content:center; }
   </style>
 </head>
 <body>
@@ -321,6 +312,11 @@
           <!-- Ko-fi Button (einziger Button) -->
           <div id="kofi-holder" class="btn-holder">
             <div id="kofi-widget" aria-label="Ko-fi Unterstützungsbutton"></div>
+          </div>
+
+          <!-- Buy Me a Coffee Button (unter Ko-fi) -->
+          <div class="btn-holder">
+            <a href="https://www.buymeacoffee.com/rduwenbecky"><img src="https://img.buymeacoffee.com/button-api/?text=Spendier mir ´n Kaffee! &emoji=☕&slug=rduwenbecky&button_colour=5F7FFF&font_colour=ffffff&font_family=Lato&outline_colour=000000&coffee_colour=FFDD00" /></a>
           </div>
         </div>
 
