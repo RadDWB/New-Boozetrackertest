@@ -309,23 +309,13 @@
       <section class="support">
         <p><strong>Findest diese kleine Anwendung nützlich?</strong> Dann spendier mir doch einen Kaffee:</p>
         <div class="support-buttons">
-          <!-- Ko-fi Button (einziger Button) -->
-          <div id="kofi-holder" class="btn-holder">
-            <div id="kofi-widget" aria-label="Ko-fi Unterstützungsbutton"></div>
-          </div>
-
-          <!-- Buy Me a Coffee Button (unter Ko-fi) -->
+          <!-- Nur noch Buy Me a Coffee -->
           <div class="btn-holder">
-            <a href="https://www.buymeacoffee.com/rduwenbecky"><img src="https://img.buymeacoffee.com/button-api/?text=Spendier mir ´n Kaffee! &emoji=☕&slug=rduwenbecky&button_colour=5F7FFF&font_colour=ffffff&font_family=Lato&outline_colour=000000&coffee_colour=FFDD00" /></a>
+            <a href="https://www.buymeacoffee.com/rduwenbecky">
+              <img src="https://img.buymeacoffee.com/button-api/?text=Spendier mir ´n Kaffee! &emoji=☕&slug=rduwenbecky&button_colour=5F7FFF&font_colour=ffffff&font_family=Lato&outline_colour=000000&coffee_colour=FFDD00" />
+            </a>
           </div>
         </div>
-
-        <!-- Ko-fi Widget-Script -->
-        <script type="text/javascript" src="https://storage.ko-fi.com/cdn/widget/Widget_2.js"></script>
-        <script type="text/javascript">
-          kofiwidget2.init('Spendier mir n´ Kaffee Ko-fi', '#72a4f2', 'R5R319DK8N');
-          kofiwidget2.draw();
-        </script>
       </section>
 
       <div class="reset-bar">
@@ -603,7 +593,7 @@
         localStorage.removeItem('alcoholTrackerData');
         localStorage.removeItem('alcoholTrackerCurrentDate');
       }catch(e){ console.warn('LocalStorage-Bereinigung fehlgeschlagen:', e); }
-      location.reload();
+        location.reload();
     }
 
     // Expose
@@ -625,6 +615,17 @@
       });
       document.getElementById('submitDay').addEventListener('click', saveDay);
       updateDayInputView();
+    });
+  </script>
+
+  <!-- Ko-fi Floating Overlay (ersetzt den alten Ko-fi Button) -->
+  <script src="https://storage.ko-fi.com/cdn/scripts/overlay-widget.js"></script>
+  <script>
+    kofiWidgetOverlay.draw('jacksnyderkofi', {
+      type: 'floating-chat',
+      'floating-chat.donateButton.text': 'Tip Me',
+      'floating-chat.donateButton.background-color': '#00b9fe',
+      'floating-chat.donateButton.text-color': '#fff'
     });
   </script>
 </body>
