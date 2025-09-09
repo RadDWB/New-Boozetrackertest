@@ -180,12 +180,16 @@
       background:#f8fafc; border:1px solid #e5e7eb; border-radius: 14px; padding: 14px; margin: 12px 0 12px;
       text-align:center; position: relative; z-index: 0;
     }
-    .support p{ margin: 0 0 12px; }
+    /* enger an den Button */
+    .support p{ margin: 0 0 6px; }
+    .support-buttons{ margin-top: 0; }
+
     .support-buttons{
       display:flex; flex-wrap:wrap; gap:12px; justify-content:center; align-items:center;
     }
     .support-buttons .btn-holder{ height:48px; display:flex; align-items:center; justify-content:center; }
 
+    #kofi-holder, #kofi-holder iframe{ margin:0 !important; }
     #kofi-holder iframe{ height:48px !important; min-height:48px !important; }
     @media (max-width: 420px){
       #kofi-holder iframe{ height:44px !important; }
@@ -303,7 +307,7 @@
       <div id="monthGrid" class="cal" aria-label="Kalender"></div>
 
       <section class="support">
-        <p><strong>Findest diese kleine Anwendung nützlich?</strong> Dann Spendier mir doch einen Kaffee durch Klick auf den Button:</p>
+        <p><strong>Findest diese kleine Anwendung nützlich?</strong> Dann spendier mir doch einen Kaffee:</p>
         <div class="support-buttons">
           <!-- Ko-fi Button (einziger Button) -->
           <div id="kofi-holder" class="btn-holder">
@@ -311,9 +315,9 @@
           </div>
         </div>
 
-        <!-- Ko-fi Widget-Script (genau wie gewünscht) -->
-        <script type='text/javascript' src='https://storage.ko-fi.com/cdn/widget/Widget_2.js'></script>
-        <script type='text/javascript'>
+        <!-- Ko-fi Widget-Script -->
+        <script type="text/javascript" src="https://storage.ko-fi.com/cdn/widget/Widget_2.js"></script>
+        <script type="text/javascript">
           kofiwidget2.init('Spendier mir n´ Kaffee Ko-fi', '#72a4f2', 'R5R319DK8N');
           kofiwidget2.draw();
         </script>
