@@ -19,8 +19,8 @@
       --warn:#f59e0b;
       --danger:#ef4444;
       --super:#059669;
-      --wellness:#22c55e;  /* Helleres Grün für Wellness */
-      --mixed:#fb923c;     /* Orange für Alkohol+Sport */
+      --wellness:#22c55e;
+      --mixed:#dc2626;  /* Dunkleres Rot für Gemischt */
       --radius:16px;
       --shadow:0 12px 30px rgba(31,41,55,.12);
     }
@@ -85,7 +85,7 @@
     .choice-option.sober{ border-color: #c0f1df; background: #f4fffa; }
     .choice-option.wellness{ border-color: #b3f5cc; background: #f0fdf5; }
     .choice-option.moderate{ border-color: #ffe5b5; background: #fff9ec; }
-    .choice-option.mixed{ border-color: #fed7aa; background: #fff7ed; }
+    .choice-option.mixed{ border-color: #fecaca; background: #fef2f2; }
     .choice-option.alcohol{ border-color: #ffcaca; background: #fff2f2; }
     .choice-option.superday{
       border-color: #b7f3d2;
@@ -146,10 +146,65 @@
     .streak-good{ background:#ecfdf5; border-color:#a7f3d0; }
     .streak-great{ background:#d1fae5; border-color:#34d399; }
 
+    /* Balkendiagramm für 100 Tage */
+    .chart-section{
+      margin: 18px 0;
+      padding: 16px;
+      background: #f9fafb;
+      border: 1px solid #e5e7eb;
+      border-radius: 14px;
+    }
+    .chart-title{
+      font-weight: 700;
+      font-size: 16px;
+      margin-bottom: 14px;
+      text-align: center;
+      color: var(--text);
+    }
+    .chart-bars{
+      display: flex;
+      gap: 16px;
+      margin-bottom: 10px;
+    }
+    .chart-bar-container{
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .chart-bar-label{
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--muted);
+      text-align: center;
+    }
+    .chart-bar-wrapper{
+      height: 180px;
+      background: #e5e7eb;
+      border-radius: 8px;
+      position: relative;
+      display: flex;
+      align-items: flex-end;
+      overflow: hidden;
+    }
+    .chart-bar{
+      width: 100%;
+      transition: height 0.8s ease;
+      border-radius: 8px 8px 0 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      color: white;
+      font-size: 18px;
+    }
+    .chart-bar.negative{ background: linear-gradient(180deg, #ef4444, #dc2626); }
+    .chart-bar.positive{ background: linear-gradient(180deg, #10b981, #059669); }
+
     .legend{
       display:flex; flex-wrap:wrap; gap:10px 14px; margin: 10px 0 14px; color:var(--muted); font-size: 13px;
     }
-    .legend .dot{ width:14px; height:14px; border-radius:4px; display:inline-block; margin-right:6px; vertical-align:middle; }
+    .legend span{ display: flex; align-items: center; gap: 6px; }
 
     .cal{
       display:grid; grid-template-columns: repeat(7, 1fr); gap:8px; margin-bottom: 10px;
@@ -171,7 +226,8 @@
     .day.wellness{ background:#22c55e; color:#fff; }
     .day.wellness::after{ content:"❗"; position:absolute; top:4px; right:6px; font-size:12px; }
     .day.moderate{ background:#f59e0b; color:#fff; }
-    .day.mixed{ background:#fb923c; color:#fff; }
+    .day.mixed{ background:#dc2626; color:#fff; }
+    .day.mixed::after{ content:"❤️"; position:absolute; top:4px; right:6px; font-size:12px; }
     .day.alcohol{ background:#ef4444; color:#fff; }
     .day.superday{ background:#059669; color:#fff; }
     .day.superday::after{ content:"⭐"; position:absolute; top:4px; right:6px; font-size:12px; }
@@ -194,7 +250,12 @@
       display:flex; flex-wrap:wrap; gap:12px; justify-content:center; align-items:center;
     }
     .support-buttons .btn-holder{ height:48px; display:flex; align-items:center; justify-content:center; }
-    .support-buttons img{ display:block; }
+
+    #kofi-holder, #kofi-holder iframe{ margin:0 !important; }
+    #kofi-holder iframe{ height:48px !important; min-height:48px !important; }
+    @media (max-width: 420px){
+      #kofi-holder iframe{ height:44px !important; }
+    }
 
     .month-head{ display:flex; align-items:center; justify-content:center; gap:10px; margin: 10px 0 6px; }
     .month-title{ font-weight: 800; font-size: 20px; }
@@ -224,7 +285,8 @@
     .edit-option.wellness{ border-color:#b3f5cc; background:#f0fdf5; position:relative; }
     .edit-option.wellness::after{ content:"❗"; position:absolute; right:14px; top:50%; transform:translateY(-50%); }
     .edit-option.moderate{ border-color:#ffe5b5; background:#fff9ec; }
-    .edit-option.mixed{ border-color:#fed7aa; background:#fff7ed; }
+    .edit-option.mixed{ border-color:#fecaca; background:#fef2f2; position:relative; }
+    .edit-option.mixed::after{ content:"❤️"; position:absolute; right:14px; top:50%; transform:translateY(-50%); }
     .edit-option.alcohol{ border-color:#ffcaca; background:#fff2f2; }
     .edit-option.superday{ border-color:#b7f3d2; background:linear-gradient(135deg,#f6fff9,#f1fff7); position:relative; }
     .edit-option.superday::after{ content:"⭐"; position:absolute; right:14px; top:50%; transform:translateY(-50%); }
@@ -256,7 +318,7 @@
         </label>
         <label class="choice-option mixed">
           <input type="radio" name="dayChoice" value="mixed" />
-          <span>🟠 Gemischt – Alkohol getrunken, aber Sport gemacht</span>
+          <span>❤️ Schadensbegrenzung – Alkohol + Sport</span>
         </label>
         <label class="choice-option alcohol">
           <input type="radio" name="dayChoice" value="alcohol" />
@@ -308,14 +370,32 @@
         </div>
       </div>
 
+      <!-- Balkendiagramm für 100 Tage -->
+      <div class="chart-section">
+        <div class="chart-title">Letzte 100 Tage im Überblick</div>
+        <div class="chart-bars">
+          <div class="chart-bar-container">
+            <div class="chart-bar-wrapper">
+              <div class="chart-bar negative" id="chartNegative" style="height: 0%;">0</div>
+            </div>
+            <div class="chart-bar-label">Unter 50%<br><small>(Alkohol, Gemischt, Moderat)</small></div>
+          </div>
+          <div class="chart-bar-container">
+            <div class="chart-bar-wrapper">
+              <div class="chart-bar positive" id="chartPositive" style="height: 0%;">0</div>
+            </div>
+            <div class="chart-bar-label">Über 50%<br><small>(Alkoholfrei, Wellness, Supertag)</small></div>
+          </div>
+        </div>
+      </div>
+
       <div class="legend">
-        <span><span class="dot" style="background: var(--success)"></span>Alkoholfrei</span>
-        <span><span class="dot" style="background: var(--wellness)"></span>💚 Wellness</span>
-        <span><span class="dot" style="background: var(--warn)"></span>Moderat</span>
-        <span><span class="dot" style="background: var(--mixed)"></span>🟠 Gemischt</span>
-        <span><span class="dot" style="background: var(--danger)"></span>Alkohol</span>
-        <span><span class="dot" style="background: var(--super)"></span>⭐ Supertag</span>
-        <span><span class="dot" style="background: #e2e8f0"></span>Neutral</span>
+        <span>🟢 Alkoholfrei</span>
+        <span>💚 Wellness</span>
+        <span>🟡 Moderat</span>
+        <span>❤️ Gemischt</span>
+        <span>🔴 Alkohol</span>
+        <span>⭐ Supertag</span>
       </div>
 
       <div id="monthGrid" class="cal" aria-label="Kalender"></div>
@@ -323,13 +403,23 @@
       <section class="support">
         <p><strong>Findest diese kleine Anwendung nützlich?</strong> Dann spendier mir doch einen Kaffee:</p>
         <div class="support-buttons">
+          <!-- Ko-fi Button -->
+          <div id="kofi-holder" class="btn-holder">
+            <div id="kofi-widget" aria-label="Ko-fi Unterstützungsbutton"></div>
+          </div>
+
           <!-- Buy Me a Coffee Button -->
           <div class="btn-holder">
-            <a href="https://www.buymeacoffee.com/rduwenbecky" target="_blank" rel="noopener noreferrer">
-              <img src="https://img.buymeacoffee.com/button-api/?text=Spendier mir ´n Kaffee! &emoji=☕&slug=rduwenbecky&button_colour=5F7FFF&font_colour=ffffff&font_family=Lato&outline_colour=000000&coffee_colour=FFDD00" alt="Buy Me A Coffee" style="height: 48px; border-radius: 8px;" />
-            </a>
+            <a href="https://www.buymeacoffee.com/rduwenbecky"><img src="https://img.buymeacoffee.com/button-api/?text=Spendier mir ´n Kaffee! &emoji=☕&slug=rduwenbecky&button_colour=5F7FFF&font_colour=ffffff&font_family=Lato&outline_colour=000000&coffee_colour=FFDD00" /></a>
           </div>
         </div>
+
+        <!-- Ko-fi Widget-Script -->
+        <script type="text/javascript" src="https://storage.ko-fi.com/cdn/widget/Widget_2.js"></script>
+        <script type="text/javascript">
+          kofiwidget2.init('Spendier mir n´ Kaffee Ko-fi', '#72a4f2', 'R5R319DK8N');
+          kofiwidget2.draw();
+        </script>
       </section>
 
       <div class="reset-bar">
@@ -344,7 +434,7 @@
         <button class="edit-option sober" onclick="updateDay('sober')">🟢 Alkoholfrei</button>
         <button class="edit-option wellness" onclick="updateDay('wellness')">💚 Wellness</button>
         <button class="edit-option moderate" onclick="updateDay('moderate')">🟡 Moderat</button>
-        <button class="edit-option mixed" onclick="updateDay('mixed')">🟠 Gemischt</button>
+        <button class="edit-option mixed" onclick="updateDay('mixed')">❤️ Gemischt</button>
         <button class="edit-option alcohol" onclick="updateDay('alcohol')">🔴 Alkohol</button>
         <button class="edit-option superday" onclick="updateDay('superday')">⭐ Supertag</button>
         <button class="edit-option delete" onclick="updateDay('delete')">🗑️ Tag löschen</button>
@@ -389,14 +479,14 @@
       try{
         const savedData = localStorage.getItem('alcoholTrackerData');
         dayData = savedData && savedData !== 'null' ? JSON.parse(savedData) : {};
-        currentInputDate = new Date(); // Start immer heute
+        currentInputDate = new Date();
         updateStorageStatus(`✅ ${Object.keys(dayData).length} Tage geladen`);
       }catch{
         dayData = {}; currentInputDate = new Date(); updateStorageStatus('❌ Laden fehlgeschlagen');
       }
     }
 
-    /* Erfolgsquote - ANGEPASST für neue Kategorien */
+    /* Erfolgsquote - ANGEPASST */
     function setSuccessCardTint(pct){
       const card = document.getElementById('successCard');
       card.classList.remove('rate-good','rate-warn','rate-bad');
@@ -413,17 +503,52 @@
         if(!st) continue;
         max += 1;
         if(st==='superday') total += 1.0;
-        else if(st==='wellness') total += 0.9;  // NEU
+        else if(st==='wellness') total += 0.9;
         else if(st==='sober') total += 0.75;
-        else if(st==='mixed') total += 0.5;     // NEU
         else if(st==='moderate') total += 0.4;
+        else if(st==='mixed') total += 0.25;  // ANGEPASST auf 25%
       }
       const pct = max>0 ? Math.round((total/max)*100) : 0;
       document.getElementById('successRate').textContent = pct + '%';
       setSuccessCardTint(pct);
     }
 
-    /* Streak - ANGEPASST für neue Kategorien */
+    /* Balkendiagramm für letzte 100 Tage */
+    function calculate100DaysChart(){
+      let negative = 0; // unter 50%: alcohol, mixed, moderate
+      let positive = 0; // über 50%: sober, wellness, superday
+      
+      const today = new Date();
+      for(let i=0; i<100; i++){
+        const probe = new Date(today);
+        probe.setDate(probe.getDate() - i);
+        const st = dayData[formatDateKey(probe)];
+        
+        if(st === 'alcohol' || st === 'mixed' || st === 'moderate'){
+          negative++;
+        } else if(st === 'sober' || st === 'wellness' || st === 'superday'){
+          positive++;
+        }
+      }
+
+      // Prozent berechnen (von 100 Tagen)
+      const negPct = Math.round((negative / 100) * 100);
+      const posPct = Math.round((positive / 100) * 100);
+
+      // Balken aktualisieren mit Animation
+      setTimeout(() => {
+        const negBar = document.getElementById('chartNegative');
+        const posBar = document.getElementById('chartPositive');
+        
+        negBar.style.height = negPct + '%';
+        negBar.textContent = negative;
+        
+        posBar.style.height = posPct + '%';
+        posBar.textContent = positive;
+      }, 100);
+    }
+
+    /* Streak - ANGEPASST */
     function setStreakCardTint(streak){
       const card = document.getElementById('streakCard');
       const numEl = document.getElementById('streakNumber');
@@ -436,7 +561,7 @@
     }
     function isGreen(state){ return state==='sober' || state==='superday' || state==='wellness'; }
     function calculateStreak(){
-      let probe = new Date(); // heute
+      let probe = new Date();
       for(let i=0;i<600;i++){
         const st = dayData[formatDateKey(probe)];
         if(isGreen(st)) break;
@@ -480,6 +605,7 @@
       updateMonthView();
       calculateStreak();
       calculateSuccessRate();
+      calculate100DaysChart();
     }
     function showDayInput(){
       document.getElementById('monthView').classList.remove('active');
@@ -495,7 +621,6 @@
       const grid = document.getElementById('monthGrid');
       grid.innerHTML = '';
 
-      // Wochentage
       const weekdays = ['Mo','Di','Mi','Do','Fr','Sa','So'];
       for(const w of weekdays){
         const h = document.createElement('div');
@@ -506,9 +631,8 @@
 
       const first = new Date(y, m, 1);
       const last  = new Date(y, m+1, 0);
-      const startDay = (first.getDay()+6)%7; // Montag zuerst
+      const startDay = (first.getDay()+6)%7;
 
-      // Leere Felder
       for(let i=0;i<startDay;i++){
         const e = document.createElement('div');
         e.className='day';
@@ -534,7 +658,7 @@
       }
     }
 
-    /* Event-Delegation (Kalenderklicks) */
+    /* Event-Delegation */
     document.addEventListener('click', (e)=>{
       const grid = document.getElementById('monthGrid');
       if(!grid || !grid.contains(e.target)) return;
@@ -576,6 +700,7 @@
       updateMonthView();
       calculateStreak();
       calculateSuccessRate();
+      calculate100DaysChart();
     }
 
     function previousMonth(){ currentViewDate.setMonth(currentViewDate.getMonth()-1); updateMonthView(); calculateStreak(); calculateSuccessRate(); }
@@ -603,7 +728,7 @@
       btn.disabled = true;
     }
 
-    /* Reset-Button */
+    /* Reset */
     function resetStorage(){
       const ok = confirm('⚠️ Wirklich ALLE lokalen Daten (Tage + Einstellungen) löschen und neu starten?');
       if(!ok) return;
