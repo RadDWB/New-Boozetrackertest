@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Booze-Tracker — Backup, Notizen, Jahresansicht</title>
+  <style>
+    :root{
+      --bg-grad-start:#6ea8ff; --bg-grad-end:#8ee5ff;
+      --card-bg:#ffffff; --card-border:#e6eaf1; --text:#1f2937; --muted:#64748b;
+      --primary:#4f46e5; --primary-dark:#4338ca;
+      --success:#10b981; --success2:#22c55e; --warn:#f59e0b; --sport:#fb923c; --danger:#ef4444; --super:#059669;
+      --radius:16px; --shadow:0 12px 30px rgba(31,41,55,.12);
+    }
+    html,body{height:100%;margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial,sans-serif;color:var(--text);background:linear-gradient(135deg,var(--bg-grad-start),var(--bg-grad-end)) fixed;}
+    .container{max-width: 900px; margin:32px auto; padding:clamp(16px,2.5vw,24px); background:var(--card-bg); border:1px solid var(--card-border); border-radius:calc(var(--radius)+4px); box-shadow:var(--shadow)}
+    .view{display:none;} .view.active{display:block}
+    h1{margin:0 0 18px; text-align:center; font-size:clamp(26px,4.2vw,34px)}
+    .current-date{font-size: clamp(26px,5vw,36px); font-weight: 800; color: var(--primary); text-align:center; margin:10px 0 18px;}
+    .row{display:flex; gap:12px; flex-wrap:wrap}
+
+    /* Choice cards */
+    .choice-container{display:grid; grid-template-columns:1fr 1fr; gap:12px; margin:12px 0 8px}
+    @media (max-width:640px){ .choice-container{grid-template-columns:1fr} }
+    .choice-option{display:flex; align-items:center; gap:12px; padding:14px 16px; border:2px solid #edf2f7; border-radius:14px; background:#fff; cursor:pointer; transition:.15s ease; font-size:16px}
+    .choice-option:hover{ transform: translateY(-1px); box-shadow:0 6px 16px rgba(0,0,0,.08) }
+    .choice-option input[type=radio]{ transform: scale(1.25); margin:0 2px 0 0; accent-color:var(--primary) }
+    .choice-option.sober{ border-color:#c0f1df; background:#f4fffa }
+    .choice-option.sober-plus{ border-color:#b9f5cc; background:#f1fff6; position:relative }
+    .choice-option.sober-plus::after{ content:"❕"; position:absolute; right:12px; top:10px; opacity:.8 }
+    .choice-option.moderate{ border-color:#ffe5b5; background:#fff9ec }
+    .choice-option.alcohol{ border-color:#ffcaca; background:#fff2f2 }
+    .choice-option.alcohol-sport{ border-color:#ffd3b0; background:#fff3e9 }
+    .choice-option.superday{ border-color:#b7f3d2; background:linear-gradient(135deg,#f3fff9,#ecfff8); position:relative }
+    .choice-option.superday::before{ content:"⭐"; position:absolute; right:12px; top:10px; opacity:.9 }
+
+    .btn{ height:48px; padding:0 18px; border-radius:12px; border:0; background:var(--primary); color:#fff; font-weight:700; cursor:pointer; width:100%; transition:background .15s ease, transform .06s ease, box-shadow .15s ease; box-shadow:0 8px 18px rgba(79,70,229,.25); font-size:16px }
+    .btn:hover{ background:var(--primary-dark); transform: translateY(-1px) }
+    .btn:disabled{ background:#cbd5e1; box-shadow:none; cursor:not-allowed }
+    .btn.secondary{ background:#64748b } .btn.secondary:hover{ background:#475569 }
+    .btn.danger{ background:#ef4444 } .btn.danger:hover{ background:#dc2626 }
+    .btn.ghost{ background:transparent; color:#334155; border:1px solid #e5e7eb }
+
+    .submit-row{ margin-top:12px; display:flex; gap:12px }
+    .storage-info{ margin-top:10px; text-align:center; color:var(--muted); font-size:14px }
+
+    /* Stats */
+    .stats-grid{ display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px; margin-bottom:12px }
+    @media (max-width:800px){ .stats-grid{ grid-template-columns:1fr 1fr } }
+    .stat-card{ background:#f9fafb; border:1px solid #e5e7eb; border-radius:14px; padding:16px; text-align:center }
+    .stat-card .stat-number{ font-size: clamp(24px,4.4vw,36px); font-weight:900; margin:6px 0 2px }
+    .stat-card .stat-label{ color:var(--muted); font-size:13px }
+    .rate-good{ background:#ecfdf5; border-color:#a7f3d0 }
+    .rate-warn{ background:#fffbeb; border-color:#fde68a }
+    .rate-bad{ background:#fef2f2; border-color:#fecaca }
+    .streak-bad{ background:#fef2f2; border-color:#fecaca }
+    .streak-warn{ background:#fffbeb; border-color:#fde68a }
+    .streak-good{ background:#ecfdf5; border-color:#a7f3d0 }
+    .streak-great{ background:#d1fae5; border-color:#34d399 }
+
+    .legend{ display:flex; flex-wrap:wrap; gap:10px 14px; margin:10px 0 14px; color:var(--muted); font-size:13px }
+    .legend .dot{ width:14px; height:14px; border-radius:4px; display:inline-block; margin-right:6px; vertical-align:middle }
+
+    .cal{ display:grid; grid-template-columns: repeat(7,1fr); gap:8px; margin-bottom:10px; position:relative }
+    .weekday{ text-align:center; font-weight:700; font-size:12px; color:#475569; padding:6px 0; background:#f1f5f9; border-radius:8px; border:1px solid #e7eef6 }
+
+    .day{ aspect-ratio:1; display:flex; align-items:center; justify-content:center; border-radius:10px; border:1px solid #e7eef6; background:#fff; font-weight:700; cursor:pointer; transition:.1s ease; position:relative; z-index:1; user-select:none }
+    .day:hover{ transform: scale(1.03); box-shadow:0 8px 18px rgba(0,0,0,.08) }
+    .day.sober{ background:var(--success); color:#fff }
+    .day.soberPlus{ background:var(--success2); color:#fff }
+    .day.moderate{ background:var(--warn); color:#fff }
+    .day.alcohol{ background:var(--danger); color:#fff }
+    .day.alcoholSport{ background:var(--sport); color:#fff }
+    .day.superday{ background:var(--super); color:#fff }
+    .day.superday::after{ content:"⭐"; position:absolute; top:4px; right:6px; font-size:12px }
+    .day.today{ outline:3px solid var(--primary); outline-offset:-3px }
+    .day.has-comment::before{ content:'💬'; position:absolute; top:2px; right:2px; font-size:10px; opacity:.85 }
+
+    /* Tooltips */
+    .day-comment-tooltip{ display:none; position:absolute; bottom:calc(100% + 8px); left:50%; transform:translateX(-50%); min-width:200px; max-width:280px; padding:10px 12px; background:#1f2937; color:#fff; border-radius:8px; font-size:11px; line-height:1.5; z-index:1000; box-shadow:0 8px 20px rgba(0,0,0,.4); white-space:pre-wrap }
+    .day.has-comment:hover .day-comment-tooltip{ display:block }
+    .day-comment-tooltip::after{ content:''; position:absolute; top:100%; left:50%; transform:translateX(-50%); border:6px solid transparent; border-top-color:#1f2937 }
+
+    /* Popups */
+    .overlay{ position:fixed; inset:0; background:rgba(0,0,0,.4); display:none; z-index:1000 }
+    .overlay.active{ display:block }
+    .popup{ position:fixed; left:50%; top:50%; transform:translate(-50%,-50%); background:#fff; border:1px solid #e5e7eb; border-radius:16px; box-shadow:0 20px 40px rgba(31,41,55,.25); padding:20px; width:min(680px,92vw); max-height:85vh; overflow:auto; display:none; z-index:1001 }
+    .popup.active{ display:block }
+    .popup .closerow{ display:flex; justify-content:flex-end; margin:-8px -8px 8px }
+    .closebtn{ background:transparent; border:0; font-size:24px; line-height:1; cursor:pointer; color:#64748b }
+
+    footer{ margin-top:18px; text-align:center; color:#475569; font-size:13px }
+    .reset-bar{ margin-top:16px; display:flex; gap:12px; justify-content:center; flex-wrap:wrap }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Tagesansicht -->
+    <div id="dayInputView" class="view active">
+      <h1>🍷 Booze-Tracker (mit Backup & Notizen)</h1>
+      <div class="current-date" id="currentDateDisplay"></div>
+
+      <!-- Wunsch: zuerst Kommentar, dann Kategorie-Auswahl -->
+      <div>
+        <label for="dayCommentInput" style="display:block; font-size:14px; font-weight:600; margin-bottom:8px; color:var(--text)">💬 Kommentar (optional)</label>
+        <textarea id="dayCommentInput" placeholder="Notizen zum Tag (z. B. Anlass, Gefühle, Situation)" style="width:100%; min-height:84px; padding:10px; border:1px solid #d1d5db; border-radius:8px; font-size:13px; font-family:inherit; resize:vertical"></textarea>
+      </div>
+
+      <div class="choice-container" role="group" aria-label="Tagesauswahl">
+        <label class="choice-option superday"><input type="radio" name="dayChoice" value="superday" /> <span>⭐ Supertag – Alkoholfrei + Sport</span></label>
+        <label class="choice-option sober-plus"><input type="radio" name="dayChoice" value="soberPlus" /> <span>💚 Wellnestag – Alkoholfrei + Gesundheitsaktivität</span></label>
+        <label class="choice-option sober"><input type="radio" name="dayChoice" value="sober" /> <span>🟢 Alkoholfrei</span></label>
+        <label class="choice-option moderate"><input type="radio" name="dayChoice" value="moderate" /> <span>🟡 Moderat – wenig Alkohol</span></label>
+        <label class="choice-option alcohol-sport"><input type="radio" name="dayChoice" value="alcoholSport" /> <span>🟠 Alkohol getrunken, aber Sport gemacht</span></label>
+        <label class="choice-option alcohol"><input type="radio" name="dayChoice" value="alcohol" /> <span>🔴 Viel Alkohol</span></label>
+      </div>
+
+      <div class="submit-row">
+        <button id="submitDay" class="btn" disabled>Tag speichern</button>
+      </div>
+
+      <div class="storage-info" id="storageInfo">🍷 Gespeicherte Tage: <span id="savedDaysCount">0</span> · <span id="storageStatus">Lade…</span></div>
+
+      <div class="submit-row" style="margin-top:12px">
+        <button class="btn secondary" onclick="showMonthView()">📊 Monatsübersicht</button>
+      </div>
+    </div>
+
+    <!-- Monatsansicht -->
+    <div id="monthView" class="view">
+      <h1>📊 Monatsübersicht</h1>
+      <div class="month-head"><div class="month-title" id="monthHeader">—</div></div>
+      <div class="row" style="justify-content:center; margin:8px 0 14px">
+        <button class="btn secondary" onclick="previousMonth()">← Vorheriger</button>
+        <button class="btn" onclick="nextMonth()">Nächster →</button>
+        <button class="btn ghost" onclick="showYearView()">📆 Jahresübersicht</button>
+      </div>
+
+      <div class="stats-grid">
+        <div class="stat-card" id="streakCard"><div class="stat-label">Aktueller Streak</div><div class="stat-number" id="streakNumber">0</div><div class="stat-label">alkoholfreie Tage</div></div>
+        <div class="stat-card" id="longestStreakCard"><div class="stat-label">Längster Streak (All-Time)</div><div class="stat-number" id="longestStreakNumber">0</div><div class="stat-label">Tage am Stück</div></div>
+        <div class="stat-card" id="successCard"><div class="stat-label">Erfolgsquote</div><div class="stat-number" id="successRate">0%</div><div class="stat-label">dieser Monat</div></div>
+      </div>
+
+      <div class="legend">
+        <span><span class="dot" style="background: var(--super)"></span>Supertag</span>
+        <span><span class="dot" style="background: var(--success2)"></span>Wellnestag</span>
+        <span><span class="dot" style="background: var(--success)"></span>Alkoholfrei</span>
+        <span><span class="dot" style="background: var(--warn)"></span>Moderat</span>
+        <span><span class="dot" style="background: var(--sport)"></span>Alkohol + Sport</span>
+        <span><span class="dot" style="background: var(--danger)"></span>Viel Alkohol</span>
+        <span><span class="dot" style="background: #e2e8f0"></span>Neutral</span>
+      </div>
+
+      <div id="monthGrid" class="cal" aria-label="Kalender"></div>
+
+      <div style="text-align:center; margin:14px 0; display:flex; gap:12px; justify-content:center; flex-wrap:wrap">
+        <button class="btn ghost" onclick="toggleChartPopup()">📊 100-Tage-Statistik</button>
+        <button class="btn ghost" onclick="toggleSettingsPopup()">⚙️ Einstellungen</button>
+      </div>
+
+      <div class="reset-bar">
+        <button class="btn secondary" onclick="exportData()">📤 Daten exportieren</button>
+        <button class="btn secondary" onclick="importData()">📥 Daten importieren</button>
+        <button class="btn danger" onclick="resetStorage()">🧹 Lokalen Speicher löschen</button>
+      </div>
+    </div>
+
+    <!-- Jahresübersicht -->
+    <div id="yearView" class="view">
+      <h1>📆 Jahresübersicht</h1>
+      <div id="yearGrid" style="display:grid; grid-template-columns: repeat(auto-fit, minmax(260px,1fr)); gap:12px"></div>
+      <div class="row" style="justify-content:center; margin-top:12px">
+        <button class="btn" onclick="showMonthView()">Zurück zur Monatsansicht</button>
+      </div>
+    </div>
+
+    <!-- Overlays/Popups -->
+    <div id="editOverlay" class="overlay" onclick="closeEditPopup()"></div>
+    <div id="editPopup" class="popup" aria-hidden="true" role="dialog" aria-modal="true">
+      <div class="closerow"><button class="closebtn" onclick="closeEditPopup()" aria-label="Schließen">×</button></div>
+      <div class="edit-title" id="editDate">Datum</div>
+      <div class="row" style="gap:10px; margin:6px 0 8px">
+        <textarea id="editCommentInput" placeholder="Notiz zum Tag…" style="flex:1; min-height:72px; padding:10px; border:1px solid #d1d5db; border-radius:8px; font-size:13px; resize:vertical"></textarea>
+        <button class="btn" style="width:140px" onclick="saveEditComment()">💾 Speichern</button>
+      </div>
+      <div class="row" style="gap:10px; margin-top:4px">
+        <button class="btn ghost" style="width:140px" onclick="closeEditPopup()">Schließen</button>
+        <button class="btn danger" style="width:180px" onclick="updateDay('delete')">🗑️ Tag löschen</button>
+      </div>
+      <hr style="margin:14px 0; border:none; border-top:1px solid #e5e7eb"/>
+      <div class="choice-container">
+        <button class="choice-option superday"   onclick="updateDay('superday')">⭐ Supertag</button>
+        <button class="choice-option sober-plus" onclick="updateDay('soberPlus')">💚 Wellnestag</button>
+        <button class="choice-option sober"      onclick="updateDay('sober')">🟢 Alkoholfrei</button>
+        <button class="choice-option moderate"   onclick="updateDay('moderate')">🟡 Moderat</button>
+        <button class="choice-option alcohol-sport" onclick="updateDay('alcoholSport')">🟠 Alkohol + Sport</button>
+        <button class="choice-option alcohol"    onclick="updateDay('alcohol')">🔴 Viel Alkohol</button>
+      </div>
+    </div>
+
+    <div id="chartOverlay" class="overlay" onclick="toggleChartPopup()"></div>
+    <div id="chartPopup" class="popup" aria-hidden="true" role="dialog" aria-modal="true">
+      <div class="closerow"><button class="closebtn" onclick="toggleChartPopup()" aria-label="Schließen">×</button></div>
+      <h2 style="margin:0 0 8px">📊 Letzte 100 Tage</h2>
+      <div id="hundredDaysSummary" style="color:var(--muted); font-size:13px; margin-bottom:8px">Basierend auf 0 von 100 Tagen</div>
+
+      <!-- Vergleich 0–30 vs. 31–60 -->
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin:8px 0 12px">
+        <div class="stat-card"><div class="stat-label">AF-Quote (0–30)</div><div class="stat-number" id="compAF30">0%</div></div>
+        <div class="stat-card"><div class="stat-label">AF-Quote (31–60)</div><div class="stat-number" id="compAF60">0%</div></div>
+      </div>
+
+      <div class="stat-card" style="margin-bottom:12px">
+        <div class="stat-label">Gewichtete Gesundheit (0–100)</div>
+        <div class="stat-number" id="weightedHealth100">0%</div>
+      </div>
+
+      <div class="row" style="justify-content:flex-end"><button class="btn ghost" onclick="toggleChartPopup()">Schließen</button></div>
+    </div>
+
+    <div id="settingsOverlay" class="overlay" onclick="toggleSettingsPopup()"></div>
+    <div id="settingsPopup" class="popup" aria-hidden="true" role="dialog" aria-modal="true">
+      <div class="closerow"><button class="closebtn" onclick="toggleSettingsPopup()" aria-label="Schließen">×</button></div>
+      <h2 style="margin-top:0">⚙️ Einstellungen</h2>
+      <div class="stat-card" style="text-align:left">
+        <div style="font-weight:700; margin-bottom:8px">Nicht eingetragene Tage werten als…</div>
+        <label><input type="radio" name="neutralDays" value="ignore" checked> Ignorieren</label><br/>
+        <label><input type="radio" name="neutralDays" value="neutral"> 50% Gesundheit</label><br/>
+        <label><input type="radio" name="neutralDays" value="negative"> 30% Gesundheit</label><br/>
+        <label><input type="radio" name="neutralDays" value="very-negative"> 15% Gesundheit</label>
+      </div>
+      <div class="row" style="margin-top:10px; justify-content:flex-end">
+        <button class="btn" onclick="saveSettings()">Speichern</button>
+      </div>
+    </div>
+
+    <footer>© 2025 – erweiterte Version (Backup, Notizen, Jahresansicht, UX-Fixes)</footer>
+  </div>
+
+  <script>
+    let currentInputDate = new Date();
+    let currentViewDate = new Date();
+    let dayData = {};           // { 'YYYY-M-D': {status: 'sober'|'alcohol'|..., comment: '...'} }
+    let storageWorking = false;
+    let neutralDaysSetting = 'ignore';
+
+    const monthNames = ['Januar','Februar','März','April','Mai','Juni','Juli','August','September','Oktober','November','Dezember'];
+    const weekdays = ['Mo','Di','Mi','Do','Fr','Sa','So'];
+
+    const formatKey = (date)=> `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`; // 0-basiger Monat – bewusst konsistent
+    const fmtDisplay = (date)=> `${date.getDate()}. ${monthNames[date.getMonth()]} ${date.getFullYear()}`;
+
+    const getStatus = (key)=> dayData[key] ? (typeof dayData[key]==='string'? dayData[key] : dayData[key].status) : null;
+    const getComment= (key)=> dayData[key] && typeof dayData[key]!== 'string' ? (dayData[key].comment || '') : '';
+    const setDay    = (key, status, comment='')=> dayData[key] = { status, comment };
+
+    function testStorage(){ try{ localStorage.setItem('__test__','1'); localStorage.removeItem('__test__'); storageWorking = true; }catch{ storageWorking=false; } }
+    function updateStorageStatus(message){ const s=document.getElementById('storageStatus'); const c=document.getElementById('savedDaysCount'); if(s) s.textContent = message??''; if(c) c.textContent = Object.keys(dayData).length; }
+    function saveAll(){ if(!storageWorking){ updateStorageStatus('❌ Speichern nicht möglich'); return false; } try{ localStorage.setItem('alcoholTrackerData', JSON.stringify(dayData)); localStorage.setItem('alcoholTrackerSettings', JSON.stringify({neutralDays:neutralDaysSetting})); updateStorageStatus('✅ Daten gespeichert'); return true; }catch{ updateStorageStatus('❌ Speicher-Fehler'); return false; } }
+    function loadAll(){ if(!storageWorking){ updateStorageStatus('⚠️ Kein persistenter Speicher'); return; } try{ const saved = localStorage.getItem('alcoholTrackerData'); dayData = saved && saved !== 'null' ? JSON.parse(saved) : {}; const s = localStorage.getItem('alcoholTrackerSettings'); if(s){ const obj = JSON.parse(s); neutralDaysSetting = obj.neutralDays || 'ignore'; } updateStorageStatus(`✅ ${Object.keys(dayData).length} Tage geladen`); }catch{ dayData={}; updateStorageStatus('❌ Laden fehlgeschlagen'); } }
+
+    function updateDayInputView(){ document.getElementById('currentDateDisplay').textContent = fmtDisplay(currentInputDate); const key = formatKey(currentInputDate); const st = getStatus(key); const cm = getComment(key); if(st){ const radio = document.querySelector(`input[name="dayChoice"][value="${st}"]`); if(radio) radio.checked = true; document.getElementById('submitDay').textContent='Tag aktualisieren'; document.getElementById('submitDay').disabled=false; } else { document.getElementById('submitDay').textContent='Tag speichern'; document.getElementById('submitDay').disabled=true; } document.getElementById('dayCommentInput').value = cm; }
+
+    function showMonthView(){ currentViewDate = new Date(); document.getElementById('dayInputView').classList.remove('active'); document.getElementById('monthView').classList.add('active'); renderMonth(); refreshStats(); }
+    function showDayView(){ document.getElementById('monthView').classList.remove('active'); document.getElementById('yearView').classList.remove('active'); document.getElementById('dayInputView').classList.add('active'); updateDayInputView(); }
+    function showYearView(){ document.getElementById('monthView').classList.remove('active'); document.getElementById('yearView').classList.add('active'); renderYear(); }
+
+    function previousMonth(){ currentViewDate.setMonth(currentViewDate.getMonth()-1); renderMonth(); refreshStats(); }
+    function nextMonth(){ currentViewDate.setMonth(currentViewDate.getMonth()+1); renderMonth(); refreshStats(); }
+
+    /* Monatsrendering */
+    function renderMonth(){ const y=currentViewDate.getFullYear(), m=currentViewDate.getMonth(); document.getElementById('monthHeader').textContent = `${monthNames[m]} ${y}`; const grid=document.getElementById('monthGrid'); grid.innerHTML=''; for(const w of weekdays){ const h=document.createElement('div'); h.className='weekday'; h.textContent=w; grid.appendChild(h);} const first = new Date(y,m,1); const last = new Date(y,m+1,0); const start = (first.getDay()+6)%7; for(let i=0;i<start;i++){ const e=document.createElement('div'); e.className='day'; e.style.visibility='hidden'; grid.appendChild(e);} const today = new Date(); for(let d=1; d<=last.getDate(); d++){ const dt = new Date(y,m,d); const cell = document.createElement('div'); cell.className='day'; cell.textContent=d; cell.dataset.y=y; cell.dataset.m=m; cell.dataset.d=d; const st=getStatus(formatKey(dt)); const cm=getComment(formatKey(dt)); if(st){ if(st==='sober') cell.classList.add('sober'); else if(st==='soberPlus') cell.classList.add('soberPlus'); else if(st==='moderate') cell.classList.add('moderate'); else if(st==='alcohol') cell.classList.add('alcohol'); else if(st==='alcoholSport') cell.classList.add('alcoholSport'); else if(st==='superday') cell.classList.add('superday'); }
+        if(cm){ cell.classList.add('has-comment'); const tip=document.createElement('div'); tip.className='day-comment-tooltip'; tip.textContent=cm; cell.appendChild(tip);} if(dt.toDateString()===today.toDateString()) cell.classList.add('today'); grid.appendChild(cell);} }
+
+    document.addEventListener('click', (e)=>{ const grid=document.getElementById('monthGrid'); if(!grid || !grid.contains(e.target)) return; const cell = e.target.closest('.day'); if(!cell || cell.style.visibility==='hidden') return; const y=Number(cell.dataset.y), m=Number(cell.dataset.m), d=Number(cell.dataset.d); if(Number.isNaN(y)||Number.isNaN(m)||Number.isNaN(d)) return; openEditPopup(new Date(y,m,d)); });
+
+    /* Edit-Popup mit Escape/Overlay schließbar */
+    function openEditPopup(date){ const key=formatKey(date); editingKey = key; document.getElementById('editDate').textContent = fmtDisplay(date); document.getElementById('editCommentInput').value = getComment(key); document.getElementById('editOverlay').classList.add('active'); document.getElementById('editPopup').classList.add('active'); document.getElementById('editPopup').setAttribute('aria-hidden','false'); setTimeout(()=>{ document.getElementById('editCommentInput').focus(); }, 10); }
+    function closeEditPopup(){ document.getElementById('editOverlay').classList.remove('active'); document.getElementById('editPopup').classList.remove('active'); document.getElementById('editPopup').setAttribute('aria-hidden','true'); editingKey = null; }
+    let editingKey = null;
+    document.addEventListener('keydown', (e)=>{ if(e.key==='Escape'){ if(document.getElementById('editPopup').classList.contains('active')) closeEditPopup(); if(document.getElementById('chartPopup').classList.contains('active')) toggleChartPopup(); if(document.getElementById('settingsPopup').classList.contains('active')) toggleSettingsPopup(); }});
+
+    function saveEditComment(){ if(!editingKey) return; const st=getStatus(editingKey) || 'sober'; const cm=document.getElementById('editCommentInput').value || ''; setDay(editingKey, st, cm); saveAll(); renderMonth(); closeEditPopup(); }
+    function updateDay(action){ if(!editingKey) return; if(action==='delete'){ delete dayData[editingKey]; } else { const cm=getComment(editingKey); setDay(editingKey, action, cm); } saveAll(); renderMonth(); closeEditPopup(); }
+
+    /* Erfolgsquote / Streak */
+    function isGreen(st){ return st==='sober' || st==='soberPlus' || st==='superday'; }
+    function setSuccessCardTint(p){ const c=document.getElementById('successCard'); c.classList.remove('rate-good','rate-warn','rate-bad'); if(p<50) c.classList.add('rate-bad'); else if(p<75) c.classList.add('rate-warn'); else c.classList.add('rate-good'); }
+    function calculateSuccessRate(){ const y=currentViewDate.getFullYear(), m=currentViewDate.getMonth(); let total=0, max=0; const last=new Date(y,m+1,0).getDate(); for(let d=1; d<=last; d++){ const st=getStatus(formatKey(new Date(y,m,d))); if(!st) continue; max++; if(st==='superday') total+=1.0; else if(st==='soberPlus') total+=0.9; else if(st==='sober') total+=0.75; else if(st==='alcoholSport') total+=0.5; else if(st==='moderate') total+=0.4; else total+=0.0; } const pct=max>0? Math.round((total/max)*100) : 0; document.getElementById('successRate').textContent = pct + '%'; setSuccessCardTint(pct); }
+    function calculateCurrentStreak(){ let streak=0; const probe=new Date(); while(true){ const key=formatKey(probe); const st=getStatus(key); if(isGreen(st)){ streak++; probe.setDate(probe.getDate()-1); } else { break; } } return streak; }
+    function calculateLongestStreak(){ // all-time
+      const keys = Object.keys(dayData).sort((a,b)=>{ const [ay,am,ad]=a.split('-').map(Number); const [by,bm,bd]=b.split('-').map(Number); return new Date(ay,am,ad)-new Date(by,bm,bd); });
+      let longest=0, cur=0, prev=null; for(const k of keys){ const st=getStatus(k); if(!isGreen(st)) { cur=0; prev=null; continue; } const [y,m,d]=k.split('-').map(Number); const curDate=new Date(y,m,d); if(prev){ const next=new Date(prev); next.setDate(next.getDate()+1); if(curDate.toDateString()===next.toDateString()){ cur++; } else { cur=1; } } else { cur=1; } if(cur>longest) longest=cur; prev=curDate; }
+      return longest; }
+    function refreshStats(){ const streak=calculateCurrentStreak(); const longest=calculateLongestStreak(); document.getElementById('streakNumber').textContent = String(streak); document.getElementById('longestStreakNumber').textContent = String(longest); calculateSuccessRate(); }
+
+    /* 100-Tage-Analyse + Vergleich */
+    function toggleChartPopup(){ const ov=document.getElementById('chartOverlay'); const pp=document.getElementById('chartPopup'); const vis = pp.classList.toggle('active'); ov.classList.toggle('active', vis); if(vis){ compute100(); } }
+    function compute100(){ const today=new Date(); let counts={superday:0,soberPlus:0,sober:0,moderate:0,alcoholSport:0,alcohol:0,empty:0}; const arr=[]; for(let i=0;i<100;i++){ const d=new Date(today); d.setDate(d.getDate()-i); const st=getStatus(formatKey(d)); arr.push(st||null); if(st) counts[st] = (counts[st]||0)+1; else counts.empty++; }
+      const entered = 100 - counts.empty; document.getElementById('hundredDaysSummary').textContent = `Basierend auf ${entered} von 100 Tagen`;
+      const af = (counts.superday + counts.soberPlus + counts.sober);
+      const afQuote = Math.round((entered? (af/entered):0)*100);
+      // Vergleichsfenster
+      const sliceAF = (start,end)=>{ let c=0, n=0; for(let i=start;i<end;i++){ const st=arr[i]; if(st){ n++; if(st==='superday'||st==='soberPlus'||st==='sober') c++; } } return n? Math.round((c/n)*100):0; };
+      document.getElementById('compAF30').textContent = sliceAF(0,30)+ '%';
+      document.getElementById('compAF60').textContent = sliceAF(30,60)+ '%';
+      // Gewichtete Gesundheit inkl. neutralDaysSetting
+      const weight = (st)=> st==='superday'?1: st==='soberPlus'?0.9: st==='sober'?0.75: st==='alcoholSport'?0.5: st==='moderate'?0.4: st==='alcohol'?0: null;
+      let sum=0; for(let i=0;i<100;i++){ const st=arr[i]; if(st==null){ if(neutralDaysSetting==='neutral') sum+=0.5; else if(neutralDaysSetting==='negative') sum+=0.3; else if(neutralDaysSetting==='very-negative') sum+=0.15; } else { sum+=weight(st); } }
+      document.getElementById('weightedHealth100').textContent = Math.round((sum/100)*100) + '%'; }
+
+    /* Settings */
+    function toggleSettingsPopup(){ const ov=document.getElementById('settingsOverlay'); const pp=document.getElementById('settingsPopup'); const vis = pp.classList.toggle('active'); ov.classList.toggle('active', vis); if(vis){ // set aktuell
+        const radios = pp.querySelectorAll('input[name="neutralDays"]'); radios.forEach(r=> r.checked = (r.value===neutralDaysSetting)); }
+    }
+    function saveSettings(){ const selected = document.querySelector('#settingsPopup input[name="neutralDays"]:checked'); neutralDaysSetting = selected ? selected.value : 'ignore'; saveAll(); toggleSettingsPopup(); refreshStats(); }
+
+    /* Export/Import (inkl. Settings) */
+    function exportData(){ const payload = { version: 1, exportedAt: new Date().toISOString(), days: dayData, settings:{ neutralDays: neutralDaysSetting } }; const dataStr = JSON.stringify(payload, null, 2); const blob = new Blob([dataStr], {type:'application/json'}); const url = URL.createObjectURL(blob); const a=document.createElement('a'); a.href=url; a.download='booze-tracker-backup.json'; a.click(); URL.revokeObjectURL(url); }
+    function importData(){ const input=document.createElement('input'); input.type='file'; input.accept='.json,application/json'; input.onchange = (e)=>{ const file=e.target.files[0]; if(!file) return; const reader=new FileReader(); reader.onload = ()=>{ try{ const obj = JSON.parse(reader.result); if(!obj || typeof obj!=='object' || !obj.days){ alert('❌ Ungültige Backup-Datei.'); return; } if(!confirm('⚠️ Import überschreibt ggf. vorhandene Tage mit gleichen Datums-Keys. Fortfahren?')) return; dayData = { ...dayData, ...obj.days }; if(obj.settings && obj.settings.neutralDays){ neutralDaysSetting = obj.settings.neutralDays; } saveAll(); alert('✅ Daten importiert. Ansicht wird aktualisiert.'); renderMonth(); refreshStats(); updateDayInputView(); }catch{ alert('❌ Fehler beim Import (keine gültige JSON-Struktur).'); } }; reader.readAsText(file); }; input.click(); }
+
+    /* Reset */
+    function resetStorage(){ if(!confirm('⚠️ Wirklich ALLE lokalen Daten löschen?')) return; try{ localStorage.removeItem('alcoholTrackerData'); localStorage.removeItem('alcoholTrackerSettings'); }catch{} location.reload(); }
+
+    /* Speichern Tag — bleibt auf HEUTE (UX-Wunsch) */
+    function saveDay(){ const selected=document.querySelector('input[name="dayChoice"]:checked'); const comment=document.getElementById('dayCommentInput').value || ''; if(!selected) return; const key=formatKey(currentInputDate); setDay(key, selected.value, comment); const ok=saveAll(); const btn=document.getElementById('submitDay'); const label=btn.textContent; btn.textContent = ok? '✅ Gespeichert!' : '❌ Fehler!'; setTimeout(()=> btn.textContent=label, 1200); updateDayInputView(); renderMonth(); refreshStats(); }
+
+    /* Jahr rendern */
+    function yearCells(y,m){ const wrap=document.createElement('div'); wrap.style.border='1px solid #e5e7eb'; wrap.style.borderRadius='12px'; wrap.style.padding='10px'; wrap.style.background='#fff'; const h=document.createElement('div'); h.textContent = monthNames[m] + ' ' + y; h.style.fontWeight='800'; h.style.marginBottom='8px'; wrap.appendChild(h); const grid=document.createElement('div'); grid.style.display='grid'; grid.style.gridTemplateColumns='repeat(7,1fr)'; grid.style.gap='4px';
+      for(const w of weekdays){ const x=document.createElement('div'); x.textContent=w; x.style.textAlign='center'; x.style.fontSize='11px'; x.style.color='#64748b'; grid.appendChild(x);} const first=new Date(y,m,1); const last=new Date(y,m+1,0); const start=(first.getDay()+6)%7; for(let i=0;i<start;i++){ const e=document.createElement('div'); e.style.visibility='hidden'; e.style.aspectRatio='1'; grid.appendChild(e);} for(let d=1; d<=last.getDate(); d++){ const dt=new Date(y,m,d); const cell=document.createElement('div'); cell.style.aspectRatio='1'; cell.style.borderRadius='8px'; cell.style.border='1px solid #e7eef6'; cell.style.fontWeight='700'; cell.style.display='flex'; cell.style.alignItems='center'; cell.style.justifyContent='center'; const st=getStatus(formatKey(dt)); cell.textContent=d; if(st){ let col='#e2e8f0'; if(st==='sober') col= getComputedStyle(document.documentElement).getPropertyValue('--success'); if(st==='soberPlus') col=getComputedStyle(document.documentElement).getPropertyValue('--success2'); if(st==='moderate') col=getComputedStyle(document.documentElement).getPropertyValue('--warn'); if(st==='alcoholSport') col=getComputedStyle(document.documentElement).getPropertyValue('--sport'); if(st==='alcohol') col=getComputedStyle(document.documentElement).getPropertyValue('--danger'); if(st==='superday') col=getComputedStyle(document.documentElement).getPropertyValue('--super'); cell.style.background=col; cell.style.color='#fff'; } grid.appendChild(cell);} wrap.appendChild(grid); return wrap; }
+    function renderYear(){ const root=document.getElementById('yearGrid'); root.innerHTML=''; const y=(new Date()).getFullYear(); for(let m=0;m<12;m++){ root.appendChild(yearCells(y,m)); } }
+
+    /* Init */
+    document.addEventListener('DOMContentLoaded', ()=>{
+      testStorage(); loadAll();
+      document.getElementById('currentDateDisplay').textContent = fmtDisplay(currentInputDate);
+      document.querySelectorAll('input[name="dayChoice"]').forEach(r=> r.addEventListener('change', ()=>{ document.getElementById('submitDay').disabled=false; }));
+      document.getElementById('submitDay').addEventListener('click', saveDay);
+
+      // Start-UX: Wenn für HEUTE Eintrag vorhanden → zeige diesen, sonst leere Eingabe für heute
+      updateDayInputView();
+
+      // Direkt Monatsansicht initial rendern (für späteren Wechsel)
+      renderMonth(); refreshStats();
+
+      // Optional: einfache Erinnerung beim Öffnen (ohne SW)
+      maybeDailyPrompt();
+    });
+
+    /* Einfache tägliche Erinnerung beim App-Öffnen */
+    function maybeDailyPrompt(){ try{ const last = localStorage.getItem('bt_last_reminder'); const today = new Date().toDateString(); if(last===today) return; // einmal pro Tag
+      if(confirm('🕑 Kleiner Stups: Heute schon getrackt?')){ /* no-op */ }
+      localStorage.setItem('bt_last_reminder', today);
+    }catch{}
+    }
+  </script>
+</body>
+</html>
