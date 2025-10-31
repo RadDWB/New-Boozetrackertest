@@ -358,70 +358,11 @@
       background: white;
       border-radius: 10px;
       border: 1px solid #e5e7eb;
-      position: relative;
     }
     .metric-label{
       font-size: 12px;
       color: var(--muted);
       margin-bottom: 4px;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-    .metric-info{
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: 16px;
-      height: 16px;
-      background: var(--primary);
-      color: white;
-      border-radius: 50%;
-      font-size: 10px;
-      font-weight: 700;
-      cursor: help;
-      position: relative;
-    }
-    .metric-info:hover .metric-tooltip{
-      display: block;
-    }
-    .metric-tooltip{
-      display: none;
-      position: absolute;
-      bottom: 24px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 280px;
-      padding: 12px;
-      background: #1f2937;
-      color: white;
-      border-radius: 8px;
-      font-size: 11px;
-      line-height: 1.5;
-      z-index: 1000;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.3);
-      text-align: left;
-      font-weight: 400;
-    }
-    .metric-tooltip::after{
-      content: '';
-      position: absolute;
-      top: 100%;
-      left: 50%;
-      transform: translateX(-50%);
-      border: 6px solid transparent;
-      border-top-color: #1f2937;
-    }
-    .metric-tooltip strong{
-      color: #60a5fa;
-      font-weight: 600;
-    }
-    @media (max-width: 560px){
-      .metric-tooltip{
-        width: 220px;
-        font-size: 10px;
-        padding: 10px;
-      }
     }
     .metric-value{
       font-size: 20px;
@@ -775,68 +716,19 @@
 
         <div class="assessment-metrics">
           <div class="metric-item">
-            <div class="metric-label">
-              AF-Quote (alkoholfrei)
-              <span class="metric-info">
-                ℹ
-                <span class="metric-tooltip">
-                  Prozentsatz alkoholfreier Tage:<br>
-                  <strong>Supertag + Wellness + Alkoholfrei</strong><br><br>
-                  WHO-Standard für gesunde Abstinenz.<br>
-                  Je höher, desto besser!
-                </span>
-              </span>
-            </div>
+            <div class="metric-label">AF-Quote (alkoholfrei)</div>
             <div class="metric-value" id="metricAF">0%</div>
           </div>
           <div class="metric-item">
-            <div class="metric-label">
-              Gewichtete Gesundheit
-              <span class="metric-info">
-                ℹ
-                <span class="metric-tooltip">
-                  Dein Gesundheits-Score:<br>
-                  • <strong>Supertag = 100%</strong> (Gold!)<br>
-                  • Wellness = 90% (Sehr gut)<br>
-                  • Alkoholfrei = 75% (Gut)<br>
-                  • Moderat = 40% (Risiko-arm)<br>
-                  • Gemischt = 25% (Kompensiert nichts)<br>
-                  • Viel = 0% (Schädlich)
-                </span>
-              </span>
-            </div>
+            <div class="metric-label">Gewichtete Gesundheit</div>
             <div class="metric-value" id="metricHealth">0%</div>
           </div>
           <div class="metric-item">
-            <div class="metric-label">
-              Binge-Nähe (Hochrisiko)
-              <span class="metric-info">
-                ℹ
-                <span class="metric-tooltip">
-                  Zählt Hochrisiko-Tage:<br>
-                  <strong>"Viel Alkohol" + "Gemischt"</strong><br><br>
-                  ⚠️ <strong>Ab 13/100</strong> (≈ wöchentlich):<br>
-                  Erhöhtes Risiko (RKI/WHO)<br><br>
-                  🚨 <strong>Ab 20/100</strong> (≈ mehrmals wöchentlich):<br>
-                  Hohes Risiko, Hilfe empfohlen
-                </span>
-              </span>
-            </div>
+            <div class="metric-label">Binge-Nähe (Hochrisiko)</div>
             <div class="metric-value" id="metricBinge">0</div>
           </div>
           <div class="metric-item">
-            <div class="metric-label">
-              Längster Cluster
-              <span class="metric-info">
-                ℹ
-                <span class="metric-tooltip">
-                  Längste Serie von Hochrisiko-Tagen am Stück.<br><br>
-                  🔥 <strong>Ab 3+ Tagen hintereinander:</strong><br>
-                  Deutlicher Risiko-Spike für Leber & Herz-Kreislauf<br><br>
-                  Beispiel: Mo-Di-Mi jeweils "Viel" = 3-Tage-Cluster
-                </span>
-              </span>
-            </div>
+            <div class="metric-label">Längster Cluster</div>
             <div class="metric-value" id="metricCluster">0</div>
           </div>
         </div>
@@ -1032,28 +924,28 @@
         warning = 'Tipp: Mehr Supertage/Wellness-Tage einstreuen – Sport + Abstinenz = doppelter Gesundheitsboost!';
         
       } else if(afQuote <= 0.39 || (bingeProximity >= 13 && bingeProximity <= 19)){
-        // KIPPPUNKT-KANDIDAT - Orange (kritische Schwelle)
-        label = '🚨 Kipppunkt-Kandidat';
+        // PARTY-PHILOSOPH - Orange (aufpassen)
+        label = '🎭 Party-Philosoph';
         badgeClass = 'weekend';
-        description = '<strong>Erhöhtes Risiko – Kritische Schwelle erreicht</strong> – Deine AF-Quote (<40%) oder Binge-Nähe (13-19/100 ≈ wöchentlich) liegt im WHO-Risikolevel "moderat bis hoch". Du befindest dich an einem Kipppunkt: Häufige Rauschsituationen sind nachweisliche Treiber für Leber-, Krebs- und Herzprobleme.';
+        description = '<strong>Erhöhtes Risiko</strong> – Du philosophierst: "Alkohol ist wie Leben – in Maßen genießen!" Aber Achtung: AF-Quote (<40%) oder Binge-Nähe (13-19/100 ≈ wöchentlich) liegt im WHO-Risikolevel "moderat bis hoch". Häufige Rauschsituationen sind Treiber für Leber-, Krebs- und Herzprobleme. Deine Leber murmelt: "Noch ein Drink, und ich kündige!"';
         humorQuote = '💡 <em>"Schadensbegrenzung ist wie Zähneputzen nach Karamell-Fladen: gut, aber die Karies kam vorher."</em>';
-        warning = '⚠️ Dringend empfohlen: AUDIT-Screening durchführen! Sport neutralisiert Alkoholrisiken NICHT (WHO/DHS). Potenziell mildes AUD bei 2-3 DSM-5-Kriterien (z.B. Kontrollverlust, mehr trinken als geplant).';
+        warning = '⚠️ Empfehlung: AUDIT-Screening durchführen! Sport neutralisiert Alkoholrisiken NICHT (WHO/DHS). Potenziell mildes AUD bei 2-3 DSM-5-Kriterien.';
         
       } else if(bingeProximity >= 20 && bingeProximity < 40 || (afQuote < 0.30 && afQuote >= 0.20)){
         // RISIKO-ROULETTE - Dunkelorange (hoch)
         label = '🎲 Risiko-Roulette';
         badgeClass = 'red';
-        description = '<strong>Hohes Risiko</strong> – Du spielst Russian Roulette mit deiner Gesundheit. Binge-Nähe (20-39/100 ≈ mehrmals wöchentlich) oder niedrige AF-Quote (20-29%) zeigen ein kritisches Muster. Hohes Risiko für Krebs, Leberzirrhose, Herz-Kreislauf-Erkrankungen und Unfälle. Sport kann diese Risiken NICHT kompensieren (WHO).';
+        description = '<strong>Hohes Risiko</strong> – Du spielst Russian Roulette mit Shots – Spaß, bis es knallt! Binge-Nähe (20-39/100 ≈ mehrmals wöchentlich) oder niedrige AF-Quote (20-29%) zeigen ein kritisches Muster. Hohes Risiko für Krebs, Leberzirrhose und Unfälle. Dein Körper ruft: "Sport vor dem Saufen? Das ist wie Helm beim Bungee-Jumping – nett, aber rettet nicht vor dem Fall!"';
         humorQuote = '💡 <em>"Leider saugt der Staubsauger keinen Rausch weg. Sport ≠ Gegengift."</em> (WHO)';
-        warning = '🚨 Moderate bis schwere AUD wahrscheinlich (4-5 DSM-5-Kriterien wie Toleranz, soziale Probleme, Kontrollverlust). Medizinisches Gespräch und professionelle Beratung DRINGEND empfohlen!';
+        warning = '🚨 Moderate AUD wahrscheinlich (4-5 DSM-5-Kriterien wie Toleranz, soziale Probleme). Medizinisches Gespräch und professionelle Beratung DRINGEND empfohlen!';
         
       } else {
         // SUCHT-ALARM - Rot (sehr hoch / akut)
-        label = '🚨 Sucht-Alarm: Rote Lampen!';
+        label = '🚨 Sucht-Alarm: Rote Lampen gehen an!';
         badgeClass = 'red';
-        description = '<strong>Sehr hohes Risiko / Potenzielle Abhängigkeit</strong> – Binge-Nähe (≥40/100 ≈ fast täglich) oder fast täglicher Konsum (AF-Quote <20%) zeigt extremes Risiko für Herz, Gehirn, Krebs und Leber. DSM-5-Warnzeichen für schwere AUD (6+ Kriterien): starkes Verlangen (Craving), Entzug, Kontrollverlust, Toleranz, Weitermachen trotz Schäden, Vernachlässigung anderer Aktivitäten.';
-        humorQuote = '';
-        warning = '🆘 Professionelle Hilfe SOFORT empfohlen: SAMHSA-Hotline, lokale Suchtberatung, medizinisches Gespräch. Dies ist keine Diagnose, aber ein klares Signal! Ab AUDIT ≥ 8 Punkten ist professionelle Abklärung essentiell (ICD-10/DSM-5).';
+        description = '<strong>Sehr hohes Risiko / Potenzielle Abhängigkeit</strong> – Die Sirenen heulen – Zeit für Help! Binge-Nähe (≥40/100 ≈ fast täglich) oder fast täglicher Konsum (AF-Quote <20%) zeigt extremes Risiko für Herz, Gehirn, Krebs und Leber. DSM-5-Warnzeichen für schwere AUD (6+ Kriterien): Entzug, Kontrollverlust, starkes Verlangen (Craving), Weitermachen trotz Schäden, Vernachlässigung anderer Aktivitäten.';
+        humorQuote = '💡 <em>"Du bist der \'Alkohol-Akrobat\' – balancierst auf dem Drahtseil, aber ohne Netz. Deine Leber: \'Ich pack\'s nicht mehr!\'"</em>';
+        warning = '🆘 Professionelle Hilfe SOFORT empfohlen: SAMHSA-Hotline, lokale Suchtberatung, medizinisches Gespräch. Dies ist keine Diagnose, aber ein klares Signal! Ab AUDIT ≥ 8 Punkten ist professionelle Abklärung essentiell.';
       }
 
       // Sonder-Warnungen
@@ -1075,7 +967,7 @@
       badge.textContent = label;
       badge.className = 'assessment-badge ' + badgeClass;
 
-      document.getElementById('assessmentDescription').innerHTML = description + (humorQuote ? '<br><br>' + humorQuote : '');
+      document.getElementById('assessmentDescription').innerHTML = description + '<br><br>' + humorQuote;
 
       const warningEl = document.getElementById('assessmentWarning');
       if(warning || extraWarnings){
