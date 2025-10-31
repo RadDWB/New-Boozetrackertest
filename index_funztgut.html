@@ -1050,7 +1050,7 @@
           placeholder="Notizen zum Tag..."
           style="width: 100%; min-height: 70px; padding: 8px; border: 1px solid #d1d5db; border-radius: 6px; font-size: 12px; font-family: inherit; resize: vertical;"
         ></textarea>
-        <button class="btn" style="width: 100%; margin-top: 8px;" onclick="saveEditComment()">💾 Änderungen speichern</button>
+        <button class="btn" style="width: 100%; margin-top: 8px;" onclick="saveEditComment()">💾 Kommentar speichern</button>
       </div>
 
       <div class="edit-grid" style="margin-top: 16px;">
@@ -2010,15 +2010,15 @@
     function updateDay(action){
       if(!editingDate) return;
       const key = formatDateKey(editingDate);
-
-      if(action === 'delete'){
+      
+      if(action==='delete'){
         delete dayData[key];
       } else {
-        // NEU: Kommentareingabe aus dem Edit-Feld live übernehmen
-        const pendingComment = (document.getElementById('editCommentInput').value || '').trim();
+        // Bewahre existierenden Kommentar beim Status-Wechsel
+        const existingComment = getDayComment(key);
         dayData[key] = {
           status: action,
-          comment: pendingComment
+          comment: existingComment
         };
       }
 
