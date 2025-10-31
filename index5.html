@@ -795,53 +795,6 @@
       outline-offset: -3px;
     }
 
-    /* Kommentar-Tooltip für Kalendertage */
-    .day-comment-tooltip{
-      display: none;
-      position: absolute;
-      bottom: calc(100% + 8px);
-      left: 50%;
-      transform: translateX(-50%);
-      min-width: 200px;
-      max-width: 280px;
-      padding: 10px 12px;
-      background: #1f2937;
-      color: white;
-      border-radius: 8px;
-      font-size: 11px;
-      line-height: 1.5;
-      z-index: 1000;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.4);
-      text-align: left;
-      font-weight: 400;
-      pointer-events: none;
-      white-space: pre-wrap;
-      word-wrap: break-word;
-    }
-    .day-comment-tooltip::after{
-      content: '';
-      position: absolute;
-      top: 100%;
-      left: 50%;
-      transform: translateX(-50%);
-      border: 6px solid transparent;
-      border-top-color: #1f2937;
-    }
-    .day.has-comment{
-      position: relative;
-    }
-    .day.has-comment::before{
-      content: '💬';
-      position: absolute;
-      top: 2px;
-      right: 2px;
-      font-size: 10px;
-      opacity: 0.8;
-    }
-    .day.has-comment:hover .day-comment-tooltip{
-      display: block;
-    }
-
     /* Spendenbereich */
     .support{
       background:#f8fafc; border:1px solid #e5e7eb; border-radius: 14px; padding: 14px; margin: 12px 0 12px;
@@ -932,17 +885,6 @@
           <input type="radio" name="dayChoice" value="alcohol" />
           <span>🔴 Alkohol – Viel Alkohol getrunken</span>
         </label>
-      </div>
-
-      <div style="margin-top: 16px;">
-        <label for="dayCommentInput" style="display: block; font-size: 14px; font-weight: 600; margin-bottom: 8px; color: var(--text);">
-          💬 Kommentar (optional):
-        </label>
-        <textarea 
-          id="dayCommentInput" 
-          placeholder="Notizen zum Tag (z.B. Anlass, Gefühle, Situation)..."
-          style="width: 100%; min-height: 80px; padding: 10px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 13px; font-family: inherit; resize: vertical;"
-        ></textarea>
       </div>
 
       <div class="submit-row">
@@ -1037,23 +979,8 @@
         <button class="edit-option wellness" onclick="updateDay('wellness')">💚 Wellness</button>
         <button class="edit-option sober" onclick="updateDay('sober')">🟢 Alkoholfrei</button>
         <button class="edit-option moderate" onclick="updateDay('moderate')">🟡 Moderat</button>
-        <button class="edit-option mixed" onclick="updateDay('mixed')">❤️ Schadensbegrenzung</button>
+        <button class="edit-option mixed" onclick="updateDay('mixed')">❤️ Gemischt</button>
         <button class="edit-option alcohol" onclick="updateDay('alcohol')">🔴 Alkohol</button>
-      </div>
-      
-      <div style="margin-top: 16px;">
-        <label for="editCommentInput" style="display: block; font-size: 13px; font-weight: 600; margin-bottom: 6px; color: var(--text);">
-          💬 Kommentar:
-        </label>
-        <textarea 
-          id="editCommentInput" 
-          placeholder="Notizen zum Tag..."
-          style="width: 100%; min-height: 70px; padding: 8px; border: 1px solid #d1d5db; border-radius: 6px; font-size: 12px; font-family: inherit; resize: vertical;"
-        ></textarea>
-        <button class="btn" style="width: 100%; margin-top: 8px;" onclick="saveEditComment()">💾 Kommentar speichern</button>
-      </div>
-
-      <div class="edit-grid" style="margin-top: 16px;">
         <button class="edit-option delete" onclick="updateDay('delete')">🗑️ Tag löschen</button>
         <button class="btn secondary" onclick="closeEditPopup()">Abbrechen</button>
       </div>
@@ -1384,28 +1311,6 @@
     const weekdays   = ['Mo','Di','Mi','Do','Fr','Sa','So'];
 
     const formatDateKey = (date)=> `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`;
-    
-    // Helper: Hole Status aus dayData (kompatibel mit altem String-Format und neuem Object-Format)
-    const getDayStatus = (key) => {
-      const data = dayData[key];
-      if(!data) return null;
-      return typeof data === 'string' ? data : data.status;
-    };
-    
-    // Helper: Hole Kommentar aus dayData
-    const getDayComment = (key) => {
-      const data = dayData[key];
-      if(!data || typeof data === 'string') return '';
-      return data.comment || '';
-    };
-    
-    // Helper: Setze Status und Kommentar
-    const setDayData = (key, status, comment = '') => {
-      dayData[key] = {
-        status: status,
-        comment: comment
-      };
-    };
     const formatDisplayDate = (date)=> `${date.getDate()}. ${monthNames[date.getMonth()]} ${date.getFullYear()}`;
 
     /* Storage */
@@ -1457,8 +1362,7 @@
       let total=0, max=0;
       const last = new Date(y, m+1, 0).getDate();
       for(let d=1; d<=last; d++){
-        const key = formatDateKey(new Date(y,m,d));
-        const st = getDayStatus(key);
+        const st = dayData[formatDateKey(new Date(y,m,d))];
         if(!st) continue;
         max += 1;
         if(st==='superday') total += 1.0;
@@ -1481,7 +1385,7 @@
       for(let i=0; i<100; i++){
         const probe = new Date(today);
         probe.setDate(probe.getDate() - i);
-        const st = getDayStatus(formatDateKey(probe));
+        const st = dayData[formatDateKey(probe)];
         
         if(st === 'alcohol' || st === 'mixed' || st === 'moderate'){
           negative++;
@@ -1526,8 +1430,7 @@
       for(let i=0; i<100; i++){
         const probe = new Date(today);
         probe.setDate(probe.getDate() - i);
-        const key = formatDateKey(probe);
-        const st = getDayStatus(key);
+        const st = dayData[formatDateKey(probe)];
         last100Days.push(st || null);
         if(st && counts[st] !== undefined) counts[st]++;
         else if(!st) counts.empty++;
@@ -1691,7 +1594,7 @@
       // Zähle rückwärts von heute
       while(true){
         const key = formatDateKey(probe);
-        const st = getDayStatus(key);
+        const st = dayData[key];
         
         // Wenn grüner Tag: Streak erhöhen
         if(isGreen(st)){
@@ -1715,13 +1618,8 @@
       document.getElementById('currentDateDisplay').textContent = formatDisplayDate(currentInputDate);
       updateStorageStatus(`🍷 ${Object.keys(dayData).length} Tage`);
       const key = formatDateKey(currentInputDate);
-      const existing = getDayStatus(key);
-      const existingComment = getDayComment(key);
+      const existing = dayData[key];
       const btn = document.getElementById('submitDay');
-      
-      // Lade Kommentar wenn vorhanden
-      document.getElementById('dayCommentInput').value = existingComment;
-      
       if(existing){
         const radio = document.querySelector(`input[name="dayChoice"][value="${existing}"]`);
         if(radio) radio.checked = true;
@@ -1783,21 +1681,9 @@
         cell.dataset.m = String(m);
         cell.dataset.d = String(d);
 
-        const key = formatDateKey(dt);
-        const st = getDayStatus(key);
-        const comment = getDayComment(key);
-        
+        const st = dayData[formatDateKey(dt)];
         if(st) cell.classList.add(st);
         if(dt.toDateString() === today.toDateString()) cell.classList.add('today');
-        
-        // Füge Kommentar-Tooltip hinzu wenn vorhanden
-        if(comment){
-          cell.classList.add('has-comment');
-          const tooltip = document.createElement('div');
-          tooltip.className = 'day-comment-tooltip';
-          tooltip.textContent = comment;
-          cell.appendChild(tooltip);
-        }
 
         grid.appendChild(cell);
       }
@@ -1823,12 +1709,6 @@
     function openEditPopup(date){
       editingDate = date;
       document.getElementById('editDate').textContent = formatDisplayDate(date);
-      
-      // Lade existierenden Kommentar
-      const key = formatDateKey(date);
-      const comment = getDayComment(key);
-      document.getElementById('editCommentInput').value = comment;
-      
       const pop = document.getElementById('editPopup');
       pop.classList.add('active');
       pop.setAttribute('aria-hidden','false');
@@ -1995,47 +1875,14 @@
     function updateDay(action){
       if(!editingDate) return;
       const key = formatDateKey(editingDate);
-      
-      if(action==='delete'){
-        delete dayData[key];
-      } else {
-        // Bewahre existierenden Kommentar beim Status-Wechsel
-        const existingComment = getDayComment(key);
-        dayData[key] = {
-          status: action,
-          comment: existingComment
-        };
-      }
+      if(action==='delete') delete dayData[key];
+      else dayData[key] = action;
 
       saveData();
       closeEditPopup();
       updateMonthView();
       calculateStreak();
       calculateSuccessRate();
-    }
-    
-    /* Speichere Kommentar */
-    function saveEditComment(){
-      if(!editingDate) return;
-      const key = formatDateKey(editingDate);
-      const comment = document.getElementById('editCommentInput').value.trim();
-      const existingStatus = getDayStatus(key);
-      
-      if(existingStatus){
-        // Update nur den Kommentar, Status bleibt gleich
-        dayData[key] = {
-          status: existingStatus,
-          comment: comment
-        };
-        saveData();
-        updateMonthView();
-        
-        // Feedback
-        const btn = event.target;
-        const originalText = btn.textContent;
-        btn.textContent = '✅ Gespeichert!';
-        setTimeout(() => btn.textContent = originalText, 1200);
-      }
     }
 
     function previousMonth(){ currentViewDate.setMonth(currentViewDate.getMonth()-1); updateMonthView(); calculateStreak(); calculateSuccessRate(); }
@@ -2046,13 +1893,7 @@
       const selected = document.querySelector('input[name="dayChoice"]:checked');
       if(!selected) return;
       const key = formatDateKey(currentInputDate);
-      const comment = document.getElementById('dayCommentInput').value.trim();
-      
-      // Speichere sowohl Status als auch Kommentar
-      dayData[key] = {
-        status: selected.value,
-        comment: comment
-      };
+      dayData[key] = selected.value;
 
       const btn = document.getElementById('submitDay');
       const ok = saveData();
@@ -2066,7 +1907,6 @@
       updateDayInputView();
 
       document.querySelectorAll('input[name="dayChoice"]').forEach(r=>r.checked=false);
-      document.getElementById('dayCommentInput').value = '';
       btn.disabled = true;
     }
 
