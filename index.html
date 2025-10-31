@@ -889,7 +889,6 @@
       ) / 100;
       
       // 3. Binge-Nähe - RKI-Risikoindikator
-      // "Viel Alkohol" + "Schadensbegrenzung" wenn rauschähnlich
       const bingeProximity = counts.alcohol + counts.mixed;
       
       // 4. Cluster-Erkennung - 3+ Hochrisiko-Tage am Stück
@@ -906,43 +905,56 @@
       }
 
       // 5. Label-Zuweisung nach wissenschaftlichen Schwellenwerten
-      let label, badgeClass, description, warning;
+      let label, badgeClass, description, warning, humorQuote;
       
       if(afQuote >= 0.70 && bingeProximity <= 4){
-        // ZEN-BIBER - Grüne Zone (sehr gut)
-        label = '🧘 Zen-Biber';
+        // LEBER-SUPERHELD - Grüne Zone (sehr gut)
+        label = '🦸 Leber-Superheld';
         badgeClass = 'zen';
-        description = '<strong>Niedriges Risiko</strong> – Du lebst gesund! Deine alkoholfreien Tage (≥70%) mit sportlichen/erholsamen Puffern zeigen ein vorbildliches Muster. Binge-Events sind selten (≤4/100 Tage). Weiter so! 🎉';
-        warning = null;
+        description = '<strong>Niedriges Gesamtrisiko</strong> – Du bist der Batman der Bars – unsichtbar für Alkohol! Deine alkoholfreien Tage (≥70%) mit sportlichen/erholsamen Puffern zeigen ein vorbildliches Muster. Binge-Events sind selten (≤4/100 Tage ≈ seltener als monatlich). Deine Leber schickt dir Dankeskarten! 💚';
+        humorQuote = '💡 <em>"Du bist, was du trinkst – aber auch, was du an Supertagen tust. Jeder grüne Tag ist wie ein Staubsauger für Risikokrümel."</em>';
+        warning = '⚠️ Trotzdem kein "Freifahrtschein" – WHO empfiehlt weiterhin Wachsamkeit.';
         
       } else if(afQuote >= 0.40 && afQuote < 0.70 && bingeProximity <= 12){
-        // BALANCE-SEILTÄNZER - Gelb-grün (ok mit Fragezeichen)
-        label = '🤹 Balance-Seiltänzer';
+        // BALANCE-BUDDHA - Gelb-grün (ok mit Fragezeichen)
+        label = '🧘 Balance-Buddha';
         badgeClass = 'balance';
-        description = '<strong>Moderates Risiko</strong> – Du balancierst ganz gut! AF-Quote 40-69% ist solide. Prüfe kritisch: Bleiben "moderate" Tage wirklich moderat (≤2 Einheiten/Woche nach DGE)? Binge-Events (≤12/100) sind noch überschaubar, aber Vorsicht vor Gewöhnung.';
-        warning = 'Tipp: Mehr Supertage/Wellness-Tage einstreuen für besseren Gesundheitsboost!';
+        description = '<strong>Moderates Risiko</strong> – Du meditierst mit einem Glas Wasser – zen, aber nicht fanatisch! AF-Quote 40-69% ist solide. Prüfe kritisch: Bleiben "moderate" Tage wirklich moderat (≤2 Einheiten/Woche nach DGE)? Binge-Events (≤12/100 ≈ höchstens viertel- bis monatlich) sind überschaubar.';
+        humorQuote = '💡 <em>"Moderate Tage sind wie Parken in der gelben Zone: geht mal gut, aber zur Regel wird\'s besser nicht – vor allem nicht täglich."</em> (DGE/DHS)';
+        warning = 'Tipp: Mehr Supertage/Wellness-Tage einstreuen – Sport + Abstinenz = doppelter Gesundheitsboost!';
         
       } else if(afQuote <= 0.39 || (bingeProximity >= 13 && bingeProximity <= 19)){
-        // WOCHENEND-WELLENTÄLER - Orange (aufpassen)
-        label = '🌊 Wochenend-Wellentäler';
+        // PARTY-PHILOSOPH - Orange (aufpassen)
+        label = '🎭 Party-Philosoph';
         badgeClass = 'weekend';
-        description = '<strong>Erhöhtes Risiko</strong> – Achtung, rote Ampel blinkt! Deine AF-Quote (<40%) oder Binge-Nähe (13-19/100 = wöchentlich bis knapp wöchentlich) liegt im WHO-Risikolevel "moderat bis hoch". Häufige Rauschsituationen sind Treiber für Leber-, Krebs- und Herzprobleme.';
-        warning = '⚠️ Empfehlung: AUDIT-Screening durchführen und Alkoholkonsum reduzieren. Sport neutralisiert Alkoholrisiken NICHT (WHO/DHS).';
+        description = '<strong>Erhöhtes Risiko</strong> – Du philosophierst: "Alkohol ist wie Leben – in Maßen genießen!" Aber Achtung: AF-Quote (<40%) oder Binge-Nähe (13-19/100 ≈ wöchentlich) liegt im WHO-Risikolevel "moderat bis hoch". Häufige Rauschsituationen sind Treiber für Leber-, Krebs- und Herzprobleme. Deine Leber murmelt: "Noch ein Drink, und ich kündige!"';
+        humorQuote = '💡 <em>"Schadensbegrenzung ist wie Zähneputzen nach Karamell-Fladen: gut, aber die Karies kam vorher."</em>';
+        warning = '⚠️ Empfehlung: AUDIT-Screening durchführen! Sport neutralisiert Alkoholrisiken NICHT (WHO/DHS). Potenziell mildes AUD bei 2-3 DSM-5-Kriterien.';
+        
+      } else if(bingeProximity >= 20 && bingeProximity < 40 || (afQuote < 0.30 && afQuote >= 0.20)){
+        // RISIKO-ROULETTE - Dunkelorange (hoch)
+        label = '🎲 Risiko-Roulette';
+        badgeClass = 'red';
+        description = '<strong>Hohes Risiko</strong> – Du spielst Russian Roulette mit Shots – Spaß, bis es knallt! Binge-Nähe (20-39/100 ≈ mehrmals wöchentlich) oder niedrige AF-Quote (20-29%) zeigen ein kritisches Muster. Hohes Risiko für Krebs, Leberzirrhose und Unfälle. Dein Körper ruft: "Sport vor dem Saufen? Das ist wie Helm beim Bungee-Jumping – nett, aber rettet nicht vor dem Fall!"';
+        humorQuote = '💡 <em>"Leider saugt der Staubsauger keinen Rausch weg. Sport ≠ Gegengift."</em> (WHO)';
+        warning = '🚨 Moderate AUD wahrscheinlich (4-5 DSM-5-Kriterien wie Toleranz, soziale Probleme). Medizinisches Gespräch und professionelle Beratung DRINGEND empfohlen!';
         
       } else {
-        // ROTER KREISEL - Rot (hoch)
-        label = '🔴 Roter Kreisel';
+        // SUCHT-ALARM - Rot (sehr hoch / akut)
+        label = '🚨 Sucht-Alarm: Rote Lampen gehen an!';
         badgeClass = 'red';
-        description = '<strong>Hohes bis sehr hohes Risiko</strong> – Zeit zu handeln! Binge-Nähe (≥20/100 = mind. 1×/Woche) oder fast täglicher Konsum (AF-Quote <20%) zeigt ein kritisches Muster. DSM-5-Warnzeichen für AUD können vorliegen: Kontrollverlust, Toleranz, Weitermachen trotz Schäden.';
-        warning = '🚨 Dringend empfohlen: Professionelle Beratung (z.B. SAMHSA, lokale Suchtberatung) und medizinisches Gespräch. Dies ist keine Diagnose, aber ein klares Signal!';
+        description = '<strong>Sehr hohes Risiko / Potenzielle Abhängigkeit</strong> – Die Sirenen heulen – Zeit für Help! Binge-Nähe (≥40/100 ≈ fast täglich) oder fast täglicher Konsum (AF-Quote <20%) zeigt extremes Risiko für Herz, Gehirn, Krebs und Leber. DSM-5-Warnzeichen für schwere AUD (6+ Kriterien): Entzug, Kontrollverlust, starkes Verlangen (Craving), Weitermachen trotz Schäden, Vernachlässigung anderer Aktivitäten.';
+        humorQuote = '💡 <em>"Du bist der \'Alkohol-Akrobat\' – balancierst auf dem Drahtseil, aber ohne Netz. Deine Leber: \'Ich pack\'s nicht mehr!\'"</em>';
+        warning = '🆘 Professionelle Hilfe SOFORT empfohlen: SAMHSA-Hotline, lokale Suchtberatung, medizinisches Gespräch. Dies ist keine Diagnose, aber ein klares Signal! Ab AUDIT ≥ 8 Punkten ist professionelle Abklärung essentiell.';
       }
 
       // Sonder-Warnungen
+      let extraWarnings = '';
       if(maxCluster >= 3){
-        warning = (warning || '') + ' 🔥 <strong>Cluster-Stürmer erkannt:</strong> ' + maxCluster + ' Hochrisiko-Tage am Stück bedeuten deutlichen Risiko-Spike!';
+        extraWarnings += '<br>🔥 <strong>Cluster-Stürmer erkannt:</strong> ' + maxCluster + ' Hochrisiko-Tage am Stück bedeuten deutlichen Risiko-Spike!';
       }
       if(counts.mixed >= 15){
-        warning = (warning || '') + ' 💊 <strong>Schadensbegrenzungs-Illusionist:</strong> Sport kaschiert Alkoholrisiken, senkt sie aber NICHT substanziell (WHO).';
+        extraWarnings += '<br>💊 <strong>Schadensbegrenzungs-Illusionist:</strong> Sport kaschiert Alkoholrisiken, senkt sie aber NICHT substanziell (WHO). ' + counts.mixed + ' "Gemischt"-Tage zeigen ein problematisches Muster.';
       }
 
       // UI aktualisieren
@@ -955,11 +967,11 @@
       badge.textContent = label;
       badge.className = 'assessment-badge ' + badgeClass;
 
-      document.getElementById('assessmentDescription').innerHTML = description;
+      document.getElementById('assessmentDescription').innerHTML = description + '<br><br>' + humorQuote;
 
       const warningEl = document.getElementById('assessmentWarning');
-      if(warning){
-        warningEl.innerHTML = warning;
+      if(warning || extraWarnings){
+        warningEl.innerHTML = (warning || '') + extraWarnings;
         warningEl.style.display = 'block';
       } else {
         warningEl.style.display = 'none';
