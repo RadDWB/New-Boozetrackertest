@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Rads wunderbarer Booze-Tracker</title>
+  <title>Ralles wunderbarer Booze-Tracker</title>
   <style>
     :root{
       --bg-grad-start:#6ea8ff;
@@ -201,60 +201,195 @@
     .chart-bar.negative{ background: linear-gradient(180deg, #ef4444, #dc2626); }
     .chart-bar.positive{ background: linear-gradient(180deg, #10b981, #059669); }
 
-    /* Balkendiagramm für 100 Tage */
+    /* Balkendiagramm für 100 Tage - KOMPLETT NEU */
     .chart-section{
       margin: 18px 0;
-      padding: 16px;
-      background: #f9fafb;
-      border: 1px solid #e5e7eb;
-      border-radius: 14px;
+      padding: 0;
+      background: transparent;
+      border: none;
+      border-radius: 0;
     }
     .chart-title{
       font-weight: 700;
-      font-size: 16px;
-      margin-bottom: 14px;
+      font-size: 18px;
+      margin-bottom: 24px;
       text-align: center;
       color: var(--text);
     }
     .chart-bars{
       display: flex;
-      gap: 16px;
+      flex-direction: column;
+      gap: 32px;
       margin-bottom: 10px;
     }
     .chart-bar-container{
-      flex: 1;
       display: flex;
       flex-direction: column;
-      gap: 6px;
+      gap: 12px;
     }
-    .chart-bar-label{
-      font-size: 13px;
-      font-weight: 600;
-      color: var(--muted);
-      text-align: center;
-    }
-    .chart-bar-wrapper{
-      height: 180px;
-      background: #e5e7eb;
-      border-radius: 8px;
-      position: relative;
-      display: flex;
-      align-items: flex-end;
-      overflow: hidden;
-    }
-    .chart-bar{
-      width: 100%;
-      transition: height 0.8s ease;
-      border-radius: 8px 8px 0 0;
+    .chart-bar-header{
       display: flex;
       align-items: center;
-      justify-content: center;
+      justify-content: space-between;
+    }
+    .chart-bar-label{
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text);
+    }
+    .chart-bar-label small{
+      display: block;
+      font-size: 12px;
+      font-weight: 400;
+      color: var(--muted);
+      margin-top: 2px;
+    }
+    .chart-bar-value{
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+    }
+    .chart-bar-number{
+      font-size: 32px;
+      font-weight: 900;
+      color: var(--text);
+    }
+    .chart-bar-percent{
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--muted);
+    }
+    .chart-bar-wrapper{
+      height: 48px;
+      background: #f1f5f9;
+      border-radius: 12px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
+    }
+    .chart-bar{
+      height: 100%;
+      transition: width 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+      width: 0%;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      padding-right: 16px;
       font-weight: 700;
       color: white;
-      font-size: 18px;
+      font-size: 16px;
+      position: relative;
     }
-    .chart-bar.negative{ background: linear-gradient(180deg, #ef4444, #dc2626); }
-    .chart-bar.positive{ background: linear-gradient(180deg, #10b981, #059669); }
+    .chart-bar::after{
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(90deg, rgba(255,255,255,0.1), rgba(255,255,255,0));
+      border-radius: 12px;
+    }
+    .chart-bar.negative{ 
+      background: linear-gradient(90deg, #ef4444, #f87171);
+      box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+    }
+    .chart-bar.positive{ 
+      background: linear-gradient(90deg, #10b981, #34d399);
+      box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+    }
+
+    /* Gesundheitsbewertung */
+    .health-assessment{
+      margin-top: 32px;
+      padding: 20px;
+      background: linear-gradient(135deg, #f8fafc, #f1f5f9);
+      border-radius: 14px;
+      border: 2px solid #e5e7eb;
+    }
+    .assessment-title{
+      font-size: 18px;
+      font-weight: 700;
+      text-align: center;
+      margin-bottom: 20px;
+      color: var(--text);
+    }
+    .assessment-badge{
+      text-align: center;
+      margin-bottom: 24px;
+      padding: 16px;
+      border-radius: 12px;
+      font-size: 24px;
+      font-weight: 800;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    .assessment-badge.zen{ 
+      background: linear-gradient(135deg, #d1fae5, #a7f3d0); 
+      color: #065f46;
+      border: 2px solid #34d399;
+    }
+    .assessment-badge.balance{ 
+      background: linear-gradient(135deg, #fef3c7, #fde68a); 
+      color: #92400e;
+      border: 2px solid #fbbf24;
+    }
+    .assessment-badge.weekend{ 
+      background: linear-gradient(135deg, #fed7aa, #fdba74); 
+      color: #9a3412;
+      border: 2px solid #fb923c;
+    }
+    .assessment-badge.red{ 
+      background: linear-gradient(135deg, #fecaca, #fca5a5); 
+      color: #7f1d1d;
+      border: 2px solid #ef4444;
+    }
+    .assessment-metrics{
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+    @media (max-width: 560px){ 
+      .assessment-metrics{ grid-template-columns: 1fr; } 
+    }
+    .metric-item{
+      padding: 12px;
+      background: white;
+      border-radius: 10px;
+      border: 1px solid #e5e7eb;
+    }
+    .metric-label{
+      font-size: 12px;
+      color: var(--muted);
+      margin-bottom: 4px;
+    }
+    .metric-value{
+      font-size: 20px;
+      font-weight: 800;
+      color: var(--text);
+    }
+    .assessment-description{
+      padding: 12px;
+      background: white;
+      border-radius: 10px;
+      border: 1px solid #e5e7eb;
+      font-size: 13px;
+      line-height: 1.6;
+      color: var(--text);
+    }
+    .assessment-description strong{
+      color: var(--primary);
+    }
+    .assessment-warning{
+      margin-top: 12px;
+      padding: 10px;
+      background: #fff7ed;
+      border-left: 4px solid #fb923c;
+      border-radius: 6px;
+      font-size: 12px;
+      color: #9a3412;
+    }
 
     /* Chart-Popup */
     .chart-popup{
@@ -267,7 +402,9 @@
       border-radius: 16px; 
       box-shadow: 0 20px 40px rgba(31,41,55,.2);
       padding: 20px; 
-      width: min(560px, 92vw); 
+      width: min(680px, 92vw); 
+      max-height: 85vh;
+      overflow-y: auto;
       display: none; 
       z-index: 1001;
     }
@@ -400,7 +537,7 @@
   <div class="container">
     <!-- Tag-Eingabe Ansicht -->
     <div id="dayInputView" class="view active">
-      <h1>🍷 Rads wunderbarer Booze-Tracker</h1>
+      <h1>🍷 Ralles wunderbarer Booze-Tracker</h1>
       <div class="current-date" id="currentDateDisplay"></div>
 
       <div class="choice-container" role="group" aria-label="Tagesauswahl">
@@ -531,24 +668,81 @@
     <!-- Chart-Popup -->
     <div class="chart-popup-overlay" id="chartOverlay" onclick="toggleChartPopup()"></div>
     <div id="chartPopup" class="chart-popup" aria-hidden="true">
-      <div class="chart-section" style="margin: 0; border: none; background: transparent; padding: 0;">
-        <div class="chart-title">Letzte 100 Tage im Überblick</div>
+      <div class="chart-section">
+        <div class="chart-title">📊 Letzte 100 Tage im Überblick</div>
         <div class="chart-bars">
+          <!-- Negativer Balken -->
           <div class="chart-bar-container">
-            <div class="chart-bar-wrapper">
-              <div class="chart-bar negative" id="chartNegative" style="height: 0%;">0</div>
+            <div class="chart-bar-header">
+              <div class="chart-bar-label">
+                🔴 Unter 50%
+                <small>Alkohol, Gemischt, Moderat</small>
+              </div>
+              <div class="chart-bar-value">
+                <span class="chart-bar-number" id="chartNegativeNum">0</span>
+                <span class="chart-bar-percent" id="chartNegativePct">0%</span>
+              </div>
             </div>
-            <div class="chart-bar-label">Unter 50%<br><small>(Alkohol, Gemischt, Moderat)</small></div>
+            <div class="chart-bar-wrapper">
+              <div class="chart-bar negative" id="chartNegative" style="width: 0%;"></div>
+            </div>
           </div>
+          <!-- Positiver Balken -->
           <div class="chart-bar-container">
-            <div class="chart-bar-wrapper">
-              <div class="chart-bar positive" id="chartPositive" style="height: 0%;">0</div>
+            <div class="chart-bar-header">
+              <div class="chart-bar-label">
+                🟢 Über 50%
+                <small>Supertag, Wellness, Alkoholfrei</small>
+              </div>
+              <div class="chart-bar-value">
+                <span class="chart-bar-number" id="chartPositiveNum">0</span>
+                <span class="chart-bar-percent" id="chartPositivePct">0%</span>
+              </div>
             </div>
-            <div class="chart-bar-label">Über 50%<br><small>(Alkoholfrei, Wellness, Supertag)</small></div>
+            <div class="chart-bar-wrapper">
+              <div class="chart-bar positive" id="chartPositive" style="width: 0%;"></div>
+            </div>
           </div>
         </div>
       </div>
-      <button class="btn secondary" style="margin-top: 14px;" onclick="toggleChartPopup()">Schließen</button>
+
+      <!-- Gesundheitsbewertung -->
+      <div class="health-assessment">
+        <div class="assessment-title">🎯 Deine Gesundheitseinschätzung</div>
+        
+        <div class="assessment-badge" id="assessmentBadge">
+          <!-- Wird dynamisch gefüllt -->
+        </div>
+
+        <div class="assessment-metrics">
+          <div class="metric-item">
+            <div class="metric-label">AF-Quote (alkoholfrei)</div>
+            <div class="metric-value" id="metricAF">0%</div>
+          </div>
+          <div class="metric-item">
+            <div class="metric-label">Gewichtete Gesundheit</div>
+            <div class="metric-value" id="metricHealth">0%</div>
+          </div>
+          <div class="metric-item">
+            <div class="metric-label">Binge-Nähe (Hochrisiko)</div>
+            <div class="metric-value" id="metricBinge">0</div>
+          </div>
+          <div class="metric-item">
+            <div class="metric-label">Längster Cluster</div>
+            <div class="metric-value" id="metricCluster">0</div>
+          </div>
+        </div>
+
+        <div class="assessment-description" id="assessmentDescription">
+          <!-- Wird dynamisch gefüllt -->
+        </div>
+
+        <div id="assessmentWarning" class="assessment-warning" style="display: none;">
+          <!-- Wird bei Bedarf angezeigt -->
+        </div>
+      </div>
+
+      <button class="btn secondary" style="margin-top: 24px; width: 100%;" onclick="toggleChartPopup()">Schließen</button>
     </div>
 
     <footer>© 2025 by R. Duwenbeck</footer>
@@ -622,7 +816,7 @@
       setSuccessCardTint(pct);
     }
 
-    /* Balkendiagramm für letzte 100 Tage */
+    /* Balkendiagramm für letzte 100 Tage - ANGEPASST für horizontales Design */
     function calculate100DaysChart(){
       let negative = 0; // unter 50%: alcohol, mixed, moderate
       let positive = 0; // über 50%: sober, wellness, superday
@@ -646,18 +840,133 @@
 
       // Balken aktualisieren mit Animation
       setTimeout(() => {
-        const negBar = document.getElementById('chartNegative');
-        const posBar = document.getElementById('chartPositive');
+        // Negative Bar
+        document.getElementById('chartNegative').style.width = negPct + '%';
+        document.getElementById('chartNegativeNum').textContent = negative;
+        document.getElementById('chartNegativePct').textContent = negPct + '%';
         
-        negBar.style.height = negPct + '%';
-        negBar.textContent = negative;
-        
-        posBar.style.height = posPct + '%';
-        posBar.textContent = positive;
+        // Positive Bar
+        document.getElementById('chartPositive').style.width = posPct + '%';
+        document.getElementById('chartPositiveNum').textContent = positive;
+        document.getElementById('chartPositivePct').textContent = posPct + '%';
       }, 100);
     }
 
-    /* Streak - ANGEPASST */
+    /* GESUNDHEITSBEWERTUNG - Wissenschaftlich fundiert nach WHO/DGE/RKI/DSM-5 */
+    function calculateHealthAssessment(){
+      const today = new Date();
+      let counts = {
+        superday: 0,
+        wellness: 0,
+        sober: 0,
+        moderate: 0,
+        mixed: 0,
+        alcohol: 0
+      };
+      
+      // Zähle Kategorien für letzte 100 Tage
+      const last100Days = [];
+      for(let i=0; i<100; i++){
+        const probe = new Date(today);
+        probe.setDate(probe.getDate() - i);
+        const st = dayData[formatDateKey(probe)];
+        last100Days.push(st || null);
+        if(st && counts[st] !== undefined) counts[st]++;
+      }
+
+      // 1. AF-Quote (Alkoholfreie Quote) - WHO-Standard
+      const afCount = counts.superday + counts.wellness + counts.sober;
+      const afQuote = afCount / 100;
+      
+      // 2. Gewichtete Gesundheitsquote - Differenzierte Bewertung
+      const weightedScore = (
+        counts.superday * 1.0 +
+        counts.wellness * 0.9 +
+        counts.sober * 0.75 +
+        counts.moderate * 0.4 +
+        counts.mixed * 0.25 +
+        counts.alcohol * 0.0
+      ) / 100;
+      
+      // 3. Binge-Nähe - RKI-Risikoindikator
+      // "Viel Alkohol" + "Schadensbegrenzung" wenn rauschähnlich
+      const bingeProximity = counts.alcohol + counts.mixed;
+      
+      // 4. Cluster-Erkennung - 3+ Hochrisiko-Tage am Stück
+      let maxCluster = 0;
+      let currentCluster = 0;
+      for(let i = 0; i < last100Days.length; i++){
+        const st = last100Days[i];
+        if(st === 'alcohol' || st === 'mixed'){
+          currentCluster++;
+          if(currentCluster > maxCluster) maxCluster = currentCluster;
+        } else {
+          currentCluster = 0;
+        }
+      }
+
+      // 5. Label-Zuweisung nach wissenschaftlichen Schwellenwerten
+      let label, badgeClass, description, warning;
+      
+      if(afQuote >= 0.70 && bingeProximity <= 4){
+        // ZEN-BIBER - Grüne Zone (sehr gut)
+        label = '🧘 Zen-Biber';
+        badgeClass = 'zen';
+        description = '<strong>Niedriges Risiko</strong> – Du lebst gesund! Deine alkoholfreien Tage (≥70%) mit sportlichen/erholsamen Puffern zeigen ein vorbildliches Muster. Binge-Events sind selten (≤4/100 Tage). Weiter so! 🎉';
+        warning = null;
+        
+      } else if(afQuote >= 0.40 && afQuote < 0.70 && bingeProximity <= 12){
+        // BALANCE-SEILTÄNZER - Gelb-grün (ok mit Fragezeichen)
+        label = '🤹 Balance-Seiltänzer';
+        badgeClass = 'balance';
+        description = '<strong>Moderates Risiko</strong> – Du balancierst ganz gut! AF-Quote 40-69% ist solide. Prüfe kritisch: Bleiben "moderate" Tage wirklich moderat (≤2 Einheiten/Woche nach DGE)? Binge-Events (≤12/100) sind noch überschaubar, aber Vorsicht vor Gewöhnung.';
+        warning = 'Tipp: Mehr Supertage/Wellness-Tage einstreuen für besseren Gesundheitsboost!';
+        
+      } else if(afQuote <= 0.39 || (bingeProximity >= 13 && bingeProximity <= 19)){
+        // WOCHENEND-WELLENTÄLER - Orange (aufpassen)
+        label = '🌊 Wochenend-Wellentäler';
+        badgeClass = 'weekend';
+        description = '<strong>Erhöhtes Risiko</strong> – Achtung, rote Ampel blinkt! Deine AF-Quote (<40%) oder Binge-Nähe (13-19/100 = wöchentlich bis knapp wöchentlich) liegt im WHO-Risikolevel "moderat bis hoch". Häufige Rauschsituationen sind Treiber für Leber-, Krebs- und Herzprobleme.';
+        warning = '⚠️ Empfehlung: AUDIT-Screening durchführen und Alkoholkonsum reduzieren. Sport neutralisiert Alkoholrisiken NICHT (WHO/DHS).';
+        
+      } else {
+        // ROTER KREISEL - Rot (hoch)
+        label = '🔴 Roter Kreisel';
+        badgeClass = 'red';
+        description = '<strong>Hohes bis sehr hohes Risiko</strong> – Zeit zu handeln! Binge-Nähe (≥20/100 = mind. 1×/Woche) oder fast täglicher Konsum (AF-Quote <20%) zeigt ein kritisches Muster. DSM-5-Warnzeichen für AUD können vorliegen: Kontrollverlust, Toleranz, Weitermachen trotz Schäden.';
+        warning = '🚨 Dringend empfohlen: Professionelle Beratung (z.B. SAMHSA, lokale Suchtberatung) und medizinisches Gespräch. Dies ist keine Diagnose, aber ein klares Signal!';
+      }
+
+      // Sonder-Warnungen
+      if(maxCluster >= 3){
+        warning = (warning || '') + ' 🔥 <strong>Cluster-Stürmer erkannt:</strong> ' + maxCluster + ' Hochrisiko-Tage am Stück bedeuten deutlichen Risiko-Spike!';
+      }
+      if(counts.mixed >= 15){
+        warning = (warning || '') + ' 💊 <strong>Schadensbegrenzungs-Illusionist:</strong> Sport kaschiert Alkoholrisiken, senkt sie aber NICHT substanziell (WHO).';
+      }
+
+      // UI aktualisieren
+      document.getElementById('metricAF').textContent = Math.round(afQuote * 100) + '%';
+      document.getElementById('metricHealth').textContent = Math.round(weightedScore * 100) + '%';
+      document.getElementById('metricBinge').textContent = bingeProximity;
+      document.getElementById('metricCluster').textContent = maxCluster > 0 ? maxCluster + ' Tage' : 'Keiner';
+
+      const badge = document.getElementById('assessmentBadge');
+      badge.textContent = label;
+      badge.className = 'assessment-badge ' + badgeClass;
+
+      document.getElementById('assessmentDescription').innerHTML = description;
+
+      const warningEl = document.getElementById('assessmentWarning');
+      if(warning){
+        warningEl.innerHTML = warning;
+        warningEl.style.display = 'block';
+      } else {
+        warningEl.style.display = 'none';
+      }
+    }
+
+    /* Streak - ANGEPASST: Geht sofort auf 0 bei nicht-grünen Tagen */
     function setStreakCardTint(streak){
       const card = document.getElementById('streakCard');
       const numEl = document.getElementById('streakNumber');
@@ -670,23 +979,28 @@
     }
     function isGreen(state){ return state==='sober' || state==='superday' || state==='wellness'; }
     function calculateStreak(){
-      let probe = new Date();
-      for(let i=0;i<600;i++){
-        const st = dayData[formatDateKey(probe)];
-        if(isGreen(st)) break;
-        probe.setDate(probe.getDate()-1);
-        if(i===599){ setStreakCardTint(0); return; }
-        const key = formatDateKey(probe);
-        if(!dayData[key] && i>365){ setStreakCardTint(0); return; }
-      }
-      if(!isGreen(dayData[formatDateKey(probe)])){ setStreakCardTint(0); return; }
+      let probe = new Date(); // heute
       let streak = 0;
+      
+      // Zähle rückwärts von heute
       while(true){
         const key = formatDateKey(probe);
-        const st  = dayData[key];
-        if(isGreen(st)){ streak++; probe.setDate(probe.getDate()-1); }
-        else break;
+        const st = dayData[key];
+        
+        // Wenn grüner Tag: Streak erhöhen
+        if(isGreen(st)){
+          streak++;
+          probe.setDate(probe.getDate()-1);
+        }
+        // Wenn nicht-grüner Tag oder kein Eintrag: Streak beenden
+        else {
+          break;
+        }
+        
+        // Sicherheit: Max 1000 Tage prüfen
+        if(streak > 1000) break;
       }
+      
       setStreakCardTint(streak);
     }
 
@@ -809,6 +1123,7 @@
         popup.setAttribute('aria-hidden','true');
       } else {
         calculate100DaysChart();
+        calculateHealthAssessment();
         popup.classList.add('active');
         overlay.classList.add('active');
         popup.setAttribute('aria-hidden','false');
