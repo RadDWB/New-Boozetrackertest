@@ -20,7 +20,7 @@
       --danger:#ef4444;
       --super:#059669;
       --wellness:#22c55e;
-      --mixed:#dc2626;  /* Dunkleres Rot für Gemischt */
+      --mixed:#dc2626;  /* Dunkleres Rot für Schadensbegrenzung */
       --radius:16px;
       --shadow:0 12px 30px rgba(31,41,55,.12);
     }
@@ -990,7 +990,7 @@
         <span>💚 Wellness</span>
         <span>🟢 Alkoholfrei</span>
         <span>🟡 Moderat</span>
-        <span>❤️ Gemischt</span>
+        <span>❤️ "Schadensbegrenzung"</span>
         <span>🔴 Alkohol</span>
       </div>
 
@@ -1070,7 +1070,7 @@
             <div class="chart-bar-header">
               <div class="chart-bar-label">
                 🔴 Unter 50%
-                <small>Alkohol, Gemischt, Moderat</small>
+                <small>Alkohol, "Schadensbegrenzung", Moderat</small>
               </div>
               <div class="chart-bar-value">
                 <span class="chart-bar-number" id="chartNegativeNum">0</span>
@@ -1135,7 +1135,7 @@
                   • Wellness = 90% (Sehr gut)<br>
                   • Alkoholfrei = 75% (Gut)<br>
                   • Moderat = 40% (Risiko-arm)<br>
-                  • Gemischt = 25% (Kompensiert nichts)<br>
+                  • "Schadensbegrenzung" = 25% (Kompensiert nichts)<br>
                   • Viel = 0% (Schädlich)
                 </span>
               </span>
@@ -1149,7 +1149,7 @@
                 ℹ
                 <span class="metric-tooltip">
                   Zählt Hochrisiko-Tage:<br>
-                  <strong>"Viel Alkohol" + "Gemischt"</strong><br><br>
+                  <strong>"Viel Alkohol" + "Schadensbegrenzung"</strong><br><br>
                   ⚠️ <strong>Ab 13/100</strong> (≈ wöchentlich):<br>
                   Erhöhtes Risiko (RKI/WHO)<br><br>
                   🚨 <strong>Ab 20/100</strong> (≈ mehrmals wöchentlich):<br>
@@ -1397,7 +1397,8 @@
     const monthNames = ['Januar','Februar','März','April','Mai','Juni','Juli','August','September','Oktober','November','Dezember'];
     const weekdays   = ['Mo','Di','Mi','Do','Fr','Sa','So'];
 
-    const formatDateKey = (date)=> `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`;
+    const formatDateKey = (date)=> `${date.getFullYear()}-${date.getMonth()+1}-${date.getDate()}`;
+
     
     // Helper: Hole Status aus dayData (kompatibel mit altem String-Format und neuem Object-Format)
     const getDayStatus = (key) => {
@@ -1651,7 +1652,7 @@
         extraWarnings += '<br>🔥 <strong>Cluster-Stürmer erkannt:</strong> ' + maxCluster + ' Hochrisiko-Tage am Stück bedeuten deutlichen Risiko-Spike!';
       }
       if(counts.mixed >= 15){
-        extraWarnings += '<br>💊 <strong>Schadensbegrenzungs-Illusionist:</strong> Sport kaschiert Alkoholrisiken, senkt sie aber NICHT substanziell (WHO). ' + counts.mixed + ' "Gemischt"-Tage zeigen ein problematisches Muster.';
+        extraWarnings += '<br>💊 <strong>Schadensbegrenzungs-Illusionist:</strong> Sport kaschiert Alkoholrisiken, senkt sie aber NICHT substanziell (WHO). ' + counts.mixed + ' "Schadensbegrenzung"-Tage zeigen ein problematisches Muster.';
       }
 
       // UI aktualisieren
@@ -2059,32 +2060,22 @@
 
     /* Save day */
     function saveDay(){
-      const selected = document.querySelector('input[name="dayChoice"]:checked');
-      if(!selected) return;
-      const key = formatDateKey(currentInputDate);
-      const comment = document.getElementById('dayCommentInput').value.trim();
-      
-      // Speichere sowohl Status als auch Kommentar
-      dayData[key] = {
-        status: selected.value,
-        comment: comment
-      };
+  const selected = document.querySelector('input[name="dayChoice"]:checked');
+  if(!selected) return;
 
-      const btn = document.getElementById('submitDay');
-      const ok = saveData();
-      const label = btn.textContent;
-      btn.textContent = ok ? '✅ Gespeichert!' : '❌ Fehler!';
-      setTimeout(()=>btn.textContent = label, 1200);
+  const key = formatDateKey(new Date());
+  const comment = (document.getElementById('dayCommentInput').value || '').trim();
 
-      calculateStreak();
+  dayData[key] = { status: selected.value, comment };
+  saveData();
 
-      currentInputDate.setDate(currentInputDate.getDate()+1);
-      updateDayInputView();
+  document.getElementById('dayCommentInput').value = '';
+  document.getElementById('submitDay').disabled = true;
 
-      document.querySelectorAll('input[name="dayChoice"]').forEach(r=>r.checked=false);
-      document.getElementById('dayCommentInput').value = '';
-      btn.disabled = true;
-    }
+  // Direkt weiter in die Monatsansicht
+  showMonthView();
+}
+
 
     /* Reset */
     function resetStorage(){
@@ -2112,12 +2103,18 @@
     document.addEventListener('DOMContentLoaded', ()=>{
       testStorage();
       loadData();
-      document.querySelectorAll('input[name="dayChoice"]').forEach(radio=>{
-        radio.addEventListener('change', ()=>{ document.getElementById('submitDay').disabled = false; });
-      });
-      document.getElementById('submitDay').addEventListener('click', saveDay);
-      updateDayInputView();
+    document.querySelectorAll('input[name="dayChoice"]').forEach(radio=>{
+      radio.addEventListener('change', ()=>{
+    // Direkt speichern & in die Monatsansicht springen
+    saveDay(); // saveDay ruft am Ende showMonthView() auf
+     });
     });
+
+      updateDayInputView();
+	  document.getElementById('submitDay').addEventListener('click', ()=>{
+      saveDay(); // saveDay springt am Ende in die Monatsansicht
+       });
+      });
   
 /* ---------------------------
    Backup & Restore (local)
