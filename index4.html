@@ -450,132 +450,6 @@
       color: #9a3412;
     }
 
-    /* Settings für neutrale Tage */
-    .settings-section{
-      margin-top: 20px;
-      padding: 16px;
-      background: white;
-      border-radius: 12px;
-      border: 2px solid #e5e7eb;
-    }
-    .settings-title{
-      font-size: 14px;
-      font-weight: 700;
-      margin-bottom: 12px;
-      color: var(--text);
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-    .settings-option{
-      margin-bottom: 10px;
-      padding: 10px;
-      background: #f9fafb;
-      border-radius: 8px;
-      border: 2px solid transparent;
-      cursor: pointer;
-      transition: all 0.2s;
-    }
-    .settings-option:hover{
-      border-color: var(--primary);
-      background: #eff6ff;
-    }
-    .settings-option input[type="radio"]{
-      margin-right: 8px;
-    }
-    .settings-option label{
-      cursor: pointer;
-      font-size: 13px;
-      color: var(--text);
-      display: flex;
-      align-items: flex-start;
-      gap: 8px;
-    }
-    .settings-option.selected{
-      border-color: var(--primary);
-      background: #eff6ff;
-    }
-    .settings-explanation{
-      margin-top: 12px;
-      padding: 12px;
-      background: #f0f9ff;
-      border-left: 4px solid var(--primary);
-      border-radius: 6px;
-      font-size: 12px;
-      line-height: 1.6;
-      color: #1e40af;
-    }
-
-    /* AUDIT-C Quiz */
-    .audit-quiz{
-      margin-top: 20px;
-      padding: 16px;
-      background: white;
-      border-radius: 12px;
-      border: 2px solid #e5e7eb;
-    }
-    .audit-question{
-      margin-bottom: 16px;
-    }
-    .audit-question-label{
-      font-size: 13px;
-      font-weight: 600;
-      margin-bottom: 8px;
-      color: var(--text);
-      display: block;
-    }
-    .audit-options{
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-    }
-    .audit-option{
-      padding: 8px 12px;
-      background: #f9fafb;
-      border-radius: 6px;
-      border: 2px solid transparent;
-      cursor: pointer;
-      transition: all 0.2s;
-      font-size: 12px;
-    }
-    .audit-option:hover{
-      border-color: var(--primary);
-      background: #eff6ff;
-    }
-    .audit-option input[type="radio"]{
-      margin-right: 8px;
-    }
-    .audit-option label{
-      cursor: pointer;
-    }
-    .audit-result{
-      margin-top: 16px;
-      padding: 16px;
-      border-radius: 10px;
-      font-size: 13px;
-      line-height: 1.6;
-    }
-    .audit-result.low{
-      background: #d1fae5;
-      border: 2px solid #34d399;
-      color: #065f46;
-    }
-    .audit-result.medium{
-      background: #fef3c7;
-      border: 2px solid #fbbf24;
-      color: #92400e;
-    }
-    .audit-result.high{
-      background: #fecaca;
-      border: 2px solid #ef4444;
-      color: #7f1d1d;
-    }
-    .audit-result strong{
-      font-size: 16px;
-      display: block;
-      margin-bottom: 8px;
-    }
-
     /* Chart-Popup */
     .chart-popup{
       position: fixed; 
@@ -621,141 +495,6 @@
       background: #f9fafb;
       color: var(--text);
       border-color: #cbd5e1;
-    }
-
-    /* Einstellungs-Button */
-    .btn-settings{
-      background: transparent;
-      border: 1px solid #e5e7eb;
-      color: var(--muted);
-      padding: 8px 16px;
-      border-radius: 8px;
-      font-size: 13px;
-      cursor: pointer;
-      transition: all .2s ease;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-    .btn-settings:hover{
-      background: #f9fafb;
-      color: var(--text);
-      border-color: #cbd5e1;
-    }
-
-    /* Einstellungs-Popup */
-    .settings-popup{
-      position: fixed;
-      left: 50%;
-      top: 50%;
-      transform: translate(-50%, -50%);
-      background: #ffffff;
-      border: 1px solid #e5e7eb;
-      border-radius: 16px;
-      box-shadow: 0 20px 40px rgba(31,41,55,.25);
-      padding: 24px;
-      width: min(560px, 92vw);
-      max-height: 85vh;
-      overflow-y: auto;
-      display: none;
-      z-index: 1002;
-    }
-    .settings-popup.active{ display: block; }
-    .settings-popup-overlay{
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: rgba(0,0,0,0.4);
-      display: none;
-      z-index: 1001;
-    }
-    .settings-popup-overlay.active{ display: block; }
-    .settings-title{
-      font-size: 22px;
-      font-weight: 800;
-      margin-bottom: 8px;
-      color: var(--text);
-      text-align: center;
-    }
-    .settings-subtitle{
-      font-size: 14px;
-      color: var(--muted);
-      margin-bottom: 24px;
-      text-align: center;
-    }
-    .settings-section{
-      margin-bottom: 24px;
-    }
-    .settings-section-title{
-      font-size: 16px;
-      font-weight: 700;
-      margin-bottom: 12px;
-      color: var(--text);
-    }
-    .settings-description{
-      font-size: 13px;
-      color: var(--muted);
-      margin-bottom: 16px;
-      line-height: 1.6;
-    }
-    .settings-options{
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-    .settings-option{
-      display: flex;
-      align-items: flex-start;
-      gap: 12px;
-      padding: 14px;
-      border: 2px solid #e5e7eb;
-      border-radius: 12px;
-      background: #fff;
-      cursor: pointer;
-      transition: all .2s ease;
-    }
-    .settings-option:hover{
-      border-color: var(--primary);
-      background: #f8faff;
-    }
-    .settings-option.selected{
-      border-color: var(--primary);
-      background: linear-gradient(135deg, #eef2ff, #f8faff);
-      box-shadow: 0 4px 12px rgba(79,70,229,0.15);
-    }
-    .settings-option input[type="radio"]{
-      margin-top: 2px;
-      transform: scale(1.3);
-      accent-color: var(--primary);
-    }
-    .settings-option-content{
-      flex: 1;
-    }
-    .settings-option-title{
-      font-weight: 700;
-      font-size: 14px;
-      color: var(--text);
-      margin-bottom: 4px;
-    }
-    .settings-option-desc{
-      font-size: 12px;
-      color: var(--muted);
-      line-height: 1.5;
-    }
-    .settings-info-box{
-      padding: 14px;
-      background: #eff6ff;
-      border-left: 4px solid var(--primary);
-      border-radius: 8px;
-      font-size: 12px;
-      color: #1e40af;
-      line-height: 1.6;
-      margin-top: 16px;
-    }
-    .settings-info-box strong{
-      color: #1e3a8a;
     }
 
     .legend{
@@ -939,9 +678,8 @@
       <div id="monthGrid" class="cal" aria-label="Kalender"></div>
 
       <!-- Unauffälliger Button für Statistik -->
-      <div style="text-align: center; margin-top: 16px; display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
+      <div style="text-align: center; margin-top: 16px;">
         <button class="btn-stats-toggle" onclick="toggleChartPopup()">📊 100-Tage-Statistik</button>
-        <button class="btn-settings" onclick="toggleSettingsPopup()">⚙️ Einstellungen</button>
       </div>
 
       <section class="support">
@@ -1112,188 +850,7 @@
         </div>
       </div>
 
-      <!-- Einstellungen für neutrale Tage -->
-      <div class="settings-section">
-        <div class="settings-title">
-          ⚙️ Einstellung: Wie sollen nicht-eingetragene Tage gewertet werden?
-          <span class="metric-info">
-            ℹ
-            <span class="metric-tooltip">
-              <strong>Wichtig für genaue Statistiken!</strong><br><br>
-              Neutrale Tage (ohne Eintrag) können die Berechnung verzerren.<br><br>
-              Wähle, wie sie bewertet werden sollen:
-            </span>
-          </span>
-        </div>
-        
-        <div class="settings-option" onclick="selectNeutralOption('ignore')">
-          <label>
-            <input type="radio" name="neutralDays" value="ignore" checked>
-            <div>
-              <strong>Ignorieren</strong> – Nur eingetragene Tage zählen<br>
-              <small style="color: #6b7280;">Fairste Option: Statistik basiert nur auf bekannten Daten. Bei wenig Einträgen kann Quote aber künstlich hoch/niedrig sein.</small>
-            </div>
-          </label>
-        </div>
-
-        <div class="settings-option" onclick="selectNeutralOption('neutral')">
-          <label>
-            <input type="radio" name="neutralDays" value="neutral">
-            <div>
-              <strong>Eher positiv werten</strong> – Wie 50% Gesundheit<br>
-              <small style="color: #6b7280;">Neutrale zählen als "neutral", weder gut noch schlecht. Motiviert zum Tracken, ohne zu hart zu bestrafen.</small>
-            </div>
-          </label>
-        </div>
-
-        <div class="settings-option" onclick="selectNeutralOption('negative')">
-          <label>
-            <input type="radio" name="neutralDays" value="negative">
-            <div>
-              <strong>Eher negativ werten</strong> – Wie 30% Gesundheit<br>
-              <small style="color: #6b7280;">Neutrale als potenzielle Risiko-Tage betrachten. Strengere Bewertung, motiviert zum konsequenten Tracken.</small>
-            </div>
-          </label>
-        </div>
-
-        <div class="settings-option" onclick="selectNeutralOption('very-negative')">
-          <label>
-            <input type="radio" name="neutralDays" value="very-negative">
-            <div>
-              <strong>Sehr negativ werten</strong> – Wie 15% Gesundheit<br>
-              <small style="color: #6b7280;">Maximaler Ansporn: Nicht eingetragen = verdächtig. Nur für sehr disziplinierte Tracker!</small>
-            </div>
-          </label>
-        </div>
-
-        <div class="settings-explanation">
-          💡 <strong>Tipp:</strong> Verwende "Ignorieren" für realistische Statistiken. Die Berechnung zeigt dir dann "Basierend auf X von 100 Tagen", damit du weißt, wie vollständig deine Daten sind.
-        </div>
-      </div>
-
-      <!-- AUDIT-C Quiz -->
-      <div class="audit-quiz">
-        <div class="settings-title">📝 AUDIT-C Schnelltest (WHO)</div>
-        <p style="font-size: 12px; color: #6b7280; margin-bottom: 16px;">
-          Beantworte 3 kurze Fragen zu deinem Alkoholkonsum im <strong>letzten Jahr</strong>. Dies ist ein validiertes WHO-Screening-Tool – keine Diagnose, aber ein guter Indikator.
-        </p>
-
-        <div style="margin-bottom: 16px;">
-          <label style="font-size: 12px; font-weight: 600; margin-bottom: 4px; display: block;">Geschlecht (für Cut-offs):</label>
-          <select id="auditGender" style="padding: 8px; border-radius: 6px; border: 1px solid #d1d5db; font-size: 13px;">
-            <option value="male">Männlich</option>
-            <option value="female">Weiblich</option>
-          </select>
-        </div>
-
-        <div class="audit-question">
-          <label class="audit-question-label">1. Wie oft trinken Sie alkoholhaltige Getränke?</label>
-          <div class="audit-options">
-            <div class="audit-option"><label><input type="radio" name="auditQ1" value="0"> Nie (0 Punkte)</label></div>
-            <div class="audit-option"><label><input type="radio" name="auditQ1" value="1"> Monatlich oder seltener (1 Punkt)</label></div>
-            <div class="audit-option"><label><input type="radio" name="auditQ1" value="2"> 2-4 Mal im Monat (2 Punkte)</label></div>
-            <div class="audit-option"><label><input type="radio" name="auditQ1" value="3"> 2-3 Mal pro Woche (3 Punkte)</label></div>
-            <div class="audit-option"><label><input type="radio" name="auditQ1" value="4"> 4 Mal pro Woche oder öfter (4 Punkte)</label></div>
-          </div>
-        </div>
-
-        <div class="audit-question">
-          <label class="audit-question-label">2. Wie viele Einheiten trinken Sie an einem typischen Tag?<br><small>(1 Einheit = 0,25l Bier / 0,1l Wein / 2cl Schnaps)</small></label>
-          <div class="audit-options">
-            <div class="audit-option"><label><input type="radio" name="auditQ2" value="0"> 1 oder 2 (0 Punkte)</label></div>
-            <div class="audit-option"><label><input type="radio" name="auditQ2" value="1"> 3 oder 4 (1 Punkt)</label></div>
-            <div class="audit-option"><label><input type="radio" name="auditQ2" value="2"> 5 oder 6 (2 Punkte)</label></div>
-            <div class="audit-option"><label><input type="radio" name="auditQ2" value="3"> 7, 8 oder 9 (3 Punkte)</label></div>
-            <div class="audit-option"><label><input type="radio" name="auditQ2" value="4"> 10 oder mehr (4 Punkte)</label></div>
-          </div>
-        </div>
-
-        <div class="audit-question">
-          <label class="audit-question-label">3. Wie oft trinken Sie sechs oder mehr Einheiten an einem Anlass?</label>
-          <div class="audit-options">
-            <div class="audit-option"><label><input type="radio" name="auditQ3" value="0"> Nie (0 Punkte)</label></div>
-            <div class="audit-option"><label><input type="radio" name="auditQ3" value="1"> Weniger als monatlich (1 Punkt)</label></div>
-            <div class="audit-option"><label><input type="radio" name="auditQ3" value="2"> Monatlich (2 Punkte)</label></div>
-            <div class="audit-option"><label><input type="radio" name="auditQ3" value="3"> Wöchentlich (3 Punkte)</label></div>
-            <div class="audit-option"><label><input type="radio" name="auditQ3" value="4"> Täglich oder fast täglich (4 Punkte)</label></div>
-          </div>
-        </div>
-
-        <button class="btn" style="width: 100%; margin-top: 16px;" onclick="calculateAuditScore()">Ergebnis berechnen</button>
-
-        <div id="auditResult" style="display: none;"></div>
-      </div>
-
       <button class="btn secondary" style="margin-top: 24px; width: 100%;" onclick="toggleChartPopup()">Schließen</button>
-    </div>
-
-    <!-- Einstellungs-Popup -->
-    <div class="settings-popup-overlay" id="settingsOverlay" onclick="toggleSettingsPopup()"></div>
-    <div id="settingsPopup" class="settings-popup" aria-hidden="true">
-      <div class="settings-title">⚙️ Einstellungen</div>
-      <div class="settings-subtitle">Passe die Bewertung an deine Bedürfnisse an</div>
-
-      <div class="settings-section">
-        <div class="settings-section-title">🎯 Wie sollen nicht eingetragene Tage bewertet werden?</div>
-        <div class="settings-description">
-          Tage ohne Eintrag (weiße Felder im Kalender) können die Statistik verfälschen. 
-          Wähle, wie diese "neutralen" Tage in die Gesundheitsbewertung einfließen sollen:
-        </div>
-
-        <div class="settings-options">
-          <label class="settings-option" id="option-ignore">
-            <input type="radio" name="neutralDays" value="ignore" checked>
-            <div class="settings-option-content">
-              <div class="settings-option-title">🎯 Ignorieren (Empfohlen)</div>
-              <div class="settings-option-desc">
-                Nur eingetragene Tage zählen. Deine Quote wird realistischer berechnet.<br>
-                <strong>Beispiel:</strong> 10 Alkohol + 5 Alkoholfrei von 15 Einträgen = 67% Binge-Nähe → Alarm!
-              </div>
-            </div>
-          </label>
-
-          <label class="settings-option" id="option-neutral">
-            <input type="radio" name="neutralDays" value="neutral">
-            <div class="settings-option-content">
-              <div class="settings-option-title">⚖️ Als neutral werten</div>
-              <div class="settings-option-desc">
-                Neutrale Tage werden wie "leicht positiv" (50% Gesundheit) gewertet.<br>
-                <strong>Beispiel:</strong> 10 Alkohol + 90 leer = 10% Binge-Nähe (milder)
-              </div>
-            </div>
-          </label>
-
-          <label class="settings-option" id="option-negative">
-            <input type="radio" name="neutralDays" value="negative">
-            <div class="settings-option-content">
-              <div class="settings-option-title">⚠️ Als eher negativ werten</div>
-              <div class="settings-option-desc">
-                Nicht tracken = kleine Strafe (30% Gesundheit, ähnlich Moderat).<br>
-                <strong>Motivation:</strong> Spornt an, jeden Tag zu tracken!
-              </div>
-            </div>
-          </label>
-
-          <label class="settings-option" id="option-very-negative">
-            <input type="radio" name="neutralDays" value="very-negative">
-            <div class="settings-option-content">
-              <div class="settings-option-title">🚨 Als sehr negativ werten</div>
-              <div class="settings-option-desc">
-                Nicht tracken = deutliche Strafe (15% Gesundheit, fast wie Alkohol).<br>
-                <strong>Strikt:</strong> Maximale Motivation für tägliches Tracking!
-              </div>
-            </div>
-          </label>
-        </div>
-
-        <div class="settings-info-box">
-          💡 <strong>Tipp:</strong> Wenn du erst seit kurzem trackst, wähle "Ignorieren". 
-          So werden nur deine tatsächlichen Einträge bewertet und die Statistik ist realistischer.<br><br>
-          📊 Die Anzeige zeigt dir immer: "Basierend auf X von 100 Tagen"
-        </div>
-      </div>
-
-      <button class="btn" style="width: 100%;" onclick="saveSettings()">Einstellungen speichern</button>
     </div>
 
     <footer>© 2025 by R. Duwenbeck</footer>
@@ -1305,7 +862,6 @@
     let dayData = {};
     let editingDate = null;
     let storageWorking = false;
-    let neutralDaysSetting = 'ignore'; // Default: Ignorieren
 
     const monthNames = ['Januar','Februar','März','April','Mai','Juni','Juli','August','September','Oktober','November','Dezember'];
     const weekdays   = ['Mo','Di','Mi','Do','Fr','Sa','So'];
@@ -1335,14 +891,6 @@
         const savedData = localStorage.getItem('alcoholTrackerData');
         dayData = savedData && savedData !== 'null' ? JSON.parse(savedData) : {};
         currentInputDate = new Date();
-        
-        // Settings laden
-        const savedSettings = localStorage.getItem('alcoholTrackerSettings');
-        if(savedSettings){
-          const settings = JSON.parse(savedSettings);
-          neutralDaysSetting = settings.neutralDays || 'ignore';
-        }
-        
         updateStorageStatus(`✅ ${Object.keys(dayData).length} Tage geladen`);
       }catch{
         dayData = {}; currentInputDate = new Date(); updateStorageStatus('❌ Laden fehlgeschlagen');
@@ -1421,8 +969,7 @@
         sober: 0,
         moderate: 0,
         mixed: 0,
-        alcohol: 0,
-        empty: 0
+        alcohol: 0
       };
       
       // Zähle Kategorien für letzte 100 Tage
@@ -1433,33 +980,11 @@
         const st = dayData[formatDateKey(probe)];
         last100Days.push(st || null);
         if(st && counts[st] !== undefined) counts[st]++;
-        else if(!st) counts.empty++;
-      }
-
-      // Anzahl der tatsächlich eingetragenen Tage
-      const enteredDays = 100 - counts.empty;
-      
-      // Berechne basierend auf Einstellung
-      let divisor = 100; // Default: alle 100 Tage
-      let neutralWeight = 0; // Gewicht für leere Tage
-      
-      if(neutralDaysSetting === 'ignore'){
-        // Nur eingetragene Tage zählen
-        divisor = enteredDays > 0 ? enteredDays : 1;
-      } else if(neutralDaysSetting === 'neutral'){
-        // Neutral = 50% Gesundheit
-        neutralWeight = 0.5;
-      } else if(neutralDaysSetting === 'negative'){
-        // Eher negativ = 30% Gesundheit
-        neutralWeight = 0.3;
-      } else if(neutralDaysSetting === 'very-negative'){
-        // Sehr negativ = 15% Gesundheit
-        neutralWeight = 0.15;
       }
 
       // 1. AF-Quote (Alkoholfreie Quote) - WHO-Standard
       const afCount = counts.superday + counts.wellness + counts.sober;
-      const afQuote = afCount / divisor;
+      const afQuote = afCount / 100;
       
       // 2. Gewichtete Gesundheitsquote - Differenzierte Bewertung
       const weightedScore = (
@@ -1468,13 +993,11 @@
         counts.sober * 0.75 +
         counts.moderate * 0.4 +
         counts.mixed * 0.25 +
-        counts.alcohol * 0.0 +
-        counts.empty * neutralWeight
+        counts.alcohol * 0.0
       ) / 100;
       
       // 3. Binge-Nähe - RKI-Risikoindikator
       const bingeProximity = counts.alcohol + counts.mixed;
-      const bingeQuote = bingeProximity / divisor; // Als Quote für bessere Bewertung
       
       // 4. Cluster-Erkennung - 3+ Hochrisiko-Tage am Stück
       let maxCluster = 0;
@@ -1490,48 +1013,47 @@
       }
 
       // 5. Label-Zuweisung nach wissenschaftlichen Schwellenwerten
-      // WICHTIG: Von STRENG nach LOCKER prüfen (Alarm vor Kipppunkt!)
       let label, badgeClass, description, warning, humorQuote;
       
-      // STUFE 5: SUCHT-ALARM (strengste Prüfung zuerst!)
-      if(bingeProximity >= 40 || afQuote < 0.20 || (bingeQuote >= 0.40 && enteredDays >= 10)){
-        label = '🚨 Sucht-Alarm: Rote Lampen!';
-        badgeClass = 'red';
-        description = '<strong>Sehr hohes Risiko / Potenzielle Abhängigkeit</strong> – Binge-Nähe (≥40/100 ≈ fast täglich) oder fast täglicher Konsum (AF-Quote <20%) zeigt extremes Risiko für Herz, Gehirn, Krebs und Leber. DSM-5-Warnzeichen für schwere AUD (6+ Kriterien): starkes Verlangen (Craving), Entzug, Kontrollverlust, Toleranz, Weitermachen trotz Schäden, Vernachlässigung anderer Aktivitäten.';
-        humorQuote = '';
-        warning = '🆘 Professionelle Hilfe SOFORT empfohlen: SAMHSA-Hotline, lokale Suchtberatung, medizinisches Gespräch. Dies ist keine Diagnose, aber ein klares Signal! Ab AUDIT ≥ 8 Punkten ist professionelle Abklärung essentiell (ICD-10/DSM-5).';
-      }
-      // STUFE 4: RISIKO-ROULETTE
-      else if((bingeProximity >= 20 && bingeProximity < 40) || (afQuote < 0.30 && afQuote >= 0.20) || (bingeQuote >= 0.20 && enteredDays >= 10)){
-        label = '🎲 Risiko-Roulette';
-        badgeClass = 'red';
-        description = '<strong>Hohes Risiko</strong> – Du spielst Russian Roulette mit deiner Gesundheit. Binge-Nähe (20-39/100 ≈ mehrmals wöchentlich) oder niedrige AF-Quote (20-29%) zeigen ein kritisches Muster. Hohes Risiko für Krebs, Leberzirrhose, Herz-Kreislauf-Erkrankungen und Unfälle. Sport kann diese Risiken NICHT kompensieren (WHO).';
-        humorQuote = '💡 <em>"Leider saugt der Staubsauger keinen Rausch weg. Sport ≠ Gegengift."</em> (WHO)';
-        warning = '🚨 Moderate bis schwere AUD wahrscheinlich (4-5 DSM-5-Kriterien wie Toleranz, soziale Probleme, Kontrollverlust). Medizinisches Gespräch und professionelle Beratung DRINGEND empfohlen!';
-      }
-      // STUFE 3: KIPPPUNKT-KANDIDAT
-      else if(afQuote <= 0.39 || (bingeProximity >= 13 && bingeProximity <= 19) || (bingeQuote >= 0.13 && enteredDays >= 10)){
-        label = '🚨 Kipppunkt-Kandidat';
-        badgeClass = 'weekend';
-        description = '<strong>Erhöhtes Risiko – Kritische Schwelle erreicht</strong> – Deine AF-Quote (<40%) oder Binge-Nähe (13-19/100 ≈ wöchentlich) liegt im WHO-Risikolevel "moderat bis hoch". Du befindest dich an einem Kipppunkt: Häufige Rauschsituationen sind nachweisliche Treiber für Leber-, Krebs- und Herzprobleme.';
-        humorQuote = '💡 <em>"Schadensbegrenzung ist wie Zähneputzen nach Karamell-Fladen: gut, aber die Karies kam vorher."</em>';
-        warning = '⚠️ Dringend empfohlen: AUDIT-Screening durchführen (siehe unten im Quiz)! Sport neutralisiert Alkoholrisiken NICHT (WHO/DHS). Potenziell mildes AUD bei 2-3 DSM-5-Kriterien (z.B. Kontrollverlust, mehr trinken als geplant).';
-      }
-      // STUFE 2: BALANCE-BUDDHA
-      else if(afQuote >= 0.40 && afQuote < 0.70 && bingeProximity <= 12){
-        label = '🧘 Balance-Buddha';
-        badgeClass = 'balance';
-        description = '<strong>Moderates Risiko</strong> – Du meditierst mit einem Glas Wasser – zen, aber nicht fanatisch! AF-Quote 40-69% ist solide. Prüfe kritisch: Bleiben "moderate" Tage wirklich moderat (≤2 Einheiten/Woche nach DGE)? Binge-Events (≤12/100 ≈ höchstens viertel- bis monatlich) sind überschaubar.';
-        humorQuote = '💡 <em>"Moderate Tage sind wie Parken in der gelben Zone: geht mal gut, aber zur Regel wird\'s besser nicht – vor allem nicht täglich."</em> (DGE/DHS)';
-        warning = 'Tipp: Mehr Supertage/Wellness-Tage einstreuen – Sport + Abstinenz = doppelter Gesundheitsboost!';
-      }
-      // STUFE 1: LEBER-SUPERHELD
-      else {
+      if(afQuote >= 0.70 && bingeProximity <= 4){
+        // LEBER-SUPERHELD - Grüne Zone (sehr gut)
         label = '🦸 Leber-Superheld';
         badgeClass = 'zen';
         description = '<strong>Niedriges Gesamtrisiko</strong> – Du bist der Batman der Bars – unsichtbar für Alkohol! Deine alkoholfreien Tage (≥70%) mit sportlichen/erholsamen Puffern zeigen ein vorbildliches Muster. Binge-Events sind selten (≤4/100 Tage ≈ seltener als monatlich). Deine Leber schickt dir Dankeskarten! 💚';
         humorQuote = '💡 <em>"Du bist, was du trinkst – aber auch, was du an Supertagen tust. Jeder grüne Tag ist wie ein Staubsauger für Risikokrümel."</em>';
         warning = '⚠️ Trotzdem kein "Freifahrtschein" – WHO empfiehlt weiterhin Wachsamkeit.';
+        
+      } else if(afQuote >= 0.40 && afQuote < 0.70 && bingeProximity <= 12){
+        // BALANCE-BUDDHA - Gelb-grün (ok mit Fragezeichen)
+        label = '🧘 Balance-Buddha';
+        badgeClass = 'balance';
+        description = '<strong>Moderates Risiko</strong> – Du meditierst mit einem Glas Wasser – zen, aber nicht fanatisch! AF-Quote 40-69% ist solide. Prüfe kritisch: Bleiben "moderate" Tage wirklich moderat (≤2 Einheiten/Woche nach DGE)? Binge-Events (≤12/100 ≈ höchstens viertel- bis monatlich) sind überschaubar.';
+        humorQuote = '💡 <em>"Moderate Tage sind wie Parken in der gelben Zone: geht mal gut, aber zur Regel wird\'s besser nicht – vor allem nicht täglich."</em> (DGE/DHS)';
+        warning = 'Tipp: Mehr Supertage/Wellness-Tage einstreuen – Sport + Abstinenz = doppelter Gesundheitsboost!';
+        
+      } else if(afQuote <= 0.39 || (bingeProximity >= 13 && bingeProximity <= 19)){
+        // KIPPPUNKT-KANDIDAT - Orange (kritische Schwelle)
+        label = '🚨 Kipppunkt-Kandidat';
+        badgeClass = 'weekend';
+        description = '<strong>Erhöhtes Risiko – Kritische Schwelle erreicht</strong> – Deine AF-Quote (<40%) oder Binge-Nähe (13-19/100 ≈ wöchentlich) liegt im WHO-Risikolevel "moderat bis hoch". Du befindest dich an einem Kipppunkt: Häufige Rauschsituationen sind nachweisliche Treiber für Leber-, Krebs- und Herzprobleme.';
+        humorQuote = '💡 <em>"Schadensbegrenzung ist wie Zähneputzen nach Karamell-Fladen: gut, aber die Karies kam vorher."</em>';
+        warning = '⚠️ Dringend empfohlen: AUDIT-Screening durchführen! Sport neutralisiert Alkoholrisiken NICHT (WHO/DHS). Potenziell mildes AUD bei 2-3 DSM-5-Kriterien (z.B. Kontrollverlust, mehr trinken als geplant).';
+        
+      } else if(bingeProximity >= 20 && bingeProximity < 40 || (afQuote < 0.30 && afQuote >= 0.20)){
+        // RISIKO-ROULETTE - Dunkelorange (hoch)
+        label = '🎲 Risiko-Roulette';
+        badgeClass = 'red';
+        description = '<strong>Hohes Risiko</strong> – Du spielst Russian Roulette mit deiner Gesundheit. Binge-Nähe (20-39/100 ≈ mehrmals wöchentlich) oder niedrige AF-Quote (20-29%) zeigen ein kritisches Muster. Hohes Risiko für Krebs, Leberzirrhose, Herz-Kreislauf-Erkrankungen und Unfälle. Sport kann diese Risiken NICHT kompensieren (WHO).';
+        humorQuote = '💡 <em>"Leider saugt der Staubsauger keinen Rausch weg. Sport ≠ Gegengift."</em> (WHO)';
+        warning = '🚨 Moderate bis schwere AUD wahrscheinlich (4-5 DSM-5-Kriterien wie Toleranz, soziale Probleme, Kontrollverlust). Medizinisches Gespräch und professionelle Beratung DRINGEND empfohlen!';
+        
+      } else {
+        // SUCHT-ALARM - Rot (sehr hoch / akut)
+        label = '🚨 Sucht-Alarm: Rote Lampen!';
+        badgeClass = 'red';
+        description = '<strong>Sehr hohes Risiko / Potenzielle Abhängigkeit</strong> – Binge-Nähe (≥40/100 ≈ fast täglich) oder fast täglicher Konsum (AF-Quote <20%) zeigt extremes Risiko für Herz, Gehirn, Krebs und Leber. DSM-5-Warnzeichen für schwere AUD (6+ Kriterien): starkes Verlangen (Craving), Entzug, Kontrollverlust, Toleranz, Weitermachen trotz Schäden, Vernachlässigung anderer Aktivitäten.';
+        humorQuote = '';
+        warning = '🆘 Professionelle Hilfe SOFORT empfohlen: SAMHSA-Hotline, lokale Suchtberatung, medizinisches Gespräch. Dies ist keine Diagnose, aber ein klares Signal! Ab AUDIT ≥ 8 Punkten ist professionelle Abklärung essentiell (ICD-10/DSM-5).';
       }
 
       // Sonder-Warnungen
@@ -1544,27 +1066,16 @@
       }
 
       // UI aktualisieren
-      const afDisplay = neutralDaysSetting === 'ignore' ? 
-        `${Math.round(afQuote * 100)}% (${afCount}/${enteredDays})` : 
-        `${Math.round(afQuote * 100)}%`;
-      
-      document.getElementById('metricAF').textContent = afDisplay;
+      document.getElementById('metricAF').textContent = Math.round(afQuote * 100) + '%';
       document.getElementById('metricHealth').textContent = Math.round(weightedScore * 100) + '%';
-      document.getElementById('metricBinge').textContent = neutralDaysSetting === 'ignore' ? 
-        `${bingeProximity} (${Math.round(bingeQuote * 100)}%)` : 
-        bingeProximity;
+      document.getElementById('metricBinge').textContent = bingeProximity;
       document.getElementById('metricCluster').textContent = maxCluster > 0 ? maxCluster + ' Tage' : 'Keiner';
 
       const badge = document.getElementById('assessmentBadge');
       badge.textContent = label;
       badge.className = 'assessment-badge ' + badgeClass;
 
-      // Zeige Basis-Info
-      const basisInfo = neutralDaysSetting === 'ignore' ? 
-        `<div style="text-align:center; font-size:12px; color:var(--muted); margin-bottom:12px;">📊 Basierend auf <strong>${enteredDays} von 100 Tagen</strong></div>` :
-        `<div style="text-align:center; font-size:12px; color:var(--muted); margin-bottom:12px;">📊 Basierend auf <strong>100 Tagen</strong> (${enteredDays} eingetragen, ${counts.empty} neutral gewertet)</div>`;
-
-      document.getElementById('assessmentDescription').innerHTML = basisInfo + description + (humorQuote ? '<br><br>' + humorQuote : '');
+      document.getElementById('assessmentDescription').innerHTML = description + (humorQuote ? '<br><br>' + humorQuote : '');
 
       const warningEl = document.getElementById('assessmentWarning');
       if(warning || extraWarnings){
@@ -1720,76 +1231,6 @@
       editingDate = null;
     }
 
-    /* Einstellung für neutrale Tage */
-    function selectNeutralOption(option){
-      // Update global variable
-      neutralDaysSetting = option;
-      
-      // Save to localStorage
-      const settings = JSON.parse(localStorage.getItem('boozeTrackerSettings') || '{}');
-      settings.neutralDays = option;
-      localStorage.setItem('boozeTrackerSettings', JSON.stringify(settings));
-      
-      // Update UI
-      document.querySelectorAll('.settings-option').forEach(el => el.classList.remove('selected'));
-      document.querySelectorAll('input[name="neutralDays"]').forEach(el => {
-        el.checked = (el.value === option);
-        if(el.checked) el.closest('.settings-option').classList.add('selected');
-      });
-      
-      // Recalculate assessment
-      calculateHealthAssessment();
-    }
-
-    /* AUDIT-C Score Berechnung */
-    function calculateAuditScore(){
-      const q1 = parseInt(document.querySelector('input[name="auditQ1"]:checked')?.value);
-      const q2 = parseInt(document.querySelector('input[name="auditQ2"]:checked')?.value);
-      const q3 = parseInt(document.querySelector('input[name="auditQ3"]:checked')?.value);
-
-      if(isNaN(q1) || isNaN(q2) || isNaN(q3)){
-        alert('Bitte beantworte alle 3 Fragen!');
-        return;
-      }
-
-      const score = q1 + q2 + q3;
-      const gender = document.getElementById('auditGender').value;
-      
-      let risk, riskClass, riskText;
-      
-      if(score === 0){
-        risk = 'Niedriges Risiko';
-        riskClass = 'low';
-        riskText = 'Abstinenz oder sehr geringer Konsum. Kein Hinweis auf problematischen Alkoholkonsum. Weiter so! 💚';
-      } else if((gender === 'female' && score < 3) || (gender === 'male' && score < 4)){
-        risk = 'Geringes Risiko';
-        riskClass = 'low';
-        riskText = 'Dein Konsum liegt im unteren Bereich. Achte weiterhin auf Maßhalten und vermeide Rauschsituationen.';
-      } else if(score < 5){
-        risk = 'Riskanter Konsum';
-        riskClass = 'medium';
-        riskText = 'Dein Konsum ist potenziell schädlich für deine Gesundheit. Erwäge eine Reduzierung und sprich ggf. mit einem Arzt oder einer Beratungsstelle. WHO-Empfehlung: Reduziere Frequenz und Menge!';
-      } else {
-        risk = 'Hohes Risiko';
-        riskClass = 'high';
-        riskText = 'Hohes Risiko für Alkohol Use Disorder (AUD). Professionelle Beratung wird dringend empfohlen! Kontaktiere: SAMHSA-Hotline (USA: 1-800-662-4357), DHS-Suchtberatung oder deine*n Hausarzt*ärztin.';
-      }
-
-      const resultDiv = document.getElementById('auditResult');
-      resultDiv.className = 'audit-result ' + riskClass;
-      resultDiv.innerHTML = `
-        <strong>AUDIT-C Score: ${score} von 12</strong>
-        <strong style="font-size: 14px; margin-top: 8px; display: block;">${risk}</strong>
-        ${riskText}
-        <br><br>
-        <small><strong>Wichtig:</strong> Dies ist ein Screening-Tool, keine Diagnose. Bei Score ≥${gender === 'female' ? '3' : '4'} empfiehlt die WHO eine professionelle Abklärung. Mehr Info: <a href="https://www.who.int/tools/audit" target="_blank" style="color: inherit; text-decoration: underline;">WHO AUDIT</a></small>
-      `;
-      resultDiv.style.display = 'block';
-
-      // Scroll zum Ergebnis
-      resultDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-    }
-
     /* Chart Popup */
     function toggleChartPopup(){
       const popup = document.getElementById('chartPopup');
@@ -1803,72 +1244,9 @@
       } else {
         calculate100DaysChart();
         calculateHealthAssessment();
-        
-        // Setze die richtige Settings-Option
-        const radio = document.querySelector(`input[name="neutralDays"][value="${neutralDaysSetting}"]`);
-        if(radio){
-          radio.checked = true;
-          radio.closest('.settings-option').classList.add('selected');
-        }
-        
         popup.classList.add('active');
         overlay.classList.add('active');
         popup.setAttribute('aria-hidden','false');
-      }
-    }
-
-    /* Settings Popup */
-    function toggleSettingsPopup(){
-      const popup = document.getElementById('settingsPopup');
-      const overlay = document.getElementById('settingsOverlay');
-      const isActive = popup.classList.contains('active');
-      
-      if(isActive){
-        popup.classList.remove('active');
-        overlay.classList.remove('active');
-        popup.setAttribute('aria-hidden','true');
-      } else {
-        // Lade aktuelle Einstellung
-        const radio = document.querySelector(`input[name="neutralDays"][value="${neutralDaysSetting}"]`);
-        if(radio) radio.checked = true;
-        updateSettingsUI();
-        
-        popup.classList.add('active');
-        overlay.classList.add('active');
-        popup.setAttribute('aria-hidden','false');
-      }
-    }
-
-    function updateSettingsUI(){
-      // Update selected class
-      document.querySelectorAll('.settings-option').forEach(opt => opt.classList.remove('selected'));
-      const selectedOption = document.querySelector(`input[name="neutralDays"]:checked`);
-      if(selectedOption){
-        selectedOption.closest('.settings-option').classList.add('selected');
-      }
-    }
-
-    function saveSettings(){
-      const selected = document.querySelector('input[name="neutralDays"]:checked');
-      if(selected){
-        neutralDaysSetting = selected.value;
-        
-        // Speichern
-        if(storageWorking){
-          try{
-            localStorage.setItem('alcoholTrackerSettings', JSON.stringify({
-              neutralDays: neutralDaysSetting
-            }));
-          }catch(e){
-            console.warn('Settings konnten nicht gespeichert werden:', e);
-          }
-        }
-        
-        // Popup schließen
-        toggleSettingsPopup();
-        
-        // Info anzeigen
-        alert('✅ Einstellungen gespeichert! Die Statistik wird beim nächsten Öffnen mit den neuen Einstellungen berechnet.');
       }
     }
 
