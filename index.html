@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Alkohol Tracker</title>
+  <title>Rads wunderbarer Booze-Tracker</title>
   <style>
     :root{
       --bg-grad-start:#6ea8ff;
@@ -201,6 +201,106 @@
     .chart-bar.negative{ background: linear-gradient(180deg, #ef4444, #dc2626); }
     .chart-bar.positive{ background: linear-gradient(180deg, #10b981, #059669); }
 
+    /* Balkendiagramm für 100 Tage */
+    .chart-section{
+      margin: 18px 0;
+      padding: 16px;
+      background: #f9fafb;
+      border: 1px solid #e5e7eb;
+      border-radius: 14px;
+    }
+    .chart-title{
+      font-weight: 700;
+      font-size: 16px;
+      margin-bottom: 14px;
+      text-align: center;
+      color: var(--text);
+    }
+    .chart-bars{
+      display: flex;
+      gap: 16px;
+      margin-bottom: 10px;
+    }
+    .chart-bar-container{
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .chart-bar-label{
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--muted);
+      text-align: center;
+    }
+    .chart-bar-wrapper{
+      height: 180px;
+      background: #e5e7eb;
+      border-radius: 8px;
+      position: relative;
+      display: flex;
+      align-items: flex-end;
+      overflow: hidden;
+    }
+    .chart-bar{
+      width: 100%;
+      transition: height 0.8s ease;
+      border-radius: 8px 8px 0 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      color: white;
+      font-size: 18px;
+    }
+    .chart-bar.negative{ background: linear-gradient(180deg, #ef4444, #dc2626); }
+    .chart-bar.positive{ background: linear-gradient(180deg, #10b981, #059669); }
+
+    /* Chart-Popup */
+    .chart-popup{
+      position: fixed; 
+      left: 50%; 
+      top: 50%; 
+      transform: translate(-50%, -50%);
+      background: #ffffff; 
+      border: 1px solid #e5e7eb; 
+      border-radius: 16px; 
+      box-shadow: 0 20px 40px rgba(31,41,55,.2);
+      padding: 20px; 
+      width: min(560px, 92vw); 
+      display: none; 
+      z-index: 1001;
+    }
+    .chart-popup.active{ display: block; }
+    .chart-popup-overlay{
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0,0,0,0.4);
+      display: none;
+      z-index: 1000;
+    }
+    .chart-popup-overlay.active{ display: block; }
+
+    /* Unauffälliger Button */
+    .btn-stats-toggle{
+      background: transparent;
+      border: 1px solid #e5e7eb;
+      color: var(--muted);
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-size: 13px;
+      cursor: pointer;
+      transition: all .2s ease;
+    }
+    .btn-stats-toggle:hover{
+      background: #f9fafb;
+      color: var(--text);
+      border-color: #cbd5e1;
+    }
+
     .legend{
       display:flex; flex-wrap:wrap; gap:10px 14px; margin: 10px 0 14px; color:var(--muted); font-size: 13px;
     }
@@ -300,17 +400,21 @@
   <div class="container">
     <!-- Tag-Eingabe Ansicht -->
     <div id="dayInputView" class="view active">
-      <h1>🍷 Alkohol Tracker</h1>
+      <h1>🍷 Rads wunderbarer Booze-Tracker</h1>
       <div class="current-date" id="currentDateDisplay"></div>
 
       <div class="choice-container" role="group" aria-label="Tagesauswahl">
-        <label class="choice-option sober">
-          <input type="radio" name="dayChoice" value="sober" />
-          <span>🟢 Alkoholfrei – Kein Alkohol getrunken</span>
+        <label class="choice-option superday">
+          <input type="radio" name="dayChoice" value="superday" />
+          <span>⭐ Supertag – Alkoholfrei + Sport gemacht!</span>
         </label>
         <label class="choice-option wellness">
           <input type="radio" name="dayChoice" value="wellness" />
           <span>💚 Wellness – Alkoholfrei + Sauna/Gesundheit</span>
+        </label>
+        <label class="choice-option sober">
+          <input type="radio" name="dayChoice" value="sober" />
+          <span>🟢 Alkoholfrei – Kein Alkohol getrunken</span>
         </label>
         <label class="choice-option moderate">
           <input type="radio" name="dayChoice" value="moderate" />
@@ -323,10 +427,6 @@
         <label class="choice-option alcohol">
           <input type="radio" name="dayChoice" value="alcohol" />
           <span>🔴 Alkohol – Viel Alkohol getrunken</span>
-        </label>
-        <label class="choice-option superday">
-          <input type="radio" name="dayChoice" value="superday" />
-          <span>⭐ Supertag – Alkoholfrei + Sport gemacht!</span>
         </label>
       </div>
 
@@ -346,7 +446,7 @@
 
     <!-- Monats-Übersicht -->
     <div id="monthView" class="view">
-      <h1>📊 Alkohol-Übersicht</h1>
+      <h1>📊 Booze-Übersicht</h1>
 
       <div class="month-head">
         <div class="month-title" id="monthHeader">—</div>
@@ -370,35 +470,21 @@
         </div>
       </div>
 
-      <!-- Balkendiagramm für 100 Tage -->
-      <div class="chart-section">
-        <div class="chart-title">Letzte 100 Tage im Überblick</div>
-        <div class="chart-bars">
-          <div class="chart-bar-container">
-            <div class="chart-bar-wrapper">
-              <div class="chart-bar negative" id="chartNegative" style="height: 0%;">0</div>
-            </div>
-            <div class="chart-bar-label">Unter 50%<br><small>(Alkohol, Gemischt, Moderat)</small></div>
-          </div>
-          <div class="chart-bar-container">
-            <div class="chart-bar-wrapper">
-              <div class="chart-bar positive" id="chartPositive" style="height: 0%;">0</div>
-            </div>
-            <div class="chart-bar-label">Über 50%<br><small>(Alkoholfrei, Wellness, Supertag)</small></div>
-          </div>
-        </div>
-      </div>
-
       <div class="legend">
-        <span>🟢 Alkoholfrei</span>
+        <span>⭐ Supertag</span>
         <span>💚 Wellness</span>
+        <span>🟢 Alkoholfrei</span>
         <span>🟡 Moderat</span>
         <span>❤️ Gemischt</span>
         <span>🔴 Alkohol</span>
-        <span>⭐ Supertag</span>
       </div>
 
       <div id="monthGrid" class="cal" aria-label="Kalender"></div>
+
+      <!-- Unauffälliger Button für Statistik -->
+      <div style="text-align: center; margin-top: 16px;">
+        <button class="btn-stats-toggle" onclick="toggleChartPopup()">📊 100-Tage-Statistik</button>
+      </div>
 
       <section class="support">
         <p><strong>Findest diese kleine Anwendung nützlich?</strong> Dann spendier mir doch einen Kaffee:</p>
@@ -431,15 +517,38 @@
     <div id="editPopup" class="edit-pop" aria-hidden="true">
       <div class="edit-title" id="editDate">Datum</div>
       <div class="edit-grid">
-        <button class="edit-option sober" onclick="updateDay('sober')">🟢 Alkoholfrei</button>
+        <button class="edit-option superday" onclick="updateDay('superday')">⭐ Supertag</button>
         <button class="edit-option wellness" onclick="updateDay('wellness')">💚 Wellness</button>
+        <button class="edit-option sober" onclick="updateDay('sober')">🟢 Alkoholfrei</button>
         <button class="edit-option moderate" onclick="updateDay('moderate')">🟡 Moderat</button>
         <button class="edit-option mixed" onclick="updateDay('mixed')">❤️ Gemischt</button>
         <button class="edit-option alcohol" onclick="updateDay('alcohol')">🔴 Alkohol</button>
-        <button class="edit-option superday" onclick="updateDay('superday')">⭐ Supertag</button>
         <button class="edit-option delete" onclick="updateDay('delete')">🗑️ Tag löschen</button>
         <button class="btn secondary" onclick="closeEditPopup()">Abbrechen</button>
       </div>
+    </div>
+
+    <!-- Chart-Popup -->
+    <div class="chart-popup-overlay" id="chartOverlay" onclick="toggleChartPopup()"></div>
+    <div id="chartPopup" class="chart-popup" aria-hidden="true">
+      <div class="chart-section" style="margin: 0; border: none; background: transparent; padding: 0;">
+        <div class="chart-title">Letzte 100 Tage im Überblick</div>
+        <div class="chart-bars">
+          <div class="chart-bar-container">
+            <div class="chart-bar-wrapper">
+              <div class="chart-bar negative" id="chartNegative" style="height: 0%;">0</div>
+            </div>
+            <div class="chart-bar-label">Unter 50%<br><small>(Alkohol, Gemischt, Moderat)</small></div>
+          </div>
+          <div class="chart-bar-container">
+            <div class="chart-bar-wrapper">
+              <div class="chart-bar positive" id="chartPositive" style="height: 0%;">0</div>
+            </div>
+            <div class="chart-bar-label">Über 50%<br><small>(Alkoholfrei, Wellness, Supertag)</small></div>
+          </div>
+        </div>
+      </div>
+      <button class="btn secondary" style="margin-top: 14px;" onclick="toggleChartPopup()">Schließen</button>
     </div>
 
     <footer>© 2025 by R. Duwenbeck</footer>
@@ -605,7 +714,6 @@
       updateMonthView();
       calculateStreak();
       calculateSuccessRate();
-      calculate100DaysChart();
     }
     function showDayInput(){
       document.getElementById('monthView').classList.remove('active');
@@ -689,6 +797,24 @@
       editingDate = null;
     }
 
+    /* Chart Popup */
+    function toggleChartPopup(){
+      const popup = document.getElementById('chartPopup');
+      const overlay = document.getElementById('chartOverlay');
+      const isActive = popup.classList.contains('active');
+      
+      if(isActive){
+        popup.classList.remove('active');
+        overlay.classList.remove('active');
+        popup.setAttribute('aria-hidden','true');
+      } else {
+        calculate100DaysChart();
+        popup.classList.add('active');
+        overlay.classList.add('active');
+        popup.setAttribute('aria-hidden','false');
+      }
+    }
+
     function updateDay(action){
       if(!editingDate) return;
       const key = formatDateKey(editingDate);
@@ -700,7 +826,6 @@
       updateMonthView();
       calculateStreak();
       calculateSuccessRate();
-      calculate100DaysChart();
     }
 
     function previousMonth(){ currentViewDate.setMonth(currentViewDate.getMonth()-1); updateMonthView(); calculateStreak(); calculateSuccessRate(); }
@@ -748,6 +873,7 @@
     window.closeEditPopup = closeEditPopup;
     window.updateDay = updateDay;
     window.resetStorage = resetStorage;
+    window.toggleChartPopup = toggleChartPopup;
 
     // Init
     document.addEventListener('DOMContentLoaded', ()=>{
