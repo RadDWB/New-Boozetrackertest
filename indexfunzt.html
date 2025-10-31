@@ -20,7 +20,7 @@
       --danger:#ef4444;
       --super:#059669;
       --wellness:#22c55e;
-      --mixed:#dc2626;  /* Dunkleres Rot für Gemischt */
+      --mixed:#dc2626;  /* Dunkleres Rot für Schadensbegrenzung */
       --radius:16px;
       --shadow:0 12px 30px rgba(31,41,55,.12);
     }
@@ -907,17 +907,6 @@
       <h1>🍷 Ralles wunderbarer Booze-Tracker</h1>
       <div class="current-date" id="currentDateDisplay"></div>
 
-      <div style="margin-top: 16px;">
-        <label for="dayCommentInput" style="display: block; font-size: 14px; font-weight: 600; margin-bottom: 8px; color: var(--text);">
-          💬 Kommentar (optional):
-        </label>
-        <textarea 
-          id="dayCommentInput" 
-          placeholder="Notizen zum Tag (z.B. Anlass, Gefühle, Situation)..."
-          style="width: 100%; min-height: 80px; padding: 10px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 13px; font-family: inherit; resize: vertical;"
-        ></textarea>
-      </div>
-
       <div class="choice-container" role="group" aria-label="Tagesauswahl">
         <label class="choice-option superday">
           <input type="radio" name="dayChoice" value="superday" />
@@ -943,6 +932,17 @@
           <input type="radio" name="dayChoice" value="alcohol" />
           <span>🔴 Alkohol – Viel Alkohol getrunken</span>
         </label>
+      </div>
+
+      <div style="margin-top: 16px;">
+        <label for="dayCommentInput" style="display: block; font-size: 14px; font-weight: 600; margin-bottom: 8px; color: var(--text);">
+          💬 Kommentar (optional):
+        </label>
+        <textarea 
+          id="dayCommentInput" 
+          placeholder="Notizen zum Tag (z.B. Anlass, Gefühle, Situation)..."
+          style="width: 100%; min-height: 80px; padding: 10px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 13px; font-family: inherit; resize: vertical;"
+        ></textarea>
       </div>
 
       <div class="submit-row">
@@ -990,7 +990,7 @@
         <span>💚 Wellness</span>
         <span>🟢 Alkoholfrei</span>
         <span>🟡 Moderat</span>
-        <span>❤️ Gemischt</span>
+        <span>❤️ Schadensbegrenzung</span>
         <span>🔴 Alkohol</span>
       </div>
 
@@ -1055,7 +1055,7 @@
 
       <div class="edit-grid" style="margin-top: 16px;">
         <button class="edit-option delete" onclick="updateDay('delete')">🗑️ Tag löschen</button>
-        <button class="btn secondary" onclick="closeEditPopup()">Schließen</button>
+        <button class="btn secondary" onclick="closeEditPopup()">Abbrechen</button>
       </div>
     </div>
 
@@ -1070,7 +1070,7 @@
             <div class="chart-bar-header">
               <div class="chart-bar-label">
                 🔴 Unter 50%
-                <small>Alkohol, Gemischt, Moderat</small>
+                <small>Alkohol, "Schadensbegrenzung", Moderat</small>
               </div>
               <div class="chart-bar-value">
                 <span class="chart-bar-number" id="chartNegativeNum">0</span>
@@ -1135,7 +1135,7 @@
                   • Wellness = 90% (Sehr gut)<br>
                   • Alkoholfrei = 75% (Gut)<br>
                   • Moderat = 40% (Risiko-arm)<br>
-                  • Gemischt = 25% (Kompensiert nichts)<br>
+                  • Schadenbegrenzung = 25% (Kompensiert nichts)<br>
                   • Viel = 0% (Schädlich)
                 </span>
               </span>
@@ -1149,7 +1149,7 @@
                 ℹ
                 <span class="metric-tooltip">
                   Zählt Hochrisiko-Tage:<br>
-                  <strong>"Viel Alkohol" + "Gemischt"</strong><br><br>
+                  <strong>"Viel Alkohol" + "Schadensbegrenzung"</strong><br><br>
                   ⚠️ <strong>Ab 13/100</strong> (≈ wöchentlich):<br>
                   Erhöhtes Risiko (RKI/WHO)<br><br>
                   🚨 <strong>Ab 20/100</strong> (≈ mehrmals wöchentlich):<br>
@@ -1366,20 +1366,6 @@
         </div>
       </div>
 
-      <!-- Backup & Wiederherstellung (nur lokal) -->
-      <div class="settings-section">
-        <div class="settings-section-title">🗄️ Daten-Backup (lokal)</div>
-        <div class="settings-description">
-          Export/Import laufen ausschließlich im Browser. Es werden <strong>keine</strong> Daten hochgeladen.
-        </div>
-        <div class="submit-row" style="margin-top: 8px;">
-          <button class="btn secondary" onclick="exportData()">📤 Daten exportieren</button>
-          <button class="btn secondary" onclick="importData()">📥 Daten importieren</button>
-        </div>
-        <p class="settings-description" style="margin-top:10px;">
-          Hinweis: Beim Import werden vorhandene Tage <em>gemerged</em> (gleiche Tage werden überschrieben).
-        </p>
-      </div>
       <button class="btn" style="width: 100%;" onclick="saveSettings()">Einstellungen speichern</button>
     </div>
 
@@ -1651,7 +1637,7 @@
         extraWarnings += '<br>🔥 <strong>Cluster-Stürmer erkannt:</strong> ' + maxCluster + ' Hochrisiko-Tage am Stück bedeuten deutlichen Risiko-Spike!';
       }
       if(counts.mixed >= 15){
-        extraWarnings += '<br>💊 <strong>Schadensbegrenzungs-Illusionist:</strong> Sport kaschiert Alkoholrisiken, senkt sie aber NICHT substanziell (WHO). ' + counts.mixed + ' "Gemischt"-Tage zeigen ein problematisches Muster.';
+        extraWarnings += '<br>💊 <strong>Schadensbegrenzungs-Illusionist:</strong> Sport kaschiert Alkoholrisiken, senkt sie aber NICHT substanziell (WHO). ' + counts.mixed + ' "Schadensbegrenzung"-Tage zeigen ein problematisches Muster.';
       }
 
       // UI aktualisieren
@@ -2050,9 +2036,7 @@
         btn.textContent = '✅ Gespeichert!';
         setTimeout(() => btn.textContent = originalText, 1200);
       }
-    
-      closeEditPopup();
-}
+    }
 
     function previousMonth(){ currentViewDate.setMonth(currentViewDate.getMonth()-1); updateMonthView(); calculateStreak(); calculateSuccessRate(); }
     function nextMonth(){     currentViewDate.setMonth(currentViewDate.getMonth()+1); updateMonthView(); calculateStreak(); calculateSuccessRate(); }
@@ -2118,102 +2102,6 @@
       document.getElementById('submitDay').addEventListener('click', saveDay);
       updateDayInputView();
     });
-  
-/* ---------------------------
-   Backup & Restore (local)
---------------------------- */
-function exportData(){
-  try{
-    const settingsRawA = localStorage.getItem('alcoholTrackerSettings');
-    const settingsRawB = localStorage.getItem('boozeTrackerSettings');
-    let settings = {};
-    try{ if(settingsRawA) settings = JSON.parse(settingsRawA) || {}; }catch{}
-    try{ if(settingsRawB) settings = { ...settings, ...(JSON.parse(settingsRawB)||{}) }; }catch{}
-    settings.neutralDays = (typeof neutralDaysSetting !== 'undefined' ? neutralDaysSetting : (settings.neutralDays || 'ignore'));
-
-    const payload = {
-      type: 'booze-tracker-backup',
-      version: 1,
-      exportedAt: new Date().toISOString(),
-      dayData,
-      settings
-    };
-
-    const blob = new Blob([JSON.stringify(payload, null, 2)], {type:'application/json'});
-    const url  = URL.createObjectURL(blob);
-    const a    = document.createElement('a');
-    a.href = url;
-    a.download = 'booze-tracker-backup.json';
-    a.click();
-    URL.revokeObjectURL(url);
-    alert('✅ Export abgeschlossen. Datei wurde heruntergeladen.');
-  }catch(e){
-    console.error(e);
-    alert('❌ Export fehlgeschlagen.');
-  }
-}
-
-function importData(){
-  const input = document.createElement('input');
-  input.type = 'file';
-  input.accept = '.json,application/json';
-  input.onchange = e => {
-    const file = e.target.files && e.target.files[0];
-    if(!file) return;
-    const reader = new FileReader();
-    reader.onload = ev => {
-      try{
-        const parsed = JSON.parse(ev.target.result);
-        let importedDayData;
-        let importedSettings;
-
-        if(parsed && parsed.dayData){
-          importedDayData = parsed.dayData;
-          importedSettings = parsed.settings || {};
-        } else {
-          importedDayData = parsed;
-          importedSettings = {};
-        }
-
-        const isDateKey = k => /^\d{4}-\d{1,2}-\d{1,2}$/.test(k);
-        const validEntries = {};
-        Object.keys(importedDayData || {}).forEach(k=>{
-          if(isDateKey(k)){
-            const v = importedDayData[k];
-            if(typeof v === 'string'){
-              validEntries[k] = { status: v, comment: '' };
-            }else if(v && typeof v === 'object' && typeof v.status === 'string'){
-              validEntries[k] = { status: v.status, comment: v.comment || '' };
-            }
-          }
-        });
-
-        dayData = { ...dayData, ...validEntries };
-
-        const newNeutral = importedSettings.neutralDays;
-        if(newNeutral){
-          window.neutralDaysSetting = newNeutral;
-          try{
-            localStorage.setItem('alcoholTrackerSettings', JSON.stringify({ neutralDays: newNeutral }));
-            localStorage.setItem('boozeTrackerSettings', JSON.stringify({ neutralDays: newNeutral }));
-          }catch{}
-        }
-
-        saveData();
-        alert('✅ Daten importiert. Die Ansicht wird aktualisiert.');
-        location.reload();
-      }catch(err){
-        console.error(err);
-        alert('❌ Ungültige Datei oder JSON-Format.');
-      }
-    };
-    reader.readAsText(file);
-  };
-  input.click();
-}
-
-window.exportData = exportData;
-window.importData = importData;
-</script>
+  </script>
 </body>
 </html>
