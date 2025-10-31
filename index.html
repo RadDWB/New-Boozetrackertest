@@ -20,7 +20,7 @@
       --danger:#ef4444;
       --super:#059669;
       --wellness:#22c55e;
-      --mixed:#dc2626;  /* Dunkleres Rot für Gemischt */
+      --mixed:#dc2626;  /* Dunkleres Rot für Schadensbegrenzung */
       --radius:16px;
       --shadow:0 12px 30px rgba(31,41,55,.12);
     }
@@ -990,7 +990,7 @@
         <span>💚 Wellness</span>
         <span>🟢 Alkoholfrei</span>
         <span>🟡 Moderat</span>
-        <span>❤️ Gemischt</span>
+        <span>❤️ Schadensbegrenzung</span>
         <span>🔴 Alkohol</span>
       </div>
 
@@ -1070,7 +1070,7 @@
             <div class="chart-bar-header">
               <div class="chart-bar-label">
                 🔴 Unter 50%
-                <small>Alkohol, Gemischt, Moderat</small>
+                <small>Alkohol, "Schadensbegrenzung", Moderat</small>
               </div>
               <div class="chart-bar-value">
                 <span class="chart-bar-number" id="chartNegativeNum">0</span>
@@ -1135,7 +1135,7 @@
                   • Wellness = 90% (Sehr gut)<br>
                   • Alkoholfrei = 75% (Gut)<br>
                   • Moderat = 40% (Risiko-arm)<br>
-                  • Gemischt = 25% (Kompensiert nichts)<br>
+                  • Schadenbegrenzung = 25% (Kompensiert nichts)<br>
                   • Viel = 0% (Schädlich)
                 </span>
               </span>
@@ -1149,7 +1149,7 @@
                 ℹ
                 <span class="metric-tooltip">
                   Zählt Hochrisiko-Tage:<br>
-                  <strong>"Viel Alkohol" + "Gemischt"</strong><br><br>
+                  <strong>"Viel Alkohol" + "Schadensbegrenzung"</strong><br><br>
                   ⚠️ <strong>Ab 13/100</strong> (≈ wöchentlich):<br>
                   Erhöhtes Risiko (RKI/WHO)<br><br>
                   🚨 <strong>Ab 20/100</strong> (≈ mehrmals wöchentlich):<br>
@@ -1637,7 +1637,7 @@
         extraWarnings += '<br>🔥 <strong>Cluster-Stürmer erkannt:</strong> ' + maxCluster + ' Hochrisiko-Tage am Stück bedeuten deutlichen Risiko-Spike!';
       }
       if(counts.mixed >= 15){
-        extraWarnings += '<br>💊 <strong>Schadensbegrenzungs-Illusionist:</strong> Sport kaschiert Alkoholrisiken, senkt sie aber NICHT substanziell (WHO). ' + counts.mixed + ' "Gemischt"-Tage zeigen ein problematisches Muster.';
+        extraWarnings += '<br>💊 <strong>Schadensbegrenzungs-Illusionist:</strong> Sport kaschiert Alkoholrisiken, senkt sie aber NICHT substanziell (WHO). ' + counts.mixed + ' "Schadensbegrenzung"-Tage zeigen ein problematisches Muster.';
       }
 
       // UI aktualisieren
