@@ -1517,16 +1517,30 @@
             const isDateKey = k => /^\d{4}-\d{1,2}-\d{1,2}$/.test(k);
             const validEntries = {};
             
-            Object.keys(importedDayData).forEach(k => {
-              if (isDateKey(k)) {
-                const v = importedDayData[k];
-                if (typeof v === 'string') {
-                  validEntries[k] = {status: v, comment: ''};
-                } else if (v && typeof v === 'object' && v.status) {
-                  validEntries[k] = {...v};
-                }
-              }
-            });
+           // BEGIN: Normalisierte Übernahme (Padding + Gültigkeitscheck)
+           Object.keys(importedDayData).forEach(k => {
+             if (!isDateKey(k)) return;
+
+             const parts = k.split('-').map(n => parseInt(n, 10));
+             const y = parts[0], m = parts[1], d = parts[2];
+             if (!(y && m && d)) return;
+
+             // echte Datumsgültigkeit prüfen (droppe unmögliche Tage)
+             const dt = new Date(y, m - 1, d);
+             if (dt.getFullYear() !== y || (dt.getMonth() + 1) !== m || dt.getDate() !== d) return;
+
+             // Zero-Padding auf YYYY-MM-DD
+             const normKey = `${y}-${pad(m)}-${pad(d)}`;
+
+             const v = importedDayData[k];
+             if (typeof v === 'string') {
+               validEntries[normKey] = { status: v, comment: '' };
+             } else if (v && typeof v === 'object' && v.status) {
+               validEntries[normKey] = { ...v };
+             }
+           });
+           // END
+
 
             dayData = {...dayData, ...validEntries};
             
