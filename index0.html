@@ -682,7 +682,7 @@
           <input type="radio" name="dayChoice" value="moderate" />
           <div class="choice-label">
             <div>🟡 Moderat</div>
-            <div class="choice-desc">Wenig Alkohol (≤20g)</div>
+            <div class="choice-desc">Wenig Alkohol (≤20g) - auch mit Sport ok 👟</div>
           </div>
           <div class="choice-warning">⚠️ Auto-Vorschlag passt nicht zur Eingabe!</div>
         </label>
@@ -691,7 +691,7 @@
           <input type="radio" name="dayChoice" value="mixed" />
           <div class="choice-label">
             <div>❤️ Schadensbegrenzung</div>
-            <div class="choice-desc">Selbstbetrug = Sport + feiern (viel Alk)</div>
+            <div class="choice-desc">Selbstbetrug = Sport + feiern (21-60g)</div>
           </div>
           <div class="choice-warning">⚠️ Auto-Vorschlag passt nicht zur Eingabe!</div>
         </label>
@@ -709,7 +709,7 @@
           <input type="radio" name="dayChoice" value="hangover" />
           <div class="choice-label">
             <div>😵 Katertag</div>
-            <div class="choice-desc">Totalabsturz / Hangover</div>
+            <div class="choice-desc">Totalabsturz / Hangover (mit/ohne Weiter-Alkohol)</div>
           </div>
           <div class="choice-warning">⚠️ Auto-Vorschlag passt nicht zur Eingabe!</div>
         </label>
@@ -844,10 +844,10 @@
         <span>⭐ Supertag</span>
         <span>💚 Wellness</span>
         <span>🟢 Alkoholfrei</span>
-        <span>🟡 Moderat</span>
+        <span>🟡 Moderat (👟 = mit Sport)</span>
         <span>❤️ Schadensbegrenzung</span>
         <span>🔴 Alkohol</span>
-        <span>😵 Katertag</span>
+        <span>😵 Katertag (⚠️ = mit Weiter-Alkohol)</span>
       </div>
 
       <div id="monthGrid" class="cal" aria-label="Kalender"></div>
@@ -1491,16 +1491,27 @@
 
     function suggestCategory(grams, sport, crash, hangover) {
       // Korrigierte Auto-Reklassifikation
-      if (crash || hangover) return 'hangover';
+      if (crash) return 'hangover'; // Totalabsturz = immer Katertag
+      if (hangover && grams > 0) return 'hangover'; // Katertag MIT Alkohol = sehr problematisch
+      if (hangover && grams === 0) return 'hangover'; // Katertag OHNE Alkohol = normal
+      
       if (grams === 0) {
         return sport ? 'superday' : 'sober';
       }
-      if (sport && grams <= 40) {
-        return 'mixed'; // Schadensbegrenzung
+      
+      // FIX: Schadensbegrenzung erst ab 21g + Sport
+      if (sport && grams >= 21 && grams <= 60) {
+        return 'mixed'; // Schadensbegrenzung = Selbstbetrug
       }
+      
       if (grams <= 20) {
-        return 'moderate';
+        return 'moderate'; // Moderat - auch mit Sport!
       }
+      
+      if (grams > 60) {
+        return 'hangover'; // Extreme Menge = wahrscheinlich Totalabsturz
+      }
+      
       return 'alcohol';
     }
 
@@ -1746,9 +1757,32 @@
         const key = formatDateKey(dt);
         const st = getDayStatus(key);
         const comment = getDayComment(key);
+        const entry = dayData[key];
 
         if (st) cell.classList.add(st);
         if (dt.toDateString() === today.toDateString()) cell.classList.add('today');
+
+        // Sport-Marker bei moderaten Tagen
+        if (st === 'moderate' && entry && entry.sport) {
+          const sportIcon = document.createElement('span');
+          sportIcon.textContent = '👟';
+          sportIcon.style.cssText = 'position:absolute; bottom:2px; right:2px; font-size:10px;';
+          cell.appendChild(sportIcon);
+        }
+        
+        // Katertag-Differenzierung
+        if (st === 'hangover' && entry) {
+          const hasAlcohol = entry.totalAlcohol && entry.totalAlcohol > 0;
+          if (hasAlcohol) {
+            // Katertag MIT Alkohol = extrem problematisch
+            cell.style.background = '#991b1b'; // Dunkleres Rot
+            const warning = document.createElement('span');
+            warning.textContent = '⚠️';
+            warning.style.cssText = 'position:absolute; top:2px; left:2px; font-size:10px;';
+            cell.appendChild(warning);
+          }
+          // Ohne Alkohol: normales Grau bleibt
+        }
 
         if (comment) {
           cell.classList.add('has-comment');
@@ -1905,7 +1939,7 @@
 
     function calculateHealthAssessment() {
       const today = new Date();
-      let counts = {superday: 0, wellness: 0, sober: 0, moderate: 0, mixed: 0, alcohol: 0, hangover: 0, empty: 0};
+      let counts = {superday: 0, wellness: 0, sober: 0, moderate: 0, mixed: 0, alcohol: 0, hangover: 0, hangoverWithAlc: 0, empty: 0};
       const last100Days = [];
       
       for (let i = 0; i < 100; i++) {
@@ -1913,9 +1947,20 @@
         probe.setDate(probe.getDate() - i);
         const key = formatDateKey(probe);
         const st = getDayStatus(key);
-        last100Days.push(st || null);
-        if (st && counts[st] !== undefined) counts[st]++;
-        else if (!st) counts.empty++;
+        const entry = dayData[key];
+        
+        last100Days.push({st, entry});
+        
+        if (st && counts[st] !== undefined) {
+          counts[st]++;
+          
+          // Differenziere Katertage
+          if (st === 'hangover' && entry && entry.totalAlcohol && entry.totalAlcohol > 0) {
+            counts.hangoverWithAlc++;
+          }
+        } else if (!st) {
+          counts.empty++;
+        }
       }
       
       const enteredDays = 100 - counts.empty;
@@ -1934,6 +1979,9 @@
       const afCount = counts.superday + counts.wellness + counts.sober;
       const afQuote = afCount / divisor;
       
+      // Gewichtete Gesundheitsquote - KORRIGIERT
+      const hangoverClean = counts.hangover - counts.hangoverWithAlc; // Katertage OHNE Alkohol
+      
       const weightedScore = (
         counts.superday * 1.0 +
         counts.wellness * 0.9 +
@@ -1941,16 +1989,19 @@
         counts.moderate * 0.4 +
         counts.mixed * 0.25 +
         counts.alcohol * 0.0 +
-        counts.hangover * 0.0 +
+        hangoverClean * 0.1 +        // Katertag ohne Alkohol = 10% (leidet, aber trinkt nicht)
+        counts.hangoverWithAlc * 0.0 + // Katertag MIT Alkohol = 0% (doppelt problematisch!)
         counts.empty * neutralWeight
       ) / 100;
       
+      // Binge-Nähe inkl. problematische Katertage
       const bingeProximity = counts.alcohol + counts.mixed + counts.hangover;
       const bingeQuote = bingeProximity / divisor;
       
+      // Cluster-Erkennung
       let maxCluster = 0, currentCluster = 0;
-      for (const st of last100Days) {
-        if (st === 'alcohol' || st === 'mixed' || st === 'hangover') {
+      for (const day of last100Days) {
+        if (day.st === 'alcohol' || day.st === 'mixed' || day.st === 'hangover') {
           currentCluster++;
           maxCluster = Math.max(maxCluster, currentCluster);
         } else {
@@ -1960,31 +2011,46 @@
       
       let label, badgeClass, description, warning = '';
       
-      if (bingeProximity >= 40 || afQuote < 0.20 || (bingeQuote >= 0.40 && enteredDays >= 10)) {
+      // Spezial-Warnung bei Katertagen mit Alkohol
+      const morningDrinkingWarning = counts.hangoverWithAlc > 0 ? 
+        `<br><br>🚨 <strong>KRITISCH:</strong> ${counts.hangoverWithAlc} Katertag(e) mit Weiter-Alkohol! Dies ist ein DSM-5-Kriterium für schwere Alkoholabhängigkeit (morgendliches Trinken zur Linderung). Dringend professionelle Hilfe empfohlen!` : 
+        '';
+      
+      if (bingeProximity >= 40 || afQuote < 0.20 || (bingeQuote >= 0.40 && enteredDays >= 10) || counts.hangoverWithAlc >= 3) {
         label = '🚨 Sucht-Alarm: Rote Lampen!';
         badgeClass = 'red';
-        description = '<strong>Sehr hohes Risiko</strong> — Nähe zu häufigen Rauschlagen.';
-        warning = '🆘 Bitte professionelle Hilfe erwägen.';
-      } else if ((bingeProximity >= 20 && bingeProximity < 40) || (afQuote < 0.30 && afQuote >= 0.20) || (bingeQuote >= 0.20 && enteredDays >= 10)) {
+        description = '<strong>Sehr hohes Risiko / Potenzielle Abhängigkeit</strong> — Binge-Nähe (≥40/100 ≈ fast täglich) oder fast täglicher Konsum (AF-Quote <20%) zeigt extremes Risiko für Herz, Gehirn, Krebs und Leber. DSM-5-Warnzeichen für schwere AUD (6+ Kriterien): starkes Verlangen (Craving), Entzug, Kontrollverlust, Toleranz, Weitermachen trotz Schäden, Vernachlässigung anderer Aktivitäten.' + morningDrinkingWarning;
+        warning = '🆘 Professionelle Hilfe SOFORT empfohlen: SAMHSA-Hotline, lokale Suchtberatung, medizinisches Gespräch. Dies ist keine Diagnose, aber ein klares Signal! Ab AUDIT ≥ 8 Punkten ist professionelle Abklärung essentiell (ICD-10/DSM-5).';
+      } else if ((bingeProximity >= 20 && bingeProximity < 40) || (afQuote < 0.30 && afQuote >= 0.20) || (bingeQuote >= 0.20 && enteredDays >= 10) || counts.hangoverWithAlc >= 1) {
         label = '🎲 Risiko-Roulette';
         badgeClass = 'red';
-        description = '<strong>Hohes Risiko</strong> — Kritische Muster erkennbar.';
-        warning = '🚨 Gespräch/Screening empfohlen.';
+        description = '<strong>Hohes Risiko</strong> — Du spielst Russian Roulette mit deiner Gesundheit. Binge-Nähe (20-39/100 ≈ mehrmals wöchentlich) oder niedrige AF-Quote (20-29%) zeigen ein kritisches Muster. Hohes Risiko für Krebs, Leberzirrhose, Herz-Kreislauf-Erkrankungen und Unfälle. Sport kann diese Risiken NICHT kompensieren (WHO).' + morningDrinkingWarning;
+        warning = '🚨 Moderate bis schwere AUD wahrscheinlich (4-5 DSM-5-Kriterien wie Toleranz, soziale Probleme, Kontrollverlust). Medizinisches Gespräch und professionelle Beratung DRINGEND empfohlen!';
       } else if (afQuote <= 0.39 || (bingeProximity >= 13 && bingeProximity <= 19) || (bingeQuote >= 0.13 && enteredDays >= 10)) {
         label = '🚨 Kipppunkt-Kandidat';
         badgeClass = 'weekend';
-        description = 'Erhöhtes Risiko — Schwelle erreicht.';
+        description = '<strong>Erhöhtes Risiko – Kritische Schwelle erreicht</strong> — Deine AF-Quote (<40%) oder Binge-Nähe (13-19/100 ≈ wöchentlich) liegt im WHO-Risikolevel "moderat bis hoch". Du befindest dich an einem Kipppunkt: Häufige Rauschsituationen sind nachweisliche Treiber für Leber-, Krebs- und Herzprobleme.';
+        warning = '⚠️ Dringend empfohlen: AUDIT-Screening durchführen! Sport neutralisiert Alkoholrisiken NICHT (WHO/DHS). Potenziell mildes AUD bei 2-3 DSM-5-Kriterien (z.B. Kontrollverlust, mehr trinken als geplant).';
       } else if (afQuote >= 0.40 && afQuote < 0.70 && bingeProximity <= 12) {
         label = '🧘 Balance-Buddha';
         badgeClass = 'balance';
-        description = 'Moderates Risiko.';
+        description = '<strong>Moderates Risiko</strong> — Du meditierst mit einem Glas Wasser – zen, aber nicht fanatisch! AF-Quote 40-69% ist solide. Prüfe kritisch: Bleiben "moderate" Tage wirklich moderat (≤2 Einheiten/Woche nach DGE)? Binge-Events (≤12/100 ≈ höchstens viertel- bis monatlich) sind überschaubar.';
+        warning = 'Tipp: Mehr Supertage/Wellness-Tage einstreuen – Sport + Abstinenz = doppelter Gesundheitsboost!';
       } else {
         label = '🦸 Leber-Superheld';
         badgeClass = 'zen';
-        description = 'Niedriges Risiko.';
+        description = '<strong>Niedriges Gesamtrisiko</strong> — Du bist der Batman der Bars – unsichtbar für Alkohol! Deine alkoholfreien Tage (≥70%) mit sportlichen/erholsamen Puffern zeigen ein vorbildliches Muster. Binge-Events sind selten (≤4/100 Tage ≈ seltener als monatlich). Deine Leber schickt dir Dankeskarten! 💚';
+        warning = '⚠️ Trotzdem kein "Freifahrtschein" – WHO empfiehlt weiterhin Wachsamkeit.';
       }
       
-      if (maxCluster >= 3) warning += `<br>🔥 Cluster: ${maxCluster} Tage am Stück.`;
+      // Sonder-Warnungen
+      let extraWarnings = '';
+      if (maxCluster >= 3) {
+        extraWarnings += `<br>🔥 <strong>Cluster-Stürmer erkannt:</strong> ${maxCluster} Hochrisiko-Tage am Stück bedeuten deutlichen Risiko-Spike!`;
+      }
+      if (counts.mixed >= 15) {
+        extraWarnings += `<br>💊 <strong>Schadensbegrenzungs-Illusionist:</strong> Sport kaschiert Alkoholrisiken, senkt sie aber NICHT substanziell (WHO). ${counts.mixed} "Schadensbegrenzung"-Tage zeigen ein problematisches Muster.`;
+      }
       
       const afDisplay = neutralDaysSetting === 'ignore' ? 
         `${Math.round(afQuote * 100)}% (${afCount}/${enteredDays})` : 
@@ -1995,21 +2061,21 @@
       document.getElementById('metricBinge').textContent = neutralDaysSetting === 'ignore' ? 
         `${bingeProximity} (${Math.round(bingeQuote * 100)}%)` : 
         bingeProximity;
-      document.getElementById('metricCluster').textContent = maxCluster > 0 ? `${maxCluster} Tage` : 'Keiner';
+      document.getElementById('metricCluster').textContent = maxCluster > 0 ? maxCluster + ' Tage' : 'Keiner';
       
       const badge = document.getElementById('assessmentBadge');
       badge.textContent = label;
       badge.className = 'assessment-badge ' + badgeClass;
       
-      const basisInfo = neutralDaysSetting === 'ignore' ?
+      const basisInfo = neutralDaysSetting === 'ignore' ? 
         `<div style="text-align:center; font-size:12px; color:var(--muted); margin-bottom:12px;">📊 Basierend auf <strong>${enteredDays} von 100 Tagen</strong></div>` :
-        `<div style="text-align:center; font-size:12px; color:var(--muted); margin-bottom:12px;">📊 Basierend auf <strong>100 Tagen</strong></div>`;
+        `<div style="text-align:center; font-size:12px; color:var(--muted); margin-bottom:12px;">📊 Basierend auf <strong>100 Tagen</strong> (${enteredDays} eingetragen)</div>`;
       
       document.getElementById('assessmentDescription').innerHTML = basisInfo + description;
       
       const warningEl = document.getElementById('assessmentWarning');
-      if (warning) {
-        warningEl.innerHTML = warning;
+      if (warning || extraWarnings) {
+        warningEl.innerHTML = (warning || '') + extraWarnings;
         warningEl.style.display = 'block';
       } else {
         warningEl.style.display = 'none';
@@ -2025,6 +2091,7 @@
       let last180Days = [];
       let gramsData = [];
       let daysCount = 0;
+      let hangoverWithAlc = 0;
       
       for (let i = 0; i < 180; i++) {
         const dt = new Date(today);
@@ -2036,6 +2103,11 @@
         let grams = 0;
         if (entry && entry.totalAlcohol) {
           grams = entry.totalAlcohol;
+          
+          // Zähle Katertage mit Alkohol
+          if (status === 'hangover' && grams > 0) {
+            hangoverWithAlc++;
+          }
         } else if (status) {
           // Fallback-Werte
           const fallback = {superday: 0, wellness: 0, sober: 0, moderate: 20, mixed: 40, alcohol: 50, hangover: 60};
@@ -2276,6 +2348,7 @@
             <div><strong>Tolerance Creep (90d vs. 90d):</strong> ${creepStatus}</div>
             <div><strong>Ø Recovery (Binge→Binge):</strong> ${avgRecovery} Tage</div>
             <div><strong>Comment Risk (30d):</strong> ${commentRisk} <span style="font-size:12px;">(${triggerCount} Trigger-Wörter)</span></div>
+            ${hangoverWithAlc > 0 ? `<div style="margin-top:8px; padding:8px; background:#fee2e2; border-left:3px solid #dc2626; border-radius:4px;"><strong>🚨 Katertage mit Weiter-Alkohol:</strong> ${hangoverWithAlc} (DSM-5-Kriterium für schwere AUD!)</div>` : ''}
           </div>
           
           <div style="margin-bottom:16px; padding:16px; background:#ede9fe; border-radius:8px; border:1px solid #c4b5fd;">
@@ -2300,8 +2373,10 @@
             • DGE: ≤24g/Tag (Männer), ≤12g/Tag (Frauen)<br>
             • WHO: Binge = ≥60g/Session<br>
             • RKI: Riskanter Konsum = >20g/Tag regelmäßig<br>
-            • DSM-5: AUD-Kriterien bei Kontrollverlust, Toleranz, Craving<br>
-            • Markov-Chain: Historische Übergangsmuster
+            • DSM-5: AUD-Kriterien bei Kontrollverlust, Toleranz, Craving, <strong>morgendlichem Trinken</strong><br>
+            • Markov-Chain: Historische Übergangsmuster<br>
+            • <strong>Katertag ohne Alkohol = 10% Gesundheit</strong> (leidet, trinkt aber nicht weiter)<br>
+            • <strong>Katertag MIT Alkohol = 0% Gesundheit</strong> (doppelt problematisch, DSM-5-Kriterium!)
           </div>
           
           <div style="margin-top:16px; font-size:12px; color:var(--muted);">
