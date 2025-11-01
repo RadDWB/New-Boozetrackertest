@@ -693,6 +693,36 @@
 }
 </style>
 
+
+<style>
+/* === Kategorie-Layout zurück zu EINER Spalte (schlank) === */
+.choice-container{ grid-template-columns: 1fr !important; }
+@media (max-width:640px){
+  .choice-container{ grid-template-columns: 1fr !important; }
+}
+/* Karten wieder schlank machen */
+.choice-option{
+  min-height: unset !important;
+  height: auto !important;
+}
+
+/* Monat-Hinweis unter der Überschrift */
+.month-hint{
+  margin-top: 4px;
+  font-size: 12px;
+  line-height: 1.2;
+  color: var(--muted);
+  text-align: center;
+  font-weight: 400;
+}
+.month-hint .gm-badge{
+  color: #e11d48; /* rot */
+  font-weight: 700;
+  margin-left: 8px;
+  font-size: 11px;
+}
+</style>
+
 </head>
 <body>
   <div class="container">
@@ -2798,5 +2828,48 @@
     window.resetStorage = resetStorage;
     window.removeDrink = removeDrink;
   </script>
+
+<script>
+(function(){
+  function ensureMonthHint(){
+    try{
+      var head = document.querySelector('.month-head');
+      if(!head) return;
+      var hint = document.getElementById('monthHint');
+      if(!hint){
+        hint = document.createElement('div');
+        hint.id = 'monthHint';
+        hint.className = 'month-hint';
+        head.insertAdjacentElement('afterend', hint);
+      }
+      var gmActive = (typeof godMode !== 'undefined' && !!godMode);
+      var base = 'Hinweis: Für genaue Eingabe der Alkoholmengen in den Einstellungen den God-Mode aktivieren.';
+      hint.innerHTML = gmActive ? base + ' <span class="gm-badge">Godmode activated</span>' : base;
+    }catch(e){ /* no-op */ }
+  }
+
+  // Hook into updateMonthView (call afterwards)
+  if(typeof updateMonthView === 'function'){
+    var _updateMonthView = updateMonthView;
+    window.updateMonthView = function(){
+      var res = _updateMonthView.apply(this, arguments);
+      ensureMonthHint();
+      return res;
+    };
+  } else {
+    // Fallback: try once on DOM ready
+    document.addEventListener('DOMContentLoaded', ensureMonthHint);
+  }
+
+  // Update when settings saved or checkbox toggled
+  document.addEventListener('DOMContentLoaded', function(){
+    var tgm = document.getElementById('toggleGodMode');
+    if(tgm){
+      tgm.addEventListener('change', ensureMonthHint);
+    }
+  });
+})();
+</script>
+
 </body>
 </html>
