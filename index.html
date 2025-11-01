@@ -854,7 +854,7 @@
           </div>
           <div class="checkbox-item">
             <input type="checkbox" id="checkHangover">
-            <label for="checkHangover">😵 Vollrausch/Katertag</label>
+            <label for="checkHangover">😵 Katertag</label>
           </div>
         </div>
 
@@ -963,7 +963,7 @@
         <span>🟡 Moderat (👟 = mit Sport)</span>
         <span>❤️ Schadensbegrenzung (Sport+Alk)</span>
         <span>🔴 Alkohol</span>
-        <span>😵 Vollrausch/Katertag (⚠️ = mit Weiter-Alkohol)</span>
+        <span>😵 Vollrausch</span>
       </div>
 
       <div id="monthGrid" class="cal" aria-label="Kalender"></div>
@@ -1050,7 +1050,7 @@
             <div class="chart-bar-header">
               <div class="chart-bar-label">
                 🔴 Risikotage
-                <small>Alkohol, Schadensbegrenzung, Moderat, Katertag</small>
+                <small>Alkohol, Schadensbegrenzung, Moderat, Katertag mit Alkohol</small>
               </div>
               <div class="chart-bar-value">
                 <span class="chart-bar-number" id="chart6mNegativeNum">0</span>
@@ -1865,7 +1865,7 @@
         moderate: '🟡 Moderat',
         mixed: '❤️ "Schadensbegrenzung"',
         alcohol: '🔴 Alkohol',
-        hangover: '😵 Vollrausch/Katertag',
+        hangover: '😵 Vollrausch',
         hangoverLight: '😌 Hangover Light'
       };
       suggestedEl.textContent = catNames[suggested] || '—';
@@ -2441,7 +2441,7 @@
       
       // Spezial-Warnung bei Katertagen mit Alkohol
       const morningDrinkingWarning = counts.hangoverWithAlc > 0 ? 
-        `<br><br>🚨 <strong>KRITISCH:</strong> ${counts.hangoverWithAlc} Vollrausch/Katertag(e) mit Weiter-Alkohol! Dies ist ein DSM-5-Kriterium für schwere Alkoholabhängigkeit (morgendliches Trinken zur Linderung). Dringend professionelle Hilfe empfohlen!` : 
+        `<br><br>🚨 <strong>KRITISCH:</strong> ${counts.hangoverWithAlc} Katertag(e) mit Weiter-Alkohol! Dies ist ein DSM-5-Kriterium für schwere Alkoholabhängigkeit (morgendliches Trinken zur Linderung). Dringend professionelle Hilfe empfohlen!` : 
         '';
       
       if (bingeProximity >= 40 || afQuote < 0.20 || (bingeQuote >= 0.40 && enteredDays >= 10) || counts.hangoverWithAlc >= 3) {
@@ -2784,7 +2784,7 @@
             <div><strong>Comment Risk (30d):</strong> ${commentRisk} <span style="font-size:12px;">(${triggerCount} Trigger-Wörter)</span></div>
             <div><strong>Kompensationstrinken (180d):</strong> ${compensationCount} ${compensationCount > 0 ? '<span style="color:#f59e0b;">⚠️</span>' : '✅'}</div>
             ${compensationCount > 15 ? `<div style="margin-top:8px; padding:8px; background:#fef3c7; border-left:3px solid #f59e0b; border-radius:4px;"><strong>⚠️ Emotionale Abhängigkeit:</strong> ${compensationCount} Kompensations-Trinktage deuten auf Stressbewältigung durch Alkohol hin - ein klares Warnzeichen!</div>` : ''}
-            ${hangoverWithAlc > 0 ? `<div style="margin-top:8px; padding:8px; background:#fee2e2; border-left:3px solid #dc2626; border-radius:4px;"><strong>🚨 Vollrausch/Katertage mit Weiter-Alkohol:</strong> ${hangoverWithAlc} (DSM-5-Kriterium für schwere AUD!)</div>` : ''}
+            ${hangoverWithAlc > 0 ? `<div style="margin-top:8px; padding:8px; background:#fee2e2; border-left:3px solid #dc2626; border-radius:4px;"><strong>🚨 Katertage mit Weiter-Alkohol:</strong> ${hangoverWithAlc} (DSM-5-Kriterium für schwere AUD!)</div>` : ''}
           </div>
           
           <div style="margin-bottom:16px; padding:16px; background:#ede9fe; border-radius:8px; border:1px solid #c4b5fd;">
