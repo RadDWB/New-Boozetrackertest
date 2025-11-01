@@ -361,6 +361,9 @@
 <style>
 .app-version{ display:inline-block; margin-left:12px; font-size:12px; color:#64748b; vertical-align:middle; }
 #godBadge.active{ outline:2px dashed #f59e0b; outline-offset:4px; }
+</style><style>
+/* Edit toolbar */
+.edit-toolbar .btn{ margin: 0; }
 </style></head>
 <body>
   <div id="godBadge" class="god-badge">🧠 <span>God‑Modus aktiviert</span></div>
@@ -564,6 +567,10 @@
 
     <!-- Edit-Karte -->
     <div id="editPopup" class="edit-pop" aria-hidden="true">
+      <div class="edit-toolbar" style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+        <button id="btnToMonth" class="btn secondary" type="button" style="width:auto">← Zum Kalender</button>
+        <button id="btnEditCloseX" class="btn danger" type="button" style="width:auto">× Schließen</button>
+      </div>
       <div class="edit-title" id="editDate">Datum</div>
       <div class="edit-grid">
         <button class="edit-option superday" onclick="updateDay('superday')">⭐ Supertag</button>
@@ -2265,6 +2272,19 @@ document.addEventListener('DOMContentLoaded', ()=>{
       caret.textContent = open ? '▾' : '▴';
     });
   });
+});
+</script><script>
+// === Edit-Popup Close Controls ===
+document.addEventListener('DOMContentLoaded', ()=>{
+  const closeX = document.getElementById('btnEditCloseX');
+  const toMonth= document.getElementById('btnToMonth');
+  function goMonth(){
+    try{ if(typeof closeEditPopup==='function') closeEditPopup(); }catch(e){}
+    try{ if(typeof showMonthView==='function') showMonthView(); }catch(e){}
+    try{ if(typeof btSetLastView==='function') btSetLastView('month'); }catch(e){}
+  }
+  if(closeX) closeX.addEventListener('click', goMonth);
+  if(toMonth) toMonth.addEventListener('click', goMonth);
 });
 </script></body>
 </html>
