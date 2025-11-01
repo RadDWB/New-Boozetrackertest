@@ -632,7 +632,7 @@
 
   <div class="container">
     <div class="header">
-      <h1>Booze-Tracker Gemini Edit1</h1>
+      <h1>Booze-Tracker Gemini edit V2 10:48</h1>
       <div>
         <button class="icon-btn" onclick="showQuizPopup()" title="Risiko-Test">❓</button>
         <button class="icon-btn" onclick="showChartPopup()" title="Statistik">📊</button>
@@ -909,7 +909,9 @@
     loadData();
     drawMonthView();
     addCalendarEventListeners();
-    updateUIMode(); // NEU: UI basierend auf geladenem Modus einstellen
+    // updateUIMode() wird nun in showDayInput() und showSettings() aufgerufen,
+    // um sicherzustellen, dass es nur ausgeführt wird, wenn die Elemente existieren.
+    // Das Laden des appMode in loadData() reicht hier aus.
   }
 
   function loadData() {
@@ -1055,6 +1057,7 @@
     renderExpertDrinkList();
     
     // UI-Modus aktualisieren (zeigt richtiges Formular)
+    // KORRIGIERT: updateUIMode() wird HIER aufgerufen, wenn das Modal geladen wird.
     updateUIMode();
 
     const day = dayData[dateKey];
@@ -1114,7 +1117,7 @@
     drawMonthView();
   }
 
-function deleteDayData() {
+  function deleteDayData() {
     const dateKey = document.getElementById('selectedDate').value;
     if (confirm('Eintrag für diesen Tag wirklich löschen?')) {
       delete dayData[dateKey];
@@ -1128,28 +1131,41 @@ function deleteDayData() {
   function toggleExpertMode(isExpert) {
     appMode = isExpert ? 'expert' : 'simple';
     saveSettings();
-    updateUIMode();
     
-    // Wenn das Eingabefenster offen ist, UI sofort aktualisieren
+    // KORRIGIERT: updateUIMode() auch hier aufrufen,
+    // um die Ansicht im Einstellungs-Popup (falls dayInput offen) zu steuern.
+    // Da dayInputView nicht zwangsläufig offen ist,
+    // muss updateUIMode *nur* die Elemente im dayInputView-Modal steuern.
     if (document.getElementById('dayInputView').classList.contains('visible')) {
-      updateUIMode();
+        updateUIMode();
     }
   }
 
+  // KORRIGIERT: Diese Funktion ist jetzt "kugelsicher"
   function updateUIMode() {
+    // Diese Elemente existieren NUR im 'dayInputView'-Modal
     const simpleUI = document.getElementById('simpleInputContainer');
     const expertUI = document.getElementById('expertInputContainer');
     
-    if (appMode === 'expert') {
-      simpleUI.style.display = 'none';
-      expertUI.style.display = 'block';
-    } else {
-      simpleUI.style.display = 'grid'; // 'grid' statt 'block'
-      expertUI.style.display = 'none';
+    // Diese Elemente existieren NUR im 'settingsPopup'-Modal
+    const toggle = document.getElementById('expertModeToggle');
+
+    // 1. UI im Eingabe-Modal (dayInputView) aktualisieren
+    //    Defensive Prüfung, falls die Elemente nicht gefunden werden
+    if (simpleUI && expertUI) {
+      if (appMode === 'expert') {
+        simpleUI.style.display = 'none';
+        expertUI.style.display = 'block';
+      } else {
+        simpleUI.style.display = 'grid'; // 'grid' statt 'block'
+        expertUI.style.display = 'none';
+      }
     }
     
-    // Toggle in Einstellungen auch aktualisieren
-    document.getElementById('expertModeToggle').checked = (appMode === 'expert');
+    // 2. UI im Einstellungs-Modal (settingsPopup) aktualisieren
+    if (toggle) {
+      toggle.checked = (appMode === 'expert');
+    }
   }
 
   function addExpertDrink() {
@@ -1482,8 +1498,8 @@ function deleteDayData() {
   // Einstellungen & Datenmanagement
   function showSettings() {
     document.getElementById('neutralDaysSelect').value = window.neutralDaysSetting;
-    // NEU: Toggle-Status setzen
-    document.getElementById('expertModeToggle').checked = (appMode === 'expert');
+    // NEU: Toggle-Status setzen, wenn das Modal geöffnet wird
+    updateUIMode(); 
     showModal('settingsPopup');
   }
 
@@ -1552,7 +1568,7 @@ function deleteDayData() {
               if (typeof v === 'string') {
                  validEntries[normKey] = { status: v, comment: '' };
               } else if (v && typeof v === 'object' && typeof v.status === 'string') {
-                 // Behält die volle Struktur bei (wichtig für 'expertData')
+                 // KORRIGIERT: Behält die volle Struktur bei (wichtig für 'expertData')
                  validEntries[normKey] = v; 
               }
             }
