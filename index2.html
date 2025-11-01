@@ -20,7 +20,7 @@
       --danger:#ef4444;
       --super:#059669;
       --wellness:#22c55e;
-      --mixed:#dc2626;  /* Dunkleres Rot für Gemischt */
+      --mixed:#dc2626;  /* Dunkleres Rot für Schadensbegrenzung */
       --radius:16px;
       --shadow:0 12px 30px rgba(31,41,55,.12);
     }
@@ -146,62 +146,7 @@
     .streak-good{ background:#ecfdf5; border-color:#a7f3d0; }
     .streak-great{ background:#d1fae5; border-color:#34d399; }
 
-    /* Balkendiagramm für 100 Tage */
-    .chart-section{
-      margin: 18px 0;
-      padding: 16px;
-      background: #f9fafb;
-      border: 1px solid #e5e7eb;
-      border-radius: 14px;
-    }
-    .chart-title{
-      font-weight: 700;
-      font-size: 16px;
-      margin-bottom: 14px;
-      text-align: center;
-      color: var(--text);
-    }
-    .chart-bars{
-      display: flex;
-      gap: 16px;
-      margin-bottom: 10px;
-    }
-    .chart-bar-container{
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-    }
-    .chart-bar-label{
-      font-size: 13px;
-      font-weight: 600;
-      color: var(--muted);
-      text-align: center;
-    }
-    .chart-bar-wrapper{
-      height: 180px;
-      background: #e5e7eb;
-      border-radius: 8px;
-      position: relative;
-      display: flex;
-      align-items: flex-end;
-      overflow: hidden;
-    }
-    .chart-bar{
-      width: 100%;
-      transition: height 0.8s ease;
-      border-radius: 8px 8px 0 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: 700;
-      color: white;
-      font-size: 18px;
-    }
-    .chart-bar.negative{ background: linear-gradient(180deg, #ef4444, #dc2626); }
-    .chart-bar.positive{ background: linear-gradient(180deg, #10b981, #059669); }
-
-    /* Balkendiagramm für 100 Tage - KOMPLETT NEU */
+    /* Balkendiagramm */
     .chart-section{
       margin: 18px 0;
       padding: 0;
@@ -216,91 +161,30 @@
       text-align: center;
       color: var(--text);
     }
-    .chart-bars{
-      display: flex;
-      flex-direction: column;
-      gap: 32px;
-      margin-bottom: 10px;
-    }
-    .chart-bar-container{
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
-    .chart-bar-header{
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-    .chart-bar-label{
-      font-size: 14px;
-      font-weight: 600;
-      color: var(--text);
-    }
-    .chart-bar-label small{
-      display: block;
-      font-size: 12px;
-      font-weight: 400;
-      color: var(--muted);
-      margin-top: 2px;
-    }
-    .chart-bar-value{
-      display: flex;
-      align-items: baseline;
-      gap: 8px;
-    }
-    .chart-bar-number{
-      font-size: 32px;
-      font-weight: 900;
-      color: var(--text);
-    }
-    .chart-bar-percent{
-      font-size: 16px;
-      font-weight: 600;
-      color: var(--muted);
-    }
+    .chart-bars{ display:flex; flex-direction:column; gap:32px; margin-bottom:10px; }
+    .chart-bar-container{ display:flex; flex-direction:column; gap:12px; }
+    .chart-bar-header{ display:flex; align-items:center; justify-content:space-between; }
+    .chart-bar-label{ font-size:14px; font-weight:600; color:var(--text); }
+    .chart-bar-label small{ display:block; font-size:12px; font-weight:400; color:var(--muted); margin-top:2px; }
+    .chart-bar-value{ display:flex; align-items:baseline; gap:8px; }
+    .chart-bar-number{ font-size:32px; font-weight:900; color:var(--text); }
+    .chart-bar-percent{ font-size:16px; font-weight:600; color:var(--muted); }
     .chart-bar-wrapper{
-      height: 48px;
-      background: #f1f5f9;
-      border-radius: 12px;
-      position: relative;
-      overflow: hidden;
-      box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
+      height: 48px; background:#f1f5f9; border-radius:12px; position:relative; overflow:hidden; box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
     }
     .chart-bar{
-      height: 100%;
-      transition: width 1.2s cubic-bezier(0.4, 0, 0.2, 1);
-      width: 0%;
-      border-radius: 12px;
-      display: flex;
-      align-items: center;
-      justify-content: flex-end;
-      padding-right: 16px;
-      font-weight: 700;
-      color: white;
-      font-size: 16px;
-      position: relative;
+      height:100%; transition: width 1.2s cubic-bezier(0.4, 0, 0.2, 1); width:0%;
+      border-radius:12px; display:flex; align-items:center; justify-content:flex-end; padding-right:16px;
+      font-weight:700; color:#fff; font-size:16px; position:relative;
     }
     .chart-bar::after{
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: linear-gradient(90deg, rgba(255,255,255,0.1), rgba(255,255,255,0));
-      border-radius: 12px;
+      content:''; position:absolute; inset:0; background: linear-gradient(90deg, rgba(255,255,255,0.1), rgba(255,255,255,0));
+      border-radius:12px;
     }
-    .chart-bar.negative{ 
-      background: linear-gradient(90deg, #ef4444, #f87171);
-      box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
-    }
-    .chart-bar.positive{ 
-      background: linear-gradient(90deg, #10b981, #34d399);
-      box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
-    }
+    .chart-bar.negative{ background: linear-gradient(90deg, #ef4444, #f87171); box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3); }
+    .chart-bar.positive{ background: linear-gradient(90deg, #10b981, #34d399); box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3); }
 
-    /* Gesundheitsbewertung */
+    /* Gesundheitsbewertung (Basis) */
     .health-assessment{
       margin-top: 32px;
       padding: 20px;
@@ -308,155 +192,122 @@
       border-radius: 14px;
       border: 2px solid #e5e7eb;
     }
-    .assessment-title{
-      font-size: 18px;
-      font-weight: 700;
-      text-align: center;
-      margin-bottom: 20px;
-      color: var(--text);
-    }
+    .assessment-title{ font-size:18px; font-weight:700; text-align:center; margin-bottom:20px; color:var(--text); }
     .assessment-badge{
-      text-align: center;
-      margin-bottom: 24px;
-      padding: 16px;
-      border-radius: 12px;
-      font-size: 24px;
-      font-weight: 800;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      text-align:center; margin-bottom:24px; padding:16px; border-radius:12px; font-size:24px; font-weight:800; box-shadow: 0 4px 12px rgba(0,0,0,0.1);
     }
-    .assessment-badge.zen{ 
-      background: linear-gradient(135deg, #d1fae5, #a7f3d0); 
-      color: #065f46;
-      border: 2px solid #34d399;
+    .assessment-badge.zen{ background: linear-gradient(135deg, #d1fae5, #a7f3d0); color:#065f46; border:2px solid #34d399; }
+    .assessment-badge.balance{ background: linear-gradient(135deg, #fef3c7, #fde68a); color:#92400e; border:2px solid #fbbf24; }
+    .assessment-badge.weekend{ background: linear-gradient(135deg, #fed7aa, #fdba74); color:#9a3412; border:2px solid #fb923c; }
+    .assessment-badge.red{ background: linear-gradient(135deg, #fecaca, #fca5a5); color:#7f1d1d; border:2px solid #ef4444; }
+    .assessment-metrics{ display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:16px; }
+    @media (max-width: 560px){ .assessment-metrics{ grid-template-columns:1fr; } }
+    .metric-item{ padding:12px; background:#fff; border-radius:10px; border:1px solid #e5e7eb; position:relative; }
+    .metric-label{ font-size:12px; color:var(--muted); margin-bottom:4px; display:flex; align-items:center; gap:6px; }
+    .metric-info{ display:inline-flex; align-items:center; justify-content:center; width:16px; height:16px; background:var(--primary); color:#fff; border-radius:50%; font-size:10px; font-weight:700; cursor:help; position:relative; }
+    .metric-info:hover .metric-tooltip{ display:block; }
+    .metric-tooltip{
+      display:none; position:absolute; bottom:24px; left:50%; transform:translateX(-50%);
+      width:280px; padding:12px; background:#1f2937; color:#fff; border-radius:8px; font-size:11px; line-height:1.5; z-index:1000;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.3); text-align:left; font-weight:400;
     }
-    .assessment-badge.balance{ 
-      background: linear-gradient(135deg, #fef3c7, #fde68a); 
-      color: #92400e;
-      border: 2px solid #fbbf24;
+    .metric-tooltip::after{
+      content:''; position:absolute; top:100%; left:50%; transform:translateX(-50%); border:6px solid transparent; border-top-color:#1f2937;
     }
-    .assessment-badge.weekend{ 
-      background: linear-gradient(135deg, #fed7aa, #fdba74); 
-      color: #9a3412;
-      border: 2px solid #fb923c;
-    }
-    .assessment-badge.red{ 
-      background: linear-gradient(135deg, #fecaca, #fca5a5); 
-      color: #7f1d1d;
-      border: 2px solid #ef4444;
-    }
-    .assessment-metrics{
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-      margin-bottom: 16px;
-    }
-    @media (max-width: 560px){ 
-      .assessment-metrics{ grid-template-columns: 1fr; } 
-    }
-    .metric-item{
-      padding: 12px;
-      background: white;
-      border-radius: 10px;
-      border: 1px solid #e5e7eb;
-    }
-    .metric-label{
-      font-size: 12px;
-      color: var(--muted);
-      margin-bottom: 4px;
-    }
-    .metric-value{
-      font-size: 20px;
-      font-weight: 800;
-      color: var(--text);
-    }
-    .assessment-description{
-      padding: 12px;
-      background: white;
-      border-radius: 10px;
-      border: 1px solid #e5e7eb;
-      font-size: 13px;
-      line-height: 1.6;
-      color: var(--text);
-    }
-    .assessment-description strong{
-      color: var(--primary);
-    }
-    .assessment-warning{
-      margin-top: 12px;
-      padding: 10px;
-      background: #fff7ed;
-      border-left: 4px solid #fb923c;
-      border-radius: 6px;
-      font-size: 12px;
-      color: #9a3412;
-    }
+    .metric-tooltip strong{ color:#60a5fa; font-weight:600; }
+    @media (max-width: 560px){ .metric-tooltip{ width:220px; font-size:10px; padding:10px; } }
+    .metric-value{ font-size:20px; font-weight:800; color:var(--text); }
+    .assessment-description{ padding:12px; background:#fff; border-radius:10px; border:1px solid #e5e7eb; font-size:13px; line-height:1.6; color:var(--text); }
+    .assessment-description strong{ color:var(--primary); }
+    .assessment-warning{ margin-top:12px; padding:10px; background:#fff7ed; border-left:4px solid #fb923c; border-radius:6px; font-size:12px; color:#9a3412; }
+
+    /* Settings für neutrale Tage */
+    .settings-section{ margin-top: 20px; padding: 16px; background:#fff; border-radius:12px; border:2px solid #e5e7eb; }
+    .settings-title{ font-size:14px; font-weight:700; margin-bottom:12px; color:var(--text); display:flex; align-items:center; gap:8px; }
+    .settings-option{ margin-bottom:10px; padding:10px; background:#f9fafb; border-radius:8px; border:2px solid transparent; cursor:pointer; transition:all .2s; }
+    .settings-option:hover{ border-color:var(--primary); background:#eff6ff; }
+    .settings-option input[type="radio"]{ margin-right:8px; }
+    .settings-option label{ cursor:pointer; font-size:13px; color:var(--text); display:flex; align-items:flex-start; gap:8px; }
+    .settings-option.selected{ border-color:var(--primary); background:#eff6ff; }
+    .settings-explanation{ margin-top:12px; padding:12px; background:#f0f9ff; border-left:4px solid var(--primary); border-radius:6px; font-size:12px; line-height:1.6; color:#1e40af; }
+
+    /* AUDIT-C Quiz */
+    .audit-quiz{ margin-top:20px; padding:16px; background:#fff; border-radius:12px; border:2px solid #e5e7eb; }
+    .audit-question{ margin-bottom:16px; }
+    .audit-question-label{ font-size:13px; font-weight:600; margin-bottom:8px; color:var(--text); display:block; }
+    .audit-options{ display:flex; flex-direction:column; gap:6px; }
+    .audit-option{ padding:8px 12px; background:#f9fafb; border-radius:6px; border:2px solid transparent; cursor:pointer; transition:all .2s; font-size:12px; }
+    .audit-option:hover{ border-color:var(--primary); background:#eff6ff; }
+    .audit-option input[type="radio"]{ margin-right:8px; }
+    .audit-option label{ cursor:pointer; }
+    .audit-result{ margin-top:16px; padding:16px; border-radius:10px; font-size:13px; line-height:1.6; }
+    .audit-result.low{ background:#d1fae5; border:2px solid #34d399; color:#065f46; }
+    .audit-result.medium{ background:#fef3c7; border:2px solid #fbbf24; color:#92400e; }
+    .audit-result.high{ background:#fecaca; border:2px solid #ef4444; color:#7f1d1d; }
+    .audit-result strong{ font-size:16px; display:block; margin-bottom:8px; }
 
     /* Chart-Popup */
     .chart-popup{
-      position: fixed; 
-      left: 50%; 
-      top: 50%; 
-      transform: translate(-50%, -50%);
-      background: #ffffff; 
-      border: 1px solid #e5e7eb; 
-      border-radius: 16px; 
-      box-shadow: 0 20px 40px rgba(31,41,55,.2);
-      padding: 20px; 
-      width: min(680px, 92vw); 
-      max-height: 85vh;
-      overflow-y: auto;
-      display: none; 
-      z-index: 1001;
+      position: fixed; left: 50%; top: 50%; transform: translate(-50%, -50%);
+      background:#fff; border:1px solid #e5e7eb; border-radius:16px; box-shadow: 0 20px 40px rgba(31,41,55,.2);
+      padding:20px; width:min(680px, 92vw); max-height:85vh; overflow-y:auto; display:none; z-index:1001;
     }
-    .chart-popup.active{ display: block; }
-    .chart-popup-overlay{
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: rgba(0,0,0,0.4);
-      display: none;
-      z-index: 1000;
-    }
-    .chart-popup-overlay.active{ display: block; }
+    .chart-popup.active{ display:block; }
+    .chart-popup-overlay{ position:fixed; inset:0; background:rgba(0,0,0,0.4); display:none; z-index:1000; }
+    .chart-popup-overlay.active{ display:block; }
 
     /* Unauffälliger Button */
     .btn-stats-toggle{
-      background: transparent;
-      border: 1px solid #e5e7eb;
-      color: var(--muted);
-      padding: 8px 16px;
-      border-radius: 8px;
-      font-size: 13px;
-      cursor: pointer;
-      transition: all .2s ease;
-    }
-    .btn-stats-toggle:hover{
-      background: #f9fafb;
-      color: var(--text);
-      border-color: #cbd5e1;
-    }
+       appearance: none; background: linear-gradient(135deg, #eef2ff, #e0e7ff); border: 1.5px solid #c7d2fe; color: #1e3a8a;
+       padding: 10px 18px; border-radius: 999px; font-size: 14px; font-weight: 700; cursor: pointer; transition: transform .08s ease, box-shadow .2s ease, background .2s ease, border-color .2s ease;
+       box-shadow: 0 6px 14px rgba(79,70,229,.18); display:inline-flex; align-items:center; gap:8px;
+     }
+    .btn-stats-toggle:hover{ background: linear-gradient(135deg, #e0e7ff, #c7d2fe); border-color:#a5b4fc; transform: translateY(-1px); box-shadow: 0 10px 20px rgba(79,70,229,.25); }
+    .btn-stats-toggle:active{ transform: translateY(0); box-shadow: 0 4px 10px rgba(79,70,229,.2); }
+    .btn-stats-toggle:focus-visible{ outline: 3px solid #c7d2fe; outline-offset: 2px; }
 
-    .legend{
-      display:flex; flex-wrap:wrap; gap:10px 14px; margin: 10px 0 14px; color:var(--muted); font-size: 13px;
+    /* Einstellungs-Button */
+    .btn-settings{
+      appearance: none; background: linear-gradient(135deg, #f0f9ff, #dbeafe); border: 1.5px solid #bae6fd; color: #0c4a6e;
+      padding: 10px 18px; border-radius: 999px; font-size: 14px; font-weight: 700; cursor: pointer; transition: transform .08s ease, box-shadow .2s ease, background .2s ease, border-color .2s ease;
+      box-shadow: 0 6px 14px rgba(2,132,199,.16); display:inline-flex; align-items:center; gap:8px;
     }
-    .legend span{ display: flex; align-items: center; gap: 6px; }
+    .btn-settings:hover{ background: linear-gradient(135deg, #dbeafe, #bfdbfe); border-color:#93c5fd; transform: translateY(-1px); box-shadow: 0 10px 20px rgba(2,132,199,.22); }
+    .btn-settings:active{ transform: translateY(0); box-shadow: 0 4px 10px rgba(2,132,199,.18); }
+    .btn-settings:focus-visible{ outline: 3px solid #93c5fd; outline-offset: 2px; }
 
-    .cal{
-      display:grid; grid-template-columns: repeat(7, 1fr); gap:8px; margin-bottom: 10px;
-      position: relative;
+    /* Settings-Popup */
+    .settings-popup{
+      position: fixed; left: 50%; top: 50%; transform: translate(-50%, -50%);
+      background:#fff; border:1px solid #e5e7eb; border-radius:16px; box-shadow: 0 20px 40px rgba(31,41,55,.25);
+      padding:24px; width:min(560px, 92vw); max-height:85vh; overflow-y:auto; display:none; z-index:1002;
     }
-    .weekday{
-      text-align:center; font-weight:700; font-size:12px; color:#475569; padding:6px 0;
-      background:#f1f5f9; border-radius:8px; border:1px solid #e7eef6;
-    }
+    .settings-popup.active{ display:block; }
+    .settings-popup-overlay{ position:fixed; inset:0; background:rgba(0,0,0,0.4); display:none; z-index:1001; }
+    .settings-popup-overlay.active{ display:block; }
+    .settings-title{ font-size:22px; font-weight:800; margin-bottom:8px; color:var(--text); text-align:center; }
+    .settings-subtitle{ font-size:14px; color:var(--muted); margin-bottom:24px; text-align:center; }
+    .settings-section-title{ font-size:16px; font-weight:700; margin-bottom:12px; color:var(--text); }
+    .settings-description{ font-size:13px; color:var(--muted); margin-bottom:16px; line-height:1.6; }
+    .settings-options{ display:flex; flex-direction:column; gap:10px; }
+    .settings-option input[type="radio"]{ margin-top:2px; transform:scale(1.3); accent-color:var(--primary); }
+    .settings-option-content{ flex:1; }
+    .settings-option-title{ font-weight:700; font-size:14px; color:var(--text); margin-bottom:4px; }
+    .settings-option-desc{ font-size:12px; color:var(--muted); line-height:1.5; }
+    .settings-info-box{ padding:14px; background:#eff6ff; border-left:4px solid var(--primary); border-radius:8px; font-size:12px; color:#1e40af; line-height:1.6; margin-top:16px; }
+    .settings-info-box strong{ color:#1e3a8a; }
+
+    .legend{ display:flex; flex-wrap:wrap; gap:10px 14px; margin:10px 0 14px; color:var(--muted); font-size:13px; }
+    .legend span{ display:flex; align-items:center; gap:6px; }
+
+    .cal{ display:grid; grid-template-columns: repeat(7, 1fr); gap:8px; margin-bottom: 10px; position:relative; }
+    .weekday{ text-align:center; font-weight:700; font-size:12px; color:#475569; padding:6px 0; background:#f1f5f9; border-radius:8px; border:1px solid #e7eef6; }
 
     /* Tageszellen */
     .day{
       aspect-ratio:1; display:flex; align-items:center; justify-content:center;
       border-radius:10px; border:1px solid #e7eef6; background:#fff; font-weight:700; cursor:pointer;
-      transition:.1s ease; position:relative; z-index: 1; user-select:none;
+      transition:.1s ease; position:relative; z-index:1; user-select:none;
     }
     .day:hover{ transform: scale(1.03); box-shadow: 0 8px 18px rgba(0,0,0,.08); }
     .day.sober{ background:#10b981; color:#fff; }
@@ -469,53 +320,44 @@
     .day.superday{ background:#059669; color:#fff; }
     .day.superday::after{ content:"⭐"; position:absolute; top:4px; right:6px; font-size:12px; }
 
-    /* HEUTE: nur Ring, KEIN Hintergrund-Override! */
-    .day.today{
-      outline: 3px solid var(--primary);
-      outline-offset: -3px;
+    .day.today{ outline: 3px solid var(--primary); outline-offset:-3px; }
+
+    /* Kommentar-Tooltip */
+    .day-comment-tooltip{
+      display:none; position:absolute; bottom:calc(100% + 8px); left:50%; transform:translateX(-50%);
+      min-width:200px; max-width:280px; padding:10px 12px; background:#1f2937; color:#fff; border-radius:8px; font-size:11px; line-height:1.5; z-index:1000;
+      box-shadow:0 8px 20px rgba(0,0,0,0.4); text-align:left; font-weight:400; pointer-events:none; white-space:pre-wrap; word-wrap:break-word;
     }
+    .day-comment-tooltip::after{
+      content:''; position:absolute; top:100%; left:50%; transform:translateX(-50%); border:6px solid transparent; border-top-color:#1f2937;
+    }
+    .day.has-comment{ position:relative; }
+    .day.has-comment::before{ content:'💬'; position:absolute; top:2px; right:2px; font-size:10px; opacity:0.8; }
+    .day.has-comment:hover .day-comment-tooltip{ display:block; }
 
     /* Spendenbereich */
-    .support{
-      background:#f8fafc; border:1px solid #e5e7eb; border-radius: 14px; padding: 14px; margin: 12px 0 12px;
-      text-align:center; position: relative; z-index: 0;
-    }
-    .support p{ margin: 0 0 6px; }
-    .support-buttons{ margin-top: 0; }
-
-    .support-buttons{
-      display:flex; flex-wrap:wrap; gap:12px; justify-content:center; align-items:center;
-    }
+    .support{ background:#f8fafc; border:1px solid #e5e7eb; border-radius:14px; padding:14px; margin:12px 0 12px; text-align:center; position:relative; z-index:0; }
+    .support p{ margin:0 0 6px; }
+    .support-buttons{ margin-top:0; display:flex; flex-wrap:wrap; gap:12px; justify-content:center; align-items:center; }
     .support-buttons .btn-holder{ height:48px; display:flex; align-items:center; justify-content:center; }
-
     #kofi-holder, #kofi-holder iframe{ margin:0 !important; }
     #kofi-holder iframe{ height:48px !important; min-height:48px !important; }
-    @media (max-width: 420px){
-      #kofi-holder iframe{ height:44px !important; }
-    }
+    @media (max-width: 420px){ #kofi-holder iframe{ height:44px !important; } }
 
-    .month-head{ display:flex; align-items:center; justify-content:center; gap:10px; margin: 10px 0 6px; }
-    .month-title{ font-weight: 800; font-size: 20px; }
+    .month-head{ display:flex; align-items:center; justify-content:center; gap:10px; margin:10px 0 6px; }
+    .month-title{ font-weight:800; font-size:20px; }
+    .month-top-nav{ display:flex; gap:10px; justify-content:center; margin:8px 0 14px; }
+    .month-top-nav .btn{ width:auto; min-width:140px; }
+    @media (max-width:420px){ .month-top-nav .btn{ min-width:120px; } }
 
-    .month-top-nav{
-      display:flex; gap:10px; justify-content:center; margin: 8px 0 14px;
-    }
-    .month-top-nav .btn{ width:auto; min-width: 140px; }
-    @media (max-width:420px){ .month-top-nav .btn{ min-width: 120px; } }
-
-    /* Edit-Karte – unsichtbar bis .active */
-    .edit-pop{
-      position: fixed; left:50%; top: 18px; transform: translateX(-50%);
-      background:#ffffff; border:1px solid #e5e7eb; border-radius:16px; box-shadow: var(--shadow);
-      padding:14px; width: min(560px, 92vw); display:none; z-index: 1000;
-    }
+    /* Edit-Karte */
+    .edit-pop{ position: fixed; left:50%; top: 18px; transform: translateX(-50%); background:#fff; border:1px solid #e5e7eb; border-radius:16px; box-shadow: var(--shadow); padding:14px; width:min(560px, 92vw); display:none; z-index:1000; }
     .edit-pop.active{ display:block; }
     .edit-title{ font-weight:800; font-size:18px; margin: 4px 0 8px; color:#111827; }
     .edit-grid{ display:grid; grid-template-columns: 1fr 1fr; gap:10px; }
     @media (max-width:560px){ .edit-grid{ grid-template-columns: 1fr; } }
     .edit-option{
-      width:100%; padding:12px 14px; border-radius:12px; border:2px solid #edf2f7; background:#fff; cursor:pointer; text-align:left;
-      transition:.12s ease; font-size:15px;
+      width:100%; padding:12px 14px; border-radius:12px; border:2px solid #edf2f7; background:#fff; cursor:pointer; text-align:left; transition:.12s ease; font-size:15px;
     }
     .edit-option:hover{ transform: translateY(-1px); box-shadow: 0 8px 18px rgba(0,0,0,.08); }
     .edit-option.sober{ border-color:#c0f1df; background:#f4fffa; }
@@ -531,6 +373,62 @@
 
     footer{ margin-top: 18px; text-align:center; color:#475569; font-size: 13px; }
     .reset-bar{ margin-top: 16px; display:flex; justify-content:center; }
+
+    @media (max-width: 420px){
+      .btn-stats-toggle, .btn-settings{ padding: 9px 14px; font-size: 13px; gap: 6px; }
+    }
+
+    /* ============ GOD-MODUS – neue Styles ============ */
+    .god-card{
+      margin-top:16px; padding:14px; background:#f9fafb; border:1px solid #e5e7eb; border-radius:14px;
+    }
+    .god-title{ font-weight:800; font-size:16px; margin:2px 0 10px; color:#0f172a; display:flex; align-items:center; gap:8px; }
+    .god-grid{ display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+    @media (max-width:640px){ .god-grid{ grid-template-columns:1fr; } }
+    .god-field{
+      background:#fff; border:1px solid #e5e7eb; border-radius:10px; padding:10px;
+    }
+    .god-field label{ display:block; font-size:12px; color:#475569; margin-bottom:6px; font-weight:600; }
+    .god-field input, .god-field select{
+      width:100%; padding:10px; border:1px solid #d1d5db; border-radius:8px; font-size:13px; font-family:inherit; background:#fff;
+    }
+    .god-note{ font-size:12px; color:#64748b; margin-top:8px; }
+    .pill{
+      display:inline-block; padding:6px 10px; border-radius:999px; background:#eef2ff; border:1px solid #c7d2fe; color:#1e3a8a; font-weight:700; font-size:12px;
+    }
+    .calc-line{ margin-top:8px; font-size:13px; font-weight:700; color:#0f172a; }
+    .mini-muted{ font-size:11px; color:#64748b; }
+
+    /* Toggle-Switch */
+    .switch{ position:relative; display:inline-block; width:52px; height:28px; }
+    .switch input{ opacity:0; width:0; height:0; }
+    .slider{
+      position:absolute; cursor:pointer; inset:0; background:#e5e7eb; transition:.2s; border-radius:999px; border:1px solid #cbd5e1;
+    }
+    .slider:before{
+      position:absolute; content:""; height:22px; width:22px; left:3px; top:2px; background:white; transition:.2s; border-radius:50%; box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+    }
+    .switch input:checked + .slider{ background:#c7d2fe; border-color:#a5b4fc; }
+    .switch input:checked + .slider:before{ transform: translateX(24px); }
+
+    /* Detaillierte Analyse (Popup) */
+    .detail-analysis{ margin-top:16px; padding:16px; background:#fff; border:1px solid #e5e7eb; border-radius:12px; display:none; }
+    .detail-grid{ display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+    @media (max-width:560px){ .detail-grid{ grid-template-columns:1fr; } }
+    .detail-item{ padding:12px; background:#f8fafc; border:1px solid #e5e7eb; border-radius:10px; }
+    .detail-item .label{ font-size:12px; color:#64748b; margin-bottom:6px; }
+    .detail-item .value{ font-size:18px; font-weight:800; color:#0f172a; }
+    .stage-badge{
+      margin-top:12px; padding:12px; border-radius:12px; text-align:center; font-weight:900; font-size:18px; border:2px solid transparent;
+    }
+    .stage-1{ background:linear-gradient(135deg,#d1fae5,#a7f3d0); color:#065f46; border-color:#34d399; }
+    .stage-2{ background:linear-gradient(135deg,#fef3c7,#fde68a); color:#92400e; border-color:#fbbf24; }
+    .stage-3{ background:linear-gradient(135deg,#fed7aa,#fdba74); color:#9a3412; border-color:#fb923c; }
+    .stage-4{ background:linear-gradient(135deg,#fecaca,#fca5a5); color:#7f1d1d; border-color:#ef4444; }
+    .stage-5{ background:linear-gradient(135deg,#fecdd3,#fda4af); color:#7f1d1d; border-color:#ef4444; }
+    .detail-warning{ margin-top:10px; padding:10px; background:#fff7ed; border-left:4px solid #fb923c; border-radius:8px; font-size:12px; color:#9a3412; }
+    .detail-actions{ margin-top:12px; text-align:center; }
+    .detail-toggle{ margin-top:10px; }
   </style>
 </head>
 <body>
@@ -539,6 +437,17 @@
     <div id="dayInputView" class="view active">
       <h1>🍷 Ralles wunderbarer Booze-Tracker</h1>
       <div class="current-date" id="currentDateDisplay"></div>
+
+      <div style="margin-top: 16px;">
+        <label for="dayCommentInput" style="display: block; font-size: 14px; font-weight: 600; margin-bottom: 8px; color: var(--text);">
+          💬 Kommentar (optional):
+        </label>
+        <textarea 
+          id="dayCommentInput" 
+          placeholder="Notizen zum Tag (z.B. Anlass, Gefühle, Situation)..."
+          style="width: 100%; min-height: 80px; padding: 10px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 13px; font-family: inherit; resize: vertical;"
+        ></textarea>
+      </div>
 
       <div class="choice-container" role="group" aria-label="Tagesauswahl">
         <label class="choice-option superday">
@@ -567,6 +476,59 @@
         </label>
       </div>
 
+      <!-- GOD-MODUS: Detaillierte Eingabe (nur sichtbar, wenn aktiviert) -->
+      <div id="godModeCard" class="god-card" style="display:none;">
+        <div class="god-title">🧠 God-Modus – Detailliertes Tracking <span class="pill">optional, aber empfohlen</span></div>
+
+        <div class="god-grid">
+          <!-- Alkohol -->
+          <div class="god-field">
+            <label>🍺 Getränketyp</label>
+            <select id="gmAlcoholType">
+              <option value="beer" data-abv="5">Bier (5%)</option>
+              <option value="radler" data-abv="2.5">Radler (2.5%)</option>
+              <option value="wine" data-abv="10">Wein (10%)</option>
+              <option value="liqueur" data-abv="15">Likör (15%)</option>
+              <option value="other20" data-abv="20">Sonstiges 20%</option>
+              <option value="other30" data-abv="30">Sonstiges 30%</option>
+              <option value="spirits" data-abv="40">Spirituosen (40%)</option>
+            </select>
+
+            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:8px; margin-top:8px;">
+              <div>
+                <label>Menge (ml)</label>
+                <input id="gmAlcoholMl" type="number" min="0" step="10" placeholder="z.B. 500" />
+              </div>
+              <div>
+                <label>Anzahl Portionen</label>
+                <input id="gmAlcoholPortions" type="number" min="1" step="1" value="1" />
+              </div>
+            </div>
+
+            <div class="calc-line">
+              ≈ <span id="gmAlcoholGrams">0</span> g Alkohol · ≈ <span id="gmAlcoholDrinks">0</span> Drinks
+              <div class="mini-muted">(1 Drink = 10 g Alkohol)</div>
+            </div>
+          </div>
+
+          <!-- Marijuana -->
+          <div class="god-field">
+            <label>🍀 Marijuana – Menge (g)</label>
+            <input id="gmWeedGrams" type="number" min="0" step="0.1" placeholder="z.B. 0.5" />
+            <div style="margin-top:8px;">
+              <label>Häufigkeit</label>
+              <select id="gmWeedFreq">
+                <option value="einmalig">einmalig</option>
+                <option value="mehrmals">mehrmals am Tag</option>
+              </select>
+            </div>
+            <div class="god-note">Hinweis: Für die Wochenanalyse wird bei „mehrmals“ konservativ mit Faktor 2 gerechnet.</div>
+          </div>
+        </div>
+
+        <div class="god-note">💡 Die Kategorien oben bleiben Pflicht. Details werden automatisch gespeichert, sobald ein Tagesstatus gesetzt ist.</div>
+      </div>
+
       <div class="submit-row">
         <button id="submitDay" class="btn" disabled>Tag speichern</button>
       </div>
@@ -583,7 +545,7 @@
 
     <!-- Monats-Übersicht -->
     <div id="monthView" class="view">
-      <h1>📊 Booze-Übersicht</h1>
+      <h1>📊 Ralles wunderbarer Booze-Tracker</h1>
 
       <div class="month-head">
         <div class="month-title" id="monthHeader">—</div>
@@ -612,32 +574,28 @@
         <span>💚 Wellness</span>
         <span>🟢 Alkoholfrei</span>
         <span>🟡 Moderat</span>
-        <span>❤️ Gemischt</span>
+        <span>❤️ "Schadensbegrenzung"</span>
         <span>🔴 Alkohol</span>
       </div>
 
       <div id="monthGrid" class="cal" aria-label="Kalender"></div>
 
       <!-- Unauffälliger Button für Statistik -->
-      <div style="text-align: center; margin-top: 16px;">
+      <div style="text-align: center; margin-top: 16px; display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
         <button class="btn-stats-toggle" onclick="toggleChartPopup()">📊 100-Tage-Statistik</button>
+        <button class="btn-settings" onclick="toggleSettingsPopup()">⚙️ Einstellungen</button>
       </div>
 
       <section class="support">
         <p><strong>Findest diese kleine Anwendung nützlich?</strong> Dann spendier mir doch einen Kaffee:</p>
         <div class="support-buttons">
-          <!-- Ko-fi Button -->
           <div id="kofi-holder" class="btn-holder">
             <div id="kofi-widget" aria-label="Ko-fi Unterstützungsbutton"></div>
           </div>
-
-          <!-- Buy Me a Coffee Button -->
           <div class="btn-holder">
             <a href="https://www.buymeacoffee.com/rduwenbecky"><img src="https://img.buymeacoffee.com/button-api/?text=Spendier mir ´n Kaffee! &emoji=☕&slug=rduwenbecky&button_colour=5F7FFF&font_colour=ffffff&font_family=Lato&outline_colour=000000&coffee_colour=FFDD00" /></a>
           </div>
         </div>
-
-        <!-- Ko-fi Widget-Script -->
         <script type="text/javascript" src="https://storage.ko-fi.com/cdn/widget/Widget_2.js"></script>
         <script type="text/javascript">
           kofiwidget2.init('Spendier mir n´ Kaffee Ko-fi', '#72a4f2', 'R5R319DK8N');
@@ -658,10 +616,25 @@
         <button class="edit-option wellness" onclick="updateDay('wellness')">💚 Wellness</button>
         <button class="edit-option sober" onclick="updateDay('sober')">🟢 Alkoholfrei</button>
         <button class="edit-option moderate" onclick="updateDay('moderate')">🟡 Moderat</button>
-        <button class="edit-option mixed" onclick="updateDay('mixed')">❤️ Gemischt</button>
+        <button class="edit-option mixed" onclick="updateDay('mixed')">❤️ Schadensbegrenzung</button>
         <button class="edit-option alcohol" onclick="updateDay('alcohol')">🔴 Alkohol</button>
+      </div>
+      
+      <div style="margin-top: 16px;">
+        <label for="editCommentInput" style="display: block; font-size: 13px; font-weight: 600; margin-bottom: 6px; color: var(--text);">
+          💬 Kommentar:
+        </label>
+        <textarea 
+          id="editCommentInput" 
+          placeholder="Notizen zum Tag..."
+          style="width: 100%; min-height: 70px; padding: 8px; border: 1px solid #d1d5db; border-radius: 6px; font-size: 12px; font-family: inherit; resize: vertical;"
+        ></textarea>
+        <button class="btn" style="width: 100%; margin-top: 8px;" onclick="saveEditComment()">💾 Änderungen speichern</button>
+      </div>
+
+      <div class="edit-grid" style="margin-top: 16px;">
         <button class="edit-option delete" onclick="updateDay('delete')">🗑️ Tag löschen</button>
-        <button class="btn secondary" onclick="closeEditPopup()">Abbrechen</button>
+        <button class="btn secondary" onclick="closeEditPopup()">Schließen</button>
       </div>
     </div>
 
@@ -671,12 +644,11 @@
       <div class="chart-section">
         <div class="chart-title">📊 Letzte 100 Tage im Überblick</div>
         <div class="chart-bars">
-          <!-- Negativer Balken -->
           <div class="chart-bar-container">
             <div class="chart-bar-header">
               <div class="chart-bar-label">
                 🔴 Unter 50%
-                <small>Alkohol, Gemischt, Moderat</small>
+                <small>Alkohol, "Schadensbegrenzung", Moderat</small>
               </div>
               <div class="chart-bar-value">
                 <span class="chart-bar-number" id="chartNegativeNum">0</span>
@@ -687,7 +659,6 @@
               <div class="chart-bar negative" id="chartNegative" style="width: 0%;"></div>
             </div>
           </div>
-          <!-- Positiver Balken -->
           <div class="chart-bar-container">
             <div class="chart-bar-header">
               <div class="chart-bar-label">
@@ -706,43 +677,299 @@
         </div>
       </div>
 
-      <!-- Gesundheitsbewertung -->
+      <!-- Gesundheitsbewertung (Basis bleibt) -->
       <div class="health-assessment">
         <div class="assessment-title">🎯 Deine Gesundheitseinschätzung</div>
-        
-        <div class="assessment-badge" id="assessmentBadge">
-          <!-- Wird dynamisch gefüllt -->
-        </div>
+        <div class="assessment-badge" id="assessmentBadge"></div>
 
         <div class="assessment-metrics">
           <div class="metric-item">
-            <div class="metric-label">AF-Quote (alkoholfrei)</div>
+            <div class="metric-label">
+              AF-Quote (alkoholfrei)
+              <span class="metric-info">ℹ
+                <span class="metric-tooltip">
+                  Prozentsatz alkoholfreier Tage:<br>
+                  <strong>Supertag + Wellness + Alkoholfrei</strong><br><br>
+                  Je höher, desto besser.
+                </span>
+              </span>
+            </div>
             <div class="metric-value" id="metricAF">0%</div>
           </div>
           <div class="metric-item">
-            <div class="metric-label">Gewichtete Gesundheit</div>
+            <div class="metric-label">
+              Gewichtete Gesundheit
+              <span class="metric-info">ℹ
+                <span class="metric-tooltip">
+                  Score über Tageskategorien (Supertag=100% … Viel=0%).<br>
+                  Einstellungen für neutrale Tage wirken hier hinein.
+                </span>
+              </span>
+            </div>
             <div class="metric-value" id="metricHealth">0%</div>
           </div>
           <div class="metric-item">
-            <div class="metric-label">Binge-Nähe (Hochrisiko)</div>
+            <div class="metric-label">
+              Binge-Nähe
+              <span class="metric-info">ℹ
+                <span class="metric-tooltip">
+                  Hochrisiko-Tage: "Viel" + "Schadensbegrenzung".
+                </span>
+              </span>
+            </div>
             <div class="metric-value" id="metricBinge">0</div>
           </div>
           <div class="metric-item">
-            <div class="metric-label">Längster Cluster</div>
+            <div class="metric-label">
+              Längster Cluster
+              <span class="metric-info">ℹ
+                <span class="metric-tooltip">
+                  Längste Serie Hochrisiko-Tage am Stück.
+                </span>
+              </span>
+            </div>
             <div class="metric-value" id="metricCluster">0</div>
           </div>
         </div>
 
-        <div class="assessment-description" id="assessmentDescription">
-          <!-- Wird dynamisch gefüllt -->
-        </div>
+        <div class="assessment-description" id="assessmentDescription"></div>
+        <div id="assessmentWarning" class="assessment-warning" style="display: none;"></div>
 
-        <div id="assessmentWarning" class="assessment-warning" style="display: none;">
-          <!-- Wird bei Bedarf angezeigt -->
+        <!-- Detaillierte Analyse: nur bei aktivem God-Modus sichtbar -->
+        <div id="detailToggleHolder" class="detail-toggle" style="display:none; text-align:center;">
+          <button class="btn-stats-toggle" onclick="toggleGodAnalysis()">🔎 Detaillierte Analyse anzeigen</button>
+        </div>
+        <div id="godDetailSection" class="detail-analysis">
+          <div class="detail-grid">
+            <div class="detail-item">
+              <div class="label">Ø Drinks / Woche</div>
+              <div class="value" id="detailAvgDrinks">0</div>
+            </div>
+            <div class="detail-item">
+              <div class="label">Binge-Tage / 100</div>
+              <div class="value" id="detailBingeDays">0</div>
+            </div>
+            <div class="detail-item">
+              <div class="label">Längster Cluster (&gt;20 g)</div>
+              <div class="value" id="detailCluster">0</div>
+            </div>
+            <div class="detail-item">
+              <div class="label">Marijuana (g / Woche)</div>
+              <div class="value" id="detailWeedWeek">0</div>
+            </div>
+            <div class="detail-item">
+              <div class="label">Gesamt-Risiko-Score</div>
+              <div class="value" id="detailRiskScore">0 / 100</div>
+            </div>
+            <div class="detail-item">
+              <div class="label">Muster</div>
+              <div class="value" id="detailPattern">–</div>
+            </div>
+          </div>
+          <div id="detailStageBadge" class="stage-badge stage-1">Stufe 1: Zen-Meister</div>
+          <div id="detailTip" class="detail-warning" style="display:none;"></div>
+          <div id="detailFallbackNote" class="detail-warning" style="display:none;"></div>
+          <div class="detail-actions">
+            <button class="btn secondary" onclick="toggleGodAnalysis()">Schließen</button>
+          </div>
         </div>
       </div>
 
+      <!-- Einstellungen für neutrale Tage -->
+      <div class="settings-section">
+        <div class="settings-title">
+          ⚙️ Einstellung: Wie sollen nicht-eingetragene Tage gewertet werden?
+          <span class="metric-info">ℹ
+            <span class="metric-tooltip">
+              <strong>Wichtig für genaue Statistiken!</strong><br> Neutrale Tage (ohne Eintrag) können die Berechnung verzerren.
+            </span>
+          </span>
+        </div>
+        
+        <div class="settings-option" onclick="selectNeutralOption('ignore')">
+          <label>
+            <input type="radio" name="neutralDays" value="ignore" checked>
+            <div>
+              <strong>Ignorieren</strong> – Nur eingetragene Tage zählen<br>
+              <small style="color: #6b7280;">Fairste Option: Statistik basiert nur auf bekannten Daten.</small>
+            </div>
+          </label>
+        </div>
+
+        <div class="settings-option" onclick="selectNeutralOption('neutral')">
+          <label>
+            <input type="radio" name="neutralDays" value="neutral">
+            <div>
+              <strong>Eher positiv werten</strong> – Wie 50% Gesundheit<br>
+              <small style="color: #6b7280;">Neutrale zählen als „neutral“.</small>
+            </div>
+          </label>
+        </div>
+
+        <div class="settings-option" onclick="selectNeutralOption('negative')">
+          <label>
+            <input type="radio" name="neutralDays" value="negative">
+            <div>
+              <strong>Eher negativ werten</strong> – Wie 30% Gesundheit<br>
+              <small style="color: #6b7280;">Spornt an, jeden Tag zu tracken.</small>
+            </div>
+          </label>
+        </div>
+
+        <div class="settings-option" onclick="selectNeutralOption('very-negative')">
+          <label>
+            <input type="radio" name="neutralDays" value="very-negative">
+            <div>
+              <strong>Sehr negativ werten</strong> – Wie 15% Gesundheit<br>
+              <small style="color: #6b7280;">Strengste Option.</small>
+            </div>
+          </label>
+        </div>
+
+        <div class="settings-explanation">
+          💡 <strong>Tipp:</strong> Verwende „Ignorieren“ für realistische Statistiken.
+        </div>
+      </div>
+
+      <!-- AUDIT-C Quiz (unverändert) -->
+      <div class="audit-quiz">
+        <div class="settings-title">📝 AUDIT-C Schnelltest (WHO)</div>
+        <p style="font-size: 12px; color: #6b7280; margin-bottom: 16px;">
+          Beantworte 3 kurze Fragen zu deinem Alkoholkonsum im <strong>letzten Jahr</strong>.
+        </p>
+
+        <div style="margin-bottom: 16px;">
+          <label style="font-size: 12px; font-weight: 600; margin-bottom: 4px; display: block;">Geschlecht (für Cut-offs):</label>
+          <select id="auditGender" style="padding: 8px; border-radius: 6px; border: 1px solid #d1d5db; font-size: 13px;">
+            <option value="male">Männlich</option>
+            <option value="female">Weiblich</option>
+          </select>
+        </div>
+
+        <div class="audit-question">
+          <label class="audit-question-label">1. Wie oft trinken Sie alkoholhaltige Getränke?</label>
+          <div class="audit-options">
+            <div class="audit-option"><label><input type="radio" name="auditQ1" value="0"> Nie (0 Punkte)</label></div>
+            <div class="audit-option"><label><input type="radio" name="auditQ1" value="1"> Monatlich oder seltener (1 Punkt)</label></div>
+            <div class="audit-option"><label><input type="radio" name="auditQ1" value="2"> 2-4 Mal im Monat (2 Punkte)</label></div>
+            <div class="audit-option"><label><input type="radio" name="auditQ1" value="3"> 2-3 Mal pro Woche (3 Punkte)</label></div>
+            <div class="audit-option"><label><input type="radio" name="auditQ1" value="4"> 4 Mal pro Woche oder öfter (4 Punkte)</label></div>
+          </div>
+        </div>
+
+        <div class="audit-question">
+          <label class="audit-question-label">2. Wie viele Einheiten trinken Sie an einem typischen Tag?<br><small>(1 Einheit = 0,25l Bier / 0,1l Wein / 2cl Schnaps)</small></label>
+          <div class="audit-options">
+            <div class="audit-option"><label><input type="radio" name="auditQ2" value="0"> 1 oder 2 (0 Punkte)</label></div>
+            <div class="audit-option"><label><input type="radio" name="auditQ2" value="1"> 3 oder 4 (1 Punkt)</label></div>
+            <div class="audit-option"><label><input type="radio" name="auditQ2" value="2"> 5 oder 6 (2 Punkte)</label></div>
+            <div class="audit-option"><label><input type="radio" name="auditQ2" value="3"> 7, 8 oder 9 (3 Punkte)</label></div>
+            <div class="audit-option"><label><input type="radio" name="auditQ2" value="4"> 10 oder mehr (4 Punkte)</label></div>
+          </div>
+        </div>
+
+        <div class="audit-question">
+          <label class="audit-question-label">3. Wie oft trinken Sie sechs oder mehr Einheiten an einem Anlass?</label>
+          <div class="audit-options">
+            <div class="audit-option"><label><input type="radio" name="auditQ3" value="0"> Nie (0 Punkte)</label></div>
+            <div class="audit-option"><label><input type="radio" name="auditQ3" value="1"> Weniger als monatlich (1 Punkt)</label></div>
+            <div class="audit-option"><label><input type="radio" name="auditQ3" value="2"> Monatlich (2 Punkte)</label></div>
+            <div class="audit-option"><label><input type="radio" name="auditQ3" value="3"> Wöchentlich (3 Punkte)</label></div>
+            <div class="audit-option"><label><input type="radio" name="auditQ3" value="4"> Täglich oder fast täglich (4 Punkte)</label></div>
+          </div>
+        </div>
+
+        <button class="btn" style="width: 100%; margin-top: 16px;" onclick="calculateAuditScore()">Ergebnis berechnen</button>
+        <div id="auditResult" style="display: none;"></div>
+      </div>
+
       <button class="btn secondary" style="margin-top: 24px; width: 100%;" onclick="toggleChartPopup()">Schließen</button>
+    </div>
+
+    <!-- Einstellungs-Popup -->
+    <div class="settings-popup-overlay" id="settingsOverlay" onclick="toggleSettingsPopup()"></div>
+    <div id="settingsPopup" class="settings-popup" aria-hidden="true">
+      <div class="settings-title">⚙️ Einstellungen</div>
+      <div class="settings-subtitle">Passe die Bewertung an deine Bedürfnisse an</div>
+
+      <!-- God-Modus Toggle -->
+      <div class="settings-section">
+        <div class="settings-section-title">🧠 God-Modus aktivieren (detailliertes Tracking)</div>
+        <div class="settings-description">
+          Erweitert die Tages-Eingabe um Mengenfelder (Alkohol/Marijuana) und fügt eine feinere Analyse im Statistik-Popup hinzu.
+        </div>
+        <div style="display:flex; align-items:center; justify-content:space-between; padding:10px 12px; background:#f9fafb; border:1px solid #e5e7eb; border-radius:12px;">
+          <div>
+            <div style="font-weight:700; font-size:14px;">God-Modus</div>
+            <div style="font-size:12px; color:#64748b;">Optional & lokal. Keine Daten werden hochgeladen.</div>
+          </div>
+          <label class="switch">
+            <input id="godModeToggle" type="checkbox">
+            <span class="slider"></span>
+          </label>
+        </div>
+      </div>
+
+      <div class="settings-section">
+        <div class="settings-section-title">🎯 Wie sollen nicht eingetragene Tage bewertet werden?</div>
+        <div class="settings-description">
+          Tage ohne Eintrag können die Statistik verfälschen. Wähle eine Gewichtung.
+        </div>
+
+        <div class="settings-options">
+          <label class="settings-option" id="option-ignore">
+            <input type="radio" name="neutralDays" value="ignore" checked>
+            <div class="settings-option-content">
+              <div class="settings-option-title">🎯 Ignorieren (Empfohlen)</div>
+              <div class="settings-option-desc">Nur eingetragene Tage zählen.</div>
+            </div>
+          </label>
+
+          <label class="settings-option" id="option-neutral">
+            <input type="radio" name="neutralDays" value="neutral">
+            <div class="settings-option-content">
+              <div class="settings-option-title">⚖️ Als neutral werten</div>
+              <div class="settings-option-desc">Leicht positiv (50%).</div>
+            </div>
+          </label>
+
+          <label class="settings-option" id="option-negative">
+            <input type="radio" name="neutralDays" value="negative">
+            <div class="settings-option-content">
+              <div class="settings-option-title">⚠️ Als eher negativ werten</div>
+              <div class="settings-option-desc">Motivation zum täglichen Tracking.</div>
+            </div>
+          </label>
+
+          <label class="settings-option" id="option-very-negative">
+            <input type="radio" name="neutralDays" value="very-negative">
+            <div class="settings-option-content">
+              <div class="settings-option-title">🚨 Als sehr negativ werten</div>
+              <div class="settings-option-desc">Strengste Option.</div>
+            </div>
+          </label>
+        </div>
+
+        <div class="settings-info-box">
+          💡 <strong>Tipp:</strong> Wenn du erst seit kurzem trackst, wähle „Ignorieren“.
+        </div>
+      </div>
+
+      <!-- Backup & Wiederherstellung -->
+      <div class="settings-section">
+        <div class="settings-section-title">🗄️ Daten-Backup (lokal)</div>
+        <div class="settings-description">
+          Export/Import laufen ausschließlich im Browser. Es werden <strong>keine</strong> Daten hochgeladen.
+        </div>
+        <div class="submit-row" style="margin-top: 8px;">
+          <button class="btn secondary" onclick="exportData()">📤 Daten exportieren</button>
+          <button class="btn secondary" onclick="importData()">📥 Daten importieren</button>
+        </div>
+        <p class="settings-description" style="margin-top:10px;">
+          Hinweis: Beim Import werden vorhandene Tage <em>gemerged</em> (gleiche Tage werden überschrieben).
+        </p>
+      </div>
+      <button class="btn" style="width: 100%;" onclick="saveSettings()">Einstellungen speichern</button>
     </div>
 
     <footer>© 2025 by R. Duwenbeck</footer>
@@ -754,14 +981,30 @@
     let dayData = {};
     let editingDate = null;
     let storageWorking = false;
+    let neutralDaysSetting = 'ignore'; // Default
+    let godMode = false;
 
     const monthNames = ['Januar','Februar','März','April','Mai','Juni','Juli','August','September','Oktober','November','Dezember'];
     const weekdays   = ['Mo','Di','Mi','Do','Fr','Sa','So'];
 
-    const formatDateKey = (date)=> `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`;
+    const FALLBACK_GRAMS = { superday:0, wellness:0, sober:0, moderate:20, mixed:40, alcohol:50 };
+    const ETHANOL_DENSITY = 0.789; // g/ml
+
+    const formatDateKey = (date)=> `${date.getFullYear()}-${date.getMonth()+1}-${date.getDate()}`;
     const formatDisplayDate = (date)=> `${date.getDate()}. ${monthNames[date.getMonth()]} ${date.getFullYear()}`;
 
-    /* Storage */
+    // Helpers – kompatibel mit altem & neuem Format
+    const getDayStatus = (key) => {
+      const data = dayData[key];
+      if(!data) return null;
+      return typeof data === 'string' ? data : data.status;
+    };
+    const getDayComment = (key) => {
+      const data = dayData[key];
+      if(!data || typeof data === 'string') return '';
+      return data.comment || '';
+    };
+
     function testStorage(){ try{ localStorage.setItem('__test__','1'); localStorage.removeItem('__test__'); storageWorking = true; }catch{ storageWorking=false; } }
     function updateStorageStatus(message){
       const status = document.getElementById('storageStatus');
@@ -777,19 +1020,32 @@
         updateStorageStatus('✅ Daten gespeichert'); return true;
       }catch{ updateStorageStatus('❌ Speicher-Fehler'); return false; }
     }
+    function getMergedSettings(){
+      // liest beide möglichen Keys und merged defensiv
+      let A={}, B={};
+      try{ A = JSON.parse(localStorage.getItem('alcoholTrackerSettings')||'{}') || {}; }catch{}
+      try{ B = JSON.parse(localStorage.getItem('boozeTrackerSettings')||'{}') || {}; }catch{}
+      return { ...B, ...A }; // 'alcoholTrackerSettings' gewinnt
+    }
     function loadData(){
       if(!storageWorking){ updateStorageStatus('⚠️ Kein persistenter Speicher'); return; }
       try{
         const savedData = localStorage.getItem('alcoholTrackerData');
         dayData = savedData && savedData !== 'null' ? JSON.parse(savedData) : {};
         currentInputDate = new Date();
+
+        // Settings laden
+        const settings = getMergedSettings();
+        neutralDaysSetting = settings.neutralDays || 'ignore';
+        godMode = !!settings.godMode;
+
         updateStorageStatus(`✅ ${Object.keys(dayData).length} Tage geladen`);
       }catch{
         dayData = {}; currentInputDate = new Date(); updateStorageStatus('❌ Laden fehlgeschlagen');
       }
     }
 
-    /* Erfolgsquote - ANGEPASST */
+    /* Erfolgsquote */
     function setSuccessCardTint(pct){
       const card = document.getElementById('successCard');
       card.classList.remove('rate-good','rate-warn','rate-bad');
@@ -802,171 +1058,133 @@
       let total=0, max=0;
       const last = new Date(y, m+1, 0).getDate();
       for(let d=1; d<=last; d++){
-        const st = dayData[formatDateKey(new Date(y,m,d))];
+        const key = formatDateKey(new Date(y,m,d));
+        const st = getDayStatus(key);
         if(!st) continue;
         max += 1;
         if(st==='superday') total += 1.0;
         else if(st==='wellness') total += 0.9;
         else if(st==='sober') total += 0.75;
         else if(st==='moderate') total += 0.4;
-        else if(st==='mixed') total += 0.25;  // ANGEPASST auf 25%
+        else if(st==='mixed') total += 0.25;
       }
       const pct = max>0 ? Math.round((total/max)*100) : 0;
       document.getElementById('successRate').textContent = pct + '%';
       setSuccessCardTint(pct);
     }
 
-    /* Balkendiagramm für letzte 100 Tage - ANGEPASST für horizontales Design */
+    /* 100 Tage Balken */
     function calculate100DaysChart(){
-      let negative = 0; // unter 50%: alcohol, mixed, moderate
-      let positive = 0; // über 50%: sober, wellness, superday
+      let negative = 0; // alcohol, mixed, moderate
+      let positive = 0; // sober, wellness, superday
       
       const today = new Date();
       for(let i=0; i<100; i++){
         const probe = new Date(today);
         probe.setDate(probe.getDate() - i);
-        const st = dayData[formatDateKey(probe)];
-        
-        if(st === 'alcohol' || st === 'mixed' || st === 'moderate'){
-          negative++;
-        } else if(st === 'sober' || st === 'wellness' || st === 'superday'){
-          positive++;
-        }
+        const st = getDayStatus(formatDateKey(probe));
+        if(st === 'alcohol' || st === 'mixed' || st === 'moderate') negative++;
+        else if(st === 'sober' || st === 'wellness' || st === 'superday') positive++;
       }
-
-      // Prozent berechnen (von 100 Tagen)
       const negPct = Math.round((negative / 100) * 100);
       const posPct = Math.round((positive / 100) * 100);
-
-      // Balken aktualisieren mit Animation
       setTimeout(() => {
-        // Negative Bar
         document.getElementById('chartNegative').style.width = negPct + '%';
         document.getElementById('chartNegativeNum').textContent = negative;
         document.getElementById('chartNegativePct').textContent = negPct + '%';
-        
-        // Positive Bar
         document.getElementById('chartPositive').style.width = posPct + '%';
         document.getElementById('chartPositiveNum').textContent = positive;
         document.getElementById('chartPositivePct').textContent = posPct + '%';
       }, 100);
     }
 
-    /* GESUNDHEITSBEWERTUNG - Wissenschaftlich fundiert nach WHO/DGE/RKI/DSM-5 */
+    /* Gesundheitsbewertung (Basis) */
     function calculateHealthAssessment(){
       const today = new Date();
-      let counts = {
-        superday: 0,
-        wellness: 0,
-        sober: 0,
-        moderate: 0,
-        mixed: 0,
-        alcohol: 0
-      };
-      
-      // Zähle Kategorien für letzte 100 Tage
+      let counts = { superday:0, wellness:0, sober:0, moderate:0, mixed:0, alcohol:0, empty:0 };
       const last100Days = [];
       for(let i=0; i<100; i++){
-        const probe = new Date(today);
-        probe.setDate(probe.getDate() - i);
-        const st = dayData[formatDateKey(probe)];
+        const probe = new Date(today); probe.setDate(probe.getDate() - i);
+        const key = formatDateKey(probe);
+        const st = getDayStatus(key);
         last100Days.push(st || null);
-        if(st && counts[st] !== undefined) counts[st]++;
+        if(st && counts[st] !== undefined) counts[st]++; else if(!st) counts.empty++;
       }
 
-      // 1. AF-Quote (Alkoholfreie Quote) - WHO-Standard
+      const enteredDays = 100 - counts.empty;
+      let divisor = 100, neutralWeight = 0;
+      if(neutralDaysSetting === 'ignore'){ divisor = enteredDays > 0 ? enteredDays : 1; }
+      else if(neutralDaysSetting === 'neutral'){ neutralWeight = 0.5; }
+      else if(neutralDaysSetting === 'negative'){ neutralWeight = 0.3; }
+      else if(neutralDaysSetting === 'very-negative'){ neutralWeight = 0.15; }
+
       const afCount = counts.superday + counts.wellness + counts.sober;
-      const afQuote = afCount / 100;
-      
-      // 2. Gewichtete Gesundheitsquote - Differenzierte Bewertung
+      const afQuote = afCount / divisor;
+
       const weightedScore = (
         counts.superday * 1.0 +
         counts.wellness * 0.9 +
         counts.sober * 0.75 +
         counts.moderate * 0.4 +
         counts.mixed * 0.25 +
-        counts.alcohol * 0.0
+        counts.alcohol * 0.0 +
+        counts.empty * neutralWeight
       ) / 100;
-      
-      // 3. Binge-Nähe - RKI-Risikoindikator
-      // "Viel Alkohol" + "Schadensbegrenzung" wenn rauschähnlich
+
       const bingeProximity = counts.alcohol + counts.mixed;
-      
-      // 4. Cluster-Erkennung - 3+ Hochrisiko-Tage am Stück
-      let maxCluster = 0;
-      let currentCluster = 0;
-      for(let i = 0; i < last100Days.length; i++){
+      const bingeQuote = bingeProximity / divisor;
+
+      let maxCluster = 0, currentCluster = 0;
+      for(let i=0;i<last100Days.length;i++){
         const st = last100Days[i];
-        if(st === 'alcohol' || st === 'mixed'){
-          currentCluster++;
-          if(currentCluster > maxCluster) maxCluster = currentCluster;
-        } else {
-          currentCluster = 0;
-        }
+        if(st === 'alcohol' || st === 'mixed'){ currentCluster++; if(currentCluster>maxCluster) maxCluster=currentCluster; }
+        else currentCluster=0;
       }
 
-      // 5. Label-Zuweisung nach wissenschaftlichen Schwellenwerten
-      let label, badgeClass, description, warning;
-      
-      if(afQuote >= 0.70 && bingeProximity <= 4){
-        // ZEN-BIBER - Grüne Zone (sehr gut)
-        label = '🧘 Zen-Biber';
-        badgeClass = 'zen';
-        description = '<strong>Niedriges Risiko</strong> – Du lebst gesund! Deine alkoholfreien Tage (≥70%) mit sportlichen/erholsamen Puffern zeigen ein vorbildliches Muster. Binge-Events sind selten (≤4/100 Tage). Weiter so! 🎉';
-        warning = null;
-        
+      let label, badgeClass, description, warning='', humorQuote='';
+      if(bingeProximity >= 40 || afQuote < 0.20 || (bingeQuote >= 0.40 && enteredDays >= 10)){
+        label = '🚨 Sucht-Alarm: Rote Lampen!'; badgeClass='red';
+        description = '<strong>Sehr hohes Risiko</strong> – häufige Hochrisiko-Tage oder kaum abstinente Tage.';
+      } else if((bingeProximity >= 20) || (afQuote < 0.30) || (bingeQuote >= 0.20 && enteredDays >= 10)){
+        label = '🎲 Risiko-Roulette'; badgeClass='red';
+        description = '<strong>Hohes Risiko</strong> – mehrmals wöchentlich riskant oder geringe AF-Quote.';
+      } else if(afQuote <= 0.39 || (bingeProximity >= 13 && bingeProximity <= 19) || (bingeQuote >= 0.13 && enteredDays >= 10)){
+        label = '🚨 Kipppunkt-Kandidat'; badgeClass='weekend';
+        description = '<strong>Erhöhtes Risiko</strong> – kritische Schwelle erreicht.';
       } else if(afQuote >= 0.40 && afQuote < 0.70 && bingeProximity <= 12){
-        // BALANCE-SEILTÄNZER - Gelb-grün (ok mit Fragezeichen)
-        label = '🤹 Balance-Seiltänzer';
-        badgeClass = 'balance';
-        description = '<strong>Moderates Risiko</strong> – Du balancierst ganz gut! AF-Quote 40-69% ist solide. Prüfe kritisch: Bleiben "moderate" Tage wirklich moderat (≤2 Einheiten/Woche nach DGE)? Binge-Events (≤12/100) sind noch überschaubar, aber Vorsicht vor Gewöhnung.';
-        warning = 'Tipp: Mehr Supertage/Wellness-Tage einstreuen für besseren Gesundheitsboost!';
-        
-      } else if(afQuote <= 0.39 || (bingeProximity >= 13 && bingeProximity <= 19)){
-        // WOCHENEND-WELLENTÄLER - Orange (aufpassen)
-        label = '🌊 Wochenend-Wellentäler';
-        badgeClass = 'weekend';
-        description = '<strong>Erhöhtes Risiko</strong> – Achtung, rote Ampel blinkt! Deine AF-Quote (<40%) oder Binge-Nähe (13-19/100 = wöchentlich bis knapp wöchentlich) liegt im WHO-Risikolevel "moderat bis hoch". Häufige Rauschsituationen sind Treiber für Leber-, Krebs- und Herzprobleme.';
-        warning = '⚠️ Empfehlung: AUDIT-Screening durchführen und Alkoholkonsum reduzieren. Sport neutralisiert Alkoholrisiken NICHT (WHO/DHS).';
-        
+        label = '🧘 Balance-Buddha'; badgeClass='balance';
+        description = '<strong>Moderates Risiko</strong> – solide AF-Quote, Binge selten.';
       } else {
-        // ROTER KREISEL - Rot (hoch)
-        label = '🔴 Roter Kreisel';
-        badgeClass = 'red';
-        description = '<strong>Hohes bis sehr hohes Risiko</strong> – Zeit zu handeln! Binge-Nähe (≥20/100 = mind. 1×/Woche) oder fast täglicher Konsum (AF-Quote <20%) zeigt ein kritisches Muster. DSM-5-Warnzeichen für AUD können vorliegen: Kontrollverlust, Toleranz, Weitermachen trotz Schäden.';
-        warning = '🚨 Dringend empfohlen: Professionelle Beratung (z.B. SAMHSA, lokale Suchtberatung) und medizinisches Gespräch. Dies ist keine Diagnose, aber ein klares Signal!';
+        label = '🦸 Leber-Superheld'; badgeClass='zen';
+        description = '<strong>Niedriges Gesamtrisiko</strong> – viele grüne Tage, Binge selten.';
       }
+      if(maxCluster >= 3) warning += '<br>🔥 <strong>Cluster:</strong> '+maxCluster+' Hochrisiko-Tage am Stück.';
+      if(counts.mixed >= 15) warning += '<br>💊 <strong>Schadensbegrenzung oft:</strong> Sport kompensiert Alkohol nicht wesentlich.';
 
-      // Sonder-Warnungen
-      if(maxCluster >= 3){
-        warning = (warning || '') + ' 🔥 <strong>Cluster-Stürmer erkannt:</strong> ' + maxCluster + ' Hochrisiko-Tage am Stück bedeuten deutlichen Risiko-Spike!';
-      }
-      if(counts.mixed >= 15){
-        warning = (warning || '') + ' 💊 <strong>Schadensbegrenzungs-Illusionist:</strong> Sport kaschiert Alkoholrisiken, senkt sie aber NICHT substanziell (WHO).';
-      }
-
-      // UI aktualisieren
-      document.getElementById('metricAF').textContent = Math.round(afQuote * 100) + '%';
+      const afDisplay = neutralDaysSetting === 'ignore' ? `${Math.round(afQuote * 100)}% (${afCount}/${enteredDays})` : `${Math.round(afQuote * 100)}%`;
+      document.getElementById('metricAF').textContent = afDisplay;
       document.getElementById('metricHealth').textContent = Math.round(weightedScore * 100) + '%';
-      document.getElementById('metricBinge').textContent = bingeProximity;
+      document.getElementById('metricBinge').textContent = neutralDaysSetting === 'ignore' ? `${bingeProximity} (${Math.round(bingeQuote * 100)}%)` : bingeProximity;
       document.getElementById('metricCluster').textContent = maxCluster > 0 ? maxCluster + ' Tage' : 'Keiner';
 
       const badge = document.getElementById('assessmentBadge');
       badge.textContent = label;
       badge.className = 'assessment-badge ' + badgeClass;
 
-      document.getElementById('assessmentDescription').innerHTML = description;
+      const basisInfo = neutralDaysSetting === 'ignore' ? 
+        `<div style="text-align:center; font-size:12px; color:var(--muted); margin-bottom:12px;">📊 Basierend auf <strong>${enteredDays} von 100 Tagen</strong></div>` :
+        `<div style="text-align:center; font-size:12px; color:var(--muted); margin-bottom:12px;">📊 Basierend auf <strong>100 Tagen</strong> (${enteredDays} eingetragen)</div>`;
+      document.getElementById('assessmentDescription').innerHTML = basisInfo + description + (humorQuote ? '<br><br>'+humorQuote : '');
 
       const warningEl = document.getElementById('assessmentWarning');
-      if(warning){
-        warningEl.innerHTML = warning;
-        warningEl.style.display = 'block';
-      } else {
-        warningEl.style.display = 'none';
-      }
+      if(warning){ warningEl.innerHTML = warning; warningEl.style.display='block'; } else { warningEl.style.display='none'; }
+
+      // Toggle für Detailanalyse ein-/ausblenden
+      document.getElementById('detailToggleHolder').style.display = godMode ? 'block' : 'none';
+      if(godMode) computeGodAnalysis(); // vorfüllen, aber versteckt lassen
     }
 
-    /* Streak - ANGEPASST: Geht sofort auf 0 bei nicht-grünen Tagen */
+    /* Streak */
     function setStreakCardTint(streak){
       const card = document.getElementById('streakCard');
       const numEl = document.getElementById('streakNumber');
@@ -979,28 +1197,14 @@
     }
     function isGreen(state){ return state==='sober' || state==='superday' || state==='wellness'; }
     function calculateStreak(){
-      let probe = new Date(); // heute
-      let streak = 0;
-      
-      // Zähle rückwärts von heute
+      let probe = new Date(); let streak = 0;
       while(true){
         const key = formatDateKey(probe);
-        const st = dayData[key];
-        
-        // Wenn grüner Tag: Streak erhöhen
-        if(isGreen(st)){
-          streak++;
-          probe.setDate(probe.getDate()-1);
-        }
-        // Wenn nicht-grüner Tag oder kein Eintrag: Streak beenden
-        else {
-          break;
-        }
-        
-        // Sicherheit: Max 1000 Tage prüfen
+        const st = getDayStatus(key);
+        if(isGreen(st)){ streak++; probe.setDate(probe.getDate()-1); }
+        else break;
         if(streak > 1000) break;
       }
-      
       setStreakCardTint(streak);
     }
 
@@ -1009,8 +1213,11 @@
       document.getElementById('currentDateDisplay').textContent = formatDisplayDate(currentInputDate);
       updateStorageStatus(`🍷 ${Object.keys(dayData).length} Tage`);
       const key = formatDateKey(currentInputDate);
-      const existing = dayData[key];
+      const existing = getDayStatus(key);
+      const existingComment = getDayComment(key);
       const btn = document.getElementById('submitDay');
+
+      document.getElementById('dayCommentInput').value = existingComment || '';
       if(existing){
         const radio = document.querySelector(`input[name="dayChoice"][value="${existing}"]`);
         if(radio) radio.checked = true;
@@ -1019,6 +1226,10 @@
       }else{
         btn.textContent = 'Tag speichern';
       }
+
+      // God-Modus UI
+      document.getElementById('godModeCard').style.display = godMode ? 'block' : 'none';
+      if(godMode) loadGodInputsForToday();
     }
 
     function showMonthView(){
@@ -1039,16 +1250,13 @@
     function updateMonthView(){
       const y = currentViewDate.getFullYear(), m = currentViewDate.getMonth();
       document.getElementById('monthHeader').textContent = `${monthNames[m]} ${y}`;
-
       const grid = document.getElementById('monthGrid');
       grid.innerHTML = '';
 
       const weekdays = ['Mo','Di','Mi','Do','Fr','Sa','So'];
       for(const w of weekdays){
         const h = document.createElement('div');
-        h.className = 'weekday';
-        h.textContent = w;
-        grid.appendChild(h);
+        h.className = 'weekday'; h.textContent = w; grid.appendChild(h);
       }
 
       const first = new Date(y, m, 1);
@@ -1057,9 +1265,7 @@
 
       for(let i=0;i<startDay;i++){
         const e = document.createElement('div');
-        e.className='day';
-        e.style.visibility='hidden';
-        grid.appendChild(e);
+        e.className='day'; e.style.visibility='hidden'; grid.appendChild(e);
       }
 
       const today = new Date();
@@ -1072,15 +1278,24 @@
         cell.dataset.m = String(m);
         cell.dataset.d = String(d);
 
-        const st = dayData[formatDateKey(dt)];
+        const key = formatDateKey(dt);
+        const st = getDayStatus(key);
+        const comment = getDayComment(key);
+        
         if(st) cell.classList.add(st);
         if(dt.toDateString() === today.toDateString()) cell.classList.add('today');
-
+        if(comment){
+          cell.classList.add('has-comment');
+          const tooltip = document.createElement('div');
+          tooltip.className = 'day-comment-tooltip';
+          tooltip.textContent = comment;
+          cell.appendChild(tooltip);
+        }
         grid.appendChild(cell);
       }
     }
 
-    /* Event-Delegation */
+    /* Event-Delegation Kalender */
     document.addEventListener('click', (e)=>{
       const grid = document.getElementById('monthGrid');
       if(!grid || !grid.contains(e.target)) return;
@@ -1100,6 +1315,9 @@
     function openEditPopup(date){
       editingDate = date;
       document.getElementById('editDate').textContent = formatDisplayDate(date);
+      const key = formatDateKey(date);
+      const comment = getDayComment(key);
+      document.getElementById('editCommentInput').value = comment || '';
       const pop = document.getElementById('editPopup');
       pop.classList.add('active');
       pop.setAttribute('aria-hidden','false');
@@ -1111,61 +1329,178 @@
       editingDate = null;
     }
 
+    /* Einstellung neutrale Tage (im Popup-Chart) */
+    function selectNeutralOption(option){
+      neutralDaysSetting = option;
+      const settings = JSON.parse(localStorage.getItem('boozeTrackerSettings') || '{}');
+      settings.neutralDays = option;
+      localStorage.setItem('boozeTrackerSettings', JSON.stringify(settings));
+      document.querySelectorAll('.settings-option').forEach(el => el.classList.remove('selected'));
+      document.querySelectorAll('input[name="neutralDays"]').forEach(el => {
+        el.checked = (el.value === option);
+        if(el.checked) el.closest('.settings-option').classList.add('selected');
+      });
+      calculateHealthAssessment();
+    }
+
+    /* AUDIT-C */
+    function calculateAuditScore(){
+      const q1 = parseInt(document.querySelector('input[name="auditQ1"]:checked')?.value);
+      const q2 = parseInt(document.querySelector('input[name="auditQ2"]:checked')?.value);
+      const q3 = parseInt(document.querySelector('input[name="auditQ3"]:checked')?.value);
+      if(isNaN(q1) || isNaN(q2) || isNaN(q3)){ alert('Bitte beantworte alle 3 Fragen!'); return; }
+      const score = q1 + q2 + q3;
+      const gender = document.getElementById('auditGender').value;
+      let risk, riskClass, riskText;
+      if(score === 0){ risk='Niedriges Risiko'; riskClass='low'; riskText='Abstinenz oder sehr geringer Konsum.'; }
+      else if((gender === 'female' && score < 3) || (gender === 'male' && score < 4)){ risk='Geringes Risiko'; riskClass='low'; riskText='Unterer Bereich. Maßhalten beibehalten.'; }
+      else if(score < 5){ risk='Riskanter Konsum'; riskClass='medium'; riskText='Potentiell schädlich. Reduktion erwägen.'; }
+      else { risk='Hohes Risiko'; riskClass='high'; riskText='Hohes Risiko für AUD. Beratung empfohlen.'; }
+      const resultDiv = document.getElementById('auditResult');
+      resultDiv.className = 'audit-result ' + riskClass;
+      resultDiv.innerHTML = `
+        <strong>AUDIT-C Score: ${score} von 12</strong>
+        <strong style="font-size: 14px; margin-top: 8px; display: block;">${risk}</strong>
+        ${riskText}
+      `;
+      resultDiv.style.display = 'block';
+      resultDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
     /* Chart Popup */
     function toggleChartPopup(){
       const popup = document.getElementById('chartPopup');
       const overlay = document.getElementById('chartOverlay');
       const isActive = popup.classList.contains('active');
-      
       if(isActive){
-        popup.classList.remove('active');
-        overlay.classList.remove('active');
-        popup.setAttribute('aria-hidden','true');
+        popup.classList.remove('active'); overlay.classList.remove('active'); popup.setAttribute('aria-hidden','true');
+        document.getElementById('godDetailSection').style.display='none';
       } else {
         calculate100DaysChart();
         calculateHealthAssessment();
-        popup.classList.add('active');
-        overlay.classList.add('active');
-        popup.setAttribute('aria-hidden','false');
+        const radio = document.querySelector(`input[name="neutralDays"][value="${neutralDaysSetting}"]`);
+        if(radio){ radio.checked = true; radio.closest('.settings-option').classList.add('selected'); }
+        popup.classList.add('active'); overlay.classList.add('active'); popup.setAttribute('aria-hidden','false');
+      }
+    }
+
+    /* Settings Popup */
+    function toggleSettingsPopup(){
+      const popup = document.getElementById('settingsPopup');
+      const overlay = document.getElementById('settingsOverlay');
+      const isActive = popup.classList.contains('active');
+      if(isActive){
+        popup.classList.remove('active'); overlay.classList.remove('active'); popup.setAttribute('aria-hidden','true');
+      } else {
+        const radio = document.querySelector(`input[name="neutralDays"][value="${neutralDaysSetting}"]`);
+        if(radio) radio.checked = true;
+        updateSettingsUI();
+        popup.classList.add('active'); overlay.classList.add('active'); popup.setAttribute('aria-hidden','false');
+      }
+    }
+    function updateSettingsUI(){
+      document.querySelectorAll('.settings-option').forEach(opt => opt.classList.remove('selected'));
+      const selectedOption = document.querySelector(`input[name="neutralDays"]:checked`);
+      if(selectedOption){ selectedOption.closest('.settings-option').classList.add('selected'); }
+      // God-Modus Toggle spiegeln
+      const gmToggle = document.getElementById('godModeToggle');
+      if(gmToggle) gmToggle.checked = !!godMode;
+    }
+    function saveSettings(){
+      const selected = document.querySelector('input[name="neutralDays"]:checked');
+      const gmToggle = document.getElementById('godModeToggle');
+      if(selected){
+        neutralDaysSetting = selected.value;
+        godMode = gmToggle?.checked ?? false;
+        if(storageWorking){
+          try{
+            localStorage.setItem('alcoholTrackerSettings', JSON.stringify({
+              neutralDays: neutralDaysSetting,
+              godMode: godMode
+            }));
+            // Kompatibler Zweitschlüssel, falls vorher genutzt
+            localStorage.setItem('boozeTrackerSettings', JSON.stringify({
+              neutralDays: neutralDaysSetting,
+              godMode: godMode
+            }));
+          }catch(e){ console.warn('Settings konnten nicht gespeichert werden:', e); }
+        }
+        toggleSettingsPopup();
+        alert('✅ Einstellungen gespeichert!');
+        updateDayInputView();
       }
     }
 
     function updateDay(action){
       if(!editingDate) return;
       const key = formatDateKey(editingDate);
-      if(action==='delete') delete dayData[key];
-      else dayData[key] = action;
-
+      if(action === 'delete'){
+        delete dayData[key];
+      } else {
+        const pendingComment = (document.getElementById('editCommentInput').value || '').trim();
+        const prev = dayData[key];
+        const prevObj = (prev && typeof prev === 'object') ? prev : {};
+        dayData[key] = { status: action, comment: pendingComment, alcohol: prevObj.alcohol, marijuana: prevObj.marijuana };
+      }
       saveData();
       closeEditPopup();
       updateMonthView();
       calculateStreak();
       calculateSuccessRate();
     }
+    function saveEditComment(){
+      if(!editingDate) return;
+      const key = formatDateKey(editingDate);
+      const comment = document.getElementById('editCommentInput').value.trim();
+      const existingStatus = getDayStatus(key);
+      if(existingStatus){
+        const prev = dayData[key];
+        const prevObj = (prev && typeof prev === 'object') ? prev : {};
+        dayData[key] = { status: existingStatus, comment, alcohol: prevObj.alcohol, marijuana: prevObj.marijuana };
+        saveData(); updateMonthView();
+        const btn = event.target; const originalText = btn.textContent; btn.textContent = '✅ Gespeichert!'; setTimeout(() => btn.textContent = originalText, 1200);
+      }
+      closeEditPopup();
+    }
 
     function previousMonth(){ currentViewDate.setMonth(currentViewDate.getMonth()-1); updateMonthView(); calculateStreak(); calculateSuccessRate(); }
     function nextMonth(){     currentViewDate.setMonth(currentViewDate.getMonth()+1); updateMonthView(); calculateStreak(); calculateSuccessRate(); }
 
-    /* Save day */
+    /* ===== Tag speichern – erweitert für God-Modus ===== */
     function saveDay(){
       const selected = document.querySelector('input[name="dayChoice"]:checked');
       if(!selected) return;
-      const key = formatDateKey(currentInputDate);
-      dayData[key] = selected.value;
+      const key = formatDateKey(new Date()); // bleibt wie zuvor „heute“
+      const comment = (document.getElementById('dayCommentInput').value || '').trim();
 
-      const btn = document.getElementById('submitDay');
-      const ok = saveData();
-      const label = btn.textContent;
-      btn.textContent = ok ? '✅ Gespeichert!' : '❌ Fehler!';
-      setTimeout(()=>btn.textContent = label, 1200);
+      // bestehende Zusatzdaten (falls schon vorhanden) nicht verlieren
+      const prev = dayData[key];
+      const prevObj = (prev && typeof prev === 'object') ? prev : {};
 
-      calculateStreak();
+      // Basis speichern
+      dayData[key] = { status: selected.value, comment, alcohol: prevObj.alcohol, marijuana: prevObj.marijuana };
 
-      currentInputDate.setDate(currentInputDate.getDate()+1);
-      updateDayInputView();
+      // Falls God-Modus aktiv und Felder gefüllt → direkt mitschreiben
+      if(godMode){
+        const gm = readGodInputs();
+        if(gm.alcohol || gm.marijuana){
+          const cur = dayData[key];
+          if(gm.alcohol) cur.alcohol = gm.alcohol;
+          if(gm.marijuana) cur.marijuana = gm.marijuana;
+        }
+      }
 
-      document.querySelectorAll('input[name="dayChoice"]').forEach(r=>r.checked=false);
-      btn.disabled = true;
+      saveData();
+      document.getElementById('dayCommentInput').value = '';
+      document.getElementById('submitDay').disabled = true;
+
+      // Navigation: Standard bleibt wie bisher → Monatsansicht
+      // Im God-Modus bleiben wir auf der Tagesansicht, damit Details direkt ergänzt werden können.
+      if(godMode){
+        updateDayInputView();
+      } else {
+        showMonthView();
+      }
     }
 
     /* Reset */
@@ -1175,8 +1510,207 @@
       try{
         localStorage.removeItem('alcoholTrackerData');
         localStorage.removeItem('alcoholTrackerCurrentDate');
+        localStorage.removeItem('alcoholTrackerSettings');
+        localStorage.removeItem('boozeTrackerSettings');
       }catch(e){ console.warn('LocalStorage-Bereinigung fehlgeschlagen:', e); }
       location.reload();
+    }
+
+    // ===== GOD-MODUS: Eingabe & Speicherung =====
+    function calcAlcohol(ml, abvPercent, portions){
+      const volMl = (Number(ml)||0) * (Number(portions)||1);
+      const abv = (Number(abvPercent)||0)/100;
+      const grams = volMl * abv * ETHANOL_DENSITY; // g
+      const drinks = grams / 10; // 10 g pro Drink
+      return { grams: +grams.toFixed(1), drinks: +drinks.toFixed(2) };
+    }
+    function readGodInputs(){
+      const typeEl = document.getElementById('gmAlcoholType');
+      const mlEl = document.getElementById('gmAlcoholMl');
+      const pEl = document.getElementById('gmAlcoholPortions');
+      const weedEl = document.getElementById('gmWeedGrams');
+      const freqEl = document.getElementById('gmWeedFreq');
+
+      let alcohol=null, marijuana=null;
+
+      const abv = typeEl ? parseFloat(typeEl.selectedOptions[0]?.dataset.abv || '0') : 0;
+      const ml = mlEl ? Number(mlEl.value || 0) : 0;
+      const portions = pEl ? Number(pEl.value || 1) : 1;
+      if(ml>0 && portions>0 && abv>0){
+        const { grams, drinks } = calcAlcohol(ml, abv, portions);
+        alcohol = { grams, drinks, type: typeEl.value, abv };
+      }
+
+      const g = weedEl ? Number(weedEl.value || 0) : 0;
+      const fq = freqEl ? freqEl.value : 'einmalig';
+      if(g>0){
+        marijuana = { grams: +g.toFixed(2), frequency: fq };
+      }
+      return { alcohol, marijuana };
+    }
+    function updateGodPreview(){
+      const typeEl = document.getElementById('gmAlcoholType');
+      const mlEl = document.getElementById('gmAlcoholMl');
+      const pEl = document.getElementById('gmAlcoholPortions');
+      const abv = parseFloat(typeEl.selectedOptions[0]?.dataset.abv || '0');
+      const ml = Number(mlEl.value || 0);
+      const portions = Number(pEl.value || 1);
+      const { grams, drinks } = calcAlcohol(ml, abv, portions);
+      document.getElementById('gmAlcoholGrams').textContent = grams.toFixed(1);
+      document.getElementById('gmAlcoholDrinks').textContent = drinks.toFixed(2);
+    }
+    function persistGodInputsIfDaySet(){
+      const key = formatDateKey(new Date());
+      const status = getDayStatus(key);
+      if(!status) return; // erst speichern, wenn ein Tagesstatus existiert
+      const gm = readGodInputs();
+      const cur = dayData[key] || { status, comment:'' };
+      if(gm.alcohol) cur.alcohol = gm.alcohol; else delete cur.alcohol;
+      if(gm.marijuana) cur.marijuana = gm.marijuana; else delete cur.marijuana;
+      dayData[key] = cur;
+      saveData();
+    }
+    function loadGodInputsForToday(){
+      const key = formatDateKey(new Date());
+      const entry = dayData[key];
+      const alcohol = entry && typeof entry==='object' ? entry.alcohol : null;
+      const marijuana = entry && typeof entry==='object' ? entry.marijuana : null;
+
+      if(alcohol){
+        const map = { beer:5, radler:2.5, wine:10, liqueur:15, other20:20, other30:30, spirits:40 };
+        // grobe Zuordnung über abv
+        const sel = document.getElementById('gmAlcoholType');
+        if(sel){
+          // wähle passende Option nach abv oder type
+          const opt = [...sel.options].find(o => parseFloat(o.dataset.abv) === Number(alcohol.abv)) || [...sel.options].find(o => o.value === alcohol.type);
+          if(opt) sel.value = opt.value;
+        }
+        document.getElementById('gmAlcoholMl').value = ''; // Menge pro Portion ist nicht exakt rekonstruierbar ⇒ leer lassen
+        document.getElementById('gmAlcoholPortions').value = 1;
+        // Vorschau aus gespeicherten Gramm/Drinks
+        document.getElementById('gmAlcoholGrams').textContent = (alcohol.grams ?? 0).toFixed?.(1) ?? alcohol.grams;
+        document.getElementById('gmAlcoholDrinks').textContent = (alcohol.drinks ?? 0).toFixed?.(2) ?? alcohol.drinks;
+      } else {
+        document.getElementById('gmAlcoholGrams').textContent = '0';
+        document.getElementById('gmAlcoholDrinks').textContent = '0';
+      }
+
+      if(marijuana){
+        document.getElementById('gmWeedGrams').value = marijuana.grams ?? '';
+        document.getElementById('gmWeedFreq').value = marijuana.frequency || 'einmalig';
+      } else {
+        document.getElementById('gmWeedGrams').value = '';
+        document.getElementById('gmWeedFreq').value = 'einmalig';
+      }
+    }
+
+    // ===== GOD-MODUS: Detaillierte Analyse =====
+    function toggleGodAnalysis(){
+      const sec = document.getElementById('godDetailSection');
+      const isShown = sec.style.display === 'block';
+      sec.style.display = isShown ? 'none' : 'block';
+      if(!isShown) computeGodAnalysis();
+    }
+
+    function computeGodAnalysis(){
+      // sammle 100 Tage: Gramm Alkohol (detail oder Fallback) + Weed
+      const today = new Date();
+      let totalGrams = 0;
+      let bingeDays = 0; // > 40 g
+      let longestCluster = 0, currentCluster = 0; // > 20 g
+      let weedTotal = 0;
+      let detailDays = 0, knownDays = 0;
+      let weekendBinge = 0;
+      let lowDailyCount = 0; // 0<g<=20
+      for(let i=0; i<100; i++){
+        const dt = new Date(today); dt.setDate(dt.getDate()-i);
+        const key = formatDateKey(dt);
+        const entry = dayData[key];
+        const st = getDayStatus(key);
+
+        if(st){ knownDays++; }
+
+        // Alkohol g
+        let grams = 0;
+        if(entry && typeof entry==='object' && entry.alcohol && typeof entry.alcohol.grams === 'number'){
+          grams = entry.alcohol.grams; detailDays++;
+        } else if(st){ grams = FALLBACK_GRAMS[st] ?? 0; }
+        totalGrams += grams;
+
+        // Binge/Cluster
+        if(grams > 40) {
+          bingeDays++;
+          const dayIdx = dt.getDay(); // 0=So ... 6=Sa
+          if(dayIdx===5 || dayIdx===6) weekendBinge++;
+        }
+        if(grams > 20){ currentCluster++; if(currentCluster>longestCluster) longestCluster=currentCluster; }
+        else currentCluster=0;
+
+        if(grams>0 && grams<=20) lowDailyCount++;
+
+        // Marijuana
+        if(entry && entry.marijuana && typeof entry.marijuana.grams==='number'){
+          const mult = entry.marijuana.frequency === 'mehrmals' ? 2 : 1;
+          weedTotal += entry.marijuana.grams * mult;
+        }
+      }
+
+      const weeklyGrams = (totalGrams * 7) / 100; // Ø pro Woche über 100 Tage
+      const avgDrinksWeek = weeklyGrams / 10;
+
+      const weedWeek = (weedTotal * 7) / 100; // Ø pro Woche
+      const weedBoost = weedWeek > 1 ? 1.10 : 1.0;
+
+      // Teil-Scores (0 gut → 100 schlecht)
+      const Q = Math.min(weeklyGrams / 80, 1) * 100; // >80 g/Woche = 100
+      const B = Math.min( (0.7*(bingeDays/100) + 0.3*(longestCluster/10)), 1) * 100; // Cluster auf 10 gecappt
+      const M = Math.min(weedWeek / 2, 1) * 100; // >2 g/Woche = 100
+      let riskScore = (0.5*Q + 0.3*B + 0.2*M) * weedBoost;
+      riskScore = Math.max(0, Math.min(100, riskScore));
+
+      // Muster
+      let pattern = '—';
+      if(bingeDays >= 3 && weekendBinge/bingeDays >= 0.6) pattern = 'Weekend-Binger';
+      else if(lowDailyCount >= 60 && bingeDays <= 3) pattern = 'Daily Low (meist < 20 g)';
+      else if((100 - (totalGrams>0 ? Math.round(totalGrams/ (totalGrams/100)) : 0)) > 70 && bingeDays >= 1 && bingeDays <= 5){
+        pattern = 'Abstinent mit Slips';
+      }
+
+      // 5-Stufen-Skala
+      let stage=1, stageText='Stufe 1: Zen-Meister', stageClass='stage-1', tip='';
+      if(weeklyGrams > 80 || bingeDays > 30 || longestCluster > 7 || weedWeek > 2){
+        stage=5; stageText='Stufe 5: Alarmstufe Rot'; stageClass='stage-5'; tip='Sofortige Reduktion & ärztliche Beratung erwägen.';
+      } else if(weeklyGrams >= 40 || bingeDays >= 15 || longestCluster > 5){
+        stage=4; stageText='Stufe 4: Risiko-Jongleur'; stageClass='stage-4'; tip='Binge-Frequenz und Cluster aktiv aufbrechen (Plan: alkoholfreie Fenster + Alternativen).';
+      } else if(weeklyGrams >= 20 || (bingeDays >=5 && bingeDays <=15) || (longestCluster >=3 && longestCluster <=5) || (weedWeek >=0.5 && weedWeek <=2)){
+        stage=3; stageText='Stufe 3: Kipppunkt-Wanderer'; stageClass='stage-3'; tip='Mengen limitieren (<20 g/Tag), v.a. Wochenenden entschärfen.';
+      } else if(weeklyGrams >= 10 || (bingeDays>0 && bingeDays<5) || (longestCluster>0 && longestCluster<3)){
+        stage=2; stageText='Stufe 2: Balance-Künstler'; stageClass='stage-2'; tip='Ziele setzen: 1–2 zusätzliche AF-Tage/Woche.';
+      } else {
+        stage=1; stageText='Stufe 1: Zen-Meister'; stageClass='stage-1'; tip='Weiter so: AF-Quote hoch halten.';
+      }
+
+      // UI füllen
+      document.getElementById('detailAvgDrinks').textContent = avgDrinksWeek.toFixed(2);
+      document.getElementById('detailBingeDays').textContent = `${bingeDays}`;
+      document.getElementById('detailCluster').textContent = `${longestCluster}`;
+      document.getElementById('detailWeedWeek').textContent = weedWeek.toFixed(2);
+      document.getElementById('detailRiskScore').textContent = `${Math.round(riskScore)} / 100`;
+      document.getElementById('detailPattern').textContent = pattern;
+      const badge = document.getElementById('detailStageBadge');
+      badge.className = `stage-badge ${stageClass}`;
+      badge.textContent = stageText;
+
+      const tipEl = document.getElementById('detailTip');
+      if(tip){ tipEl.style.display='block'; tipEl.textContent = 'Tipp: ' + tip; } else { tipEl.style.display='none'; }
+
+      const fallbackEl = document.getElementById('detailFallbackNote');
+      if(knownDays>0 && detailDays/knownDays < 0.5){
+        fallbackEl.style.display='block';
+        fallbackEl.textContent = `🔎 Hinweis: Für ${knownDays-detailDays} von ${knownDays} erkannten Tagen wurden Mengen aus Kategorien geschätzt. Genauere Daten verbessern die Analyse.`;
+      } else {
+        fallbackEl.style.display='none';
+      }
     }
 
     // Expose
@@ -1194,12 +1728,144 @@
     document.addEventListener('DOMContentLoaded', ()=>{
       testStorage();
       loadData();
+
+      // Radio-Änderungen: Verhalten wie bisher → aber Navigation abhängig vom God-Modus
       document.querySelectorAll('input[name="dayChoice"]').forEach(radio=>{
-        radio.addEventListener('change', ()=>{ document.getElementById('submitDay').disabled = false; });
+        radio.addEventListener('change', ()=>{ saveDay(); });
       });
-      document.getElementById('submitDay').addEventListener('click', saveDay);
+
+      // God-Modus Listeners (live Vorschau & Autosave sobald Status existiert)
+      const ids = ['gmAlcoholType','gmAlcoholMl','gmAlcoholPortions','gmWeedGrams','gmWeedFreq'];
+      ids.forEach(id=>{
+        const el = document.getElementById(id);
+        if(!el) return;
+        el.addEventListener('input', ()=>{
+          if(id.startsWith('gmAlcohol')) updateGodPreview();
+          persistGodInputsIfDaySet();
+        });
+        el.addEventListener('change', ()=>{
+          if(id.startsWith('gmAlcohol')) updateGodPreview();
+          persistGodInputsIfDaySet();
+        });
+      });
+
       updateDayInputView();
+
+      document.getElementById('submitDay').addEventListener('click', ()=>{ saveDay(); });
     });
-  </script>
+
+/* ---------------------------
+   Backup & Restore (local)
+--------------------------- */
+function exportData(){
+  try{
+    const settingsRawA = localStorage.getItem('alcoholTrackerSettings');
+    const settingsRawB = localStorage.getItem('boozeTrackerSettings');
+    let settings = {};
+    try{ if(settingsRawA) settings = JSON.parse(settingsRawA) || {}; }catch{}
+    try{ if(settingsRawB) settings = { ...settings, ...(JSON.parse(settingsRawB)||{}) }; }catch{}
+
+    settings.neutralDays = (typeof neutralDaysSetting !== 'undefined' ? neutralDaysSetting : (settings.neutralDays || 'ignore'));
+    settings.godMode = (typeof godMode !== 'undefined' ? godMode : !!settings.godMode);
+
+    const payload = {
+      type: 'booze-tracker-backup',
+      version: 2,
+      exportedAt: new Date().toISOString(),
+      dayData,
+      settings
+    };
+
+    const blob = new Blob([JSON.stringify(payload, null, 2)], {type:'application/json'});
+    const url  = URL.createObjectURL(blob);
+    const a    = document.createElement('a');
+    a.href = url;
+    a.download = 'booze-tracker-backup.json';
+    a.click();
+    URL.revokeObjectURL(url);
+    alert('✅ Export abgeschlossen. Datei wurde heruntergeladen.');
+  }catch(e){
+    console.error(e);
+    alert('❌ Export fehlgeschlagen.');
+  }
+}
+
+function importData(){
+  const input = document.createElement('input');
+  input.type = 'file';
+  input.accept = '.json,application/json';
+  input.onchange = e => {
+    const file = e.target.files && e.target.files[0];
+    if(!file) return;
+    const reader = new FileReader();
+    reader.onload = ev => {
+      try{
+        const parsed = JSON.parse(ev.target.result);
+        let importedDayData;
+        let importedSettings;
+
+        if(parsed && parsed.dayData){
+          importedDayData = parsed.dayData;
+          importedSettings = parsed.settings || {};
+        } else {
+          importedDayData = parsed;
+          importedSettings = {};
+        }
+
+        const isDateKey = k => /^\d{4}-\d{1,2}-\d{1,2}$/.test(k);
+        const normalizeKey = (k) => {
+          const [y, m, d] = k.split('-').map(n => parseInt(n, 10));
+          const dt = new Date(y, m - 1, d);
+          return formatDateKey(dt);
+        };
+
+        const validEntries = {};
+        Object.keys(importedDayData || {}).forEach(k => {
+          if (isDateKey(k)) {
+            const normKey = normalizeKey(k);
+            const v = importedDayData[k];
+            if (typeof v === 'string') {
+              validEntries[normKey] = { status: v, comment: '' };
+            } else if (v && typeof v === 'object' && typeof v.status === 'string') {
+              // Kommentare + (neue) Detailobjekte übernehmen
+              validEntries[normKey] = {
+                status: v.status,
+                comment: v.comment || '',
+                alcohol: v.alcohol || undefined,
+                marijuana: v.marijuana || undefined
+              };
+            }
+          }
+        });
+
+        dayData = { ...dayData, ...validEntries };
+
+        const newNeutral = importedSettings.neutralDays;
+        const newGod = importedSettings.godMode;
+        const merged = { 
+          neutralDays: newNeutral || neutralDaysSetting || 'ignore',
+          godMode: typeof newGod === 'boolean' ? newGod : godMode
+        };
+        try{
+          localStorage.setItem('alcoholTrackerSettings', JSON.stringify(merged));
+          localStorage.setItem('boozeTrackerSettings', JSON.stringify(merged));
+        }catch{}
+
+        alert('✅ Daten importiert. Die Ansicht wird aktualisiert.');
+        saveData();
+        location.reload();
+      }catch(err){
+        console.error(err);
+        alert('❌ Ungültige Datei oder JSON-Format.');
+      }
+    };
+    reader.readAsText(file);
+  };
+  input.click();
+}
+
+window.exportData = exportData;
+window.importData = importData;
+</script>
 </body>
 </html>
