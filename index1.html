@@ -574,7 +574,31 @@
           </div>
         </div>
 
-        <script type="text/javascript" src="https://storage.ko-fi.com/cdn/widget/Widget_2.js"></script>
+        <script type="text/javascript" src="https://storage.ko-fi.com/cdn/widget/Widget_2.js">
+
+// ===== Start-Logik & God-Gating =====
+function getLastView(){ try{return localStorage.getItem('bt_lastView')||'month';}catch(e){return 'month';} }
+function setLastView(v){ try{localStorage.setItem('bt_lastView', v);}catch(e){} }
+function maybeShowStartView(){
+  const seen = localStorage.getItem('bt_firstRunSeen');
+  const hasData = (function(){ try{const d=JSON.parse(localStorage.getItem('alcoholTrackerData')||'{}'); return Object.keys(d).length>0;}catch(e){return false;} })();
+  if(!seen){
+    localStorage.setItem('bt_firstRunSeen','1');
+    openEdit(new Date());
+    return;
+  }
+  const last = getLastView();
+  if(!hasData || last==='edit'){
+    openEdit(new Date());
+  }
+}
+function updateGodGates(){
+  const sec = document.getElementById('drinksSection');
+  if(!sec) return;
+  const s = (typeof settings!=='undefined' && settings && settings.god===true);
+  sec.style.display = s ? '' : 'none';
+}
+</script>
         <script type="text/javascript">
           kofiwidget2.init('Spendier mir n´ Kaffee Ko-fi', '#72a4f2', 'R5R319DK8N');
           kofiwidget2.draw();
