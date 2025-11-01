@@ -74,7 +74,7 @@
       gap: 12px;
       margin: 18px 0 8px;
     }
-    @media (max-width:640px){ .choice-container{ grid-template-columns: 1fr; } }
+    @media (max-width:640px){ .choice-container{ grid-template-columns: 1fr 1fr; } }
 
     .choice-option{
       display:flex; align-items:center; gap:12px;
@@ -640,6 +640,13 @@
     }
     .support p{ margin:0 0 6px; }
     .support-buttons{ margin-top:0; display:flex; flex-wrap:wrap; gap:12px; justify-content:center; align-items:center; }
+    .support-buttons .btn-holder{ height:48px; display:flex; align-items:center; justify-content:center; }
+    
+    #kofi-holder, #kofi-holder iframe{ margin:0 !important; }
+    #kofi-holder iframe{ height:48px !important; min-height:48px !important; }
+    @media (max-width: 420px){
+      #kofi-holder iframe{ height:44px !important; }
+    }
   </style>
 </head>
 <body>
@@ -693,7 +700,7 @@
           <input type="radio" name="dayChoice" value="mixed" />
           <div class="choice-label">
             <div>❤️ Schadensbegrenzung</div>
-            <div class="choice-desc">Selbstbetrug = Sport + feiern (21-60g)</div>
+            <div class="choice-desc">Selbstbetrug = Sport + feiern</div>
           </div>
           <div class="choice-warning">⚠️ Auto-Vorschlag passt nicht zur Eingabe!</div>
         </label>
@@ -868,7 +875,7 @@
         <span>💚 Wellness</span>
         <span>🟢 Alkoholfrei</span>
         <span>🟡 Moderat (👟 = mit Sport)</span>
-        <span>❤️ Schadensbegrenzung</span>
+        <span>❤️ Pseudo Schadensbegrenzung (Erst Sport-> dann Alk)</span>
         <span>🔴 Alkohol</span>
         <span>😵 Katertag (⚠️ = mit Weiter-Alkohol)</span>
       </div>
@@ -881,12 +888,25 @@
       </div>
 
       <section class="support">
-        <p><strong>Findest du diese App nützlich?</strong> Dann spendier mir doch einen Kaffee:</p>
+        <p><strong>Findest diese kleine Anwendung nützlich?</strong> Dann spendier mir doch einen Kaffee:</p>
         <div class="support-buttons">
-          <a href="https://www.buymeacoffee.com/rduwenbecky">
-            <img src="https://img.buymeacoffee.com/button-api/?text=Spendier mir 'n Kaffee!&emoji=☕&slug=rduwenbecky&button_colour=5F7FFF&font_colour=ffffff&font_family=Lato&outline_colour=000000&coffee_colour=FFDD00" style="height:48px;" />
-          </a>
+          <!-- Ko-fi Button -->
+          <div id="kofi-holder" class="btn-holder">
+            <div id="kofi-widget" aria-label="Ko-fi Unterstützungsbutton"></div>
+          </div>
+
+          <!-- Buy Me a Coffee Button -->
+          <div class="btn-holder">
+            <a href="https://www.buymeacoffee.com/rduwenbecky"><img src="https://img.buymeacoffee.com/button-api/?text=Spendier mir ´n Kaffee! &emoji=☕&slug=rduwenbecky&button_colour=5F7FFF&font_colour=ffffff&font_family=Lato&outline_colour=000000&coffee_colour=FFDD00" /></a>
+          </div>
         </div>
+
+        <!-- Ko-fi Widget-Script -->
+        <script type="text/javascript" src="https://storage.ko-fi.com/cdn/widget/Widget_2.js"></script>
+        <script type="text/javascript">
+          kofiwidget2.init('Spendier mir n´ Kaffee Ko-fi', '#72a4f2', 'R5R319DK8N');
+          kofiwidget2.draw();
+        </script>
       </section>
     </div>
 
@@ -900,7 +920,7 @@
             <div class="chart-bar-header">
               <div class="chart-bar-label">
                 🔴 Unter 50%
-                <small>Alkohol, Schadensbegrenzung, Moderat, Katertag</small>
+                <small>Alkohol, "Schadensbegrenzung", Moderat, Katertag</small>
               </div>
               <div class="chart-bar-value">
                 <span class="chart-bar-number" id="chartNegativeNum">0</span>
@@ -1021,6 +1041,26 @@
         </div>
       </div>
 
+      <!-- Gewicht Section (NEU) -->
+      <div class="settings-section" id="settingsWeight">
+        <div class="settings-section-header" onclick="toggleSettingsSection('settingsWeight')">
+          <div class="settings-section-title">⚖️ Körpergewicht (optional)</div>
+          <div class="settings-section-toggle">▼</div>
+        </div>
+        <div class="settings-section-content">
+          <div class="settings-description">
+            Für genauere Promille-Schätzungen (Widmark-Formel). Bleibt leer = Standardannahme 75kg.
+          </div>
+          <div style="display:flex; gap:12px; align-items:center; margin-top:12px;">
+            <input type="number" id="userWeightInput" 
+              placeholder="z.B. 70" 
+              min="40" max="200" step="1"
+              style="padding:10px 14px; border:1px solid #d1d5db; border-radius:8px; font-size:14px; width:120px;">
+            <span style="color:var(--muted); font-weight:600;">kg</span>
+          </div>
+        </div>
+      </div>
+
       <!-- Neutrale Tage Section -->
       <div class="settings-section" id="settingsNeutralDays">
         <div class="settings-section-header" onclick="toggleSettingsSection('settingsNeutralDays')">
@@ -1116,6 +1156,7 @@
     let neutralDaysWeight = 30; // Prozent (0-50)
     let godMode = false;
     let userGender = 'male'; // male | female
+    let userWeight = null; // kg, null = default 75kg
     
     const DENSITY = 0.789; // g/ml für Ethanol
     const DRINK_UNIT = 10; // 1 Drink = 10g Alkohol (DE Standard)
@@ -1338,6 +1379,7 @@
         neutralDaysWeight = settings.neutralDaysWeight || 30;
         godMode = !!settings.godMode;
         userGender = settings.gender || 'male';
+        userWeight = settings.weight || null;
 
         migrateData();
         updateStorageStatus(`✅ ${Object.keys(dayData).length} Tage geladen`);
@@ -1584,11 +1626,10 @@
     }
 
     function estimateBAC(grams) {
-      // Sehr grobe Schätzung für 75kg Person, Widmark-Formel
-      // BAC = (Alkohol in g) / (Körpergewicht in kg × r)
-      // r ≈ 0.68 für Männer, 0.55 für Frauen
-      const weight = 75; // Annahme
-      const r = 0.68;
+      // Widmark-Formel: BAC = (Alkohol in g) / (Körpergewicht in kg × r)
+      // r = Verteilungsfaktor: 0.68 für Männer, 0.55 für Frauen
+      const weight = userWeight || 75; // Annahme 75kg falls nicht gesetzt
+      const r = userGender === 'female' ? 0.55 : 0.68;
       const bac = grams / (weight * r);
       return Math.max(0, bac).toFixed(1);
     }
@@ -1656,7 +1697,7 @@
         wellness: '💚 Wellness',
         sober: '🟢 Alkoholfrei',
         moderate: '🟡 Moderat',
-        mixed: '❤️ Schadensbegrenzung',
+        mixed: '❤️ "Schadensbegrenzung"',
         alcohol: '🔴 Alkohol',
         hangover: '😵 Katertag',
         hangoverLight: '😌 Hangover Light'
@@ -2547,6 +2588,10 @@
         }
         document.getElementById('toggleGodMode').checked = godMode;
         
+        // Gewicht anzeigen
+        const weightInput = document.getElementById('userWeightInput');
+        weightInput.value = userWeight || '';
+        
         popup.classList.add('active');
         overlay.classList.add('active');
       }
@@ -2564,6 +2609,11 @@
       const selectedGender = document.querySelector('input[name="gender"]:checked');
       if (selectedGender) userGender = selectedGender.value;
       
+      // Gewicht auslesen (optional)
+      const weightInput = document.getElementById('userWeightInput');
+      const weightValue = parseInt(weightInput.value);
+      userWeight = (weightValue >= 40 && weightValue <= 200) ? weightValue : null;
+      
       neutralDaysWeight = parseInt(document.getElementById('neutralWeightSlider').value) || 30;
       godMode = document.getElementById('toggleGodMode').checked;
 
@@ -2573,7 +2623,8 @@
             neutralDays: neutralDaysSetting,
             neutralDaysWeight,
             godMode,
-            gender: userGender
+            gender: userGender,
+            weight: userWeight
           }));
         } catch (e) {
           console.warn('Settings konnten nicht gespeichert werden:', e);
