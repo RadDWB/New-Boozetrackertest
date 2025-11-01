@@ -1036,11 +1036,7 @@
       </div>
 
       <!-- 6-Monats-Langzeitanalyse -->
-      <button id="toggleSixMonthBtn" class="btn secondary" style="width:100%; margin-top:24px; margin-bottom:16px; background-color: #d97706; box-shadow: 0 8px 18px rgba(217, 119, 6, .2);">
-        6-Monats-Analyse anzeigen
-      </button>
-
-      <div id="sixMonthAnalysisSection" class="chart-section" style="margin-top:0; background:#fef9f3; border:1px solid #fbbf24; display:none;">  
+      <div class="chart-section" style="margin-top:24px; background:#fef9f3; border:1px solid #fbbf24;">
         <div class="chart-title">📈 6-Monats-Langzeitanalyse (180 Tage)</div>
         <div style="font-size:13px; color:var(--muted); margin-bottom:12px; text-align:center;">
           Langfristige Muster und Entwicklungen
@@ -3014,24 +3010,6 @@
         btn.textContent = box.classList.contains('active') ? '🔼 Analyse ausblenden' : '🔍 Detaillierte Analyse anzeigen';
       });
       
-	  // === NEUER CODE START ===
-      // Event Listener für den 6-Monats-Toggle-Button
-      document.getElementById('toggleSixMonthBtn').addEventListener('click', () => {
-        const section = document.getElementById('sixMonthAnalysisSection');
-        const btn = document.getElementById('toggleSixMonthBtn');
-        
-        if (!section || !btn) return; // Sicherheitsabfrage
-
-        if (section.style.display === 'none') {
-          section.style.display = 'block'; // Sektion anzeigen
-          btn.textContent = '📉 6-Monats-Analyse ausblenden';
-        } else {
-          section.style.display = 'none'; // Sektion verstecken
-          btn.textContent = '📈 6-Monats-Analyse anzeigen';
-        }
-      });
-      // === NEUER CODE ENDE ===
-	  
       // Settings Radio
       document.querySelectorAll('input[name="neutralDays"]').forEach(radio => {
         radio.addEventListener('change', () => {
