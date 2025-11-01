@@ -907,10 +907,6 @@
         <button id="submitDay" class="btn">Tag speichern</button>
       </div>
 
-      <div class="submit-row" style="margin-top:8px">
-        <button id="deleteDay" class="btn danger">Tag löschen</button>
-      </div>
-
       <div class="storage-info" id="storageInfo">
         🍷 Gespeicherte Tage: <span id="savedDaysCount">0</span> ·
         <span id="storageStatus">Lade…</span>
@@ -1237,7 +1233,6 @@
     let neutralDaysSetting = 'ignore';
     let neutralDaysWeight = 30; // Prozent (0-50)
     let godMode = false;
-    let categoryManual = false;
     let userGender = 'male'; // male | female
     let userWeight = null; // kg, null = default 75kg
     
@@ -1850,10 +1845,10 @@
         
         if (entry && entry.drinks && Array.isArray(entry.drinks)) {
           // Getränke laden
-          if (entry && Array.isArray(entry.drinks) && entry.drinks.length) { entry.drinks.forEach(d => addDrink(d)); }
+          entry.drinks.forEach(d => addDrink(d));
         } else {
           // FIX: Initial ein leeres Getränk hinzufügen
-
+          addDrink();
         }
         
         // Checkboxen
@@ -1887,7 +1882,6 @@
 
     function saveDay() {
       const selected = document.querySelector('input[name="dayChoice"]:checked');
-  const choice = selected ? selected.value : null;
       if (!selected) {
         alert('Bitte eine Kategorie wählen.');
         return;
@@ -2734,13 +2728,14 @@
       updateDayInputView();
       
       // FIX: Initial Drink beim God-Mode laden
-      /* auto-add suppressed: user must click + Getränk */
+      if (godMode && activeDrinks.length === 0) {
+        addDrink();
+      }
       
       // Kategorie-Auswahl mit Auto-Select
       document.querySelectorAll('input[name="dayChoice"]').forEach(radio => {
         radio.addEventListener('change', () => {
-          categoryManual = true;
-        // Prüfe ob manuell geändert (nicht Auto-Select)
+          // Prüfe ob manuell geändert (nicht Auto-Select)
           const isManual = !radio.dataset.autoSelected;
           delete radio.dataset.autoSelected; // Reset
           if (isManual) {
@@ -2751,19 +2746,6 @@
       
       // Submit Day
       document.getElementById('submitDay').addEventListener('click', saveDay);
-    // Delete current day
-    try {
-      document.getElementById('deleteDay').addEventListener('click', () => {
-        const key = formatDateKey(currentInputDate);
-        if (!key) return;
-        if (!storageWorking) return;
-        delete dayData[key];
-        saveData();
-        updateMonthView();
-        showMonthView();
-      });
-    } catch(e) {}
-
       
       // FIX: God-Modus Toggle mit korrekter Logik
       document.getElementById('godToggleBtn').addEventListener('click', () => {
@@ -2775,7 +2757,9 @@
         btn.textContent = godMode ? 'Ausblenden' : 'Einblenden';
         
         // Initial Drink hinzufügen wenn leer
-        /* auto-add suppressed: user must click + Getränk */
+        if (godMode && activeDrinks.length === 0) {
+          addDrink();
+        }
       });
       
       // Add Drink
