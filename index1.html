@@ -3,849 +3,1826 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Booze-Tracker — v2.1 (Multi-Drinks & Clean Flow)</title>
+  <title>Ralles wunderbarer Booze-Tracker</title>
   <style>
     :root{
-      --bg1:#6ea8ff; --bg2:#8ee5ff; --ink:#111827; --muted:#6b7280;
-      --card:#fff; --border:#e5e7eb; --shadow:0 16px 40px rgba(0,0,0,.12);
-      --primary:#16a34a; --primary-2:#15803d; --danger:#ef4444; --warn:#f59e0b;
-      --good:#10b981; --ok:#22c55e; --mid:#f59e0b; --bad:#ef4444;
-      --pill:#f1f5f9;
-      --r:14px;
+      --bg-grad-start:#6ea8ff;
+      --bg-grad-end:#8ee5ff;
+      --card-bg:#ffffff;
+      --card-border:#e6eaf1;
+      --text:#1f2937;
+      --muted:#64748b;
+      --primary:#4f46e5;
+      --primary-dark:#4338ca;
+      --success:#10b981;
+      --success-dark:#047857;
+      --warn:#f59e0b;
+      --danger:#ef4444;
+      --super:#059669;
+      --wellness:#22c55e;
+      --mixed:#dc2626;
+      --radius:16px;
+      --shadow:0 12px 30px rgba(31,41,55,.12);
     }
-    html,body{height:100%;margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial,sans-serif;color:var(--ink);
-      background:linear-gradient(135deg,var(--bg1),var(--bg2)) fixed;}
-    .container{max-width:1000px;margin:28px auto;padding:clamp(14px,2.5vw,22px);background:var(--card);
-      border:1px solid var(--border);border-radius:18px;box-shadow:var(--shadow);}
-    h1{margin:0 0 6px;text-align:center;font-size:clamp(26px,4.5vw,34px);}
-    .sub{color:var(--muted);text-align:center;font-size:12px;margin-bottom:8px;}
-    .row{display:flex;gap:10px;flex-wrap:wrap;}
-    .btn{height:44px;padding:0 16px;border-radius:12px;border:0;background:var(--primary);color:#fff;font-weight:700;cursor:pointer;transition:.15s ease;box-shadow:0 10px 24px rgba(22,163,74,.25);}
-    .btn:hover{background:var(--primary-2);transform:translateY(-1px);}
-    .btn.secondary{background:#64748b;box-shadow:0 10px 24px rgba(100,116,139,.2);}
-    .btn.secondary:hover{background:#475569;}
-    .btn.ghost{background:#e5e7eb;color:#111827;box-shadow:none;}
-    .btn.danger{background:var(--danger);}
-    .pill{background:var(--pill);border:1px solid var(--border);border-radius:999px;padding:6px 10px;font-size:12px;display:inline-flex;align-items:center;gap:6px;}
-    .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
-    .grid-3{display:grid;grid-template-columns:1.2fr 1fr 1fr;gap:10px;}
-    .grid-4{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:10px;}
-    @media(max-width:760px){.grid-2,.grid-3,.grid-4{grid-template-columns:1fr;}}
-    .card{background:#fff;border:1px solid var(--border);border-radius:14px;padding:12px;}
-    .label{font-size:12px;color:var(--muted);margin-bottom:6px;font-weight:700;}
-    select,input[type="number"],input[type="text"],textarea{width:100%;padding:10px;border:1px solid #d1d5db;border-radius:10px;font-size:14px;font-family:inherit;background:#fff;}
-    textarea{min-height:76px;resize:vertical;}
-    .hidden{display:none !important;}
-    .cal{display:grid;grid-template-columns:repeat(7,1fr);gap:8px;margin-top:8px;}
-    .weekday{background:#f1f5f9;border:1px solid var(--border);padding:6px 0;border-radius:8px;text-align:center;font-size:12px;font-weight:700;color:#475569;}
-    .day{aspect-ratio:1;display:flex;align-items:center;justify-content:center;border-radius:10px;border:1px solid var(--border);background:#fff;font-weight:800;position:relative;cursor:pointer;user-select:none;transition:.1s ease;}
-    .day:hover{transform:scale(1.03);box-shadow:0 10px 20px rgba(0,0,0,.08);}
-    .day.sober{background:#10b981;color:#fff;} .day.wellness{background:#22c55e;color:#fff;} .day.superday{background:#059669;color:#fff;}
-    .day.moderate{background:#f59e0b;color:#fff;} .day.mixed{background:#dc2626;color:#fff;} .day.alcohol{background:#ef4444;color:#fff;}
-    .day.today{outline:3px solid var(--primary);outline-offset:-3px;}
-    .day.has-comment::before{content:'💬';position:absolute;top:2px;right:2px;font-size:10px;opacity:.9;}
-    .day.has-flags::after{content:'⚑';position:absolute;left:3px;bottom:2px;font-size:11px;opacity:.9;}
-    .tooltip{display:none;position:absolute;bottom:calc(100% + 8px);left:50%;transform:translateX(-50%);
-      min-width:200px;max-width:280px;padding:10px 12px;background:#111827;color:#fff;border-radius:8px;font-size:11px;line-height:1.5;z-index:30;box-shadow:0 10px 24px rgba(0,0,0,.35);white-space:pre-wrap;}
-    .tooltip::after{content:'';position:absolute;top:100%;left:50%;transform:translateX(-50%);border:6px solid transparent;border-top-color:#111827;}
-    .section-title{display:flex;justify-content:space-between;align-items:center;margin:12px 0 6px;font-weight:800;}
-    .section-title .hint{font-size:12px;color:var(--muted);}
-    .badge{display:inline-flex;align-items:center;gap:6px;padding:6px 10px;border-radius:999px;font-size:12px;}
-    .badge.warn{background:#fff7ed;border:1px solid #fed7aa;color:#9a3412;}
-    .badge.ok{background:#ecfdf5;border:1px solid #a7f3d0;color:#065f46;}
-    .warn-text{color:#b45309;font-weight:700;}
-    .radio-rows{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
-    @media(max-width:680px){.radio-rows{grid-template-columns:1fr;}}
-    .radio-opt{display:flex;gap:10px;align-items:flex-start;border:2px solid #edf2f7;border-radius:12px;background:#fff;padding:10px;cursor:pointer;}
-    .radio-opt:hover{box-shadow:0 8px 18px rgba(0,0,0,.08);transform:translateY(-1px);}
-    .radio-opt input{transform:scale(1.2);margin-top:2px;accent-color:var(--primary);}
-    .desc{font-size:12px;color:#4b5563;margin-top:2px;}
-    .overlay{position:fixed;inset:0;background:rgba(0,0,0,.4);display:none;z-index:40;}
-    .modal{position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);background:#fff;border:1px solid var(--border);border-radius:16px;box-shadow:0 24px 48px rgba(0,0,0,.25);padding:16px;width:min(760px,92vw);max-height:85vh;overflow:auto;display:none;z-index:45;}
-    .analysis{background:linear-gradient(135deg,#f8fafc,#f1f5f9);border:2px solid var(--border);border-radius:14px;padding:14px;margin-top:10px;}
-    .assessment-badge{padding:12px;border-radius:12px;text-align:center;font-weight:800;}
-    .assessment-badge.red{background:linear-gradient(135deg,#fecaca,#fca5a5);border:2px solid #ef4444;color:#7f1d1d;}
-    .assessment-badge.weekend{background:linear-gradient(135deg,#fed7aa,#fdba74);border:2px solid #fb923c;color:#9a3412;}
-    .assessment-badge.balance{background:linear-gradient(135deg,#fef3c7,#fde68a);border:2px solid #fbbf24;color:#92400e;}
-    .assessment-badge.zen{background:linear-gradient(135deg,#d1fae5,#a7f3d0);border:2px solid #34d399;color:#065f46;}
-    .metric-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;}
-    @media(max-width:760px){.metric-grid{grid-template-columns:1fr 1fr;}}
-    .metric{background:#fff;border:1px solid var(--border);border-radius:10px;padding:10px;}
-    .metric .l{font-size:12px;color:var(--muted);} .metric .v{font-weight:900;font-size:20px;}
-    details.settings{border:1px solid var(--border);border-radius:12px;padding:10px;margin:10px 0;background:#fff;}
-    details.settings summary{cursor:pointer;font-weight:800;list-style:none;}
-    details.settings summary::-webkit-details-marker{display:none;}
-    .kicker{font-size:12px;color:#475569;margin-left:6px;font-weight:500;}
-    .god-badge{position:fixed;right:16px;top:16px;background:#0f172a;color:#e5e7eb;padding:8px 12px;border-radius:999px;font-weight:800;font-size:12px;display:none;z-index:60;}
-    .god-badge.active{display:block;}
+
+    html,body{
+      height:100%;
+      margin:0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Inter, Arial, sans-serif;
+      color:var(--text);
+      background: linear-gradient(135deg, var(--bg-grad-start), var(--bg-grad-end)) fixed;
+    }
+
+    .container{
+      max-width: 820px;
+      margin: 32px auto;
+      padding: clamp(16px, 2.5vw, 24px);
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: calc(var(--radius) + 4px);
+      box-shadow: var(--shadow);
+    }
+
+    .view{ display:none; }
+    .view.active{ display:block; }
+
+    h1{
+      margin:0 0 8px;
+      text-align:center;
+      font-size: clamp(26px, 4.2vw, 34px);
+    }
+    .app-version{
+      text-align:center;
+      color: var(--muted);
+      font-size: 12px;
+      margin-bottom: 10px;
+    }
+
+    /* Eingabe */
+    .current-date{
+      font-size: clamp(26px, 5vw, 36px);
+      font-weight: 800;
+      color: var(--primary);
+      text-align:center;
+      margin: 6px 0 18px;
+    }
+
+    .choice-container{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin: 18px 0 8px;
+    }
+    @media (max-width:640px){ .choice-container{ grid-template-columns: 1fr; } }
+
+    .choice-option{
+      display:flex; align-items:center; gap:12px;
+      padding: 14px 16px;
+      border:2px solid #edf2f7;
+      border-radius: 14px;
+      background:#fff;
+      cursor:pointer;
+      transition:.15s ease;
+      font-size: 16px;
+    }
+    .choice-option:hover{ transform: translateY(-1px); box-shadow: 0 6px 16px rgba(0,0,0,.08); }
+    .choice-option input[type="radio"]{ transform: scale(1.3); margin:0 2px 0 0; accent-color: var(--primary); }
+
+    .choice-option.sober{ border-color: #c0f1df; background: #f4fffa; }
+    .choice-option.wellness{ border-color: #b3f5cc; background: #f0fdf5; }
+    .choice-option.moderate{ border-color: #ffe5b5; background: #fff9ec; }
+    .choice-option.mixed{ border-color: #fecaca; background: #fef2f2; }
+    .choice-option.alcohol{ border-color: #ffcaca; background: #fff2f2; }
+    .choice-option.superday{
+      border-color: #b7f3d2;
+      background: linear-gradient(135deg, #f3fff9, #ecfff8);
+      position:relative;
+    }
+    .choice-option.superday::before{ content:"⭐"; position:absolute; right:12px; top:10px; opacity:.9; }
+
+    .btn{
+      height: 48px;
+      padding: 0 18px;
+      border-radius: 12px;
+      border: 0;
+      background: var(--primary);
+      color:#fff;
+      font-weight:700;
+      cursor:pointer;
+      width:100%;
+      transition: background .15s ease, transform .06s ease, box-shadow .15s ease;
+      box-shadow: 0 8px 18px rgba(79,70,229,.25);
+      font-size: 16px;
+    }
+    .btn:hover{ background: var(--primary-dark); transform: translateY(-1px); }
+    .btn:disabled{ background:#cbd5e1; box-shadow:none; cursor:not-allowed; }
+
+    .btn.secondary{ background:#64748b; box-shadow: 0 8px 18px rgba(100,116,139,.2); }
+    .btn.secondary:hover{ background:#475569; }
+
+    .btn.danger{ background:#ef4444; box-shadow: 0 8px 18px rgba(239,68,68,.2); }
+    .btn.danger:hover{ background:#dc2626; }
+
+    .submit-row{ margin-top: 12px; display:flex; gap:12px; }
+    .storage-info{ margin-top: 10px; text-align:center; color:var(--muted); font-size:14px; }
+
+    /* Monatsübersicht */
+    .stats-grid{
+      display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom: 12px;
+    }
+    .stat-card{
+      background:#f9fafb;
+      border:1px solid #e5e7eb;
+      border-radius: 14px;
+      padding:16px;
+      text-align:center;
+      transition: background .2s ease, border-color .2s ease, color .2s ease;
+    }
+    .stat-card .stat-number{ font-size: clamp(28px, 4.8vw, 40px); font-weight:900; margin: 6px 0 2px; }
+    .stat-card .stat-label{ color:var(--muted); font-size: 13px; }
+
+    .rate-good{ background:#ecfdf5; border-color:#a7f3d0; }
+    .rate-warn{ background:#fffbeb; border-color:#fde68a; }
+    .rate-bad { background:#fef2f2; border-color:#fecaca; }
+
+    .streak-bad { background:#fef2f2; border-color:#fecaca; }
+    .streak-warn{ background:#fffbeb; border-color:#fde68a; }
+    .streak-good{ background:#ecfdf5; border-color:#a7f3d0; }
+    .streak-great{ background:#d1fae5; border-color:#34d399; }
+
+    /* Fortschrittsbalken */
+    .chart-section{ margin:18px 0; padding:0; background:transparent; border:none; border-radius:0; }
+    .chart-title{ font-weight:700; font-size:18px; margin-bottom:24px; text-align:center; color:var(--text); }
+    .chart-bars{ display:flex; flex-direction:column; gap:32px; margin-bottom:10px; }
+    .chart-bar-container{ display:flex; flex-direction:column; gap:12px; }
+    .chart-bar-header{ display:flex; align-items:center; justify-content:space-between; }
+    .chart-bar-label{ font-size:14px; font-weight:600; color:var(--text); }
+    .chart-bar-label small{ display:block; font-size:12px; font-weight:400; color:var(--muted); margin-top:2px; }
+    .chart-bar-value{ display:flex; align-items:baseline; gap:8px; }
+    .chart-bar-number{ font-size:32px; font-weight:900; color:var(--text); }
+    .chart-bar-percent{ font-size:16px; font-weight:600; color:var(--muted); }
+    .chart-bar-wrapper{ height:48px; background:#f1f5f9; border-radius:12px; position:relative; overflow:hidden; box-shadow:inset 0 2px 4px rgba(0,0,0,0.05); }
+    .chart-bar{ height:100%; transition: width 1.2s cubic-bezier(0.4,0,0.2,1); width:0%; border-radius:12px; display:flex; align-items:center; justify-content:flex-end; padding-right:16px; font-weight:700; color:white; font-size:16px; position:relative; }
+    .chart-bar::after{ content:''; position:absolute; inset:0; background:linear-gradient(90deg, rgba(255,255,255,0.1), rgba(255,255,255,0)); border-radius:12px; }
+    .chart-bar.negative{ background: linear-gradient(90deg, #ef4444, #f87171); box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3); }
+    .chart-bar.positive{ background: linear-gradient(90deg, #10b981, #34d399); box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3); }
+
+    /* Gesundheitsbewertung */
+    .health-assessment{
+      margin-top: 32px;
+      padding: 20px;
+      background: linear-gradient(135deg, #f8fafc, #f1f5f9);
+      border-radius: 14px;
+      border: 2px solid #e5e7eb;
+    }
+    .assessment-title{ font-size: 18px; font-weight: 700; text-align: center; margin-bottom: 20px; color: var(--text); }
+    .assessment-badge{
+      text-align: center; margin-bottom: 24px; padding: 16px; border-radius: 12px; font-size: 24px; font-weight: 800;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    .assessment-badge.zen{ background: linear-gradient(135deg, #d1fae5, #a7f3d0); color: #065f46; border: 2px solid #34d399; }
+    .assessment-badge.balance{ background: linear-gradient(135deg, #fef3c7, #fde68a); color: #92400e; border: 2px solid #fbbf24; }
+    .assessment-badge.weekend{ background: linear-gradient(135deg, #fed7aa, #fdba74); color: #9a3412; border: 2px solid #fb923c; }
+    .assessment-badge.red{ background: linear-gradient(135deg, #fecaca, #fca5a5); color: #7f1d1d; border: 2px solid #ef4444; }
+
+    .assessment-metrics{ display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:16px; }
+    @media (max-width:560px){ .assessment-metrics{ grid-template-columns:1fr; } }
+    .metric-item{ padding:12px; background:white; border-radius:10px; border:1px solid #e5e7eb; position:relative; }
+    .metric-label{ font-size:12px; color:var(--muted); margin-bottom:4px; display:flex; align-items:center; gap:6px; }
+    .metric-info{
+      display:inline-flex; align-items:center; justify-content:center; width:16px; height:16px; background:var(--primary);
+      color:white; border-radius:50%; font-size:10px; font-weight:700; cursor:help; position:relative;
+    }
+    .metric-info:hover .metric-tooltip{ display:block; }
+    .metric-tooltip{
+      display:none; position:absolute; bottom:24px; left:50%; transform: translateX(-50%); width:280px; padding:12px;
+      background:#1f2937; color:white; border-radius:8px; font-size:11px; line-height:1.5; z-index:1000; box-shadow:0 8px 20px rgba(0,0,0,0.3); text-align:left; font-weight:400;
+    }
+    .metric-tooltip::after{
+      content:''; position:absolute; top:100%; left:50%; transform:translateX(-50%); border:6px solid transparent; border-top-color:#1f2937;
+    }
+    .metric-tooltip strong{ color:#60a5fa; font-weight:600; }
+    .metric-value{ font-size:20px; font-weight:800; color:var(--text); }
+    .assessment-description{ padding:12px; background:white; border-radius:10px; border:1px solid #e5e7eb; font-size:13px; line-height:1.6; color:var(--text); }
+    .assessment-description strong{ color:var(--primary); }
+    .assessment-warning{ margin-top:12px; padding:10px; background:#fff7ed; border-left:4px solid #fb923c; border-radius:6px; font-size:12px; color:#9a3412; }
+
+    /* Settings-Buttons */
+    .btn-stats-toggle{
+       appearance:none; background:linear-gradient(135deg,#eef2ff,#e0e7ff); border:1.5px solid #c7d2fe; color:#1e3a8a;
+       padding:10px 18px; border-radius:999px; font-size:14px; font-weight:700; cursor:pointer;
+       transition: transform .08s ease, box-shadow .2s ease, background .2s ease, border-color .2s ease;
+       box-shadow:0 6px 14px rgba(79,70,229,.18); display:inline-flex; align-items:center; gap:8px;
+     }
+     .btn-stats-toggle:hover{ background:linear-gradient(135deg,#e0e7ff,#c7d2fe); border-color:#a5b4fc; transform:translateY(-1px); box-shadow:0 10px 20px rgba(79,70,229,.25); }
+     .btn-stats-toggle:active{ transform:translateY(0); box-shadow:0 4px 10px rgba(79,70,229,.2); }
+     .btn-stats-toggle:focus-visible{ outline:3px solid #c7d2fe; outline-offset:2px; }
+
+    .btn-settings{
+      appearance:none; background:linear-gradient(135deg,#f0f9ff,#dbeafe); border:1.5px solid #bae6fd; color:#0c4a6e;
+      padding:10px 18px; border-radius:999px; font-size:14px; font-weight:700; cursor:pointer;
+      transition: transform .08s ease, box-shadow .2s ease, background .2s ease, border-color .2s ease;
+      box-shadow:0 6px 14px rgba(2,132,199,.16); display:inline-flex; align-items:center; gap:8px;
+    }
+    .btn-settings:hover{ background:linear-gradient(135deg,#dbeafe,#bfdbfe); border-color:#93c5fd; transform:translateY(-1px); box-shadow:0 10px 20px rgba(2,132,199,.22); }
+    .btn-settings:active{ transform:translateY(0); box-shadow:0 4px 10px rgba(2,132,199,.18); }
+    .btn-settings:focus-visible{ outline:3px solid #93c5fd; outline-offset:2px; }
+
+    /* Einstellungs-Popup */
+    .settings-popup{
+      position: fixed; left: 50%; top: 50%; transform: translate(-50%, -50%);
+      background:#ffffff; border:1px solid #e5e7eb; border-radius:16px; box-shadow:0 20px 40px rgba(31,41,55,.25);
+      padding:24px; width:min(560px,92vw); max-height:85vh; overflow-y:auto; display:none; z-index:1002;
+    }
+    .settings-popup.active{ display:block; }
+    .settings-popup-overlay{ position:fixed; inset:0; background:rgba(0,0,0,0.4); display:none; z-index:1001; }
+    .settings-popup-overlay.active{ display:block; }
+    .settings-title{ font-size:22px; font-weight:800; margin-bottom:8px; color:var(--text); text-align:center; }
+    .settings-subtitle{ font-size:14px; color:var(--muted); margin-bottom:24px; text-align:center; }
+    .settings-section{ margin-bottom:24px; }
+    .settings-section-title{ font-size:16px; font-weight:700; margin-bottom:12px; color:var(--text); }
+    .settings-description{ font-size:13px; color:var(--muted); margin-bottom:16px; line-height:1.6; }
+    .settings-options{ display:flex; flex-direction:column; gap:10px; }
+    .settings-option{
+      display:flex; align-items:flex-start; gap:12px; padding:14px; border:2px solid #e5e7eb; border-radius:12px; background:#fff; cursor:pointer; transition:all .2s ease;
+    }
+    .settings-option:hover{ border-color:var(--primary); background:#f8faff; }
+    .settings-option.selected{ border-color:var(--primary); background:linear-gradient(135deg,#eef2ff,#f8faff); box-shadow:0 4px 12px rgba(79,70,229,0.15); }
+    .settings-option input[type="radio"]{ margin-top:2px; transform:scale(1.3); accent-color:var(--primary); }
+    .settings-option-content{ flex:1; }
+    .settings-option-title{ font-weight:700; font-size:14px; color:var(--text); margin-bottom:4px; }
+    .settings-option-desc{ font-size:12px; color:var(--muted); line-height:1.5; }
+    .settings-info-box{ padding:14px; background:#eff6ff; border-left:4px solid var(--primary); border-radius:8px; font-size:12px; color:#1e40af; line-height:1.6; margin-top:16px; }
+    .settings-info-box strong{ color:#1e3a8a; }
+
+    .legend{ display:flex; flex-wrap:wrap; gap:10px 14px; margin:10px 0 14px; color:var(--muted); font-size:13px; }
+    .legend span{ display:flex; align-items:center; gap:6px; }
+
+    .cal{ display:grid; grid-template-columns: repeat(7, 1fr); gap:8px; margin-bottom:10px; position:relative; }
+    .weekday{ text-align:center; font-weight:700; font-size:12px; color:#475569; padding:6px 0; background:#f1f5f9; border-radius:8px; border:1px solid #e7eef6; }
+
+    .day{
+      aspect-ratio:1; display:flex; align-items:center; justify-content:center; border-radius:10px; border:1px solid #e7eef6; background:#fff; font-weight:700; cursor:pointer;
+      transition:.1s ease; position:relative; z-index:1; user-select:none;
+    }
+    .day:hover{ transform: scale(1.03); box-shadow: 0 8px 18px rgba(0,0,0,.08); }
+    .day.sober{ background:#10b981; color:#fff; }
+    .day.wellness{ background:#22c55e; color:#fff; }
+    .day.wellness::after{ content:"❗"; position:absolute; top:4px; right:6px; font-size:12px; }
+    .day.moderate{ background:#f59e0b; color:#fff; }
+    .day.mixed{ background:#dc2626; color:#fff; }
+    .day.mixed::after{ content:"❤️"; position:absolute; top:4px; right:6px; font-size:12px; }
+    .day.alcohol{ background:#ef4444; color:#fff; }
+    .day.superday{ background:#059669; color:#fff; }
+    .day.superday::after{ content:"⭐"; position:absolute; top:4px; right:6px; font-size:12px; }
+
+    .day.today{ outline: 3px solid var(--primary); outline-offset:-3px; }
+
+    .day-comment-tooltip{
+      display:none; position:absolute; bottom:calc(100% + 8px); left:50%; transform:translateX(-50%);
+      min-width:200px; max-width:280px; padding:10px 12px; background:#1f2937; color:white; border-radius:8px; font-size:11px; line-height:1.5;
+      z-index:1000; box-shadow:0 8px 20px rgba(0,0,0,0.4); text-align:left; font-weight:400; pointer-events:none; white-space:pre-wrap; word-wrap:break-word;
+    }
+    .day-comment-tooltip::after{ content:''; position:absolute; top:100%; left:50%; transform:translateX(-50%); border:6px solid transparent; border-top-color:#1f2937; }
+    .day.has-comment{ position:relative; }
+    .day.has-comment::before{ content:'💬'; position:absolute; top:2px; right:2px; font-size:10px; opacity:.8; }
+    .day.has-comment:hover .day-comment-tooltip{ display:block; }
+
+    .support{ background:#f8fafc; border:1px solid #e5e7eb; border-radius:14px; padding:14px; margin:12px 0 12px; text-align:center; position:relative; z-index:0; }
+    .support p{ margin:0 0 6px; }
+    .support-buttons{ margin-top:0; display:flex; flex-wrap:wrap; gap:12px; justify-content:center; align-items:center; }
+    .support-buttons .btn-holder{ height:48px; display:flex; align-items:center; justify-content:center; }
+    #kofi-holder, #kofi-holder iframe{ margin:0 !important; }
+    #kofi-holder iframe{ height:48px !important; min-height:48px !important; }
+    @media (max-width:420px){ #kofi-holder iframe{ height:44px !important; } }
+
+    .month-head{ display:flex; align-items:center; justify-content:center; gap:10px; margin:10px 0 6px; }
+    .month-title{ font-weight:800; font-size:20px; }
+
+    .month-top-nav{ display:flex; gap:10px; justify-content:center; margin:8px 0 14px; }
+    .month-top-nav .btn{ width:auto; min-width:140px; }
+    @media (max-width:420px){ .month-top-nav .btn{ min-width:120px; } }
+
+    /* Edit-Karte */
+    .edit-pop{
+      position: fixed; left:50%; top: 18px; transform: translateX(-50%);
+      background:#ffffff; border:1px solid #e5e7eb; border-radius:16px; box-shadow: var(--shadow);
+      padding:14px; width: min(560px, 92vw); display:none; z-index: 1000;
+    }
+    .edit-pop.active{ display:block; }
+    .edit-title{ font-weight:800; font-size:18px; margin: 4px 0 8px; color:#111827; }
+    .edit-grid{ display:grid; grid-template-columns: 1fr 1fr; gap:10px; }
+    @media (max-width:560px){ .edit-grid{ grid-template-columns: 1fr; } }
+    .edit-option{
+      width:100%; padding:12px 14px; border-radius:12px; border:2px solid #edf2f7; background:#fff; cursor:pointer; text-align:left;
+      transition:.12s ease; font-size:15px;
+    }
+    .edit-option:hover{ transform: translateY(-1px); box-shadow: 0 8px 18px rgba(0,0,0,.08); }
+    .edit-option.sober{ border-color:#c0f1df; background:#f4fffa; }
+    .edit-option.wellness{ border-color:#b3f5cc; background:#f0fdf5; position:relative; }
+    .edit-option.wellness::after{ content:"❗"; position:absolute; right:14px; top:50%; transform:translateY(-50%); }
+    .edit-option.moderate{ border-color:#ffe5b5; background:#fff9ec; }
+    .edit-option.mixed{ border-color:#fecaca; background:#fef2f2; position:relative; }
+    .edit-option.mixed::after{ content:"❤️"; position:absolute; right:14px; top:50%; transform:translateY(-50%); }
+    .edit-option.alcohol{ border-color:#ffcaca; background:#fff2f2; }
+    .edit-option.superday{ border-color:#b7f3d2; background:linear-gradient(135deg,#f6fff9,#f1fff7); position:relative; }
+    .edit-option.superday::after{ content:"⭐"; position:absolute; right:14px; top:50%; transform:translateY(-50%); }
+    .edit-option.delete{ border-color:#e2e8f0; background:#f8fafc; }
+
+    footer{ margin-top: 18px; text-align:center; color:#475569; font-size: 13px; }
+    .reset-bar{ margin-top: 16px; display:none; } /* verschoben in Einstellungen */
+
+    @media (max-width: 420px){
+      .btn-stats-toggle, .btn-settings{
+        padding: 9px 14px; font-size: 13px; gap: 6px;
+      }
+    }
+
+    /* GOD-MODUS: neue, zurückhaltende Sektion */
+    .god-section{
+      margin-top: 16px; padding:16px; background:#f8fafc; border:1px solid #e5e7eb; border-radius:12px; display:none;
+    }
+    .god-grid{ display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+    @media (max-width:640px){ .god-grid{ grid-template-columns:1fr; } }
+    .god-field{ display:flex; flex-direction:column; gap:6px; }
+    .god-label{ font-size:13px; font-weight:600; color:var(--text); }
+    .god-input, .god-select{
+      padding:10px; border-radius:10px; border:1px solid #d1d5db; font-size:13px; background:white; font-family:inherit;
+    }
+    .unit-toggle{ display:flex; gap:8px; align-items:center; }
+    .unit-pill{
+      padding:6px 10px; border-radius:999px; border:1px solid #cbd5e1; background:#fff; font-size:12px; cursor:pointer; user-select:none;
+    }
+    .unit-pill.active{ background:#eef2ff; border-color:#c7d2fe; color:#1e3a8a; font-weight:700; }
+    .god-inline{ display:flex; gap:10px; align-items:center; }
+
+    .god-subtle{
+      margin-top:10px; font-size:12px; color:var(--muted);
+    }
+    .god-actions{ display:flex; gap:12px; margin-top:12px; }
+    .god-metrics{
+      margin-top:12px; display:grid; grid-template-columns:1fr 1fr; gap:10px;
+    }
+    .god-metric{
+      background:#fff; border:1px solid #e5e7eb; padding:10px; border-radius:10px; font-size:12px;
+    }
+
+    /* AUDIT Popup (konditional) */
+    .audit-popup-overlay{ position:fixed; inset:0; background:rgba(0,0,0,.4); display:none; z-index:1200; }
+    .audit-popup{ position:fixed; left:50%; top:50%; transform:translate(-50%,-50%); background:#fff; border:1px solid #e5e7eb; border-radius:16px; box-shadow:0 20px 40px rgba(31,41,55,.25); padding:20px; width:min(560px,92vw); max-height:85vh; overflow:auto; display:none; z-index:1201; }
+
+    .analysis-advanced{ margin-top: 14px; }
+    .analysis-toggle{
+      appearance:none; background:#f1f5f9; border:1px solid #e5e7eb; color:#111827; padding:10px 14px; border-radius:10px; font-weight:700; cursor:pointer;
+    }
+    .analysis-box{
+      display:none; margin-top:12px; padding:14px; background:#fff; border:1px solid #e5e7eb; border-radius:12px;
+    }
   </style>
 </head>
 <body>
-  <div id="godBadge" class="god-badge">🧠 God‑Modus aktiv</div>
   <div class="container">
-    <h1>🍷 Booze‑Tracker</h1>
-    <div class="sub">v2.1 · Klicke im Kalender einen Tag an, um Einträge zu bearbeiten oder hinzuzufügen.</div>
+    <!-- Tag-Eingabe Ansicht -->
+    <div id="dayInputView" class="view active">
+      <h1>🍷 Ralles wunderbarer Booze-Tracker</h1>
+      <div class="app-version" id="appVersion"></div>
 
-    <!-- Monats-Ansicht als primärer Einstieg -->
-    <div id="monthHead" class="section-title">
-      <div><span id="monthTitle">—</span> <span class="hint" id="monthHint"></span></div>
-      <div class="row">
-        <button class="btn secondary" id="btnPrev">← Vorheriger</button>
-        <button class="btn" id="btnNext">Nächster →</button>
-        <button class="btn ghost" id="btnToday">Heute</button>
-        <button class="btn secondary" id="btnChart">📊 100‑Tage</button>
-        <button class="btn secondary" id="btnSettings">⚙️ Einstellungen</button>
+      <div class="current-date" id="currentDateDisplay"></div>
+
+      <div style="margin-top: 16px;">
+        <label for="dayCommentInput" style="display: block; font-size: 14px; font-weight: 600; margin-bottom: 8px; color: var(--text);">
+          💬 Kommentar (optional):
+        </label>
+        <textarea 
+          id="dayCommentInput" 
+          placeholder="Notizen zum Tag (z.B. Anlass, Gefühle, Situation)..."
+          class="god-input"
+          style="width:100%; min-height:80px; resize:vertical;"
+        ></textarea>
+      </div>
+
+      <div class="choice-container" role="group" aria-label="Tagesauswahl">
+        <label class="choice-option superday">
+          <input type="radio" name="dayChoice" value="superday" />
+          <span>⭐ Supertag – Alkoholfrei + Sport gemacht!</span>
+        </label>
+        <label class="choice-option wellness">
+          <input type="radio" name="dayChoice" value="wellness" />
+          <span>💚 Wellness – Alkoholfrei + Sauna/Gesundheit</span>
+        </label>
+        <label class="choice-option sober">
+          <input type="radio" name="dayChoice" value="sober" />
+          <span>🟢 Alkoholfrei – Kein Alkohol getrunken</span>
+        </label>
+        <label class="choice-option moderate">
+          <input type="radio" name="dayChoice" value="moderate" />
+          <span>🟡 Moderat – Wenig Alkohol getrunken</span>
+        </label>
+        <label class="choice-option mixed">
+          <input type="radio" name="dayChoice" value="mixed" />
+          <span>❤️ Schadensbegrenzung – Alkohol + Sport</span>
+        </label>
+        <label class="choice-option alcohol">
+          <input type="radio" name="dayChoice" value="alcohol" />
+          <span>🔴 Alkohol – Viel Alkohol getrunken</span>
+        </label>
+      </div>
+
+      <!-- GOD-MODUS Detail-Eingabe (nur sichtbar wenn aktiviert) -->
+      <div id="godSection" class="god-section" aria-hidden="true">
+        <div style="font-weight:800; margin-bottom:10px;">🧠 God-Modus: Detaillierte Angaben (optional, verbessert die Auswertung)</div>
+
+        <div class="god-grid">
+          <div class="god-field">
+            <label class="god-label">Getränketyp (ABV)</label>
+            <select id="godDrinkType" class="god-select">
+              <option value="beer" data-abv="5">Bier (5%)</option>
+              <option value="radler" data-abv="2.5">Radler (2.5%)</option>
+              <option value="wine" data-abv="10">Wein (10%)</option>
+              <option value="liquor" data-abv="15">Likör (15%)</option>
+              <option value="other20" data-abv="20">Sonstiges (20%)</option>
+              <option value="other30" data-abv="30">Sonstiges (30%)</option>
+              <option value="spirit" data-abv="40">Spirituosen (40%)</option>
+            </select>
+          </div>
+
+          <div class="god-field" id="beerSizeField">
+            <label class="god-label">Bier-Flaschengröße</label>
+            <select id="godBeerSize" class="god-select">
+              <option value="0.33">Klein (0,33 l)</option>
+              <option value="0.5">Groß (0,5 l)</option>
+            </select>
+          </div>
+
+          <div class="god-field">
+            <label class="god-label">Einheit</label>
+            <div class="unit-toggle">
+              <span id="unitMl" class="unit-pill active">ml</span>
+              <span id="unitL" class="unit-pill">L</span>
+            </div>
+          </div>
+
+          <div class="god-field">
+            <label class="god-label">Menge pro Portion</label>
+            <input id="godVolumePerPortion" class="god-input" type="number" min="0" step="1" placeholder="z.B. 330">
+          </div>
+
+          <div class="god-field">
+            <label class="god-label">Anzahl Portionen</label>
+            <input id="godPortions" class="god-input" type="number" min="0" step="1" placeholder="z.B. 2">
+          </div>
+
+          <div class="god-field">
+            <label class="god-label">🏃‍♂️ Sport heute?</label>
+            <div class="god-inline">
+              <input id="godDidSport" type="checkbox">
+              <span class="god-subtle">Wirkt sich nur auf die Kategorie (Schadensbegrenzung) aus – nicht auf g Alkohol.</span>
+            </div>
+          </div>
+
+          <div class="god-field">
+            <label class="god-label">Marijuana (g)</label>
+            <input id="godWeedGrams" class="god-input" type="number" min="0" step="0.1" placeholder="z.B. 0.5">
+          </div>
+
+          <div class="god-field">
+            <label class="god-label">Häufigkeit</label>
+            <select id="godWeedFreq" class="god-select">
+              <option value="einmalig">einmalig</option>
+              <option value="mehrmals">mehrmals am Tag</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="god-metrics">
+          <div class="god-metric"><strong>Alkohol (g):</strong> <span id="godGrams">0</span></div>
+          <div class="god-metric"><strong>Drinks (à 10g):</strong> <span id="godDrinks">0</span></div>
+        </div>
+
+        <div class="god-actions">
+          <button id="godSuggest" class="btn secondary" type="button">💡 Kategorie vorschlagen</button>
+          <button id="godSaveDetails" class="btn" type="button">💾 Detaillierte Angaben speichern</button>
+        </div>
+        <div class="god-subtle">Formel: Volumen(L) × Vol% × 0.789 g/ml · 1000 → g Alkohol · 1 Drink = 10 g (DE)</div>
+      </div>
+
+      <div class="submit-row">
+        <button id="submitDay" class="btn" disabled>Tag speichern</button>
+      </div>
+
+      <div class="storage-info" id="storageInfo">
+        🍷 Gespeicherte Tage: <span id="savedDaysCount">0</span> ·
+        <span id="storageStatus">Lade…</span>
+      </div>
+
+      <div class="submit-row" style="margin-top:12px">
+        <button class="btn secondary" onclick="showMonthView()">📊 Monatsübersicht</button>
       </div>
     </div>
 
-    <div class="cal" id="monthGrid"></div>
+    <!-- Monats-Übersicht -->
+    <div id="monthView" class="view">
+      <h1>📊 Ralles wunderbarer Booze-Tracker</h1>
+      <div class="app-version" id="appVersion2"></div>
 
-    <div class="row" style="justify-content:center;margin-top:12px;">
-      <span class="pill">⭐ Supertag</span>
-      <span class="pill">💚 Wellness</span>
-      <span class="pill">🟢 AF</span>
-      <span class="pill">🟡 Moderat</span>
-      <span class="pill">❤️ Schadensbegrenzung</span>
-      <span class="pill">🔴 Viel</span>
-    </div>
-  </div>
-
-  <!-- Editieren / Eingabe -->
-  <div id="editOverlay" class="overlay"></div>
-  <div id="editModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="editTitle">
-    <div class="section-title"><div id="editTitle">Datum</div><button class="btn ghost" onclick="closeEdit()">Schließen ✕</button></div>
-
-    <!-- Kategorie mit Erklärungen + Flags -->
-    <div class="card">
-      <div class="label">Kategorie (manuell möglich – Abgleich mit Vorschlag)</div>
-      <div class="radio-rows" id="categoryGroup">
-        <label class="radio-opt"><input type="radio" name="cat" value="superday"><div><div><strong>⭐ Supertag</strong></div><div class="desc">noAlk + Sport</div></div></label>
-        <label class="radio-opt"><input type="radio" name="cat" value="wellness"><div><div><strong>💚 Wellness</strong></div><div class="desc">noAlk + Gesundheitsaktivität (Sauna, Yoga, etc.)</div></div></label>
-        <label class="radio-opt"><input type="radio" name="cat" value="sober"><div><div><strong>🟢 Alkoholfrei</strong></div><div class="desc">kein Alkohol</div></div></label>
-        <label class="radio-opt"><input type="radio" name="cat" value="moderate"><div><div><strong>🟡 Moderat</strong></div><div class="desc">≈ ≤ 20 g Alkohol</div></div></label>
-        <label class="radio-opt"><input type="radio" name="cat" value="mixed"><div><div><strong>❤️ Schadensbegrenzung</strong></div><div class="desc">„Selbstbetrug“: Sport + feiern (≤ 40 g)</div></div></label>
-        <label class="radio-opt"><input type="radio" name="cat" value="alcohol"><div><div><strong>🔴 Viel</strong></div><div class="desc">> 40 g Alkohol</div></div></label>
-      </div>
-      <div id="catSuggestionBox" class="badge warn hidden">⚠️ Passt nicht zu Daten. Vorschlag: <span id="catSuggestLabel"></span></div>
-
-      <div class="row" style="margin-top:8px;">
-        <label class="pill"><input id="flagSport" type="checkbox"> Sport</label>
-        <label class="pill"><input id="flagDopeEnable" type="checkbox"> Dope (anzeigen)</label>
-        <label class="pill"><input id="flagHangover" type="checkbox"> Katertag</label>
-        <label class="pill"><input id="flagTotalCrash" type="checkbox"> Totalabsturz</label>
-      </div>
-      <div id="dopeRow" class="grid-3 hidden" style="margin-top:8px;">
-        <div><div class="label">Marijuana (g)</div><input id="weedGrams" type="number" min="0" step="0.1" value="0"></div>
-        <div><div class="label">Häufigkeit</div><select id="weedFreq"><option value="einmalig">einmalig</option><option value="mehrmals">mehrmals</option></select></div>
-      </div>
-    </div>
-
-    <!-- Multi-Getränke -->
-    <div class="card" style="margin-top:10px;">
-      <div class="section-title">
-        <div>Getränke erfassen</div>
-        <button class="btn ghost" onclick="addDrinkItem()">+ Getränk</button>
+      <div class="month-head">
+        <div class="month-title" id="monthHeader">—</div>
       </div>
 
-      <div id="drinksList" class="grid-4">
-        <!-- dynamische Zeilen -->
+      <div class="month-top-nav">
+        <button class="btn secondary" onclick="previousMonth()">← Vorheriger</button>
+        <button class="btn" onclick="nextMonth()">Nächster →</button>
       </div>
 
-      <div class="grid-2" style="margin-top:8px;">
-        <div class="card"><div class="label">Alkohol (g, Summe)</div><div id="sumGrams" style="font-weight:900;font-size:20px;">0</div></div>
-        <div class="card"><div class="label">Drinks (à 10 g)</div><div id="sumDrinks" style="font-weight:900;font-size:20px;">0</div></div>
-      </div>
-      <div id="autoInfo" class="badge ok hidden" style="margin-top:8px;">ℹ Kategorie automatisch auf <strong id="autoCatLabel"></strong> gesetzt</div>
-    </div>
-
-    <!-- Kommentar -->
-    <div class="card" style="margin-top:10px;">
-      <div class="label">💬 Kommentar</div>
-      <textarea id="editComment" placeholder="Anlass, Trigger, Schlaf, etc. (optional)"></textarea>
-    </div>
-
-    <div class="row" style="margin-top:10px;justify-content:flex-end;">
-      <button class="btn secondary" onclick="suggestCategory()">Kategorie vorschlagen</button>
-      <button class="btn" onclick="saveEntry()">💾 Speichern</button>
-      <button class="btn danger" onclick="deleteEntry()">🗑️ Löschen</button>
-    </div>
-  </div>
-
-  <!-- Charts / Settings -->
-  <div id="chartOverlay" class="overlay"></div>
-  <div id="chartModal" class="modal">
-    <div class="section-title"><div>📊 Letzte 100 Tage</div><button class="btn ghost" onclick="toggleChart()">Schließen ✕</button></div>
-    <div class="analysis">
-      <div id="assessmentBadge" class="assessment-badge">—</div>
-      <div class="metric-grid" style="margin-top:8px;">
-        <div class="metric"><div class="l">AF‑Quote</div><div class="v" id="metAF">0%</div></div>
-        <div class="metric"><div class="l">Gewichteter Score</div><div class="v" id="metHealth">0%</div></div>
-        <div class="metric"><div class="l">Binge‑Nähe</div><div class="v" id="metBinge">0</div></div>
-        <div class="metric"><div class="l">Längster Cluster</div><div class="v" id="metCluster">0</div></div>
-      </div>
-      <div class="card" style="margin-top:10px;">
-        <div style="font-weight:800;margin-bottom:6px;">Feinere Skala & Prognosen</div>
-        <div id="godMetricsList" style="font-size:13px;line-height:1.6;"></div>
-      </div>
-    </div>
-  </div>
-
-  <div id="settingsOverlay" class="overlay"></div>
-  <div id="settingsModal" class="modal">
-    <div class="section-title"><div>⚙️ Einstellungen</div><button class="btn ghost" onclick="toggleSettings()">Schließen ✕</button></div>
-
-    <details class="settings" open>
-      <summary>🧠 God‑Modus <span class="kicker">erweiterte Analyse & Prognosen</span></summary>
-      <div class="row" style="margin-top:8px;">
-        <label class="pill"><input id="setGod" type="checkbox"> God‑Modus aktivieren</label>
-        <label class="pill"><input id="setAutoReclass" type="checkbox"> Auto‑Reklassifizieren</label>
-        <label class="pill"><input id="setNudges" type="checkbox"> Nudges & Warnungen</label>
-        <label class="pill"><input id="setLiveEdit" type="checkbox" checked> Live‑Speichern im Edit</label>
-      </div>
-    </details>
-
-    <details class="settings">
-      <summary>📊 Statistik‑Basis <span class="kicker">Kalendertage vs. Einträge</span></summary>
-      <div class="row" style="margin-top:8px;">
-        <label class="pill"><input type="radio" name="denom" value="entered" checked> Eingetragene Tage</label>
-        <label class="pill"><input type="radio" name="denom" value="calendar"> Kalendertage</label>
-      </div>
-      <div class="row" style="margin-top:8px;">
-        <span class="pill">Neutrale Tage zählen: 
-          <select id="neutralDays">
-            <option value="ignore">Ignorieren</option>
-            <option value="neutral">Neutral</option>
-            <option value="negative">Negativ</option>
-            <option value="very-negative">Sehr negativ</option>
-          </select>
-        </span>
-      </div>
-    </details>
-
-    <details class="settings">
-      <summary>🗄️ Daten <span class="kicker">Export/Import</span></summary>
-      <div class="row" style="margin-top:8px;">
-        <button class="btn secondary" onclick="exportData()">📤 Export</button>
-        <button class="btn secondary" onclick="importData()">📥 Import</button>
-      </div>
-    </details>
-
-    <details class="settings">
-      <summary>⚠️ Gefahrenbereich <span class="kicker">Alles löschen</span></summary>
-      <div class="card">
-        <div class="row">
-          <label class="pill"><input id="confirm1" type="checkbox"> Ich habe verstanden</label>
-          <label class="pill"><input id="confirm2" type="checkbox"> Ich habe exportiert</label>
-          <button id="btnReset" class="btn danger" disabled onclick="resetAll()">🧹 Löschen</button>
+      <div class="stats-grid">
+        <div class="stat-card" id="streakCard">
+          <div class="stat-label">Aktueller Streak</div>
+          <div class="stat-number" id="streakNumber">0</div>
+          <div class="stat-label">alkoholfreie Tage</div>
+        </div>
+        <div class="stat-card" id="successCard">
+          <div class="stat-label">Erfolgsquote</div>
+          <div class="stat-number" id="successRate">0%</div>
+          <div class="stat-label">diesen Monat</div>
         </div>
       </div>
-    </details>
 
-    <div class="row" style="justify-content:flex-end;margin-top:8px;">
-      <button class="btn" onclick="saveSettings()">Einstellungen speichern</button>
+      <div class="legend">
+        <span>⭐ Supertag</span>
+        <span>💚 Wellness</span>
+        <span>🟢 Alkoholfrei</span>
+        <span>🟡 Moderat</span>
+        <span>❤️ "Schadensbegrenzung"</span>
+        <span>🔴 Alkohol</span>
+      </div>
+
+      <div id="monthGrid" class="cal" aria-label="Kalender"></div>
+
+      <div style="text-align: center; margin-top: 16px; display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
+        <button class="btn-stats-toggle" onclick="toggleChartPopup()">📊 100-Tage-Statistik</button>
+        <button class="btn-settings" onclick="toggleSettingsPopup()">⚙️ Einstellungen</button>
+      </div>
+
+      <section class="support">
+        <p><strong>Findest diese kleine Anwendung nützlich?</strong> Dann spendier mir doch einen Kaffee:</p>
+        <div class="support-buttons">
+          <div id="kofi-holder" class="btn-holder">
+            <div id="kofi-widget" aria-label="Ko-fi Unterstützungsbutton"></div>
+          </div>
+          <div class="btn-holder">
+            <a href="https://www.buymeacoffee.com/rduwenbecky"><img src="https://img.buymeacoffee.com/button-api/?text=Spendier mir ´n Kaffee! &emoji=☕&slug=rduwenbecky&button_colour=5F7FFF&font_colour=ffffff&font_family=Lato&outline_colour=000000&coffee_colour=FFDD00" /></a>
+          </div>
+        </div>
+
+        <script type="text/javascript" src="https://storage.ko-fi.com/cdn/widget/Widget_2.js"></script>
+        <script type="text/javascript">
+          kofiwidget2.init('Spendier mir n´ Kaffee Ko-fi', '#72a4f2', 'R5R319DK8N');
+          kofiwidget2.draw();
+        </script>
+      </section>
     </div>
+
+    <!-- Edit-Karte -->
+    <div id="editPopup" class="edit-pop" aria-hidden="true">
+      <div class="edit-title" id="editDate">Datum</div>
+      <div class="edit-grid">
+        <button class="edit-option superday" onclick="updateDay('superday')">⭐ Supertag</button>
+        <button class="edit-option wellness" onclick="updateDay('wellness')">💚 Wellness</button>
+        <button class="edit-option sober" onclick="updateDay('sober')">🟢 Alkoholfrei</button>
+        <button class="edit-option moderate" onclick="updateDay('moderate')">🟡 Moderat</button>
+        <button class="edit-option mixed" onclick="updateDay('mixed')">❤️ Schadensbegrenzung</button>
+        <button class="edit-option alcohol" onclick="updateDay('alcohol')">🔴 Alkohol</button>
+      </div>
+
+      <!-- God-Details im Editor (optional) -->
+      <div id="editGodSection" class="god-section" style="display:none; margin-top:12px;">
+        <div style="font-weight:800; margin-bottom:10px;">🧠 God-Details bearbeiten</div>
+        <div class="god-grid">
+          <div class="god-field">
+            <label class="god-label">Getränketyp</label>
+            <select id="editDrinkType" class="god-select">
+              <option value="beer" data-abv="5">Bier (5%)</option>
+              <option value="radler" data-abv="2.5">Radler (2.5%)</option>
+              <option value="wine" data-abv="10">Wein (10%)</option>
+              <option value="liquor" data-abv="15">Likör (15%)</option>
+              <option value="other20" data-abv="20">Sonstiges (20%)</option>
+              <option value="other30" data-abv="30">Sonstiges (30%)</option>
+              <option value="spirit" data-abv="40">Spirituosen (40%)</option>
+            </select>
+          </div>
+          <div class="god-field" id="editBeerSizeField">
+            <label class="god-label">Bier-Flaschengröße</label>
+            <select id="editBeerSize" class="god-select">
+              <option value="0.33">Klein (0,33 l)</option>
+              <option value="0.5">Groß (0,5 l)</option>
+            </select>
+          </div>
+          <div class="god-field">
+            <label class="god-label">Einheit</label>
+            <div class="unit-toggle">
+              <span id="editUnitMl" class="unit-pill active">ml</span>
+              <span id="editUnitL" class="unit-pill">L</span>
+            </div>
+          </div>
+          <div class="god-field">
+            <label class="god-label">Menge pro Portion</label>
+            <input id="editVolumePerPortion" class="god-input" type="number" min="0" step="1">
+          </div>
+          <div class="god-field">
+            <label class="god-label">Anzahl Portionen</label>
+            <input id="editPortions" class="god-input" type="number" min="0" step="1">
+          </div>
+          <div class="god-field">
+            <label class="god-label">🏃‍♂️ Sport?</label>
+            <div class="god-inline">
+              <input id="editDidSport" type="checkbox">
+              <span class="god-subtle">Nur für Kategorie „Schadensbegrenzung“ relevant.</span>
+            </div>
+          </div>
+          <div class="god-field">
+            <label class="god-label">Marijuana (g)</label>
+            <input id="editWeedGrams" class="god-input" type="number" min="0" step="0.1">
+          </div>
+          <div class="god-field">
+            <label class="god-label">Häufigkeit</label>
+            <select id="editWeedFreq" class="god-select">
+              <option value="einmalig">einmalig</option>
+              <option value="mehrmals">mehrmals am Tag</option>
+            </select>
+          </div>
+        </div>
+        <div class="god-metrics">
+          <div class="god-metric"><strong>Alkohol (g):</strong> <span id="editGrams">0</span></div>
+          <div class="god-metric"><strong>Drinks (à 10g):</strong> <span id="editDrinks">0</span></div>
+        </div>
+      </div>
+
+      <div style="margin-top: 16px;">
+        <label for="editCommentInput" style="display: block; font-size: 13px; font-weight: 600; margin-bottom: 6px; color: var(--text);">
+          💬 Kommentar:
+        </label>
+        <textarea 
+          id="editCommentInput" 
+          placeholder="Notizen zum Tag..."
+          style="width: 100%; min-height: 70px; padding: 8px; border: 1px solid #d1d5db; border-radius: 6px; font-size: 12px; font-family: inherit; resize: vertical;"
+        ></textarea>
+        <button class="btn" style="width: 100%; margin-top: 8px;" onclick="saveEditComment()">💾 Änderungen speichern</button>
+      </div>
+
+      <div class="edit-grid" style="margin-top: 16px;">
+        <button class="edit-option delete" onclick="updateDay('delete')">🗑️ Tag löschen</button>
+        <button class="btn secondary" onclick="closeEditPopup()">Schließen</button>
+      </div>
+    </div>
+
+    <!-- Chart-Popup -->
+    <div class="chart-popup-overlay" id="chartOverlay" onclick="toggleChartPopup()"></div>
+    <div id="chartPopup" class="chart-popup" aria-hidden="true">
+      <div class="chart-section">
+        <div class="chart-title">📊 Letzte 100 Tage im Überblick</div>
+        <div class="chart-bars">
+          <div class="chart-bar-container">
+            <div class="chart-bar-header">
+              <div class="chart-bar-label">
+                🔴 Unter 50%
+                <small>Alkohol, "Schadensbegrenzung", Moderat</small>
+              </div>
+              <div class="chart-bar-value">
+                <span class="chart-bar-number" id="chartNegativeNum">0</span>
+                <span class="chart-bar-percent" id="chartNegativePct">0%</span>
+              </div>
+            </div>
+            <div class="chart-bar-wrapper">
+              <div class="chart-bar negative" id="chartNegative" style="width: 0%;"></div>
+            </div>
+          </div>
+          <div class="chart-bar-container">
+            <div class="chart-bar-header">
+              <div class="chart-bar-label">
+                🟢 Über 50%
+                <small>Supertag, Wellness, Alkoholfrei</small>
+              </div>
+              <div class="chart-bar-value">
+                <span class="chart-bar-number" id="chartPositiveNum">0</span>
+                <span class="chart-bar-percent" id="chartPositivePct">0%</span>
+              </div>
+            </div>
+            <div class="chart-bar-wrapper">
+              <div class="chart-bar positive" id="chartPositive" style="width: 0%;"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Gesundheitsbewertung (Basis) -->
+      <div class="health-assessment">
+        <div class="assessment-title">🎯 Deine Gesundheitseinschätzung</div>
+        <div class="assessment-badge" id="assessmentBadge"></div>
+
+        <div class="assessment-metrics">
+          <div class="metric-item">
+            <div class="metric-label">
+              AF-Quote (alkoholfrei)
+              <span class="metric-info">ℹ
+                <span class="metric-tooltip">
+                  Prozentsatz alkoholfreier Tage:<br>
+                  <strong>Supertag + Wellness + Alkoholfrei</strong><br><br>
+                  Je höher, desto besser.
+                </span>
+              </span>
+            </div>
+            <div class="metric-value" id="metricAF">0%</div>
+          </div>
+          <div class="metric-item">
+            <div class="metric-label">
+              Gewichtete Gesundheit
+              <span class="metric-info">ℹ
+                <span class="metric-tooltip">
+                  Score (0–100): Supertag 100, Wellness 90, AF 75, Moderat 40, Schadensbegrenzung 25, Viel 0.
+                </span>
+              </span>
+            </div>
+            <div class="metric-value" id="metricHealth">0%</div>
+          </div>
+          <div class="metric-item">
+            <div class="metric-label">
+              Binge-Nähe (Hochrisiko)
+              <span class="metric-info">ℹ
+                <span class="metric-tooltip">
+                  Zählt Hochrisiko-Tage: „Viel“ + „Schadensbegrenzung“.
+                </span>
+              </span>
+            </div>
+            <div class="metric-value" id="metricBinge">0</div>
+          </div>
+          <div class="metric-item">
+            <div class="metric-label">
+              Längster Cluster
+              <span class="metric-info">ℹ
+                <span class="metric-tooltip">
+                  Längste Serie von Hochrisiko-Tagen am Stück.
+                </span>
+              </span>
+            </div>
+            <div class="metric-value" id="metricCluster">0</div>
+          </div>
+        </div>
+
+        <div class="assessment-description" id="assessmentDescription"></div>
+        <div id="assessmentWarning" class="assessment-warning" style="display:none;"></div>
+
+        <!-- Nur bei Risiko sichtbar -->
+        <div id="auditSuggestion" style="display:none; text-align:center; margin-top:12px;">
+          <button class="btn secondary" type="button" onclick="openAudit()">🧪 AUDIT-Screening machen</button>
+          <div style="font-size:12px; color:var(--muted); margin-top:6px;">Dezentes WHO-Screening (3 Fragen) – nur wenn sinnvoll.</div>
+        </div>
+
+        <!-- God-Analyse (feine Skala) -->
+        <div class="analysis-advanced">
+          <button id="analysisToggle" class="analysis-toggle" type="button">🔍 Detaillierte Analyse anzeigen</button>
+          <div id="analysisBox" class="analysis-box">
+            <div style="font-weight:800; margin-bottom:6px;">Feinere Skala (God-Modus)</div>
+            <div id="godMetricsList" style="font-size:13px; line-height:1.6;"></div>
+          </div>
+        </div>
+      </div>
+
+      <button class="btn secondary" style="margin-top: 24px; width: 100%;" onclick="toggleChartPopup()">Schließen</button>
+    </div>
+
+    <!-- Einstellungen -->
+    <div class="settings-popup-overlay" id="settingsOverlay" onclick="toggleSettingsPopup()"></div>
+    <div id="settingsPopup" class="settings-popup" aria-hidden="true">
+      <div class="settings-title">⚙️ Einstellungen</div>
+      <div class="settings-subtitle">Passe die Bewertung an deine Bedürfnisse an</div>
+
+      <div class="settings-section">
+        <div class="settings-section-title">🧠 God-Modus</div>
+        <div class="settings-description">Aktiviere den detaillierten Modus (Optionen im Tages-Eingabeformular). Standard-Modus bleibt unverändert.</div>
+        <div>
+          <label style="display:flex; align-items:center; gap:12px;">
+            <input id="toggleGodMode" type="checkbox">
+            <span><strong>God-Modus aktivieren</strong> – Detailliertes Tracking (Getränke, Menge, Sport, Marijuana)</span>
+          </label>
+        </div>
+      </div>
+
+      <div class="settings-section">
+        <div class="settings-section-title">🎯 Neutrale Tage</div>
+        <div class="settings-description">Wie sollen nicht eingetragene Tage in die Statistik einfließen?</div>
+        <div class="settings-options">
+          <label class="settings-option" id="option-ignore">
+            <input type="radio" name="neutralDays" value="ignore" checked>
+            <div class="settings-option-content">
+              <div class="settings-option-title">🎯 Ignorieren (Empfohlen)</div>
+              <div class="settings-option-desc">Nur eingetragene Tage zählen.</div>
+            </div>
+          </label>
+          <label class="settings-option" id="option-neutral">
+            <input type="radio" name="neutralDays" value="neutral">
+            <div class="settings-option-content">
+              <div class="settings-option-title">⚖️ Als neutral werten</div>
+              <div class="settings-option-desc">Neutral ≈ 50% Gesundheit.</div>
+            </div>
+          </label>
+          <label class="settings-option" id="option-negative">
+            <input type="radio" name="neutralDays" value="negative">
+            <div class="settings-option-content">
+              <div class="settings-option-title">⚠️ Eher negativ</div>
+              <div class="settings-option-desc">≈ 30% Gesundheit.</div>
+            </div>
+          </label>
+          <label class="settings-option" id="option-very-negative">
+            <input type="radio" name="neutralDays" value="very-negative">
+            <div class="settings-option-content">
+              <div class="settings-option-title">🚨 Sehr negativ</div>
+              <div class="settings-option-desc">≈ 15% Gesundheit.</div>
+            </div>
+          </label>
+        </div>
+        <div class="settings-info-box">
+          💡 Tipp: „Ignorieren“ ist am fairsten, wenn du (noch) nicht täglich trackst.
+        </div>
+      </div>
+
+      <!-- Backup & Wiederherstellung -->
+      <div class="settings-section">
+        <div class="settings-section-title">🗄️ Daten-Backup (lokal)</div>
+        <div class="settings-description">Export/Import bleibt 100% lokal im Browser.</div>
+        <div class="submit-row" style="margin-top:8px;">
+          <button class="btn secondary" onclick="exportData()">📤 Daten exportieren</button>
+          <button class="btn secondary" onclick="importData()">📥 Daten importieren</button>
+        </div>
+        <p class="settings-description" style="margin-top:10px;">Hinweis: Import wird gemerged (gleiche Tage werden überschrieben).</p>
+      </div>
+
+      <!-- Speicher löschen (verschoben) -->
+      <div class="settings-section">
+        <div class="settings-section-title">🧹 Speicher</div>
+        <div class="settings-description">Setzt alle Tage & Einstellungen zurück.</div>
+        <button class="btn danger" onclick="resetStorage()">🧹 Lokalen Speicher löschen</button>
+      </div>
+
+      <button class="btn" style="width: 100%;" onclick="saveSettings()">Einstellungen speichern</button>
+    </div>
+
+    <!-- AUDIT-C Popup (nur bei Bedarf geöffnet) -->
+    <div id="auditOverlay" class="audit-popup-overlay" onclick="closeAudit()"></div>
+    <div id="auditPopup" class="audit-popup" aria-hidden="true">
+      <div class="settings-title">📝 AUDIT-C Schnelltest (WHO)</div>
+      <p style="font-size: 12px; color: #6b7280; margin-bottom: 16px;">
+        3 kurze Fragen zum letzten Jahr. Screening, keine Diagnose.
+      </p>
+
+      <div style="margin-bottom: 16px;">
+        <label style="font-size: 12px; font-weight: 600; margin-bottom: 4px; display: block;">Geschlecht (für Cut-offs):</label>
+        <select id="auditGender" class="god-select">
+          <option value="male">Männlich</option>
+          <option value="female">Weiblich</option>
+        </select>
+      </div>
+
+      <div class="audit-question">
+        <label class="audit-question-label">1. Wie oft trinken Sie alkoholhaltige Getränke?</label>
+        <div class="audit-options">
+          <div class="audit-option"><label><input type="radio" name="auditQ1" value="0"> Nie (0 Punkte)</label></div>
+          <div class="audit-option"><label><input type="radio" name="auditQ1" value="1"> Monatlich oder seltener (1)</label></div>
+          <div class="audit-option"><label><input type="radio" name="auditQ1" value="2"> 2–4×/Monat (2)</label></div>
+          <div class="audit-option"><label><input type="radio" name="auditQ1" value="3"> 2–3×/Woche (3)</label></div>
+          <div class="audit-option"><label><input type="radio" name="auditQ1" value="4"> ≥4×/Woche (4)</label></div>
+        </div>
+      </div>
+
+      <div class="audit-question">
+        <label class="audit-question-label">2. Wie viele Einheiten an einem typischen Tag?</label>
+        <div class="audit-options">
+          <div class="audit-option"><label><input type="radio" name="auditQ2" value="0"> 1–2 (0)</label></div>
+          <div class="audit-option"><label><input type="radio" name="auditQ2" value="1"> 3–4 (1)</label></div>
+          <div class="audit-option"><label><input type="radio" name="auditQ2" value="2"> 5–6 (2)</label></div>
+          <div class="audit-option"><label><input type="radio" name="auditQ2" value="3"> 7–9 (3)</label></div>
+          <div class="audit-option"><label><input type="radio" name="auditQ2" value="4"> 10+ (4)</label></div>
+        </div>
+      </div>
+
+      <div class="audit-question">
+        <label class="audit-question-label">3. Wie oft trinken Sie sechs oder mehr Einheiten?</label>
+        <div class="audit-options">
+          <div class="audit-option"><label><input type="radio" name="auditQ3" value="0"> Nie (0)</label></div>
+          <div class="audit-option"><label><input type="radio" name="auditQ3" value="1"> Seltener als monatlich (1)</label></div>
+          <div class="audit-option"><label><input type="radio" name="auditQ3" value="2"> Monatlich (2)</label></div>
+          <div class="audit-option"><label><input type="radio" name="auditQ3" value="3"> Wöchentlich (3)</label></div>
+          <div class="audit-option"><label><input type="radio" name="auditQ3" value="4"> (Fast) täglich (4)</label></div>
+        </div>
+      </div>
+
+      <button class="btn" style="width: 100%; margin-top: 16px;" onclick="calculateAuditScore()">Ergebnis berechnen</button>
+      <div id="auditResult" style="display:none; margin-top:12px;"></div>
+
+      <button class="btn secondary" style="margin-top: 14px; width: 100%;" onclick="closeAudit()">Schließen</button>
+    </div>
+
+    <footer>© 2025 by R. Duwenbeck</footer>
   </div>
 
   <script>
-    /* ===== Core State ===== */
-    const monthNames = ['Januar','Februar','März','April','Mai','Juni','Juli','August','September','Oktober','November','Dezember'];
-    const weekdays = ['Mo','Di','Mi','Do','Fr','Sa','So'];
-    const cats = ['superday','wellness','sober','moderate','mixed','alcohol'];
-    const catLabel = {superday:'Supertag', wellness:'Wellness', sober:'Alkoholfrei', moderate:'Moderat', mixed:'Schadensbegrenzung', alcohol:'Viel'};
-    const pad2 = n => (n<10 ? '0'+n : ''+n);
-    const keyOf = d => `${d.getFullYear()}-${pad2(d.getMonth()+1)}-${pad2(d.getDate())}`;
+    /* === Version === */
+    const APP_VERSION_BASE = 'ChatGPT5_edit_Vers1.3_';
+    function pad(n){ return n<10 ? '0'+n : ''+n; }
+    function currentHHMM(){
+      const d = new Date();
+      return pad(d.getHours()) + ':' + pad(d.getMinutes());
+    }
 
-    let dayData = {}; // key → { status, comment, flags:{sport,hangover,totalCrash}, alcoholItems:[{type,abv,volMl,units}], marijuana:{grams,freq} }
-    let settings = { god:false, autoRe:false, nudges:false, live:true, denom:'entered', neutral:'ignore' };
-    let viewDate = new Date();
+    let currentInputDate = new Date();
+    let currentViewDate = new Date();
+    let dayData = {};
     let editingDate = null;
+    let storageWorking = false;
+    let neutralDaysSetting = 'ignore';
+    let godMode = false;
+    let unit = 'ml'; // ml | L
 
-    /* ===== Storage ===== */
-    function loadAll(){
-      try{
-        dayData = JSON.parse(localStorage.getItem('alcoholTrackerData')||'{}')||{};
-      }catch{ dayData = {}; }
-      migrateToItemsIfNeeded();
-      try{
-        const s = JSON.parse(localStorage.getItem('alcoholTrackerSettings')||'{}')||{};
-        settings.god=!!s.godMode; settings.autoRe=!!s.autoReclass; settings.nudges=!!s.nudgesEnabled; settings.live=(s.liveEditSave!==false);
-        settings.denom=s.denomSetting||'entered'; settings.neutral=s.neutralDays||'ignore';
-      }catch{}
-      document.getElementById('godBadge').classList.toggle('active', !!settings.god);
-    }
-    function saveAll(){
-      localStorage.setItem('alcoholTrackerData', JSON.stringify(dayData));
-      localStorage.setItem('alcoholTrackerSettings', JSON.stringify({
-        godMode:settings.god, autoReclass:settings.autoRe, nudgesEnabled:settings.nudges, liveEditSave:settings.live,
-        denomSetting:settings.denom, neutralDays:settings.neutral
-      }));
-    }
+    const monthNames = ['Januar','Februar','März','April','Mai','Juni','Juli','August','September','Oktober','November','Dezember'];
+    const weekdays   = ['Mo','Di','Mi','Do','Fr','Sa','So'];
 
-    /* ===== Migration: single alcohol → items ===== */
-    function migrateToItemsIfNeeded(){
-      let changed=false;
-      for(const k of Object.keys(dayData)){
-        const v = dayData[k];
-        if(!v) continue;
-        // Normalize wrapper
-        if(typeof v==='string'){ dayData[k] = {status:v, comment:''}; changed=true; continue; }
-        if(!v.alcoholItems){
-          const items=[];
-          const alc=v.alcohol;
-          if(alc){
-            const abv = Number(alc.abv||0);
-            // beer033/beer05 collapse into items
-            const b33 = Number(alc.beer033||0);
-            const b05 = Number(alc.beer05||0);
-            if(b33>0) items.push({type:'beer',abv:5,volMl:330,units:b33});
-            if(b05>0) items.push({type:'beer',abv:5,volMl:500,units:b05});
-            const vol=Number(alc.volume||0), portions=Number(alc.portions||0);
-            if(vol>0 && portions>0) items.push({type:alc.type||'other',abv:abv>0?abv:10,volMl:vol,units:portions});
-          }
-          v.alcoholItems = items;
-          changed=true;
-        }
+    const formatDateKey = (date)=> `${date.getFullYear()}-${date.getMonth()+1}-${date.getDate()}`;
+    const formatDisplayDate = (date)=> `${date.getDate()}. ${monthNames[date.getMonth()]} ${date.getFullYear()}`;
+
+    // Helpers: kompatibel mit altem & neuem Format
+    const getDayStatus  = (key) => dayData[key] ? (typeof dayData[key]==='string' ? dayData[key] : dayData[key].status) : null;
+    const getDayComment = (key) => (dayData[key] && typeof dayData[key]==='object' && dayData[key].comment) ? dayData[key].comment : '';
+
+    const setDayData = (key, status, comment = '', extra = {}) => {
+      dayData[key] = { status, comment, ...extra };
+    };
+
+    /* Storage */
+    function testStorage(){ try{ localStorage.setItem('__test__','1'); localStorage.removeItem('__test__'); storageWorking = true; }catch{ storageWorking=false; } }
+    function updateStorageStatus(message){
+      const status = document.getElementById('storageStatus');
+      const count  = document.getElementById('savedDaysCount');
+      if(status) status.textContent = message ?? '';
+      if(count)  count.textContent  = Object.keys(dayData).length;
+    }
+    function saveData(){
+      if(!storageWorking){ updateStorageStatus('❌ Speichern nicht möglich'); return false; }
+      try{
+        localStorage.setItem('alcoholTrackerData', JSON.stringify(dayData));
+        localStorage.setItem('alcoholTrackerCurrentDate', currentInputDate.toISOString());
+        updateStorageStatus('✅ Daten gespeichert'); return true;
+      }catch{ updateStorageStatus('❌ Speicher-Fehler'); return false; }
+    }
+    function loadData(){
+      if(!storageWorking){ updateStorageStatus('⚠️ Kein persistenter Speicher'); return; }
+      try{
+        const savedData = localStorage.getItem('alcoholTrackerData');
+        dayData = savedData && savedData !== 'null' ? JSON.parse(savedData) : {};
+        currentInputDate = new Date();
+
+        // Settings laden
+        const savedA = localStorage.getItem('alcoholTrackerSettings');
+        const savedB = localStorage.getItem('boozeTrackerSettings'); // Backwards compat
+        let settings = {};
+        try{ if(savedA) settings = JSON.parse(savedA) || {}; }catch{}
+        try{ if(savedB) settings = { ...settings, ...(JSON.parse(savedB)||{}) }; }catch{}
+        neutralDaysSetting = settings.neutralDays || 'ignore';
+        godMode = !!settings.godMode;
+
+        updateStorageStatus(`✅ ${Object.keys(dayData).length} Tage geladen`);
+      }catch{
+        dayData = {}; currentInputDate = new Date(); updateStorageStatus('❌ Laden fehlgeschlagen');
       }
-      if(changed) localStorage.setItem('alcoholTrackerData', JSON.stringify(dayData));
     }
 
-    /* ===== Calendar ===== */
-    function buildCalendar(){
-      const grid = document.getElementById('monthGrid'); grid.innerHTML='';
-      const y=viewDate.getFullYear(), m=viewDate.getMonth();
-      document.getElementById('monthTitle').textContent = `${monthNames[m]} ${y}`;
-      document.getElementById('monthHint').textContent = 'Klicke einen Tag zum Bearbeiten';
-      weekdays.forEach(w=>{ const el=document.createElement('div'); el.className='weekday'; el.textContent=w; grid.appendChild(el); });
-      const first = new Date(y,m,1); let lead = (first.getDay()+6)%7;
-      for(let i=0;i<lead;i++){ const s=document.createElement('div'); s.style.visibility='hidden'; grid.appendChild(s); }
-      const last = new Date(y,m+1,0).getDate();
+    /* Monat / Erfolg / Streak */
+    function setSuccessCardTint(pct){
+      const card = document.getElementById('successCard');
+      card.classList.remove('rate-good','rate-warn','rate-bad');
+      if(pct < 50)      card.classList.add('rate-bad');
+      else if(pct < 75) card.classList.add('rate-warn');
+      else              card.classList.add('rate-good');
+    }
+    function calculateSuccessRate(){
+      const y = currentViewDate.getFullYear(), m = currentViewDate.getMonth();
+      let total=0, max=0;
+      const last = new Date(y, m+1, 0).getDate();
       for(let d=1; d<=last; d++){
-        const key = `${y}-${pad2(m+1)}-${pad2(d)}`;
-        const cell=document.createElement('div'); cell.className='day'; cell.textContent=String(d);
-        const v=dayData[key];
-        if(v && v.status){ cell.classList.add(v.status); }
-        const today=new Date(); if(d===today.getDate() && m===today.getMonth() && y===today.getFullYear()) cell.classList.add('today');
-        const comment = v && v.comment; const hasFlags = v && v.flags && (v.flags.hangover || v.flags.totalCrash);
-        if(comment){ cell.classList.add('has-comment'); }
-        if(hasFlags){ cell.classList.add('has-flags'); }
-        // tooltip content
-        const tip=document.createElement('div'); tip.className='tooltip';
-        tip.textContent = (comment?('💬 '+comment+'\n'):'') + (hasFlags?('⚑ '+(v.flags.hangover?'Katertag ':'')+(v.flags.totalCrash?'Totalabsturz':'')) : '');
-        if(tip.textContent.trim().length>0){ cell.appendChild(tip); }
-        // hover show
-        cell.addEventListener('mouseenter', ()=>{ if(tip.textContent.trim().length>0) tip.style.display='block'; });
-        cell.addEventListener('mouseleave', ()=>{ tip.style.display='none'; });
-        // long-press for touch
-        let tmr=null;
-        cell.addEventListener('touchstart', ()=>{ if(tip.textContent.trim().length>0){ tmr=setTimeout(()=> tip.style.display='block', 450);} }, {passive:true});
-        ['touchend','touchcancel','touchmove'].forEach(ev=> cell.addEventListener(ev, ()=>{ if(tmr){clearTimeout(tmr);tmr=null;} tip.style.display='none'; }, {passive:true}));
-        // open editor
-        cell.addEventListener('click', ()=> openEdit(new Date(y,m,d)));
+        const key = formatDateKey(new Date(y,m,d));
+        const st = getDayStatus(key);
+        if(!st) continue;
+        max += 1;
+        if(st==='superday') total += 1.0;
+        else if(st==='wellness') total += 0.9;
+        else if(st==='sober') total += 0.75;
+        else if(st==='moderate') total += 0.4;
+        else if(st==='mixed') total += 0.25;
+      }
+      const pct = max>0 ? Math.round((total/max)*100) : 0;
+      document.getElementById('successRate').textContent = pct + '%';
+      setSuccessCardTint(pct);
+    }
+
+    function isGreen(state){ return state==='sober' || state==='superday' || state==='wellness'; }
+    function setStreakCardTint(streak){
+      const card = document.getElementById('streakCard');
+      const numEl = document.getElementById('streakNumber');
+      card.classList.remove('streak-bad','streak-warn','streak-good','streak-great');
+      if(streak >= 30)      card.classList.add('streak-great');
+      else if(streak >= 21) card.classList.add('streak-good');
+      else if(streak >= 11) card.classList.add('streak-warn');
+      else if(streak >= 1)  card.classList.add('streak-bad');
+      numEl.textContent = String(streak) + (streak>=30 ? ' 🎉' : '');
+    }
+    function calculateStreak(){
+      let probe = new Date();
+      let streak = 0;
+      while(true){
+        const key = formatDateKey(probe);
+        const st = getDayStatus(key);
+        if(isGreen(st)){ streak++; probe.setDate(probe.getDate()-1); }
+        else { break; }
+        if(streak > 1000) break;
+      }
+      setStreakCardTint(streak);
+    }
+
+    /* 100 Tage Chart */
+    function calculate100DaysChart(){
+      let negative = 0;
+      let positive = 0;
+      const today = new Date();
+      for(let i=0; i<100; i++){
+        const probe = new Date(today);
+        probe.setDate(probe.getDate() - i);
+        const st = getDayStatus(formatDateKey(probe));
+        if(st === 'alcohol' || st === 'mixed' || st === 'moderate'){ negative++; }
+        else if(st === 'sober' || st === 'wellness' || st === 'superday'){ positive++; }
+      }
+      const negPct = Math.round((negative / 100) * 100);
+      const posPct = Math.round((positive / 100) * 100);
+      setTimeout(() => {
+        document.getElementById('chartNegative').style.width = negPct + '%';
+        document.getElementById('chartNegativeNum').textContent = negative;
+        document.getElementById('chartNegativePct').textContent = negPct + '%';
+        document.getElementById('chartPositive').style.width = posPct + '%';
+        document.getElementById('chartPositiveNum').textContent = positive;
+        document.getElementById('chartPositivePct').textContent = posPct + '%';
+      }, 100);
+    }
+
+    /* Basis-Health + Trigger für AUDIT + God-Analyse */
+    function calculateHealthAssessment(){
+      const today = new Date();
+      let counts = { superday:0, wellness:0, sober:0, moderate:0, mixed:0, alcohol:0, empty:0 };
+      const last100Days = [];
+      for(let i=0; i<100; i++){
+        const probe = new Date(today);
+        probe.setDate(probe.getDate() - i);
+        const key = formatDateKey(probe);
+        const st  = getDayStatus(key);
+        last100Days.push(st || null);
+        if(st && counts[st] !== undefined) counts[st]++; else if(!st) counts.empty++;
+      }
+      const enteredDays = 100 - counts.empty;
+      let divisor = 100, neutralWeight = 0;
+      if(neutralDaysSetting === 'ignore'){ divisor = enteredDays || 1; }
+      else if(neutralDaysSetting === 'neutral'){ neutralWeight = 0.5; }
+      else if(neutralDaysSetting === 'negative'){ neutralWeight = 0.3; }
+      else if(neutralDaysSetting === 'very-negative'){ neutralWeight = 0.15; }
+
+      const afCount = counts.superday + counts.wellness + counts.sober;
+      const afQuote = afCount / divisor;
+
+      const weightedScore = (
+        counts.superday * 1.0 +
+        counts.wellness * 0.9 +
+        counts.sober * 0.75 +
+        counts.moderate * 0.4 +
+        counts.mixed * 0.25 +
+        counts.alcohol * 0.0 +
+        counts.empty * neutralWeight
+      ) / 100;
+
+      const bingeProximity = counts.alcohol + counts.mixed;
+      const bingeQuote = bingeProximity / divisor;
+
+      let maxCluster = 0, currentCluster = 0;
+      for(const st of last100Days){
+        if(st === 'alcohol' || st === 'mixed'){ currentCluster++; maxCluster = Math.max(maxCluster, currentCluster); }
+        else { currentCluster = 0; }
+      }
+
+      let label, badgeClass, description, warning, suggestAudit=false;
+      if(bingeProximity >= 40 || afQuote < 0.20 || (bingeQuote >= 0.40 && enteredDays >= 10)){
+        label='🚨 Sucht-Alarm: Rote Lampen!'; badgeClass='red';
+        description='<strong>Sehr hohes Risiko</strong> – Nähe zu häufigen Rauschlagen.';
+        warning='🆘 Bitte professionelle Hilfe erwägen.';
+        suggestAudit=true;
+      } else if((bingeProximity >= 20 && bingeProximity < 40) || (afQuote < 0.30 && afQuote >= 0.20) || (bingeQuote >= 0.20 && enteredDays >= 10)){
+        label='🎲 Risiko-Roulette'; badgeClass='red';
+        description='<strong>Hohes Risiko</strong> – Kritische Muster erkennbar.';
+        warning='🚨 Gespräch/Screening empfohlen.'; suggestAudit=true;
+      } else if(afQuote <= 0.39 || (bingeProximity >= 13 && bingeProximity <= 19) || (bingeQuote >= 0.13 && enteredDays >= 10)){
+        label='🚨 Kipppunkt-Kandidat'; badgeClass='weekend';
+        description='Erhöhtes Risiko – Schwelle erreicht.'; suggestAudit=true;
+      } else if(afQuote >= 0.40 && afQuote < 0.70 && bingeProximity <= 12){
+        label='🧘 Balance-Buddha'; badgeClass='balance'; description='Moderates Risiko.';
+      } else {
+        label='🦸 Leber-Superheld'; badgeClass='zen'; description='Niedriges Risiko.';
+      }
+
+      const extra = (maxCluster>=3 ? `<br>🔥 Cluster: ${maxCluster} Tage am Stück.` : '');
+      const afDisplay = neutralDaysSetting === 'ignore' ? `${Math.round(afQuote*100)}% (${afCount}/${enteredDays})` : `${Math.round(afQuote*100)}%`;
+      document.getElementById('metricAF').textContent = afDisplay;
+      document.getElementById('metricHealth').textContent = Math.round(weightedScore*100) + '%';
+      document.getElementById('metricBinge').textContent = neutralDaysSetting === 'ignore' ? `${bingeProximity} (${Math.round(bingeQuote*100)}%)` : bingeProximity;
+      document.getElementById('metricCluster').textContent = maxCluster>0 ? `${maxCluster} Tage` : 'Keiner';
+
+      const badge = document.getElementById('assessmentBadge');
+      badge.textContent = label; badge.className = 'assessment-badge ' + badgeClass;
+
+      const basisInfo = neutralDaysSetting === 'ignore'
+        ? `<div style="text-align:center; font-size:12px; color:var(--muted); margin-bottom:12px;">📊 Basierend auf <strong>${enteredDays} von 100 Tagen</strong></div>`
+        : `<div style="text-align:center; font-size:12px; color:var(--muted); margin-bottom:12px;">📊 Basierend auf <strong>100 Tagen</strong></div>`;
+      document.getElementById('assessmentDescription').innerHTML = basisInfo + description;
+
+      const warningEl = document.getElementById('assessmentWarning');
+      if(warning || extra){ warningEl.innerHTML = (warning||'') + extra; warningEl.style.display='block'; } else { warningEl.style.display='none'; }
+
+      // AUDIT Vorschlag dezent
+      document.getElementById('auditSuggestion').style.display = suggestAudit ? 'block' : 'none';
+
+      // God-Analyse (feiner)
+      buildGodAdvancedAnalysis();
+    }
+
+    /* God-Analyse: quantitative/qualitative + Stufe */
+    function buildGodAdvancedAnalysis(){
+      // Sammle 100 Tage; fallback g/Kat:
+      const today = new Date();
+      const fallbackGrams = { superday:0, wellness:0, sober:0, moderate:20, mixed:40, alcohol:50 };
+      let gramsTotal = 0, daysCount=0, bingeDays=0, weedWeekGrams=0, usedDays=0;
+      let maxCluster=0, curCluster=0;
+      const weekdayIdx = d => (d.getDay()+6)%7; // Mo=0 ... So=6
+      const friday = 4, saturday = 5;
+
+      let weekendHigh=0, weekendTotal=0, dailyLowCount=0, abstinentMostly=true, peaks=0;
+
+      for(let i=0; i<100; i++){
+        const dt = new Date(today); dt.setDate(dt.getDate()-i);
+        const key = formatDateKey(dt);
+        const entry = dayData[key];
+        let grams = 0, weed = 0, status = getDayStatus(key);
+
+        if(entry && typeof entry === 'object' && entry.alcohol && typeof entry.alcohol.grams === 'number'){
+          grams = entry.alcohol.grams;
+        } else if(status){ grams = fallbackGrams[status] ?? 0; }
+
+        if(entry && entry.marijuana && typeof entry.marijuana.grams === 'number'){ weed = entry.marijuana.grams; }
+
+        gramsTotal += grams; usedDays++;
+        if(grams > 0 && grams <= 20) dailyLowCount++;
+        if(grams === 0) { /* abstinent candidate */ } else { abstinentMostly = false; }
+        if(grams >= 40) bingeDays++;
+        if(grams >= 20){ curCluster++; } else { maxCluster = Math.max(maxCluster, curCluster); curCluster=0; }
+        weedWeekGrams += weed;
+
+        if(weekdayIdx(dt)===friday || weekdayIdx(dt)===saturday){ weekendTotal++; if(grams>=40) weekendHigh++; }
+        if(grams===0){} else if(grams>=60) peaks++;
+      }
+      maxCluster = Math.max(maxCluster, curCluster);
+
+      // Wochen-Mittel grob (100 Tage ≈ 14.28 Wochen)
+      const weeks = 100/7.0;
+      const avgDrinksPerWeek = (gramsTotal/10.0)/weeks;
+      const weedPerWeek = weedWeekGrams/weeks;
+
+      // Muster
+      const weekendBinger = weekendTotal>0 && (weekendHigh/weekendTotal)>=0.4;
+      const dailyLow = usedDays>0 && (dailyLowCount/usedDays)>=0.6;
+      const abstinentWithSlips = (gramsTotal/usedDays)<5 && peaks>0; // sehr grob
+
+      // Feine Stufe:
+      // Mengen-Score (0–100) aus Drinks/Woche (<=1 => 100, 1–2 => 80, 2–4 => 60, 4–8 => 30, >8 => 0)
+      let qtyScore=100;
+      if(avgDrinksPerWeek<=1) qtyScore=100;
+      else if(avgDrinksPerWeek<=2) qtyScore=80;
+      else if(avgDrinksPerWeek<=4) qtyScore=60;
+      else if(avgDrinksPerWeek<=8) qtyScore=30;
+      else qtyScore=0;
+
+      // Binge/Cluster Score
+      let patternScore=100;
+      if(bingeDays>30 || maxCluster>7) patternScore=0;
+      else if(bingeDays>15 || maxCluster>5) patternScore=40;
+      else if(bingeDays>5 || maxCluster>3) patternScore=70;
+      else patternScore=90;
+
+      // Weed-Score (niedriger ist besser)
+      let weedScore=100;
+      if(weedPerWeek>2) weedScore=20;
+      else if(weedPerWeek>1) weedScore=50;
+      else if(weedPerWeek>0.5) weedScore=70;
+      else weedScore=90;
+
+      // Gesamtgewichtung (50/30/20)
+      const totalScore = 0.5*qtyScore + 0.3*patternScore + 0.2*weedScore;
+
+      // 5-Stufen-Klassifikation
+      let fineStage='', tip='';
+      if(weedPerWeek<0.5 && avgDrinksPerWeek<1 && bingeDays===0 && maxCluster===0) { fineStage='Stufe 1: Zen-Meister'; }
+      else if(avgDrinksPerWeek<=2 && bingeDays<5 && maxCluster<3){ fineStage='Stufe 2: Balance-Künstler'; }
+      else if(avgDrinksPerWeek<=4 && bingeDays<=15 && maxCluster<=5){ fineStage='Stufe 3: Kipppunkt-Wanderer'; }
+      else if(avgDrinksPerWeek<=8 && (bingeDays<=30 || maxCluster>5)){ fineStage='Stufe 4: Risiko-Jongleur'; }
+      else { fineStage='Stufe 5: Alarmstufe Rot'; }
+
+      if(weekendBinger) tip+='• Muster: Weekend-Binger erkannt (Fr/Sa hohe Mengen).<br>';
+      if(dailyLow) tip+='• Muster: „Daily Low“ (oft <20 g).<br>';
+      if(abstinentWithSlips) tip+='• Muster: Abstinent mit Slips (seltene Peaks).<br>';
+
+      const html = `
+        <div><strong>Durchschnittliche Drinks/Woche:</strong> ${avgDrinksPerWeek.toFixed(1)}</div>
+        <div><strong>Binge-Tage (≥40g):</strong> ${bingeDays}/100</div>
+        <div><strong>Längster Cluster (≥20g):</strong> ${maxCluster} Tage</div>
+        <div><strong>Marijuana:</strong> ${weedPerWeek.toFixed(2)} g/Woche</div>
+        <div style="margin-top:8px;"><strong>${fineStage}</strong> · Score: ${Math.round(totalScore)}/100</div>
+        ${tip?`<div style="margin-top:6px;">${tip}</div>`:''}
+        <div style="margin-top:8px; font-size:12px; color:var(--muted);">Hinweis: Wo keine Mengen erfasst wurden, nutzt die Analyse plausible Fallbacks (moderat≈20g, Schadensbegrenzung≈40g, viel≈50g). Exakte Angaben im God-Modus verbessern die Aussagekraft.</div>
+      `;
+      document.getElementById('godMetricsList').innerHTML = html;
+    }
+
+    /* Views */
+    function updateDayInputView(){
+      document.getElementById('currentDateDisplay').textContent = formatDisplayDate(currentInputDate);
+      updateStorageStatus(`🍷 ${Object.keys(dayData).length} Tage`);
+      const key = formatDateKey(currentInputDate);
+      const existing = getDayStatus(key);
+      const existingComment = getDayComment(key);
+      const btn = document.getElementById('submitDay');
+      document.getElementById('dayCommentInput').value = existingComment;
+
+      if(existing){
+        const radio = document.querySelector(`input[name="dayChoice"][value="${existing}"]`);
+        if(radio) radio.checked = true;
+        btn.disabled = false;
+        btn.textContent = 'Tag aktualisieren';
+      }else{
+        btn.textContent = 'Tag speichern';
+      }
+
+      // God-Sektion sichtbar?
+      document.getElementById('godSection').style.display = godMode ? 'block' : 'none';
+    }
+
+    function showMonthView(){
+      currentViewDate = new Date(currentInputDate);
+      document.getElementById('dayInputView').classList.remove('active');
+      document.getElementById('monthView').classList.add('active');
+      updateMonthView(); calculateStreak(); calculateSuccessRate();
+      document.getElementById('appVersion2').textContent = APP_VERSION_BASE + currentHHMM();
+    }
+    function showDayInput(){
+      document.getElementById('monthView').classList.remove('active');
+      document.getElementById('dayInputView').classList.add('active');
+      closeEditPopup();
+    }
+
+    function updateMonthView(){
+      const y = currentViewDate.getFullYear(), m = currentViewDate.getMonth();
+      document.getElementById('monthHeader').textContent = `${monthNames[m]} ${y}`;
+
+      const grid = document.getElementById('monthGrid');
+      grid.innerHTML = '';
+      for(const w of ['Mo','Di','Mi','Do','Fr','Sa','So']){
+        const h = document.createElement('div'); h.className='weekday'; h.textContent=w; grid.appendChild(h);
+      }
+
+      const first = new Date(y, m, 1);
+      const last  = new Date(y, m+1, 0);
+      const startDay = (first.getDay()+6)%7;
+
+      for(let i=0;i<startDay;i++){
+        const e = document.createElement('div'); e.className='day'; e.style.visibility='hidden'; grid.appendChild(e);
+      }
+
+      const today = new Date();
+      for(let d=1; d<=last.getDate(); d++){
+        const dt = new Date(y, m, d);
+        const cell = document.createElement('div');
+        cell.className = 'day'; cell.textContent = d;
+        cell.dataset.y = String(y); cell.dataset.m = String(m); cell.dataset.d = String(d);
+
+        const key = formatDateKey(dt);
+        const st = getDayStatus(key);
+        const comment = getDayComment(key);
+
+        if(st) cell.classList.add(st);
+        if(dt.toDateString() === today.toDateString()) cell.classList.add('today');
+
+        if(comment){
+          cell.classList.add('has-comment');
+          const tooltip = document.createElement('div');
+          tooltip.className = 'day-comment-tooltip';
+          tooltip.textContent = comment;
+          cell.appendChild(tooltip);
+        }
         grid.appendChild(cell);
       }
     }
 
-    /* ===== Edit Modal ===== */
-    function openEdit(date){
-      editingDate=date;
-      document.getElementById('editTitle').textContent = date.toLocaleDateString('de-DE',{weekday:'long', day:'2-digit', month:'long', year:'numeric'});
-      const key=keyOf(date);
-      const v = dayData[key] || {status:null, comment:'', alcoholItems:[], flags:{}, marijuana:{}};
-      // set category
-      document.querySelectorAll('input[name="cat"]').forEach(r=> r.checked = (r.value === v.status));
-      // flags
-      document.getElementById('flagSport').checked = !!(v.flags && v.flags.sport);
-      document.getElementById('flagHangover').checked = !!(v.flags && v.flags.hangover);
-      document.getElementById('flagTotalCrash').checked = !!(v.flags && v.flags.totalCrash);
-      // dope
-      const enableDope = v.marijuana && (v.marijuana.grams>0 || v.marijuana.freq);
-      document.getElementById('flagDopeEnable').checked = !!enableDope;
-      document.getElementById('dopeRow').classList.toggle('hidden', !enableDope);
-      document.getElementById('weedGrams').value = (v.marijuana && v.marijuana.grams) ? v.marijuana.grams : 0;
-      document.getElementById('weedFreq').value  = (v.marijuana && v.marijuana.freq) ? v.marijuana.freq : 'einmalig';
-      // comment
-      document.getElementById('editComment').value = v.comment || '';
-      // drinks
-      renderDrinksList(v.alcoholItems||[]);
-      // compute sums and suggestion
-      recomputeSumsAndMaybeSuggest();
-      // show
-      document.getElementById('editOverlay').style.display='block';
-      document.getElementById('editModal').style.display='block';
-    }
-    function closeEdit(){
-      document.getElementById('editOverlay').style.display='none';
-      document.getElementById('editModal').style.display='none';
-      editingDate=null;
-    }
+    document.addEventListener('click', (e)=>{
+      const grid = document.getElementById('monthGrid');
+      if(!grid || !grid.contains(e.target)) return;
+      const cell = e.target.closest('.day');
+      if(!cell || cell.style.visibility==='hidden') return;
+      const y = Number(cell.dataset.y), m=Number(cell.dataset.m), d=Number(cell.dataset.d);
+      openEditPopup(new Date(y,m,d));
+    });
 
-    /* ===== Drink Rows ===== */
-    const DRINK_PRESETS = {
-      beer:  {abv:5,  volumes:[{ml:330,label:'0,33 l'},{ml:500,label:'0,5 l'}]},
-      radler:{abv:2.5,volumes:[{ml:330,label:'0,33 l'},{ml:500,label:'0,5 l'}]},
-      wine:  {abv:10, volumes:[{ml:100,label:'100 ml'},{ml:200,label:'200 ml'},{ml:250,label:'250 ml'}]},
-      liquor:{abv:15, volumes:[{ml:100,label:'100 ml'},{ml:200,label:'200 ml'}]},
-      spirit:{abv:40, volumes:[{ml:20,label:'20 ml'},{ml:40,label:'40 ml'},{ml:60,label:'60 ml'}]},
-      other20:{abv:20, volumes:[{ml:100,label:'100 ml'},{ml:200,label:'200 ml'},{ml:500,label:'500 ml'}]},
-      other30:{abv:30, volumes:[{ml:20,label:'20 ml'},{ml:100,label:'100 ml'},{ml:200,label:'200 ml'}]}
-    };
-    const DRINK_LABEL = {beer:'Bier', radler:'Radler', wine:'Wein', liquor:'Likör', spirit:'Spirituosen', other20:'Sonstiges (20%)', other30:'Sonstiges (30%)'};
+    function openEditPopup(date){
+      editingDate = date;
+      document.getElementById('editDate').textContent = formatDisplayDate(date);
+      const key = formatDateKey(date);
+      const comment = getDayComment(key);
+      document.getElementById('editCommentInput').value = comment;
 
-    function newDrinkItem(obj){
-      return {
-        type: obj?.type || 'beer',
-        abv:  obj?.abv ?? (DRINK_PRESETS['beer'].abv),
-        volMl: obj?.volMl || 500,
-        units: obj?.units || 1
-      };
+      // God-Details laden
+      const entry = dayData[key];
+      const hasGod = entry && typeof entry === 'object' && (entry.alcohol || entry.marijuana || entry.sport!==undefined);
+      document.getElementById('editGodSection').style.display = hasGod ? 'block' : (godMode ? 'block' : 'none');
+
+      const drinkSel = document.getElementById('editDrinkType');
+      const beerSize = document.getElementById('editBeerSize');
+      const volEl = document.getElementById('editVolumePerPortion');
+      const portEl= document.getElementById('editPortions');
+      const didSport=document.getElementById('editDidSport');
+      const weedG=document.getElementById('editWeedGrams');
+      const weedF=document.getElementById('editWeedFreq');
+
+      if(hasGod){
+        // try to infer fields
+        const alc = entry.alcohol || {};
+        const typ = alc.type || 'beer';
+        const abvMap = {beer:5, radler:2.5, wine:10, liquor:15, other20:20, other30:30, spirit:40};
+        drinkSel.value = typ;
+        beerSize.value = '0.5';
+        const portions = alc.portions || 1;
+        const volMl = alc.mlPerPortion || 500;
+        document.getElementById('editUnitMl').classList.add('active'); document.getElementById('editUnitL').classList.remove('active');
+        volEl.value = Math.round(volMl);
+        portEl.value = portions;
+        didSport.checked = !!entry.sport;
+        weedG.value = entry?.marijuana?.grams ?? 0;
+        weedF.value = entry?.marijuana?.frequency || 'einmalig';
+        const grams = alc.grams || 0;
+        document.getElementById('editGrams').textContent = grams.toFixed(0);
+        document.getElementById('editDrinks').textContent = (grams/10).toFixed(1);
+      } else {
+        drinkSel.value='beer'; beerSize.value='0.5'; volEl.value='500'; portEl.value=''; didSport.checked=false; weedG.value=''; weedF.value='einmalig';
+        document.getElementById('editGrams').textContent='0'; document.getElementById('editDrinks').textContent='0';
+      }
+
+      const pop = document.getElementById('editPopup');
+      pop.classList.add('active');
+      pop.setAttribute('aria-hidden','false');
     }
-
-    function renderDrinksList(items){
-      const list=document.getElementById('drinksList'); list.innerHTML='';
-      if(!items || !items.length) items=[newDrinkItem({type:'beer', volMl:500, units:1, abv:5})];
-      items.forEach((it,i)=> list.appendChild(drinkRow(it,i)));
-      list.dataset.count = items.length;
-    }
-
-    function drinkRow(item, idx){
-      const wrap=document.createElement('div'); wrap.className='card'; wrap.style.display='grid'; wrap.style.gridTemplateColumns='1.2fr 1fr 1fr auto'; wrap.style.gap='8px'; wrap.style.alignItems='center';
-      // Type
-      const selType=document.createElement('select'); selType.innerHTML = Object.keys(DRINK_PRESETS).map(k=>`<option value="${k}">${DRINK_LABEL[k]}</option>`).join('');
-      selType.value=item.type;
-      // Volume
-      const selVol=document.createElement('select'); updateVolumeOptions(selVol, selType.value, item.volMl);
-      // Units
-      const selUnits=document.createElement('select'); for(let n=1;n<=20;n++){ const o=document.createElement('option'); o.value=String(n); o.textContent=String(n); selUnits.appendChild(o); }
-      selUnits.value=String(item.units||1);
-      // Remove
-      const rem=document.createElement('button'); rem.className='btn ghost'; rem.textContent='Entfernen'; rem.addEventListener('click', ()=>{ wrap.remove(); recomputeSumsAndMaybeSuggest(); });
-      // Change handlers
-      selType.addEventListener('change', ()=>{ updateVolumeOptions(selVol, selType.value, null); recomputeSumsAndMaybeSuggest(); });
-      selVol.addEventListener('change', ()=> recomputeSumsAndMaybeSuggest());
-      selUnits.addEventListener('change', ()=> recomputeSumsAndMaybeSuggest());
-      // Mount
-      wrap.appendChild(selType); wrap.appendChild(selVol); wrap.appendChild(selUnits); wrap.appendChild(rem);
-      return wrap;
+    function closeEditPopup(){
+      const pop = document.getElementById('editPopup');
+      pop.classList.remove('active');
+      pop.setAttribute('aria-hidden','true');
+      editingDate = null;
     }
 
-    function updateVolumeOptions(selectEl, type, selectedMl){
-      const preset = DRINK_PRESETS[type] || DRINK_PRESETS['beer'];
-      const abv = preset.abv;
-      selectEl.innerHTML='';
-      preset.volumes.forEach(v=>{
-        const o=document.createElement('option');
-        o.value=String(v.ml); o.textContent=v.label; selectEl.appendChild(o);
+    /* Neutral-Option Auswahl (nur Settings) */
+    function selectNeutralOption(option){
+      neutralDaysSetting = option;
+      const settings = JSON.parse(localStorage.getItem('boozeTrackerSettings') || '{}');
+      settings.neutralDays = option;
+      localStorage.setItem('boozeTrackerSettings', JSON.stringify(settings));
+      document.querySelectorAll('.settings-option').forEach(el => el.classList.remove('selected'));
+      document.querySelectorAll('input[name="neutralDays"]').forEach(el => {
+        el.checked = (el.value === option);
+        if(el.checked) el.closest('.settings-option').classList.add('selected');
       });
-      // custom
-      const oC=document.createElement('option'); oC.value='custom'; oC.textContent='Benutzerdefiniert…'; selectEl.appendChild(oC);
-      if(selectedMl && preset.volumes.some(v=>v.ml===selectedMl)){ selectEl.value=String(selectedMl); }
-      else if(selectedMl){ selectEl.value='custom'; }
-      // When custom → prompt
-      selectEl.addEventListener('change', function onChange(){
-        if(selectEl.value==='custom'){
-          const ml = prompt('Eigene Menge (ml):', selectedMl && selectEl.dataset.lastCustom ? selectEl.dataset.lastCustom : '150');
-          if(ml && !isNaN(parseFloat(ml))){
-            selectEl.dataset.lastCustom = String(Math.max(0, parseFloat(ml)));
-          } else {
-            // fallback
-            selectEl.value = String((preset.volumes[0]||{ml:100}).ml);
-          }
-        }
-      }, {once:true});
+      calculateHealthAssessment();
     }
 
-    function addDrinkItem(){
-      const list=document.getElementById('drinksList');
-      list.appendChild(drinkRow(newDrinkItem({type:'wine', volMl:200, units:1, abv:10}), parseInt(list.dataset.count||'0',10)));
-      recomputeSumsAndMaybeSuggest();
+    /* AUDIT-C */
+    function openAudit(){
+      document.getElementById('auditOverlay').style.display='block';
+      document.getElementById('auditPopup').style.display='block';
+      document.getElementById('auditPopup').setAttribute('aria-hidden','false');
+    }
+    function closeAudit(){
+      document.getElementById('auditOverlay').style.display='none';
+      document.getElementById('auditPopup').style.display='none';
+      document.getElementById('auditPopup').setAttribute('aria-hidden','true');
+    }
+    function calculateAuditScore(){
+      const q1 = parseInt(document.querySelector('input[name="auditQ1"]:checked')?.value);
+      const q2 = parseInt(document.querySelector('input[name="auditQ2"]:checked')?.value);
+      const q3 = parseInt(document.querySelector('input[name="auditQ3"]:checked')?.value);
+      if(isNaN(q1) || isNaN(q2) || isNaN(q3)){ alert('Bitte beantworte alle 3 Fragen!'); return; }
+      const score = q1 + q2 + q3;
+      const gender = document.getElementById('auditGender').value;
+
+      let risk, riskClass, riskText;
+      if(score === 0){ risk='Niedriges Risiko'; riskClass='low'; riskText='Abstinenz oder sehr geringer Konsum.'; }
+      else if((gender==='female' && score < 3) || (gender==='male' && score < 4)){ risk='Geringes Risiko'; riskClass='low'; riskText='Unterer Bereich.'; }
+      else if(score < 5){ risk='Riskanter Konsum'; riskClass='medium'; riskText='Reduzierung erwägen.'; }
+      else { risk='Hohes Risiko'; riskClass='high'; riskText='Professionelle Beratung empfohlen.'; }
+
+      const resultDiv = document.getElementById('auditResult');
+      resultDiv.className = 'audit-result ' + riskClass;
+      resultDiv.innerHTML = `<strong>AUDIT-C Score: ${score} von 12</strong><strong style="font-size:14px; margin-top:8px; display:block;">${risk}</strong>${riskText}`;
+      resultDiv.style.display = 'block';
+      resultDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     }
 
-    /* ===== Math ===== */
-    function gramsOf(abvPct, volMl, units){
-      const volL = volMl/1000;
-      return Math.max(0, Math.round(volL * (abvPct/100) * 0.789 * 1000 * (units||1)));
+    /* Chart Popup */
+    function toggleChartPopup(){
+      const popup = document.getElementById('chartPopup');
+      const overlay = document.getElementById('chartOverlay');
+      const isActive = popup.classList.contains('active');
+
+      if(isActive){
+        popup.classList.remove('active'); overlay.classList.remove('active'); popup.setAttribute('aria-hidden','true');
+      } else {
+        calculate100DaysChart();
+        calculateHealthAssessment();
+        popup.classList.add('active'); overlay.classList.add('active'); popup.setAttribute('aria-hidden','false');
+      }
     }
-    function collectCurrentDrinks(){
-      const list=document.getElementById('drinksList');
-      const items=[];
-      list.querySelectorAll('.card').forEach(row=>{
-        const [selType, selVol, selUnits] = row.querySelectorAll('select');
-        const type = selType.value;
-        const preset = DRINK_PRESETS[type] || DRINK_PRESETS['beer'];
-        let volMl = 0;
-        if(selVol.value==='custom'){
-          volMl = Number(selVol.dataset.lastCustom||0);
-          if(!volMl){ volMl = Number(prompt('Eigene Menge (ml):','150')||0); selVol.dataset.lastCustom=String(volMl||0); }
-        }else{
-          volMl = Number(selVol.value||0);
-        }
-        const units = Number(selUnits.value||1);
-        items.push({type, abv:preset.abv, volMl, units});
-      });
-      return items;
+
+    /* Settings Popup */
+    function toggleSettingsPopup(){
+      const popup = document.getElementById('settingsPopup');
+      const overlay = document.getElementById('settingsOverlay');
+      const isActive = popup.classList.contains('active');
+
+      if(isActive){
+        popup.classList.remove('active'); overlay.classList.remove('active'); popup.setAttribute('aria-hidden','true');
+      } else {
+        // Radio-UI refresh
+        document.querySelectorAll('.settings-option').forEach(opt => opt.classList.remove('selected'));
+        const radio = document.querySelector(`input[name="neutralDays"][value="${neutralDaysSetting}"]`);
+        if(radio){ radio.checked = true; radio.closest('.settings-option').classList.add('selected'); }
+        document.getElementById('toggleGodMode').checked = !!godMode;
+
+        popup.classList.add('active'); overlay.classList.add('active'); popup.setAttribute('aria-hidden','false');
+      }
     }
-    function totalGramsFromItems(items){
-      return items.reduce((sum,it)=> sum + gramsOf(it.abv, it.volMl, it.units), 0);
+
+    function saveSettings(){
+      const selected = document.querySelector('input[name="neutralDays"]:checked');
+      if(selected) neutralDaysSetting = selected.value;
+      godMode = document.getElementById('toggleGodMode').checked;
+
+      if(storageWorking){
+        try{
+          localStorage.setItem('alcoholTrackerSettings', JSON.stringify({
+            neutralDays: neutralDaysSetting,
+            godMode
+          }));
+          localStorage.setItem('boozeTrackerSettings', JSON.stringify({
+            neutralDays: neutralDaysSetting,
+            godMode
+          }));
+        }catch(e){ console.warn('Settings konnten nicht gespeichert werden:', e); }
+      }
+      toggleSettingsPopup();
+      updateDayInputView();
+      alert('✅ Einstellungen gespeichert.');
     }
-    function suggestedCategoryFrom(grams, sport){
-      if(grams===0) return sport?'superday':'sober';
-      if(sport && grams<=40) return 'mixed';
-      if(grams<=20) return 'moderate';
+
+    /* God-Modus – Eingabe & Kalkulation */
+    const DENSITY = 0.789; // g/ml
+    function getABV(sel){
+      const opt = sel.options[sel.selectedIndex]; return parseFloat(opt.getAttribute('data-abv')) || 0;
+    }
+    function curUnitFactor(){ return unit==='ml' ? 1 : 1000; } // convert input to ml
+    function setUnit(u){
+      unit = u;
+      document.getElementById('unitMl').classList.toggle('active', unit==='ml');
+      document.getElementById('unitL').classList.toggle('active', unit==='L');
+      document.getElementById('editUnitMl').classList.toggle('active', unit==='ml');
+      document.getElementById('editUnitL').classList.toggle('active', unit==='L');
+      // No auto-conversion of existing numbers; we keep user's numbers in their chosen unit
+      updateGodCalc('day');
+      if(editingDate) updateGodCalc('edit');
+    }
+
+    function syncBeerPreset(context){
+      const isBeer = (context==='day' ? document.getElementById('godDrinkType').value : document.getElementById('editDrinkType').value);
+      const sizeEl  = context==='day' ? document.getElementById('godBeerSize') : document.getElementById('editBeerSize');
+      const sizeWrap = context==='day' ? document.getElementById('beerSizeField') : document.getElementById('editBeerSizeField');
+      const volEl = context==='day' ? document.getElementById('godVolumePerPortion') : document.getElementById('editVolumePerPortion');
+      // Show size only for Bier/Radler
+      const show = (isBeer==='beer' || isBeer==='radler');
+      sizeWrap.style.display = show ? 'block' : 'none';
+      if(show){
+        const liters = parseFloat(sizeEl.value);
+        const ml = Math.round(liters*1000);
+        if(unit==='ml'){ volEl.value = ml; } else { volEl.value = liters; }
+      }
+      updateGodCalc(context);
+    }
+
+    function updateGodCalc(context){
+      const isEdit = (context==='edit');
+      const drinkSel = isEdit ? document.getElementById('editDrinkType') : document.getElementById('godDrinkType');
+      const volEl    = isEdit ? document.getElementById('editVolumePerPortion') : document.getElementById('godVolumePerPortion');
+      const portEl   = isEdit ? document.getElementById('editPortions') : document.getElementById('godPortions');
+      const gramsEl  = isEdit ? document.getElementById('editGrams') : document.getElementById('godGrams');
+      const drinksEl = isEdit ? document.getElementById('editDrinks') : document.getElementById('godDrinks');
+
+      const abv = getABV(drinkSel)/100.0;
+      const volInput = parseFloat(volEl.value||'0');
+      const portions = parseFloat(portEl.value||'0');
+      const totalMl  = (volInput * curUnitFactor()) * portions; // ml
+      const grams    = totalMl * abv * DENSITY; // g
+      gramsEl.textContent  = Math.round(grams);
+      drinksEl.textContent = (grams/10).toFixed(1);
+    }
+
+    function godSuggestCategory(grams, didSport){
+      if(grams === 0){
+        return didSport ? 'superday' : 'sober';
+      }
+      if(didSport && grams > 0){
+        return 'mixed';
+      }
+      if(grams <= 20) return 'moderate';
       return 'alcohol';
     }
 
-    function recomputeSumsAndMaybeSuggest(){
-      const items = collectCurrentDrinks();
-      const grams = totalGramsFromItems(items);
-      document.getElementById('sumGrams').textContent = String(grams);
-      document.getElementById('sumDrinks').textContent = String(Math.round(grams/10));
-      const sport = document.getElementById('flagSport').checked;
-      const suggestion = suggestedCategoryFrom(grams, sport);
-      // auto classify?
-      if(settings.autoRe){
-        setManualCategory(suggestion);
-        showAutoInfo(suggestion, true);
-        hideCatMismatch();
-      }else{
-        // check mismatch vs selected manual
-        const manual = getManualCategory();
-        if(manual && manual!==suggestion){
-          showCatMismatch(suggestion);
-        }else{
-          hideCatMismatch();
-        }
-      }
-    }
-    function showAutoInfo(cat, show){
-      const box=document.getElementById('autoInfo'); const lab=document.getElementById('autoCatLabel');
-      lab.textContent = catLabel[cat]||'—'; box.classList.toggle('hidden', !show);
-    }
-    function showCatMismatch(suggest){
-      const box=document.getElementById('catSuggestionBox'); const lab=document.getElementById('catSuggestLabel');
-      lab.textContent = catLabel[suggest]||'—'; box.classList.remove('hidden');
-    }
-    function hideCatMismatch(){ document.getElementById('catSuggestionBox').classList.add('hidden'); document.getElementById('autoInfo').classList.add('hidden'); }
+    function collectGodData(context){
+      const isEdit = (context==='edit');
+      const drinkSel = isEdit ? document.getElementById('editDrinkType') : document.getElementById('godDrinkType');
+      const beerSize = isEdit ? document.getElementById('editBeerSize') : document.getElementById('godBeerSize');
+      const volEl    = isEdit ? document.getElementById('editVolumePerPortion') : document.getElementById('godVolumePerPortion');
+      const portEl   = isEdit ? document.getElementById('editPortions') : document.getElementById('godPortions');
+      const weedG    = isEdit ? document.getElementById('editWeedGrams') : document.getElementById('godWeedGrams');
+      const weedF    = isEdit ? document.getElementById('editWeedFreq') : document.getElementById('godWeedFreq');
+      const didSport = isEdit ? document.getElementById('editDidSport').checked : document.getElementById('godDidSport').checked;
 
-    function getManualCategory(){
-      const r=document.querySelector('input[name="cat"]:checked'); return r ? r.value : null;
-    }
-    function setManualCategory(v){
-      const r=document.querySelector(`input[name="cat"][value="${v}"]`);
-      if(r) r.checked=true;
-    }
-    function suggestCategory(){
-      const sport = document.getElementById('flagSport').checked;
-      const grams = Number(document.getElementById('sumGrams').textContent||'0');
-      const s = suggestedCategoryFrom(grams, sport);
-      setManualCategory(s);
-      showCatMismatch(s); // zeigen als „Vorschlag“
+      const abv = getABV(drinkSel);
+      const volInput = parseFloat(volEl.value||'0');
+      const portions = parseFloat(portEl.value||'0');
+      const totalMl  = (volInput * curUnitFactor()) * portions;
+      const grams    = totalMl * (abv/100) * DENSITY;
+
+      const alcohol = (totalMl>0) ? {
+        type: drinkSel.value,
+        abv,
+        mlPerPortion: volInput*curUnitFactor(),
+        portions,
+        grams: Math.round(grams),
+        drinks: +(grams/10).toFixed(1)
+      } : null;
+
+      const marijuana = (parseFloat(weedG.value||'0')>0) ? {
+        grams: parseFloat(weedG.value||'0'),
+        frequency: weedF.value
+      } : null;
+
+      return { alcohol, marijuana, sport: !!didSport };
     }
 
-    /* ===== Save/Delete ===== */
-    function saveEntry(){
+    /* Edit & Status Update */
+    function updateDay(action){
       if(!editingDate) return;
-      const key = keyOf(editingDate);
-      const items = collectCurrentDrinks();
-      const grams = totalGramsFromItems(items);
-      const status = getManualCategory() || suggestedCategoryFrom(grams, document.getElementById('flagSport').checked);
-      const entry = {
-        status,
-        comment: (document.getElementById('editComment').value||'').trim(),
-        alcoholItems: items,
-        flags: {
-          sport: !!document.getElementById('flagSport').checked,
-          hangover: !!document.getElementById('flagHangover').checked,
-          totalCrash: !!document.getElementById('flagTotalCrash').checked
-        },
-        marijuana: (document.getElementById('flagDopeEnable').checked ? {
-          grams: Number(document.getElementById('weedGrams').value||0),
-          freq: (document.getElementById('weedFreq').value||'einmalig')
-        } : undefined)
+      const key = formatDateKey(editingDate);
+      if(action === 'delete'){ delete dayData[key]; saveData(); closeEditPopup(); updateMonthView(); calculateStreak(); calculateSuccessRate(); return; }
+
+      const pendingComment = (document.getElementById('editCommentInput').value || '').trim();
+      const god = collectGodData('edit');
+
+      dayData[key] = {
+        status: action,
+        comment: pendingComment,
+        ...(god.alcohol ? {alcohol: god.alcohol} : {}),
+        ...(god.marijuana ? {marijuana: god.marijuana} : {}),
+        ...(god.sport ? {sport: true} : {sport: false})
       };
-      dayData[key]=entry; saveAll(); buildCalendar(); closeEdit();
+
+      saveData(); closeEditPopup(); updateMonthView(); calculateStreak(); calculateSuccessRate();
     }
-    function deleteEntry(){
+
+    function saveEditComment(){
       if(!editingDate) return;
-      const key=keyOf(editingDate);
-      delete dayData[key]; saveAll(); buildCalendar(); closeEdit();
+      const key = formatDateKey(editingDate);
+      const comment = document.getElementById('editCommentInput').value.trim();
+      const existingStatus = getDayStatus(key);
+      const god = collectGodData('edit');
+
+      if(existingStatus){
+        dayData[key] = {
+          status: existingStatus,
+          comment,
+          ...(god.alcohol ? {alcohol: god.alcohol} : {}),
+          ...(god.marijuana ? {marijuana: god.marijuana} : {}),
+          ...(god.sport ? {sport: true} : {sport: false})
+        };
+        saveData(); updateMonthView();
+        const btn = event.target; const original = btn.textContent; btn.textContent='✅ Gespeichert!'; setTimeout(()=>btn.textContent=original, 1200);
+      }
+      closeEditPopup();
     }
 
-    /* ===== Charts & Assessment (kept, using items/grams) ===== */
-    function gramsOfKey(key){
-      const v=dayData[key]; if(!v) return 0;
-      const items=v.alcoholItems||[]; if(items.length>0) return totalGramsFromItems(items);
-      // fallback legacy
-      if(v.alcohol && typeof v.alcohol.grams==='number') return v.alcohol.grams;
-      // rough from status
-      if(v.status==='moderate') return 20;
-      if(v.status==='mixed') return 40;
-      if(v.status==='alcohol') return 50;
-      return 0;
-    }
-    const wdi = d => (d.getDay()+6)%7;
-    function seriesLastNDays(n){
-      const arr=[]; const today=new Date();
-      for(let i=0;i<n;i++){ const d=new Date(today); d.setDate(d.getDate()-i); const k=keyOf(d); arr.push({key:k,date:d,grams:gramsOfKey(k)}); }
-      return arr.reverse();
-    }
-    function slope(arr){
-      const n=arr.length; if(n<3) return 0;
-      let sx=0,sy=0,sxy=0,sxx=0;
-      for(let i=0;i<n;i++){ const x=i, y=arr[i].grams; sx+=x; sy+=y; sxy+=x*y; sxx+=x*x; }
-      return (n*sxy - sx*sy)/Math.max((n*sxx - sx*sx),1e-6);
-    }
-    function std(arr){
-      const n=arr.length; if(n===0) return 0;
-      const mean=arr.reduce((a,b)=>a+b,0)/n;
-      const v=arr.reduce((a,b)=>a+(b-mean)*(b-mean),0)/n;
-      return Math.sqrt(v);
-    }
-    const COMMENT_FLAGS=[
-      {re:/feier|party|geburtstag|abschluss|oktoberfest/i, weight:+0.10, tag:'Feier'},
-      {re:/stress|ärger|streit|deadline|druck/i,           weight:+0.08, tag:'Stress'},
-      {re:/schlaf\s*(\d+)\s*h/i,                          weight:(m)=> (parseInt(m[1],10)<6?+0.06:0), tag:'Schlaf<6h'}
-    ];
-    function commentRisk(key){
-      const v=dayData[key]; if(!v || !v.comment) return {delta:0,tags:[]};
-      let delta=0,tags=[];
-      for(const f of COMMENT_FLAGS){ const m=v.comment.match(f.re); if(m){ const w=(typeof f.weight==='function')?f.weight(m):f.weight; delta+=w; tags.push(f.tag); } }
-      return {delta:Math.min(delta,0.2),tags};
-    }
-    function computeFeatures(){
-      const s7=seriesLastNDays(7), s14=seriesLastNDays(14), s30=seriesLastNDays(30), s100=seriesLastNDays(100);
-      const avg7=s7.reduce((a,b)=>a+b.grams,0)/Math.max(s7.length,1);
-      const avg30=s30.reduce((a,b)=>a+b.grams,0)/Math.max(s30.length,1);
-      const vol14=std(s14.map(x=>x.grams));
-      const trend30=slope(s30);
-      let binge=0,cluster=0,cur=0,weekendHigh=0,weekendTot=0,hangovers=0,crash=0;
-      for(const x of s100){
-        if(x.grams>=40) binge++;
-        if(x.grams>=20){ cur++; cluster=Math.max(cluster,cur); } else cur=0;
-        const v=dayData[x.key];
-        if(v && v.flags && v.flags.hangover) hangovers++;
-        if(v && v.flags && v.flags.totalCrash) crash++;
-        const dow=wdi(x.date);
-        if(dow===4||dow===5){ const st=(v||{}).status; if(st || x.grams>0){ weekendTot++; if(x.grams>=40) weekendHigh++; } }
-      }
-      const weekendBias=weekendTot? weekendHigh/weekendTot:0;
-      let dualUse=0; const windowA=s30.filter(x=>x.grams>0);
-      for(const x of windowA){ const v=dayData[x.key]; if(v && v.marijuana && v.marijuana.grams>0) dualUse++; }
-      const used=s100.filter(x=>x.grams>0).map(x=>x.grams);
-      const median = arr=>{ const t=[...arr].sort((a,b)=>a-b); const m=Math.floor(t.length/2); return t.length? (t.length%2?t[m]:(t[m-1]+t[m])/2):0; };
-      let tolStrong=false, tolSoft=false;
-      if(used.length>=20){ const first=used.slice(0,Math.floor(used.length/2)); const last=used.slice(Math.ceil(used.length/2));
-        if(first.length>=10 && last.length>=10){ const delta=median(first)-median(last); tolStrong=(delta<-5); tolSoft=(!tolStrong && delta<-3); } }
-      return {avg7,avg30,vol14,trend30,binge,cluster,weekendBias,dualUse,tolStrong,tolSoft,hangovers,crash};
-    }
-    function riskAssessment(){
-      const f=computeFeatures();
-      let qty=100; const drinksPerWeek=(f.avg7/10)*7;
-      if(drinksPerWeek<=1) qty=100; else if(drinksPerWeek<=2) qty=80; else if(drinksPerWeek<=4) qty=60; else if(drinksPerWeek<=8) qty=30; else qty=0;
-      qty += (f.trend30<0?+8:(f.trend30>0?-8:0));
-      let pattern=90;
-      if(f.binge>30 || f.cluster>7) pattern=0;
-      else if(f.binge>15 || f.cluster>5) pattern=40;
-      else if(f.binge>5  || f.cluster>3) pattern=70;
-      if(f.weekendBias>=0.4) pattern -= 8;
-      const volThresh=Math.max(20, 0.5*f.avg30); if(f.vol14>=volThresh) pattern -= 6;
-      let ctx=90; if(f.dualUse>=3) ctx-=10; if(f.tolStrong) ctx-=10; else if(f.tolSoft) ctx-=5;
-      if(f.hangovers>=5) ctx -= 5; if(f.crash>=2) ctx -= 10;
-      const total=Math.round(0.5*qty + 0.35*pattern + 0.15*ctx);
-      let stage='Stufe 2: Balance-Künstler';
-      if(total>=90) stage='Stufe 1: Zen-Meister';
-      else if(total>=65) stage='Stufe 2: Balance-Künstler';
-      else if(total>=45) stage='Stufe 3: Kipppunkt-Wanderer';
-      else if(total>=25) stage='Stufe 4: Risiko-Jongleur';
-      else stage='Stufe 5: Alarmstufe Rot';
-      const subtypes=[];
-      if(f.weekendBias>=0.4) subtypes.push('Weekend-Binger');
-      if(f.binge>=1 && f.avg30<5) subtypes.push('Abstinenz mit Slips');
-      if(f.cluster>=3) subtypes.push('Cluster-Rider');
-      if(f.dualUse>=3) subtypes.push('Coupling (Alkohol+THC)');
-      if(f.tolStrong) subtypes.push('Tolerance-Creep (stark)'); else if(f.tolSoft) subtypes.push('Tolerance-Creep (leicht)');
-      const s100=seriesLastNDays(100); if((f.avg7<=20) && s100.filter(x=>x.grams>0).length>=50) subtypes.push('Daily-Low');
-      if(f.hangovers>=5) subtypes.push('Häufige Katertage');
-      if(f.crash>=1) subtypes.push('Totalabstürze verzeichnet');
-      return { total, stage, subtypes, features:f };
-    }
-    function predict7Days(){
-      const idx=Object.fromEntries(cats.map((c,i)=>[c,i]));
-      const M=Array.from({length:cats.length},()=>Array(cats.length).fill(1e-3));
-      const today=new Date(); let prev=null;
-      for(let i=180;i>=1;i--){
-        const d=new Date(today); d.setDate(d.getDate()-i);
-        const k=keyOf(d); const st=(dayData[k]||{}).status; if(!st) continue;
-        const w=(i<=30)?2:1; if(prev!=null){ M[idx[prev]][idx[st]] += w; } prev=st;
-      }
-      for(let r=0;r<M.length;r++){ const s=M[r].reduce((a,b)=>a+b,0); for(let c=0;c<M[r].length;c++) M[r][c]/=s; }
-      let start=(dayData[keyOf(today)]||{}).status || prev || 'sober';
-      const out=[]; let state=start; const cR=commentRisk(keyOf(today)).delta;
-      for(let h=1;h<=7;h++){
-        const d=new Date(today); d.setDate(d.getDate()+h);
-        const dow=wdi(d); const row=M[idx[state]];
-        let pHigh=row[idx['moderate']]+row[idx['mixed']]+row[idx['alcohol']];
-        if(dow===4||dow===5) pHigh+=0.10; else if(dow===0) pHigh-=0.10;
-        if(h<=2) pHigh += Math.min(0.2, cR*0.5);
-        pHigh=Math.max(0,Math.min(1,pHigh));
-        out.push({date:d, risk:Math.round(pHigh*100), explain:`${state} → ${Math.round(pHigh*100)}% (Wochentag ${dow===4||dow===5?'+10%':dow===0?'-10%':'±0'})`});
-        const next=row.indexOf(Math.max(...row)); state=cats[next];
-      }
-      return out;
-    }
-    function renderAdvancedAnalysisHTML(){
-      const ra=riskAssessment(); const fx=predict7Days(); const todayKey=keyOf(new Date()); const cR=commentRisk(todayKey);
-      const tags=cR.tags.length?` · Signale: ${cR.tags.join(', ')}`:'';
-      return `<div style="margin:8px 0;"><strong>${ra.stage}</strong> · Score ${ra.total}/100<br>${ra.subtypes.length?'🧩 '+ra.subtypes.join(', '):''}${tags}</div>`+
-        `<div style="margin-top:10px;"><strong>7‑Tage‑Risiko‑Prognose</strong><br>`+
-        fx.map(x=>`${x.date.toLocaleDateString('de-DE',{weekday:'short'})}: ${x.risk}% <span class="pill">${x.explain}</span>`).join('<br>')+`</div>`;
-    }
+    function previousMonth(){ currentViewDate.setMonth(currentViewDate.getMonth()-1); updateMonthView(); calculateStreak(); calculateSuccessRate(); }
+    function nextMonth(){ currentViewDate.setMonth(currentViewDate.getMonth()+1); updateMonthView(); calculateStreak(); calculateSuccessRate(); }
 
-    function toggleChart(){
-      const ov=document.getElementById('chartOverlay'); const md=document.getElementById('chartModal');
-      const opening = md.style.display!=='block';
-      ov.style.display = opening?'block':'none'; md.style.display = opening?'block':'none';
-      if(opening){
-        // simple assessment numbers (reuse prior logic)
-        document.getElementById('godMetricsList').innerHTML = renderAdvancedAnalysisHTML();
-        // Summaries (AF quote etc.)
-        const today=new Date();
-        const counts={superday:0,wellness:0,sober:0,moderate:0,mixed:0,alcohol:0,empty:0};
-        for(let i=0;i<100;i++){
-          const d=new Date(today); d.setDate(d.getDate()-i); const v=dayData[keyOf(d)]; const st=v && v.status;
-          if(st) counts[st]++; else counts.empty++;
+    /* Save Day (respektiert God-Modus) */
+    function saveDay(){
+      const selected = document.querySelector('input[name="dayChoice"]:checked');
+      if(!selected){ alert('Bitte eine Kategorie wählen.'); return; }
+
+      const key = formatDateKey(new Date());
+      const comment = (document.getElementById('dayCommentInput').value || '').trim();
+
+      let extra = {};
+      if(godMode){
+        const god = collectGodData('day');
+        if(god.alcohol) extra.alcohol = god.alcohol;
+        if(god.marijuana) extra.marijuana = god.marijuana;
+        extra.sport = !!god.sport;
+
+        // Optional: Wenn nichts gewählt wurde, aber Gramm>0 -> Kategorie vorschlagen
+        if(selected && god.alcohol){
+          const suggested = godSuggestCategory(god.alcohol.grams, extra.sport);
+          // nur vorschlagen, nicht überschreiben – der User hat gewählt
+          // (wer will: Vorschlag-Button nutzen)
         }
-        const entered=100-counts.empty;
-        let divisor=100, neutralWeight=0;
-        if(settings.neutral==='ignore'){ divisor=entered||1; }
-        else if(settings.neutral==='neutral'){ neutralWeight=0.5; }
-        else if(settings.neutral==='negative'){ neutralWeight=0.3; }
-        else if(settings.neutral==='very-negative'){ neutralWeight=0.15; }
-        const afCount=counts.superday+counts.wellness+counts.sober;
-        const afQuote = afCount/divisor;
-        const weightedScore = (
-          counts.superday*1.0 + counts.wellness*0.9 + counts.sober*0.75 +
-          counts.moderate*0.4 + counts.mixed*0.25 + counts.alcohol*0.0 +
-          counts.empty*neutralWeight
-        )/100;
-        // cluster and binge-proximity
-        let maxCluster=0,cur=0,bingeProx=0;
-        for(let i=0;i<100;i++){
-          const d=new Date(today); d.setDate(d.getDate()-i); const st=(dayData[keyOf(d)]||{}).status;
-          const neg = (st==='alcohol'||st==='mixed');
-          if(neg){ bingeProx++; cur++; maxCluster=Math.max(maxCluster,cur); } else { cur=0; }
-        }
-        // badge
-        const badge=document.getElementById('assessmentBadge');
-        const bingePct = Math.round((bingeProx/(settings.denom==='entered'?(entered||1):100))*100);
-        let label='—', cls='zen';
-        if(bingeProx>=40 || afQuote<0.20 || (bingePct>=40 && entered>=10)){ label='🚨 Sucht‑Alarm: Rote Lampen!'; cls='red'; }
-        else if((bingeProx>=20 && bingeProx<40) || (afQuote<0.30 && afQuote>=0.20) || (bingePct>=20 && entered>=10)){ label='🎲 Risiko‑Roulette'; cls='red'; }
-        else if(afQuote<=0.39 || (bingeProx>=13 && bingeProx<=19) || (bingePct>=13 && entered>=10)){ label='⚠️ Kipppunkt‑Kandidat'; cls='weekend'; }
-        else if(afQuote>=0.40 && afQuote<0.70 && bingeProx<=12){ label='🧘 Balance‑Buddha'; cls='balance'; }
-        else { label='🦸 Leber‑Superheld'; cls='zen'; }
-        badge.className='assessment-badge '+cls; badge.textContent=label;
-        document.getElementById('metAF').textContent = (settings.neutral==='ignore' ? `${Math.round(afQuote*100)}% (${afCount}/${entered})` : `${Math.round(afQuote*100)}%`);
-        document.getElementById('metHealth').textContent = Math.round(weightedScore*100)+'%';
-        document.getElementById('metBinge').textContent = (settings.neutral==='ignore' ? `${bingeProx} (${bingePct}%)` : String(bingeProx));
-        document.getElementById('metCluster').textContent = maxCluster>0 ? `${maxCluster} Tage` : 'Keiner';
       }
+
+      dayData[key] = { status: selected.value, comment, ...extra };
+      saveData();
+
+      document.getElementById('dayCommentInput').value = '';
+      document.getElementById('submitDay').disabled = true;
+
+      showMonthView();
     }
 
-    /* ===== Settings ===== */
-    function toggleSettings(){
-      const ov=document.getElementById('settingsOverlay'); const md=document.getElementById('settingsModal');
-      const opening = md.style.display!=='block';
-      ov.style.display = opening?'block':'none'; md.style.display = opening?'block':'none';
-      if(opening){
-        document.getElementById('setGod').checked = !!settings.god;
-        document.getElementById('setAutoReclass').checked = !!settings.autoRe;
-        document.getElementById('setNudges').checked = !!settings.nudges;
-        document.getElementById('setLiveEdit').checked = !!settings.live;
-        document.querySelectorAll('input[name="denom"]').forEach(r=> r.checked=(r.value===settings.denom));
-        document.getElementById('neutralDays').value = settings.neutral;
-        // reset section guard
-        document.getElementById('confirm1').checked=false; document.getElementById('confirm2').checked=false;
-        document.getElementById('btnReset').disabled=true;
-      }
-    }
-    function saveSettings(){
-      settings.god = !!document.getElementById('setGod').checked;
-      settings.autoRe = !!document.getElementById('setAutoReclass').checked;
-      settings.nudges = !!document.getElementById('setNudges').checked;
-      settings.live   = !!document.getElementById('setLiveEdit').checked;
-      const r=document.querySelector('input[name="denom"]:checked'); settings.denom = r ? r.value : 'entered';
-      settings.neutral = document.getElementById('neutralDays').value||'ignore';
-      saveAll();
-      document.getElementById('godBadge').classList.toggle('active', !!settings.god);
-      toggleSettings();
-    }
-    document.getElementById('confirm1').addEventListener('change', checkResetReady);
-    document.getElementById('confirm2').addEventListener('change', checkResetReady);
-    function checkResetReady(){
-      document.getElementById('btnReset').disabled = !(document.getElementById('confirm1').checked && document.getElementById('confirm2').checked);
-    }
-    function resetAll(){
-      if(!confirm('Wirklich ALLES löschen?')) return;
-      localStorage.removeItem('alcoholTrackerData');
-      localStorage.removeItem('alcoholTrackerSettings');
-      dayData={}; saveAll(); buildCalendar(); toggleSettings();
+    function resetStorage(){
+      const ok = confirm('⚠️ Wirklich ALLE lokalen Daten (Tage + Einstellungen) löschen und neu starten?');
+      if(!ok) return;
+      try{
+        localStorage.removeItem('alcoholTrackerData');
+        localStorage.removeItem('alcoholTrackerCurrentDate');
+        localStorage.removeItem('alcoholTrackerSettings');
+        localStorage.removeItem('boozeTrackerSettings');
+      }catch(e){ console.warn('LocalStorage-Bereinigung fehlgeschlagen:', e); }
+      location.reload();
     }
 
-    /* ===== Events ===== */
-    document.getElementById('btnPrev').addEventListener('click', ()=>{ viewDate.setMonth(viewDate.getMonth()-1); buildCalendar(); });
-    document.getElementById('btnNext').addEventListener('click', ()=>{ viewDate.setMonth(viewDate.getMonth()+1); buildCalendar(); });
-    document.getElementById('btnToday').addEventListener('click', ()=>{ viewDate=new Date(); buildCalendar(); });
-    document.getElementById('btnChart').addEventListener('click', toggleChart);
-    document.getElementById('btnSettings').addEventListener('click', toggleSettings);
-    document.getElementById('flagDopeEnable').addEventListener('change', (e)=>{
-      document.getElementById('dopeRow').classList.toggle('hidden', !e.target.checked);
-    });
-    document.getElementById('flagSport').addEventListener('change', ()=> recomputeSumsAndMaybeSuggest());
-    document.querySelectorAll('input[name="cat"]').forEach(r=> r.addEventListener('change', ()=> recomputeSumsAndMaybeSuggest()));
-    document.addEventListener('keydown', (e)=>{
-      if(e.key==='Escape'){
-        ['editModal','chartModal','settingsModal'].forEach(id=>{
-          const md=document.getElementById(id);
-          if(md.style.display==='block'){
-            if(id==='editModal') closeEdit();
-            if(id==='chartModal') toggleChart();
-            if(id==='settingsModal') toggleSettings();
+    // Export/Import (unverändert, nur Settings erweitert)
+    function exportData(){
+      try{
+        const settingsRawA = localStorage.getItem('alcoholTrackerSettings');
+        const settingsRawB = localStorage.getItem('boozeTrackerSettings');
+        let settings = {};
+        try{ if(settingsRawA) settings = JSON.parse(settingsRawA) || {}; }catch{}
+        try{ if(settingsRawB) settings = { ...settings, ...(JSON.parse(settingsRawB)||{}) }; }catch{}
+        settings.neutralDays = neutralDaysSetting;
+        settings.godMode = godMode;
+
+        const payload = {
+          type: 'booze-tracker-backup',
+          version: 2,
+          exportedAt: new Date().toISOString(),
+          dayData,
+          settings
+        };
+
+        const blob = new Blob([JSON.stringify(payload, null, 2)], {type:'application/json'});
+        const url  = URL.createObjectURL(blob);
+        const a    = document.createElement('a');
+        a.href = url; a.download = 'booze-tracker-backup.json'; a.click();
+        URL.revokeObjectURL(url);
+        alert('✅ Export abgeschlossen.');
+      }catch(e){ console.error(e); alert('❌ Export fehlgeschlagen.'); }
+    }
+
+    function importData(){
+      const input = document.createElement('input'); input.type='file'; input.accept='.json,application/json';
+      input.onchange = e => {
+        const file = e.target.files && e.target.files[0]; if(!file) return;
+        const reader = new FileReader();
+        reader.onload = ev => {
+          try{
+            const parsed = JSON.parse(ev.target.result);
+            let importedDayData, importedSettings;
+            if(parsed && parsed.dayData){ importedDayData = parsed.dayData; importedSettings = parsed.settings || {}; }
+            else { importedDayData = parsed; importedSettings = {}; }
+
+            const isDateKey = k => /^\d{4}-\d{1,2}-\d{1,2}$/.test(k);
+            const normalizeKey = (k) => { const [y,m,d] = k.split('-').map(n=>parseInt(n,10)); const dt = new Date(y,m-1,d); return formatDateKey(dt); };
+
+            const validEntries = {};
+            Object.keys(importedDayData || {}).forEach(k => {
+              if(isDateKey(k)){
+                const normKey = normalizeKey(k);
+                const v = importedDayData[k];
+                if(typeof v === 'string'){ validEntries[normKey] = { status:v, comment:'' }; }
+                else if(v && typeof v === 'object' && typeof v.status === 'string'){
+                  validEntries[normKey] = {
+                    status: v.status,
+                    comment: v.comment || '',
+                    ...(v.alcohol ? {alcohol:v.alcohol} : {}),
+                    ...(v.marijuana ? {marijuana:v.marijuana} : {}),
+                    ...(v.sport!==undefined ? {sport:!!v.sport} : {})
+                  };
+                }
+              }
+            });
+
+            dayData = { ...dayData, ...validEntries };
+
+            if(importedSettings){
+              if(importedSettings.neutralDays) neutralDaysSetting = importedSettings.neutralDays;
+              if(typeof importedSettings.godMode === 'boolean') godMode = importedSettings.godMode;
+              localStorage.setItem('alcoholTrackerSettings', JSON.stringify({ neutralDays: neutralDaysSetting, godMode }));
+              localStorage.setItem('boozeTrackerSettings', JSON.stringify({ neutralDays: neutralDaysSetting, godMode }));
+            }
+
+            saveData(); alert('✅ Daten importiert.'); location.reload();
+          }catch(err){ console.error(err); alert('❌ Ungültige Datei oder JSON-Format.'); }
+        };
+        reader.readAsText(file);
+      };
+      input.click();
+    }
+
+    // Expose
+    window.showMonthView = showMonthView;
+    window.showDayInput = showDayInput;
+    window.previousMonth = previousMonth;
+    window.nextMonth = nextMonth;
+    window.openEditPopup = openEditPopup;
+    window.closeEditPopup = closeEditPopup;
+    window.updateDay = updateDay;
+    window.resetStorage = resetStorage;
+    window.toggleChartPopup = toggleChartPopup;
+    window.exportData = exportData;
+    window.importData = importData;
+    window.openAudit = openAudit;
+    window.closeAudit = closeAudit;
+
+    // Init
+    document.addEventListener('DOMContentLoaded', ()=>{
+      document.getElementById('appVersion').textContent = APP_VERSION_BASE + currentHHMM();
+
+      testStorage();
+      loadData();
+
+      // Radio-Klicks: Standard = sofort speichern; God-Modus = erst Button
+      document.querySelectorAll('input[name="dayChoice"]').forEach(radio=>{
+        radio.addEventListener('change', ()=>{
+          if(godMode){
+            document.getElementById('submitDay').disabled = false;
+          } else {
+            saveDay();
           }
         });
-      }
-      if(e.key==='ArrowLeft') { viewDate.setMonth(viewDate.getMonth()-1); buildCalendar(); }
-      if(e.key==='ArrowRight'){ viewDate.setMonth(viewDate.getMonth()+1); buildCalendar(); }
+      });
+
+      document.getElementById('submitDay').addEventListener('click', saveDay);
+
+      // God-Modus UI Events (Day)
+      document.getElementById('unitMl').addEventListener('click', ()=>setUnit('ml'));
+      document.getElementById('unitL').addEventListener('click', ()=>setUnit('L'));
+      ['godDrinkType','godVolumePerPortion','godPortions','godBeerSize'].forEach(id=>{
+        const el = document.getElementById(id);
+        el.addEventListener('input', ()=>updateGodCalc('day'));
+        el.addEventListener('change', ()=>{ if(id==='godDrinkType' || id==='godBeerSize') syncBeerPreset('day'); updateGodCalc('day'); });
+      });
+      document.getElementById('godSuggest').addEventListener('click', ()=>{
+        const god = collectGodData('day');
+        const grams = god.alcohol ? god.alcohol.grams : 0;
+        const suggested = godSuggestCategory(grams, god.sport);
+        const radio = document.querySelector(`input[name="dayChoice"][value="${suggested}"]`);
+        if(radio){ radio.checked = true; document.getElementById('submitDay').disabled = false; }
+      });
+      document.getElementById('godSaveDetails').addEventListener('click', ()=>{
+        const message='✅ Details übernommen. Vergiss nicht „Tag speichern“ zu drücken.';
+        alert(message);
+      });
+
+      // Edit-God UI Events
+      document.getElementById('editUnitMl').addEventListener('click', ()=>setUnit('ml'));
+      document.getElementById('editUnitL').addEventListener('click', ()=>setUnit('L'));
+      ['editDrinkType','editVolumePerPortion','editPortions','editBeerSize'].forEach(id=>{
+        const el = document.getElementById(id);
+        el.addEventListener('input', ()=>updateGodCalc('edit'));
+        el.addEventListener('change', ()=>{ if(id==='editDrinkType' || id==='editBeerSize') syncBeerPreset('edit'); updateGodCalc('edit'); });
+      });
+
+      updateDayInputView();
     });
 
-    /* ===== Import/Export ===== */
-    function exportData(){
-      const blob=new Blob([JSON.stringify(dayData,null,2)], {type:'application/json'});
-      const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='booze-tracker-backup.json'; a.click(); URL.revokeObjectURL(a.href);
-    }
-    function importData(){
-      const inp=document.createElement('input'); inp.type='file'; inp.accept='.json,application/json';
-      inp.onchange=(e)=>{
-        const f=e.target.files && e.target.files[0]; if(!f) return;
-        const rd=new FileReader(); rd.onload=()=>{
-          try{
-            const obj=JSON.parse(String(rd.result||'{}'))||{}; let merged=0,skipped=0;
-            for(const k of Object.keys(obj)){
-              const v=obj[k];
-              if(!v || typeof v!=='object'){ skipped++; continue; }
-              // minimal validation
-              if(v.alcoholItems && !Array.isArray(v.alcoholItems)){ skipped++; continue; }
-              dayData[k]=v; merged++;
-            }
-            saveAll(); buildCalendar(); alert(`Import ok: ${merged} übernommen, ${skipped} verworfen`);
-          }catch{ alert('Import fehlgeschlagen'); }
-        }; rd.readAsText(f);
-      }; inp.click();
-    }
-
-    /* ===== Boot ===== */
-    window.addEventListener('load', ()=>{
-      loadAll(); buildCalendar();
-    });
   </script>
 </body>
 </html>
