@@ -841,10 +841,6 @@
             <label for="checkSport">🏃‍♂️ Sport gemacht</label>
           </div>
           <div class="checkbox-item">
-            <input type="checkbox" id="checkCompensation">
-            <label for="checkCompensation">😓 Kompensationstrinken (Stress etc.)</label>
-          </div>
-          <div class="checkbox-item">
             <input type="checkbox" id="checkDope">
             <label for="checkDope">🌿 Marijuana konsumiert</label>
           </div>
@@ -1032,67 +1028,6 @@
               <div class="chart-bar positive" id="chartPositive"></div>
             </div>
           </div>
-        </div>
-      </div>
-
-      <!-- 6-Monats-Langzeitanalyse -->
-      <div class="chart-section" style="margin-top:24px; background:#fef9f3; border:1px solid #fbbf24;">
-        <div class="chart-title">📈 6-Monats-Langzeitanalyse (180 Tage)</div>
-        <div style="font-size:13px; color:var(--muted); margin-bottom:12px; text-align:center;">
-          Langfristige Muster und Entwicklungen
-        </div>
-        <div class="chart-bars">
-          <div class="chart-bar-container">
-            <div class="chart-bar-header">
-              <div class="chart-bar-label">
-                🔴 Risikotage
-                <small>Alkohol, Schadensbegrenzung, Moderat, Katertag</small>
-              </div>
-              <div class="chart-bar-value">
-                <span class="chart-bar-number" id="chart6mNegativeNum">0</span>
-                <span class="chart-bar-percent" id="chart6mNegativePct">0%</span>
-              </div>
-            </div>
-            <div class="chart-bar-wrapper">
-              <div class="chart-bar negative" id="chart6mNegative"></div>
-            </div>
-          </div>
-          <div class="chart-bar-container">
-            <div class="chart-bar-header">
-              <div class="chart-bar-label">
-                🟢 Gesunde Tage
-                <small>Supertag, Wellness, Alkoholfrei</small>
-              </div>
-              <div class="chart-bar-value">
-                <span class="chart-bar-number" id="chart6mPositiveNum">0</span>
-                <span class="chart-bar-percent" id="chart6mPositivePct">0%</span>
-              </div>
-            </div>
-            <div class="chart-bar-wrapper">
-              <div class="chart-bar positive" id="chart6mPositive"></div>
-            </div>
-          </div>
-        </div>
-        
-        <!-- 6-Monats-Metriken -->
-        <div class="assessment-metrics" style="margin-top:16px;">
-          <div class="metric-item">
-            <div class="metric-label">Trend (letztes Quartal)</div>
-            <div class="metric-value" id="metric6mTrend">-</div>
-          </div>
-          <div class="metric-item">
-            <div class="metric-label">Ø Risikotage/Monat</div>
-            <div class="metric-value" id="metric6mAvgRisk">0</div>
-          </div>
-          <div class="metric-item">
-            <div class="metric-label">Kompensationstrinken</div>
-            <div class="metric-value" id="metric6mCompensation">0</div>
-          </div>
-        </div>
-        
-        <div style="margin-top:12px; padding:12px; background:white; border-radius:8px; font-size:12px; color:var(--muted);">
-          <strong>💡 Langzeit-Einschätzung:</strong>
-          <div id="longTermAssessment" style="margin-top:6px;"></div>
         </div>
       </div>
 
@@ -1937,7 +1872,6 @@
         
         // Checkboxen
         document.getElementById('checkSport').checked = !!entry?.sport;
-        document.getElementById('checkCompensation').checked = !!entry?.compensation;
         document.getElementById('checkDope').checked = !!(entry?.marijuana && entry.marijuana.grams > 0);
         document.getElementById('checkCrash').checked = !!entry?.crash;
         document.getElementById('checkHangover').checked = entry?.status === 'hangover';
@@ -1996,7 +1930,6 @@
         // Checkboxen
         entry.sport = document.getElementById('checkSport').checked;
         entry.crash = document.getElementById('checkCrash').checked;
-        entry.compensation = document.getElementById('checkCompensation').checked;
         
         // Marijuana
         const dopeChecked = document.getElementById('checkDope').checked;
@@ -2267,100 +2200,6 @@
       }, 100);
     }
 
-    function calculate6MonthsChart() {
-      let negative = 0, positive = 0, compensationCount = 0;
-      const today = new Date();
-      const last90 = [], last180 = [];
-      
-      // 180 Tage durchgehen
-      for (let i = 0; i < 180; i++) {
-        const probe = new Date(today);
-        probe.setDate(probe.getDate() - i);
-        const key = formatDateKey(probe);
-        const st = getDayStatus(key);
-        const entry = dayData[key];
-        
-        if (st === 'alcohol' || st === 'mixed' || st === 'moderate' || st === 'hangover') {
-          negative++;
-          last180.push('negative');
-        } else if (st === 'sober' || st === 'wellness' || st === 'superday') {
-          positive++;
-          last180.push('positive');
-        } else {
-          last180.push('empty');
-        }
-        
-        // Letztes Quartal (90 Tage)
-        if (i < 90) {
-          if (st === 'alcohol' || st === 'mixed' || st === 'moderate' || st === 'hangover') {
-            last90.push('negative');
-          } else if (st === 'sober' || st === 'wellness' || st === 'superday') {
-            last90.push('positive');
-          } else {
-            last90.push('empty');
-          }
-        }
-        
-        // Kompensationstrinken zählen
-        if (entry && entry.compensation && st !== 'sober' && st !== 'wellness' && st !== 'superday') {
-          compensationCount++;
-        }
-      }
-      
-      const denominator = neutralDaysSetting === 'ignore' ? (positive + negative) || 1 : 180;
-      const negPct = Math.round((negative / denominator) * 100);
-      const posPct = Math.round((positive / denominator) * 100);
-      
-      // Trend berechnen (Vergleich erste vs. letzte 90 Tage)
-      const first90Neg = last180.slice(90, 180).filter(d => d === 'negative').length;
-      const last90Neg = last90.filter(d => d === 'negative').length;
-      const trendDiff = first90Neg - last90Neg;
-      let trendText = '→ Stabil';
-      let trendEmoji = '➡️';
-      if (trendDiff > 5) {
-        trendText = '↓ Verbessert';
-        trendEmoji = '📈';
-      } else if (trendDiff < -5) {
-        trendText = '↑ Verschlechtert';
-        trendEmoji = '📉';
-      }
-      
-      // Durchschnittliche Risikotage pro Monat
-      const avgRiskPerMonth = Math.round((negative / 6));
-      
-      // Langzeit-Einschätzung
-      let assessment = '';
-      if (negPct < 10) {
-        assessment = '🌟 Exzellent! Sehr konstante gesunde Entwicklung über 6 Monate.';
-      } else if (negPct < 20) {
-        assessment = '💪 Sehr gut! Langfristig stabile positive Entwicklung.';
-      } else if (negPct < 35) {
-        assessment = '👍 Solide Entwicklung. Achte weiter auf Regelmäßigkeit.';
-      } else if (negPct < 50) {
-        assessment = '⚠️ Gemischt. Langfristige Muster zeigen Verbesserungspotenzial.';
-      } else {
-        assessment = '🚨 Kritisch. Die 6-Monats-Daten zeigen deutlichen Handlungsbedarf.';
-      }
-      
-      if (compensationCount > 10) {
-        assessment += ` Achtung: ${compensationCount} Kompensations-Trinktage in 6 Monaten deuten auf emotionale Abhängigkeit hin.`;
-      }
-      
-      setTimeout(() => {
-        document.getElementById('chart6mNegative').style.width = negPct + '%';
-        document.getElementById('chart6mNegativeNum').textContent = negative;
-        document.getElementById('chart6mNegativePct').textContent = negPct + '%';
-        document.getElementById('chart6mPositive').style.width = posPct + '%';
-        document.getElementById('chart6mPositiveNum').textContent = positive;
-        document.getElementById('chart6mPositivePct').textContent = posPct + '%';
-        
-        document.getElementById('metric6mTrend').innerHTML = `${trendEmoji} ${trendText}`;
-        document.getElementById('metric6mAvgRisk').textContent = avgRiskPerMonth;
-        document.getElementById('metric6mCompensation').textContent = compensationCount;
-        document.getElementById('longTermAssessment').textContent = assessment;
-      }, 100);
-    }
-
     function calculateHealthAssessment() {
       const today = new Date();
       let counts = {superday: 0, wellness: 0, sober: 0, moderate: 0, mixed: 0, alcohol: 0, hangover: 0, hangoverWithAlc: 0, empty: 0};
@@ -2516,7 +2355,6 @@
       let gramsData = [];
       let daysCount = 0;
       let hangoverWithAlc = 0;
-      let compensationCount = 0; // NEU: Kompensationstrinken zählen
       
       for (let i = 0; i < 180; i++) {
         const dt = new Date(today);
@@ -2532,11 +2370,6 @@
           // Zähle Katertage mit Alkohol
           if (status === 'hangover' && grams > 0) {
             hangoverWithAlc++;
-          }
-          
-          // Zähle Kompensationstrinken (NEU)
-          if (entry.compensation && grams > 0) {
-            compensationCount++;
           }
         } else if (status) {
           // Fallback-Werte
@@ -2778,8 +2611,6 @@
             <div><strong>Tolerance Creep (90d vs. 90d):</strong> ${creepStatus}</div>
             <div><strong>Ø Recovery (Binge→Binge):</strong> ${avgRecovery} Tage</div>
             <div><strong>Comment Risk (30d):</strong> ${commentRisk} <span style="font-size:12px;">(${triggerCount} Trigger-Wörter)</span></div>
-            <div><strong>Kompensationstrinken (180d):</strong> ${compensationCount} ${compensationCount > 0 ? '<span style="color:#f59e0b;">⚠️</span>' : '✅'}</div>
-            ${compensationCount > 15 ? `<div style="margin-top:8px; padding:8px; background:#fef3c7; border-left:3px solid #f59e0b; border-radius:4px;"><strong>⚠️ Emotionale Abhängigkeit:</strong> ${compensationCount} Kompensations-Trinktage deuten auf Stressbewältigung durch Alkohol hin - ein klares Warnzeichen!</div>` : ''}
             ${hangoverWithAlc > 0 ? `<div style="margin-top:8px; padding:8px; background:#fee2e2; border-left:3px solid #dc2626; border-radius:4px;"><strong>🚨 Vollrausch/Katertage mit Weiter-Alkohol:</strong> ${hangoverWithAlc} (DSM-5-Kriterium für schwere AUD!)</div>` : ''}
           </div>
           
@@ -2834,7 +2665,6 @@
         overlay.classList.remove('active');
       } else {
         calculate100DaysChart();
-        calculate6MonthsChart();
         calculateHealthAssessment();
         popup.classList.add('active');
         overlay.classList.add('active');
@@ -2929,13 +2759,6 @@
           delete radio.dataset.autoSelected; // Reset
           if (isManual) {
             updateCategoryWarnings(null);
-            
-            // AUTO-SAVE: Wenn nicht im God-Modus, speichere sofort
-            if (!godMode) {
-              setTimeout(() => {
-                saveDay();
-              }, 300); // Kurze Verzögerung für bessere UX
-            }
           }
         });
       });
@@ -2994,7 +2817,6 @@
       
       // Checkboxen
       document.getElementById('checkSport').addEventListener('change', updateLiveCalc);
-      document.getElementById('checkCompensation').addEventListener('change', updateLiveCalc);
       document.getElementById('checkCrash').addEventListener('change', updateLiveCalc);
       document.getElementById('checkHangover').addEventListener('change', updateLiveCalc);
       
