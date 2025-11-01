@@ -1510,8 +1510,8 @@
         reader.onload = ev => {
           try {
             const parsed = JSON.parse(ev.target.result);
-            let importedDayData = parsed.dayData || parsed;
-            let importedSettings = parsed.settings || {};
+            let importedDayData   = parsed.dayData || parsed.data || parsed.alcoholTrackerData || parsed;
+            let importedSettings  = parsed.settings || parsed.alcoholTrackerSettings || {};
 
             // Validierung & Merge
             const isDateKey = k => /^\d{4}-\d{1,2}-\d{1,2}$/.test(k);
