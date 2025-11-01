@@ -907,6 +907,10 @@
         <button id="submitDay" class="btn">Tag speichern</button>
       </div>
 
+      <div class="submit-row" style="margin-top:8px">
+        <button id="deleteDay" class="btn danger">Tag löschen</button>
+      </div>
+
       <div class="storage-info" id="storageInfo">
         🍷 Gespeicherte Tage: <span id="savedDaysCount">0</span> ·
         <span id="storageStatus">Lade…</span>
@@ -2730,9 +2734,7 @@
       updateDayInputView();
       
       // FIX: Initial Drink beim God-Mode laden
-      if (godMode && activeDrinks.length === 0) {
-        addDrink();
-      }
+      /* auto-add suppressed: user must click + Getränk */
       
       // Kategorie-Auswahl mit Auto-Select
       document.querySelectorAll('input[name="dayChoice"]').forEach(radio => {
@@ -2749,6 +2751,19 @@
       
       // Submit Day
       document.getElementById('submitDay').addEventListener('click', saveDay);
+    // Delete current day
+    try {
+      document.getElementById('deleteDay').addEventListener('click', () => {
+        const key = formatDateKey(currentInputDate);
+        if (!key) return;
+        if (!storageWorking) return;
+        delete dayData[key];
+        saveData();
+        updateMonthView();
+        showMonthView();
+      });
+    } catch(e) {}
+
       
       // FIX: God-Modus Toggle mit korrekter Logik
       document.getElementById('godToggleBtn').addEventListener('click', () => {
@@ -2760,9 +2775,7 @@
         btn.textContent = godMode ? 'Ausblenden' : 'Einblenden';
         
         // Initial Drink hinzufügen wenn leer
-        if (godMode && activeDrinks.length === 0) {
-          addDrink();
-        }
+        /* auto-add suppressed: user must click + Getränk */
       });
       
       // Add Drink
