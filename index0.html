@@ -101,6 +101,7 @@
       background: linear-gradient(135deg, #f3fff9, #ecfff8);
     }
     .choice-option.hangover{ border-color: #d4d4d8; background: #fafafa; }
+    .choice-option.hangoverLight{ border-color: #e4e4e7; background: #fef9f3; }
     
     .choice-label{ flex:1; }
     .choice-desc{ font-size: 12px; color: var(--muted); margin-top: 2px; }
@@ -259,22 +260,23 @@
       border:1px solid #e5e7eb;
       border-radius:10px;
       display:grid;
-      grid-template-columns:1fr 1fr 1fr;
+      grid-template-columns:repeat(3, 1fr);
       gap:12px;
       text-align:center;
     }
+    @media (max-width:640px){ .live-calc{ grid-template-columns:repeat(2, 1fr); } }
     .live-calc-item{
       display:flex;
       flex-direction:column;
       gap:4px;
     }
     .live-calc-value{
-      font-size:24px;
+      font-size:20px;
       font-weight:800;
       color:var(--text);
     }
     .live-calc-label{
-      font-size:11px;
+      font-size:10px;
       color:var(--muted);
     }
     .live-calc-suggest{
@@ -713,6 +715,15 @@
           </div>
           <div class="choice-warning">⚠️ Auto-Vorschlag passt nicht zur Eingabe!</div>
         </label>
+        
+        <label class="choice-option hangoverLight" data-value="hangoverLight">
+          <input type="radio" name="dayChoice" value="hangoverLight" />
+          <div class="choice-label">
+            <div>😌 Hangover Light</div>
+            <div class="choice-desc">Leichter Kater (1-10g Vortag) - für sensible Personen</div>
+          </div>
+          <div class="choice-warning">⚠️ Auto-Vorschlag passt nicht zur Eingabe!</div>
+        </label>
       </div>
 
       <!-- Kommentar -->
@@ -786,11 +797,23 @@
           </div>
           <div class="live-calc-item">
             <div class="live-calc-value" id="liveDrinks">0.0</div>
-            <div class="live-calc-label">Drinks (à 10g)</div>
+            <div class="live-calc-label">Drinks (DE: 10g)</div>
+          </div>
+          <div class="live-calc-item">
+            <div class="live-calc-value" id="liveDrinksUK">0.0</div>
+            <div class="live-calc-label">Units (UK: 8g)</div>
+          </div>
+          <div class="live-calc-item">
+            <div class="live-calc-value" id="liveDrinksUSA">0.0</div>
+            <div class="live-calc-label">Drinks (USA: 14g)</div>
           </div>
           <div class="live-calc-item">
             <div class="live-calc-value" id="liveBAC">0.0‰</div>
             <div class="live-calc-label">Ø Promille (geschätzt)</div>
+          </div>
+          <div class="live-calc-item">
+            <div class="live-calc-value" id="liveDGE">—</div>
+            <div class="live-calc-label" id="liveDGELabel">DGE-Limit</div>
           </div>
           <div class="live-calc-suggest" id="liveSuggest">
             💡 Vorschlag: <strong id="suggestedCat">—</strong>
@@ -969,6 +992,35 @@
         </div>
       </div>
 
+      <!-- Geschlecht Section -->
+      <div class="settings-section" id="settingsGender">
+        <div class="settings-section-header" onclick="toggleSettingsSection('settingsGender')">
+          <div class="settings-section-title">⚧ Geschlecht (für DGE/WHO-Grenzwerte)</div>
+          <div class="settings-section-toggle">▼</div>
+        </div>
+        <div class="settings-section-content">
+          <div class="settings-description">
+            DGE-Empfehlungen: Männer ≤24g/Tag, Frauen ≤12g/Tag. WHO-Binge: Männer ≥60g, Frauen ≥40g.
+          </div>
+          <div class="settings-options">
+            <label class="settings-option" id="option-male">
+              <input type="radio" name="gender" value="male" checked>
+              <div class="settings-option-content">
+                <div class="settings-option-title">♂ Männlich</div>
+                <div class="settings-option-desc">DGE-Limit: ≤24g/Tag · WHO-Binge: ≥60g</div>
+              </div>
+            </label>
+            <label class="settings-option" id="option-female">
+              <input type="radio" name="gender" value="female">
+              <div class="settings-option-content">
+                <div class="settings-option-title">♀ Weiblich</div>
+                <div class="settings-option-desc">DGE-Limit: ≤12g/Tag · WHO-Binge: ≥40g</div>
+              </div>
+            </label>
+          </div>
+        </div>
+      </div>
+
       <!-- Neutrale Tage Section -->
       <div class="settings-section" id="settingsNeutralDays">
         <div class="settings-section-header" onclick="toggleSettingsSection('settingsNeutralDays')">
@@ -987,27 +1039,28 @@
                 <div class="settings-option-desc">Nur eingetragene Tage zählen.</div>
               </div>
             </label>
-            <label class="settings-option" id="option-neutral">
-              <input type="radio" name="neutralDays" value="neutral">
+            <label class="settings-option" id="option-weighted">
+              <input type="radio" name="neutralDays" value="weighted">
               <div class="settings-option-content">
-                <div class="settings-option-title">⚖️ Als neutral werten</div>
-                <div class="settings-option-desc">Neutral ≈ 50% Gesundheit.</div>
+                <div class="settings-option-title">⚖️ Mit Prozent werten</div>
+                <div class="settings-option-desc">
+                  Neutral mit <span id="neutralWeightDisplay">30</span>% Gesundheit werten
+                  <div style="margin-top:8px;">
+                    <input type="range" id="neutralWeightSlider" min="0" max="50" value="30" 
+                           style="width:100%; accent-color:var(--primary);">
+                    <div style="display:flex; justify-content:space-between; font-size:10px; color:var(--muted); margin-top:2px;">
+                      <span>0% (sehr negativ)</span>
+                      <span>25%</span>
+                      <span>50% (neutral)</span>
+                    </div>
+                  </div>
+                </div>
               </div>
             </label>
-            <label class="settings-option" id="option-negative">
-              <input type="radio" name="neutralDays" value="negative">
-              <div class="settings-option-content">
-                <div class="settings-option-title">⚠️ Eher negativ</div>
-                <div class="settings-option-desc">≈ 30% Gesundheit.</div>
-              </div>
-            </label>
-            <label class="settings-option" id="option-very-negative">
-              <input type="radio" name="neutralDays" value="very-negative">
-              <div class="settings-option-content">
-                <div class="settings-option-title">🚨 Sehr negativ</div>
-                <div class="settings-option-desc">≈ 15% Gesundheit.</div>
-              </div>
-            </label>
+          </div>
+          <div class="settings-info-box" style="margin-top:12px;">
+            💡 <strong>Empfehlung:</strong> "Ignorieren" ist am fairsten, wenn du (noch) nicht täglich trackst.
+            Bei "Mit Prozent" empfehle ich 30% (zwischen vorsichtig und neutral).
           </div>
         </div>
       </div>
@@ -1060,10 +1113,14 @@
     let currentViewDate = new Date();
     let storageWorking = false;
     let neutralDaysSetting = 'ignore';
+    let neutralDaysWeight = 30; // Prozent (0-50)
     let godMode = false;
+    let userGender = 'male'; // male | female
     
     const DENSITY = 0.789; // g/ml für Ethanol
     const DRINK_UNIT = 10; // 1 Drink = 10g Alkohol (DE Standard)
+    const DRINK_UNIT_UK = 8; // UK Unit
+    const DRINK_UNIT_USA = 14; // USA Standard Drink
     
     // Getränke-Datenbank mit typischen Mengen
     const DRINKS_DB = {
@@ -1125,8 +1182,53 @@
           {label: 'Eigene Menge', ml: 0}
         ]
       },
+      aperol: {
+        name: 'Aperol Spritz',
+        abv: 8,
+        portions: [
+          {label: 'Glas (200ml)', ml: 200},
+          {label: 'Glas groß (300ml)', ml: 300},
+          {label: 'Eigene Menge', ml: 0}
+        ]
+      },
+      lillet: {
+        name: 'Lillet Wildberry / Rosé Spritz',
+        abv: 8,
+        portions: [
+          {label: 'Glas (200ml)', ml: 200},
+          {label: 'Glas groß (300ml)', ml: 300},
+          {label: 'Karaffe (500ml)', ml: 500},
+          {label: 'Eigene Menge', ml: 0}
+        ]
+      },
+      hugo: {
+        name: 'Hugo',
+        abv: 7,
+        portions: [
+          {label: 'Glas (200ml)', ml: 200},
+          {label: 'Glas groß (300ml)', ml: 300},
+          {label: 'Eigene Menge', ml: 0}
+        ]
+      },
+      mojito: {
+        name: 'Mojito / Rum-Cocktail',
+        abv: 10,
+        portions: [
+          {label: 'Standard (200ml)', ml: 200},
+          {label: 'Long Drink (300ml)', ml: 300},
+          {label: 'Eigene Menge', ml: 0}
+        ]
+      },
+      longisland: {
+        name: 'Long Island Iced Tea',
+        abv: 22,
+        portions: [
+          {label: 'Standard (250ml)', ml: 250},
+          {label: 'Eigene Menge', ml: 0}
+        ]
+      },
       cocktail: {
-        name: 'Cocktail',
+        name: 'Cocktail (allgemein)',
         abv: 15,
         portions: [
           {label: 'Standard (200ml)', ml: 200},
@@ -1233,7 +1335,9 @@
         // Settings laden
         const settings = JSON.parse(localStorage.getItem('alcoholTrackerSettings') || '{}');
         neutralDaysSetting = settings.neutralDays || 'ignore';
+        neutralDaysWeight = settings.neutralDaysWeight || 30;
         godMode = !!settings.godMode;
+        userGender = settings.gender || 'male';
 
         migrateData();
         updateStorageStatus(`✅ ${Object.keys(dayData).length} Tage geladen`);
@@ -1492,11 +1596,17 @@
     function suggestCategory(grams, sport, crash, hangover) {
       // Korrigierte Auto-Reklassifikation
       if (crash) return 'hangover'; // Totalabsturz = immer Katertag
-      if (hangover && grams > 0) return 'hangover'; // Katertag MIT Alkohol = sehr problematisch
-      if (hangover && grams === 0) return 'hangover'; // Katertag OHNE Alkohol = normal
+      if (hangover && grams > 10) return 'hangover'; // Katertag MIT viel Alkohol = sehr problematisch
+      if (hangover && grams >= 1 && grams <= 10) return 'hangoverLight'; // Katertag MIT wenig Alkohol (1-10g) = Hangover Light
+      if (hangover && grams === 0) return 'hangoverLight'; // Katertag OHNE Alkohol = Hangover Light
       
       if (grams === 0) {
         return sport ? 'superday' : 'sober';
+      }
+      
+      // Hangover Light für sensible Menschen (1-10g)
+      if (grams >= 1 && grams <= 10 && !sport) {
+        return 'hangoverLight';
       }
       
       // FIX: Schadensbegrenzung erst ab 21g + Sport
@@ -1518,6 +1628,8 @@
     function updateLiveCalc() {
       const grams = calculateTotalAlcohol();
       const drinks = (grams / DRINK_UNIT).toFixed(1);
+      const drinksUK = (grams / DRINK_UNIT_UK).toFixed(1);
+      const drinksUSA = (grams / DRINK_UNIT_USA).toFixed(1);
       const bac = estimateBAC(grams);
       
       const sport = document.getElementById('checkSport').checked;
@@ -1528,7 +1640,15 @@
       
       document.getElementById('liveGrams').textContent = grams;
       document.getElementById('liveDrinks').textContent = drinks;
+      document.getElementById('liveDrinksUK').textContent = drinksUK;
+      document.getElementById('liveDrinksUSA').textContent = drinksUSA;
       document.getElementById('liveBAC').textContent = bac + '‰';
+      
+      // DGE-Limit geschlechtsspezifisch
+      const dgeLimit = userGender === 'female' ? 12 : 24;
+      const dgeStatus = grams === 0 ? '✅' : grams <= dgeLimit ? '🟡' : '🔴';
+      document.getElementById('liveDGE').textContent = dgeStatus;
+      document.getElementById('liveDGELabel').textContent = `DGE ${userGender === 'female' ? '♀' : '♂'} (${dgeLimit}g)`;
       
       const suggestedEl = document.getElementById('suggestedCat');
       const catNames = {
@@ -1538,7 +1658,8 @@
         moderate: '🟡 Moderat',
         mixed: '❤️ Schadensbegrenzung',
         alcohol: '🔴 Alkohol',
-        hangover: '😵 Katertag'
+        hangover: '😵 Katertag',
+        hangoverLight: '😌 Hangover Light'
       };
       suggestedEl.textContent = catNames[suggested] || '—';
       
@@ -2437,15 +2558,22 @@
     }
 
     function saveSettings() {
-      const selected = document.querySelector('input[name="neutralDays"]:checked');
-      if (selected) neutralDaysSetting = selected.value;
+      const selectedNeutral = document.querySelector('input[name="neutralDays"]:checked');
+      if (selectedNeutral) neutralDaysSetting = selectedNeutral.value;
+      
+      const selectedGender = document.querySelector('input[name="gender"]:checked');
+      if (selectedGender) userGender = selectedGender.value;
+      
+      neutralDaysWeight = parseInt(document.getElementById('neutralWeightSlider').value) || 30;
       godMode = document.getElementById('toggleGodMode').checked;
 
       if (storageWorking) {
         try {
           localStorage.setItem('alcoholTrackerSettings', JSON.stringify({
             neutralDays: neutralDaysSetting,
-            godMode
+            neutralDaysWeight,
+            godMode,
+            gender: userGender
           }));
         } catch (e) {
           console.warn('Settings konnten nicht gespeichert werden:', e);
