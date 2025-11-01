@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Ralles wunderbarer Booze-Tracker</title>
+  <title>Ralles wunderbarer Booze-Tracker [Gemini Edit v12:30]</title>
   <style>
     :root{
       --bg-grad-start:#6ea8ff;
@@ -632,7 +632,7 @@
 
   <div class="container">
     <div class="header">
-      <h1>Booze-Tracker gemini version 4</h1>
+      <h1>Booze-Tracker</h1>
       <div>
         <button class="icon-btn" onclick="showQuizPopup()" title="Risiko-Test">❓</button>
         <button class="icon-btn" onclick="showChartPopup()" title="Statistik">📊</button>
@@ -813,7 +813,7 @@
         <div class="setting-item">
           <label for="expertModeToggle">Experten-Modus</label>
           <div class="toggle-switch">
-            <input type="checkbox" id="expertModeToggle" onchange="toggleExpertMode(this.checked)">
+            <input type="checkbox" id="expertModeToggle">
             <span class="slider"></span>
           </div>
         </div>
@@ -901,6 +901,8 @@
   // NEU: Globale Variablen für Experten-Modus
   let appMode = 'simple'; // 'simple' or 'expert'
   let currentExpertDrinks = []; // Temporärer Speicher für die Eingabemaske
+  // KORRIGIERT: Flag, um doppelten Event Listener zu verhindern
+  let expertToggleListenerAttached = false; 
 
   // Initialisierung
   document.addEventListener('DOMContentLoaded', init);
@@ -909,9 +911,8 @@
     loadData();
     drawMonthView();
     addCalendarEventListeners();
-    // updateUIMode() wird nun in showDayInput() und showSettings() aufgerufen,
-    // um sicherzustellen, dass es nur ausgeführt wird, wenn die Elemente existieren.
-    // Das Laden des appMode in loadData() reicht hier aus.
+    // Der Event Listener für den Toggle wird jetzt in showSettings() hinzugefügt,
+    // um sicherzustellen, dass das Element existiert.
   }
 
   function loadData() {
@@ -1057,7 +1058,6 @@
     renderExpertDrinkList();
     
     // UI-Modus aktualisieren (zeigt richtiges Formular)
-    // KORRIGIERT: updateUIMode() wird HIER aufgerufen, wenn das Modal geladen wird.
     updateUIMode();
 
     const day = dayData[dateKey];
@@ -1128,20 +1128,21 @@
   }
 
   // NEU: Experten-Modus UI-Funktionen
+  // KORRIGIERT: Ruft jetzt updateUIMode() auf, um den Schalter visuell zu aktualisieren
   function toggleExpertMode(isExpert) {
     appMode = isExpert ? 'expert' : 'simple';
-    saveSettings();
+    saveSettings(); 
     
-    // KORRIGIERT: updateUIMode() auch hier aufrufen,
-    // um die Ansicht im Einstellungs-Popup (falls dayInput offen) zu steuern.
-    // Da dayInputView nicht zwangsläufig offen ist,
-    // muss updateUIMode *nur* die Elemente im dayInputView-Modal steuern.
+    // KORRIGIERT: Rufe updateUIMode() auf, um den Schalter im Einstellungs-Popup
+    // SOFORT visuell zu aktualisieren.
+    updateUIMode();
+    
+    // Wenn das Eingabe-Modal offen ist, aktualisiere es auch
     if (document.getElementById('dayInputView').classList.contains('visible')) {
         updateUIMode();
     }
   }
 
-  // KORRIGIERT: Diese Funktion ist jetzt "kugelsicher"
   function updateUIMode() {
     // Diese Elemente existieren NUR im 'dayInputView'-Modal
     const simpleUI = document.getElementById('simpleInputContainer');
@@ -1151,7 +1152,6 @@
     const toggle = document.getElementById('expertModeToggle');
 
     // 1. UI im Eingabe-Modal (dayInputView) aktualisieren
-    //    Defensive Prüfung, falls die Elemente nicht gefunden werden
     if (simpleUI && expertUI) {
       if (appMode === 'expert') {
         simpleUI.style.display = 'none';
@@ -1163,8 +1163,9 @@
     }
     
     // 2. UI im Einstellungs-Modal (settingsPopup) aktualisieren
+    //    Dies synchronisiert den Schalter mit dem 'appMode'-Status
     if (toggle) {
-      toggle.checked = (appMode === 'expert');
+      toggle.checked = (appMode === 'expert'); 
     }
   }
 
@@ -1498,7 +1499,20 @@
   // Einstellungen & Datenmanagement
   function showSettings() {
     document.getElementById('neutralDaysSelect').value = window.neutralDaysSetting;
-    // NEU: Toggle-Status setzen, wenn das Modal geöffnet wird
+    
+    // KORRIGIERT: Event Listener robust hier hinzufügen (nur einmal)
+    if (!expertToggleListenerAttached) {
+        const toggle = document.getElementById('expertModeToggle');
+        if (toggle) {
+          toggle.addEventListener('change', (e) => {
+            toggleExpertMode(e.target.checked);
+          });
+          expertToggleListenerAttached = true;
+        }
+    }
+    
+    // updateUIMode() MUSS hier aufgerufen werden,
+    // um den Toggle-Status *beim Öffnen* zu sychronisieren
     updateUIMode(); 
     showModal('settingsPopup');
   }
