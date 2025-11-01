@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="de">
 <head>
@@ -146,7 +147,62 @@
     .streak-good{ background:#ecfdf5; border-color:#a7f3d0; }
     .streak-great{ background:#d1fae5; border-color:#34d399; }
 
-    /* Balkendiagramm */
+    /* Balkendiagramm für 100 Tage */
+    .chart-section{
+      margin: 18px 0;
+      padding: 16px;
+      background: #f9fafb;
+      border: 1px solid #e5e7eb;
+      border-radius: 14px;
+    }
+    .chart-title{
+      font-weight: 700;
+      font-size: 16px;
+      margin-bottom: 14px;
+      text-align: center;
+      color: var(--text);
+    }
+    .chart-bars{
+      display: flex;
+      gap: 16px;
+      margin-bottom: 10px;
+    }
+    .chart-bar-container{
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .chart-bar-label{
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--muted);
+      text-align: center;
+    }
+    .chart-bar-wrapper{
+      height: 180px;
+      background: #e5e7eb;
+      border-radius: 8px;
+      position: relative;
+      display: flex;
+      align-items: flex-end;
+      overflow: hidden;
+    }
+    .chart-bar{
+      width: 100%;
+      transition: height 0.8s ease;
+      border-radius: 8px 8px 0 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      color: white;
+      font-size: 18px;
+    }
+    .chart-bar.negative{ background: linear-gradient(180deg, #ef4444, #dc2626); }
+    .chart-bar.positive{ background: linear-gradient(180deg, #10b981, #059669); }
+
+    /* Balkendiagramm für 100 Tage - KOMPLETT NEU */
     .chart-section{
       margin: 18px 0;
       padding: 0;
@@ -161,30 +217,91 @@
       text-align: center;
       color: var(--text);
     }
-    .chart-bars{ display:flex; flex-direction:column; gap:32px; margin-bottom:10px; }
-    .chart-bar-container{ display:flex; flex-direction:column; gap:12px; }
-    .chart-bar-header{ display:flex; align-items:center; justify-content:space-between; }
-    .chart-bar-label{ font-size:14px; font-weight:600; color:var(--text); }
-    .chart-bar-label small{ display:block; font-size:12px; font-weight:400; color:var(--muted); margin-top:2px; }
-    .chart-bar-value{ display:flex; align-items:baseline; gap:8px; }
-    .chart-bar-number{ font-size:32px; font-weight:900; color:var(--text); }
-    .chart-bar-percent{ font-size:16px; font-weight:600; color:var(--muted); }
+    .chart-bars{
+      display: flex;
+      flex-direction: column;
+      gap: 32px;
+      margin-bottom: 10px;
+    }
+    .chart-bar-container{
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .chart-bar-header{
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .chart-bar-label{
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text);
+    }
+    .chart-bar-label small{
+      display: block;
+      font-size: 12px;
+      font-weight: 400;
+      color: var(--muted);
+      margin-top: 2px;
+    }
+    .chart-bar-value{
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+    }
+    .chart-bar-number{
+      font-size: 32px;
+      font-weight: 900;
+      color: var(--text);
+    }
+    .chart-bar-percent{
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--muted);
+    }
     .chart-bar-wrapper{
-      height: 48px; background:#f1f5f9; border-radius:12px; position:relative; overflow:hidden; box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
+      height: 48px;
+      background: #f1f5f9;
+      border-radius: 12px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
     }
     .chart-bar{
-      height:100%; transition: width 1.2s cubic-bezier(0.4, 0, 0.2, 1); width:0%;
-      border-radius:12px; display:flex; align-items:center; justify-content:flex-end; padding-right:16px;
-      font-weight:700; color:#fff; font-size:16px; position:relative;
+      height: 100%;
+      transition: width 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+      width: 0%;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      padding-right: 16px;
+      font-weight: 700;
+      color: white;
+      font-size: 16px;
+      position: relative;
     }
     .chart-bar::after{
-      content:''; position:absolute; inset:0; background: linear-gradient(90deg, rgba(255,255,255,0.1), rgba(255,255,255,0));
-      border-radius:12px;
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(90deg, rgba(255,255,255,0.1), rgba(255,255,255,0));
+      border-radius: 12px;
     }
-    .chart-bar.negative{ background: linear-gradient(90deg, #ef4444, #f87171); box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3); }
-    .chart-bar.positive{ background: linear-gradient(90deg, #10b981, #34d399); box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3); }
+    .chart-bar.negative{ 
+      background: linear-gradient(90deg, #ef4444, #f87171);
+      box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+    }
+    .chart-bar.positive{ 
+      background: linear-gradient(90deg, #10b981, #34d399);
+      box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+    }
 
-    /* Gesundheitsbewertung (Basis) */
+    /* Gesundheitsbewertung */
     .health-assessment{
       margin-top: 32px;
       padding: 20px;
@@ -192,122 +309,503 @@
       border-radius: 14px;
       border: 2px solid #e5e7eb;
     }
-    .assessment-title{ font-size:18px; font-weight:700; text-align:center; margin-bottom:20px; color:var(--text); }
-    .assessment-badge{
-      text-align:center; margin-bottom:24px; padding:16px; border-radius:12px; font-size:24px; font-weight:800; box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    .assessment-title{
+      font-size: 18px;
+      font-weight: 700;
+      text-align: center;
+      margin-bottom: 20px;
+      color: var(--text);
     }
-    .assessment-badge.zen{ background: linear-gradient(135deg, #d1fae5, #a7f3d0); color:#065f46; border:2px solid #34d399; }
-    .assessment-badge.balance{ background: linear-gradient(135deg, #fef3c7, #fde68a); color:#92400e; border:2px solid #fbbf24; }
-    .assessment-badge.weekend{ background: linear-gradient(135deg, #fed7aa, #fdba74); color:#9a3412; border:2px solid #fb923c; }
-    .assessment-badge.red{ background: linear-gradient(135deg, #fecaca, #fca5a5); color:#7f1d1d; border:2px solid #ef4444; }
-    .assessment-metrics{ display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:16px; }
-    @media (max-width: 560px){ .assessment-metrics{ grid-template-columns:1fr; } }
-    .metric-item{ padding:12px; background:#fff; border-radius:10px; border:1px solid #e5e7eb; position:relative; }
-    .metric-label{ font-size:12px; color:var(--muted); margin-bottom:4px; display:flex; align-items:center; gap:6px; }
-    .metric-info{ display:inline-flex; align-items:center; justify-content:center; width:16px; height:16px; background:var(--primary); color:#fff; border-radius:50%; font-size:10px; font-weight:700; cursor:help; position:relative; }
-    .metric-info:hover .metric-tooltip{ display:block; }
+    .assessment-badge{
+      text-align: center;
+      margin-bottom: 24px;
+      padding: 16px;
+      border-radius: 12px;
+      font-size: 24px;
+      font-weight: 800;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    .assessment-badge.zen{ 
+      background: linear-gradient(135deg, #d1fae5, #a7f3d0); 
+      color: #065f46;
+      border: 2px solid #34d399;
+    }
+    .assessment-badge.balance{ 
+      background: linear-gradient(135deg, #fef3c7, #fde68a); 
+      color: #92400e;
+      border: 2px solid #fbbf24;
+    }
+    .assessment-badge.weekend{ 
+      background: linear-gradient(135deg, #fed7aa, #fdba74); 
+      color: #9a3412;
+      border: 2px solid #fb923c;
+    }
+    .assessment-badge.red{ 
+      background: linear-gradient(135deg, #fecaca, #fca5a5); 
+      color: #7f1d1d;
+      border: 2px solid #ef4444;
+    }
+    .assessment-metrics{
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+    @media (max-width: 560px){ 
+      .assessment-metrics{ grid-template-columns: 1fr; } 
+    }
+    .metric-item{
+      padding: 12px;
+      background: white;
+      border-radius: 10px;
+      border: 1px solid #e5e7eb;
+      position: relative;
+    }
+    .metric-label{
+      font-size: 12px;
+      color: var(--muted);
+      margin-bottom: 4px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .metric-info{
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 16px;
+      height: 16px;
+      background: var(--primary);
+      color: white;
+      border-radius: 50%;
+      font-size: 10px;
+      font-weight: 700;
+      cursor: help;
+      position: relative;
+    }
+    .metric-info:hover .metric-tooltip{
+      display: block;
+    }
     .metric-tooltip{
-      display:none; position:absolute; bottom:24px; left:50%; transform:translateX(-50%);
-      width:280px; padding:12px; background:#1f2937; color:#fff; border-radius:8px; font-size:11px; line-height:1.5; z-index:1000;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.3); text-align:left; font-weight:400;
+      display: none;
+      position: absolute;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 280px;
+      padding: 12px;
+      background: #1f2937;
+      color: white;
+      border-radius: 8px;
+      font-size: 11px;
+      line-height: 1.5;
+      z-index: 1000;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+      text-align: left;
+      font-weight: 400;
     }
     .metric-tooltip::after{
-      content:''; position:absolute; top:100%; left:50%; transform:translateX(-50%); border:6px solid transparent; border-top-color:#1f2937;
+      content: '';
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      border: 6px solid transparent;
+      border-top-color: #1f2937;
     }
-    .metric-tooltip strong{ color:#60a5fa; font-weight:600; }
-    @media (max-width: 560px){ .metric-tooltip{ width:220px; font-size:10px; padding:10px; } }
-    .metric-value{ font-size:20px; font-weight:800; color:var(--text); }
-    .assessment-description{ padding:12px; background:#fff; border-radius:10px; border:1px solid #e5e7eb; font-size:13px; line-height:1.6; color:var(--text); }
-    .assessment-description strong{ color:var(--primary); }
-    .assessment-warning{ margin-top:12px; padding:10px; background:#fff7ed; border-left:4px solid #fb923c; border-radius:6px; font-size:12px; color:#9a3412; }
+    .metric-tooltip strong{
+      color: #60a5fa;
+      font-weight: 600;
+    }
+    @media (max-width: 560px){
+      .metric-tooltip{
+        width: 220px;
+        font-size: 10px;
+        padding: 10px;
+      }
+    }
+    .metric-value{
+      font-size: 20px;
+      font-weight: 800;
+      color: var(--text);
+    }
+    .assessment-description{
+      padding: 12px;
+      background: white;
+      border-radius: 10px;
+      border: 1px solid #e5e7eb;
+      font-size: 13px;
+      line-height: 1.6;
+      color: var(--text);
+    }
+    .assessment-description strong{
+      color: var(--primary);
+    }
+    .assessment-warning{
+      margin-top: 12px;
+      padding: 10px;
+      background: #fff7ed;
+      border-left: 4px solid #fb923c;
+      border-radius: 6px;
+      font-size: 12px;
+      color: #9a3412;
+    }
 
     /* Settings für neutrale Tage */
-    .settings-section{ margin-top: 20px; padding: 16px; background:#fff; border-radius:12px; border:2px solid #e5e7eb; }
-    .settings-title{ font-size:14px; font-weight:700; margin-bottom:12px; color:var(--text); display:flex; align-items:center; gap:8px; }
-    .settings-option{ margin-bottom:10px; padding:10px; background:#f9fafb; border-radius:8px; border:2px solid transparent; cursor:pointer; transition:all .2s; }
-    .settings-option:hover{ border-color:var(--primary); background:#eff6ff; }
-    .settings-option input[type="radio"]{ margin-right:8px; }
-    .settings-option label{ cursor:pointer; font-size:13px; color:var(--text); display:flex; align-items:flex-start; gap:8px; }
-    .settings-option.selected{ border-color:var(--primary); background:#eff6ff; }
-    .settings-explanation{ margin-top:12px; padding:12px; background:#f0f9ff; border-left:4px solid var(--primary); border-radius:6px; font-size:12px; line-height:1.6; color:#1e40af; }
+    .settings-section{
+      margin-top: 20px;
+      padding: 16px;
+      background: white;
+      border-radius: 12px;
+      border: 2px solid #e5e7eb;
+    }
+    .settings-title{
+      font-size: 14px;
+      font-weight: 700;
+      margin-bottom: 12px;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .settings-option{
+      margin-bottom: 10px;
+      padding: 10px;
+      background: #f9fafb;
+      border-radius: 8px;
+      border: 2px solid transparent;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .settings-option:hover{
+      border-color: var(--primary);
+      background: #eff6ff;
+    }
+    .settings-option input[type="radio"]{
+      margin-right: 8px;
+    }
+    .settings-option label{
+      cursor: pointer;
+      font-size: 13px;
+      color: var(--text);
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+    }
+    .settings-option.selected{
+      border-color: var(--primary);
+      background: #eff6ff;
+    }
+    .settings-explanation{
+      margin-top: 12px;
+      padding: 12px;
+      background: #f0f9ff;
+      border-left: 4px solid var(--primary);
+      border-radius: 6px;
+      font-size: 12px;
+      line-height: 1.6;
+      color: #1e40af;
+    }
 
     /* AUDIT-C Quiz */
-    .audit-quiz{ margin-top:20px; padding:16px; background:#fff; border-radius:12px; border:2px solid #e5e7eb; }
-    .audit-question{ margin-bottom:16px; }
-    .audit-question-label{ font-size:13px; font-weight:600; margin-bottom:8px; color:var(--text); display:block; }
-    .audit-options{ display:flex; flex-direction:column; gap:6px; }
-    .audit-option{ padding:8px 12px; background:#f9fafb; border-radius:6px; border:2px solid transparent; cursor:pointer; transition:all .2s; font-size:12px; }
-    .audit-option:hover{ border-color:var(--primary); background:#eff6ff; }
-    .audit-option input[type="radio"]{ margin-right:8px; }
-    .audit-option label{ cursor:pointer; }
-    .audit-result{ margin-top:16px; padding:16px; border-radius:10px; font-size:13px; line-height:1.6; }
-    .audit-result.low{ background:#d1fae5; border:2px solid #34d399; color:#065f46; }
-    .audit-result.medium{ background:#fef3c7; border:2px solid #fbbf24; color:#92400e; }
-    .audit-result.high{ background:#fecaca; border:2px solid #ef4444; color:#7f1d1d; }
-    .audit-result strong{ font-size:16px; display:block; margin-bottom:8px; }
+    .audit-quiz{
+      margin-top: 20px;
+      padding: 16px;
+      background: white;
+      border-radius: 12px;
+      border: 2px solid #e5e7eb;
+    }
+    .audit-question{
+      margin-bottom: 16px;
+    }
+    .audit-question-label{
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 8px;
+      color: var(--text);
+      display: block;
+    }
+    .audit-options{
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .audit-option{
+      padding: 8px 12px;
+      background: #f9fafb;
+      border-radius: 6px;
+      border: 2px solid transparent;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-size: 12px;
+    }
+    .audit-option:hover{
+      border-color: var(--primary);
+      background: #eff6ff;
+    }
+    .audit-option input[type="radio"]{
+      margin-right: 8px;
+    }
+    .audit-option label{
+      cursor: pointer;
+    }
+    .audit-result{
+      margin-top: 16px;
+      padding: 16px;
+      border-radius: 10px;
+      font-size: 13px;
+      line-height: 1.6;
+    }
+    .audit-result.low{
+      background: #d1fae5;
+      border: 2px solid #34d399;
+      color: #065f46;
+    }
+    .audit-result.medium{
+      background: #fef3c7;
+      border: 2px solid #fbbf24;
+      color: #92400e;
+    }
+    .audit-result.high{
+      background: #fecaca;
+      border: 2px solid #ef4444;
+      color: #7f1d1d;
+    }
+    .audit-result strong{
+      font-size: 16px;
+      display: block;
+      margin-bottom: 8px;
+    }
 
     /* Chart-Popup */
     .chart-popup{
-      position: fixed; left: 50%; top: 50%; transform: translate(-50%, -50%);
-      background:#fff; border:1px solid #e5e7eb; border-radius:16px; box-shadow: 0 20px 40px rgba(31,41,55,.2);
-      padding:20px; width:min(680px, 92vw); max-height:85vh; overflow-y:auto; display:none; z-index:1001;
+      position: fixed; 
+      left: 50%; 
+      top: 50%; 
+      transform: translate(-50%, -50%);
+      background: #ffffff; 
+      border: 1px solid #e5e7eb; 
+      border-radius: 16px; 
+      box-shadow: 0 20px 40px rgba(31,41,55,.2);
+      padding: 20px; 
+      width: min(680px, 92vw); 
+      max-height: 85vh;
+      overflow-y: auto;
+      display: none; 
+      z-index: 1001;
     }
-    .chart-popup.active{ display:block; }
-    .chart-popup-overlay{ position:fixed; inset:0; background:rgba(0,0,0,0.4); display:none; z-index:1000; }
-    .chart-popup-overlay.active{ display:block; }
+    .chart-popup.active{ display: block; }
+    .chart-popup-overlay{
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0,0,0,0.4);
+      display: none;
+      z-index: 1000;
+    }
+    .chart-popup-overlay.active{ display: block; }
 
     /* Unauffälliger Button */
-    .btn-stats-toggle{
-       appearance: none; background: linear-gradient(135deg, #eef2ff, #e0e7ff); border: 1.5px solid #c7d2fe; color: #1e3a8a;
-       padding: 10px 18px; border-radius: 999px; font-size: 14px; font-weight: 700; cursor: pointer; transition: transform .08s ease, box-shadow .2s ease, background .2s ease, border-color .2s ease;
-       box-shadow: 0 6px 14px rgba(79,70,229,.18); display:inline-flex; align-items:center; gap:8px;
+     .btn-stats-toggle{
+       appearance: none;
+       background: linear-gradient(135deg, #eef2ff, #e0e7ff);
+       border: 1.5px solid #c7d2fe;
+       color: #1e3a8a;
+       padding: 10px 18px;
+       border-radius: 999px; /* Pill-Form */
+       font-size: 14px;
+       font-weight: 700;
+       cursor: pointer;
+       transition: transform .08s ease, box-shadow .2s ease, background .2s ease, border-color .2s ease;
+       box-shadow: 0 6px 14px rgba(79,70,229,.18);
+       display: inline-flex;
+       align-items: center;
+       gap: 8px;
      }
-    .btn-stats-toggle:hover{ background: linear-gradient(135deg, #e0e7ff, #c7d2fe); border-color:#a5b4fc; transform: translateY(-1px); box-shadow: 0 10px 20px rgba(79,70,229,.25); }
-    .btn-stats-toggle:active{ transform: translateY(0); box-shadow: 0 4px 10px rgba(79,70,229,.2); }
-    .btn-stats-toggle:focus-visible{ outline: 3px solid #c7d2fe; outline-offset: 2px; }
+     .btn-stats-toggle:hover{
+       background: linear-gradient(135deg, #e0e7ff, #c7d2fe);
+       border-color: #a5b4fc;
+       transform: translateY(-1px);
+       box-shadow: 0 10px 20px rgba(79,70,229,.25);
+     }
+     .btn-stats-toggle:active{
+       transform: translateY(0);
+       box-shadow: 0 4px 10px rgba(79,70,229,.2);
+     }
+     .btn-stats-toggle:focus-visible{
+       outline: 3px solid #c7d2fe;
+       outline-offset: 2px;
+     }
+
 
     /* Einstellungs-Button */
     .btn-settings{
-      appearance: none; background: linear-gradient(135deg, #f0f9ff, #dbeafe); border: 1.5px solid #bae6fd; color: #0c4a6e;
-      padding: 10px 18px; border-radius: 999px; font-size: 14px; font-weight: 700; cursor: pointer; transition: transform .08s ease, box-shadow .2s ease, background .2s ease, border-color .2s ease;
-      box-shadow: 0 6px 14px rgba(2,132,199,.16); display:inline-flex; align-items:center; gap:8px;
+      appearance: none;
+      background: linear-gradient(135deg, #f0f9ff, #dbeafe);
+      border: 1.5px solid #bae6fd;
+      color: #0c4a6e;
+      padding: 10px 18px;
+      border-radius: 999px; /* Pill-Form */
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform .08s ease, box-shadow .2s ease, background .2s ease, border-color .2s ease;
+      box-shadow: 0 6px 14px rgba(2,132,199,.16);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
     }
-    .btn-settings:hover{ background: linear-gradient(135deg, #dbeafe, #bfdbfe); border-color:#93c5fd; transform: translateY(-1px); box-shadow: 0 10px 20px rgba(2,132,199,.22); }
-    .btn-settings:active{ transform: translateY(0); box-shadow: 0 4px 10px rgba(2,132,199,.18); }
-    .btn-settings:focus-visible{ outline: 3px solid #93c5fd; outline-offset: 2px; }
+    .btn-settings:hover{
+      background: linear-gradient(135deg, #dbeafe, #bfdbfe);
+      border-color: #93c5fd;
+      transform: translateY(-1px);
+      box-shadow: 0 10px 20px rgba(2,132,199,.22);
+    }
+    .btn-settings:active{
+      transform: translateY(0);
+      box-shadow: 0 4px 10px rgba(2,132,199,.18);
+    }
+    .btn-settings:focus-visible{
+      outline: 3px solid #93c5fd;
+      outline-offset: 2px;
+    }
 
-    /* Settings-Popup */
+    /* Einstellungs-Popup */
     .settings-popup{
-      position: fixed; left: 50%; top: 50%; transform: translate(-50%, -50%);
-      background:#fff; border:1px solid #e5e7eb; border-radius:16px; box-shadow: 0 20px 40px rgba(31,41,55,.25);
-      padding:24px; width:min(560px, 92vw); max-height:85vh; overflow-y:auto; display:none; z-index:1002;
+      position: fixed;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      background: #ffffff;
+      border: 1px solid #e5e7eb;
+      border-radius: 16px;
+      box-shadow: 0 20px 40px rgba(31,41,55,.25);
+      padding: 24px;
+      width: min(560px, 92vw);
+      max-height: 85vh;
+      overflow-y: auto;
+      display: none;
+      z-index: 1002;
     }
-    .settings-popup.active{ display:block; }
-    .settings-popup-overlay{ position:fixed; inset:0; background:rgba(0,0,0,0.4); display:none; z-index:1001; }
-    .settings-popup-overlay.active{ display:block; }
-    .settings-title{ font-size:22px; font-weight:800; margin-bottom:8px; color:var(--text); text-align:center; }
-    .settings-subtitle{ font-size:14px; color:var(--muted); margin-bottom:24px; text-align:center; }
-    .settings-section-title{ font-size:16px; font-weight:700; margin-bottom:12px; color:var(--text); }
-    .settings-description{ font-size:13px; color:var(--muted); margin-bottom:16px; line-height:1.6; }
-    .settings-options{ display:flex; flex-direction:column; gap:10px; }
-    .settings-option input[type="radio"]{ margin-top:2px; transform:scale(1.3); accent-color:var(--primary); }
-    .settings-option-content{ flex:1; }
-    .settings-option-title{ font-weight:700; font-size:14px; color:var(--text); margin-bottom:4px; }
-    .settings-option-desc{ font-size:12px; color:var(--muted); line-height:1.5; }
-    .settings-info-box{ padding:14px; background:#eff6ff; border-left:4px solid var(--primary); border-radius:8px; font-size:12px; color:#1e40af; line-height:1.6; margin-top:16px; }
-    .settings-info-box strong{ color:#1e3a8a; }
+    .settings-popup.active{ display: block; }
+    .settings-popup-overlay{
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0,0,0,0.4);
+      display: none;
+      z-index: 1001;
+    }
+    .settings-popup-overlay.active{ display: block; }
+    .settings-title{
+      font-size: 22px;
+      font-weight: 800;
+      margin-bottom: 8px;
+      color: var(--text);
+      text-align: center;
+    }
+    .settings-subtitle{
+      font-size: 14px;
+      color: var(--muted);
+      margin-bottom: 24px;
+      text-align: center;
+    }
+    .settings-section{
+      margin-bottom: 24px;
+    }
+    .settings-section-title{
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 12px;
+      color: var(--text);
+    }
+    .settings-description{
+      font-size: 13px;
+      color: var(--muted);
+      margin-bottom: 16px;
+      line-height: 1.6;
+    }
+    .settings-options{
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .settings-option{
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 14px;
+      border: 2px solid #e5e7eb;
+      border-radius: 12px;
+      background: #fff;
+      cursor: pointer;
+      transition: all .2s ease;
+    }
+    .settings-option:hover{
+      border-color: var(--primary);
+      background: #f8faff;
+    }
+    .settings-option.selected{
+      border-color: var(--primary);
+      background: linear-gradient(135deg, #eef2ff, #f8faff);
+      box-shadow: 0 4px 12px rgba(79,70,229,0.15);
+    }
+    .settings-option input[type="radio"]{
+      margin-top: 2px;
+      transform: scale(1.3);
+      accent-color: var(--primary);
+    }
+    .settings-option-content{
+      flex: 1;
+    }
+    .settings-option-title{
+      font-weight: 700;
+      font-size: 14px;
+      color: var(--text);
+      margin-bottom: 4px;
+    }
+    .settings-option-desc{
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+    .settings-info-box{
+      padding: 14px;
+      background: #eff6ff;
+      border-left: 4px solid var(--primary);
+      border-radius: 8px;
+      font-size: 12px;
+      color: #1e40af;
+      line-height: 1.6;
+      margin-top: 16px;
+    }
+    .settings-info-box strong{
+      color: #1e3a8a;
+    }
 
-    .legend{ display:flex; flex-wrap:wrap; gap:10px 14px; margin:10px 0 14px; color:var(--muted); font-size:13px; }
-    .legend span{ display:flex; align-items:center; gap:6px; }
+    .legend{
+      display:flex; flex-wrap:wrap; gap:10px 14px; margin: 10px 0 14px; color:var(--muted); font-size: 13px;
+    }
+    .legend span{ display: flex; align-items: center; gap: 6px; }
 
-    .cal{ display:grid; grid-template-columns: repeat(7, 1fr); gap:8px; margin-bottom: 10px; position:relative; }
-    .weekday{ text-align:center; font-weight:700; font-size:12px; color:#475569; padding:6px 0; background:#f1f5f9; border-radius:8px; border:1px solid #e7eef6; }
+    .cal{
+      display:grid; grid-template-columns: repeat(7, 1fr); gap:8px; margin-bottom: 10px;
+      position: relative;
+    }
+    .weekday{
+      text-align:center; font-weight:700; font-size:12px; color:#475569; padding:6px 0;
+      background:#f1f5f9; border-radius:8px; border:1px solid #e7eef6;
+    }
 
     /* Tageszellen */
     .day{
       aspect-ratio:1; display:flex; align-items:center; justify-content:center;
       border-radius:10px; border:1px solid #e7eef6; background:#fff; font-weight:700; cursor:pointer;
-      transition:.1s ease; position:relative; z-index:1; user-select:none;
+      transition:.1s ease; position:relative; z-index: 1; user-select:none;
     }
     .day:hover{ transform: scale(1.03); box-shadow: 0 8px 18px rgba(0,0,0,.08); }
     .day.sober{ background:#10b981; color:#fff; }
@@ -320,44 +818,100 @@
     .day.superday{ background:#059669; color:#fff; }
     .day.superday::after{ content:"⭐"; position:absolute; top:4px; right:6px; font-size:12px; }
 
-    .day.today{ outline: 3px solid var(--primary); outline-offset:-3px; }
+    /* HEUTE: nur Ring, KEIN Hintergrund-Override! */
+    .day.today{
+      outline: 3px solid var(--primary);
+      outline-offset: -3px;
+    }
 
-    /* Kommentar-Tooltip */
+    /* Kommentar-Tooltip für Kalendertage */
     .day-comment-tooltip{
-      display:none; position:absolute; bottom:calc(100% + 8px); left:50%; transform:translateX(-50%);
-      min-width:200px; max-width:280px; padding:10px 12px; background:#1f2937; color:#fff; border-radius:8px; font-size:11px; line-height:1.5; z-index:1000;
-      box-shadow:0 8px 20px rgba(0,0,0,0.4); text-align:left; font-weight:400; pointer-events:none; white-space:pre-wrap; word-wrap:break-word;
+      display: none;
+      position: absolute;
+      bottom: calc(100% + 8px);
+      left: 50%;
+      transform: translateX(-50%);
+      min-width: 200px;
+      max-width: 280px;
+      padding: 10px 12px;
+      background: #1f2937;
+      color: white;
+      border-radius: 8px;
+      font-size: 11px;
+      line-height: 1.5;
+      z-index: 1000;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+      text-align: left;
+      font-weight: 400;
+      pointer-events: none;
+      white-space: pre-wrap;
+      word-wrap: break-word;
     }
     .day-comment-tooltip::after{
-      content:''; position:absolute; top:100%; left:50%; transform:translateX(-50%); border:6px solid transparent; border-top-color:#1f2937;
+      content: '';
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      border: 6px solid transparent;
+      border-top-color: #1f2937;
     }
-    .day.has-comment{ position:relative; }
-    .day.has-comment::before{ content:'💬'; position:absolute; top:2px; right:2px; font-size:10px; opacity:0.8; }
-    .day.has-comment:hover .day-comment-tooltip{ display:block; }
+    .day.has-comment{
+      position: relative;
+    }
+    .day.has-comment::before{
+      content: '💬';
+      position: absolute;
+      top: 2px;
+      right: 2px;
+      font-size: 10px;
+      opacity: 0.8;
+    }
+    .day.has-comment:hover .day-comment-tooltip{
+      display: block;
+    }
 
     /* Spendenbereich */
-    .support{ background:#f8fafc; border:1px solid #e5e7eb; border-radius:14px; padding:14px; margin:12px 0 12px; text-align:center; position:relative; z-index:0; }
-    .support p{ margin:0 0 6px; }
-    .support-buttons{ margin-top:0; display:flex; flex-wrap:wrap; gap:12px; justify-content:center; align-items:center; }
+    .support{
+      background:#f8fafc; border:1px solid #e5e7eb; border-radius: 14px; padding: 14px; margin: 12px 0 12px;
+      text-align:center; position: relative; z-index: 0;
+    }
+    .support p{ margin: 0 0 6px; }
+    .support-buttons{ margin-top: 0; }
+
+    .support-buttons{
+      display:flex; flex-wrap:wrap; gap:12px; justify-content:center; align-items:center;
+    }
     .support-buttons .btn-holder{ height:48px; display:flex; align-items:center; justify-content:center; }
+
     #kofi-holder, #kofi-holder iframe{ margin:0 !important; }
     #kofi-holder iframe{ height:48px !important; min-height:48px !important; }
-    @media (max-width: 420px){ #kofi-holder iframe{ height:44px !important; } }
+    @media (max-width: 420px){
+      #kofi-holder iframe{ height:44px !important; }
+    }
 
-    .month-head{ display:flex; align-items:center; justify-content:center; gap:10px; margin:10px 0 6px; }
-    .month-title{ font-weight:800; font-size:20px; }
-    .month-top-nav{ display:flex; gap:10px; justify-content:center; margin:8px 0 14px; }
-    .month-top-nav .btn{ width:auto; min-width:140px; }
-    @media (max-width:420px){ .month-top-nav .btn{ min-width:120px; } }
+    .month-head{ display:flex; align-items:center; justify-content:center; gap:10px; margin: 10px 0 6px; }
+    .month-title{ font-weight: 800; font-size: 20px; }
 
-    /* Edit-Karte */
-    .edit-pop{ position: fixed; left:50%; top: 18px; transform: translateX(-50%); background:#fff; border:1px solid #e5e7eb; border-radius:16px; box-shadow: var(--shadow); padding:14px; width:min(560px, 92vw); display:none; z-index:1000; }
+    .month-top-nav{
+      display:flex; gap:10px; justify-content:center; margin: 8px 0 14px;
+    }
+    .month-top-nav .btn{ width:auto; min-width: 140px; }
+    @media (max-width:420px){ .month-top-nav .btn{ min-width: 120px; } }
+
+    /* Edit-Karte – unsichtbar bis .active */
+    .edit-pop{
+      position: fixed; left:50%; top: 18px; transform: translateX(-50%);
+      background:#ffffff; border:1px solid #e5e7eb; border-radius:16px; box-shadow: var(--shadow);
+      padding:14px; width: min(560px, 92vw); display:none; z-index: 1000;
+    }
     .edit-pop.active{ display:block; }
     .edit-title{ font-weight:800; font-size:18px; margin: 4px 0 8px; color:#111827; }
     .edit-grid{ display:grid; grid-template-columns: 1fr 1fr; gap:10px; }
     @media (max-width:560px){ .edit-grid{ grid-template-columns: 1fr; } }
     .edit-option{
-      width:100%; padding:12px 14px; border-radius:12px; border:2px solid #edf2f7; background:#fff; cursor:pointer; text-align:left; transition:.12s ease; font-size:15px;
+      width:100%; padding:12px 14px; border-radius:12px; border:2px solid #edf2f7; background:#fff; cursor:pointer; text-align:left;
+      transition:.12s ease; font-size:15px;
     }
     .edit-option:hover{ transform: translateY(-1px); box-shadow: 0 8px 18px rgba(0,0,0,.08); }
     .edit-option.sober{ border-color:#c0f1df; background:#f4fffa; }
@@ -373,69 +927,1292 @@
 
     footer{ margin-top: 18px; text-align:center; color:#475569; font-size: 13px; }
     .reset-bar{ margin-top: 16px; display:flex; justify-content:center; }
+	
+	@media (max-width: 420px){
+    .btn-stats-toggle, .btn-settings{
+      padding: 9px 14px;
+      font-size: 13px;
+      gap: 6px;
+      }
+    }
 
+    /* Neue Stile für God-Modus Elemente (passend zum bestehenden Stil) */
+    .god-mode-section {
+      margin-top: 32px;
+      padding: 20px;
+      background: linear-gradient(135deg, #f8fafc, #f1f5f9);
+      border-radius: 14px;
+      border: 2px solid #e5e7eb;
+    }
+    .assessment-title{
+      font-size: 18px;
+      font-weight: 700;
+      text-align: center;
+      margin-bottom: 20px;
+      color: var(--text);
+    }
+    .assessment-badge{
+      text-align: center;
+      margin-bottom: 24px;
+      padding: 16px;
+      border-radius: 12px;
+      font-size: 24px;
+      font-weight: 800;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    .assessment-badge.zen{ 
+      background: linear-gradient(135deg, #d1fae5, #a7f3d0); 
+      color: #065f46;
+      border: 2px solid #34d399;
+    }
+    .assessment-badge.balance{ 
+      background: linear-gradient(135deg, #fef3c7, #fde68a); 
+      color: #92400e;
+      border: 2px solid #fbbf24;
+    }
+    .assessment-badge.weekend{ 
+      background: linear-gradient(135deg, #fed7aa, #fdba74); 
+      color: #9a3412;
+      border: 2px solid #fb923c;
+    }
+    .assessment-badge.red{ 
+      background: linear-gradient(135deg, #fecaca, #fca5a5); 
+      color: #7f1d1d;
+      border: 2px solid #ef4444;
+    }
+    .assessment-metrics{
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+    @media (max-width: 560px){ 
+      .assessment-metrics{ grid-template-columns: 1fr; } 
+    }
+    .metric-item{
+      padding: 12px;
+      background: white;
+      border-radius: 10px;
+      border: 1px solid #e5e7eb;
+      position: relative;
+    }
+    .metric-label{
+      font-size: 12px;
+      color: var(--muted);
+      margin-bottom: 4px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .metric-info{
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 16px;
+      height: 16px;
+      background: var(--primary);
+      color: white;
+      border-radius: 50%;
+      font-size: 10px;
+      font-weight: 700;
+      cursor: help;
+      position: relative;
+    }
+    .metric-info:hover .metric-tooltip{
+      display: block;
+    }
+    .metric-tooltip{
+      display: none;
+      position: absolute;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 280px;
+      padding: 12px;
+      background: #1f2937;
+      color: white;
+      border-radius: 8px;
+      font-size: 11px;
+      line-height: 1.5;
+      z-index: 1000;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+      text-align: left;
+      font-weight: 400;
+    }
+    .metric-tooltip::after{
+      content: '';
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      border: 6px solid transparent;
+      border-top-color: #1f2937;
+    }
+    .metric-tooltip strong{
+      color: #60a5fa;
+      font-weight: 600;
+    }
+    @media (max-width: 560px){
+      .metric-tooltip{
+        width: 220px;
+        font-size: 10px;
+        padding: 10px;
+      }
+    }
+    .metric-value{
+      font-size: 20px;
+      font-weight: 800;
+      color: var(--text);
+    }
+    .assessment-description{
+      padding: 12px;
+      background: white;
+      border-radius: 10px;
+      border: 1px solid #e5e7eb;
+      font-size: 13px;
+      line-height: 1.6;
+      color: var(--text);
+    }
+    .assessment-description strong{
+      color: var(--primary);
+    }
+    .assessment-warning{
+      margin-top: 12px;
+      padding: 10px;
+      background: #fff7ed;
+      border-left: 4px solid #fb923c;
+      border-radius: 6px;
+      font-size: 12px;
+      color: #9a3412;
+    }
+
+    /* Settings für neutrale Tage */
+    .settings-section{
+      margin-top: 20px;
+      padding: 16px;
+      background: white;
+      border-radius: 12px;
+      border: 2px solid #e5e7eb;
+    }
+    .settings-title{
+      font-size: 14px;
+      font-weight: 700;
+      margin-bottom: 12px;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .settings-option{
+      margin-bottom: 10px;
+      padding: 10px;
+      background: #f9fafb;
+      border-radius: 8px;
+      border: 2px solid transparent;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .settings-option:hover{
+      border-color: var(--primary);
+      background: #eff6ff;
+    }
+    .settings-option input[type="radio"]{
+      margin-right: 8px;
+    }
+    .settings-option label{
+      cursor: pointer;
+      font-size: 13px;
+      color: var(--text);
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+    }
+    .settings-option.selected{
+      border-color: var(--primary);
+      background: #eff6ff;
+    }
+    .settings-explanation{
+      margin-top: 12px;
+      padding: 12px;
+      background: #f0f9ff;
+      border-left: 4px solid var(--primary);
+      border-radius: 6px;
+      font-size: 12px;
+      line-height: 1.6;
+      color: #1e40af;
+    }
+
+    /* AUDIT-C Quiz */
+    .audit-quiz{
+      margin-top: 20px;
+      padding: 16px;
+      background: white;
+      border-radius: 12px;
+      border: 2px solid #e5e7eb;
+    }
+    .audit-question{
+      margin-bottom: 16px;
+    }
+    .audit-question-label{
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 8px;
+      color: var(--text);
+      display: block;
+    }
+    .audit-options{
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .audit-option{
+      padding: 8px 12px;
+      background: #f9fafb;
+      border-radius: 6px;
+      border: 2px solid transparent;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-size: 12px;
+    }
+    .audit-option:hover{
+      border-color: var(--primary);
+      background: #eff6ff;
+    }
+    .audit-option input[type="radio"]{
+      margin-right: 8px;
+    }
+    .audit-option label{
+      cursor: pointer;
+    }
+    .audit-result{
+      margin-top: 16px;
+      padding: 16px;
+      border-radius: 10px;
+      font-size: 13px;
+      line-height: 1.6;
+    }
+    .audit-result.low{
+      background: #d1fae5;
+      border: 2px solid #34d399;
+      color: #065f46;
+    }
+    .audit-result.medium{
+      background: #fef3c7;
+      border: 2px solid #fbbf24;
+      color: #92400e;
+    }
+    .audit-result.high{
+      background: #fecaca;
+      border: 2px solid #ef4444;
+      color: #7f1d1d;
+    }
+    .audit-result strong{
+      font-size: 16px;
+      display: block;
+      margin-bottom: 8px;
+    }
+
+    /* Chart-Popup */
+    .chart-popup{
+      position: fixed; 
+      left: 50%; 
+      top: 50%; 
+      transform: translate(-50%, -50%);
+      background: #ffffff; 
+      border: 1px solid #e5e7eb; 
+      border-radius: 16px; 
+      box-shadow: 0 20px 40px rgba(31,41,55,.2);
+      padding: 20px; 
+      width: min(680px, 92vw); 
+      max-height: 85vh;
+      overflow-y: auto;
+      display: none; 
+      z-index: 1001;
+    }
+    .chart-popup.active{ display: block; }
+    .chart-popup-overlay{
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0,0,0,0.4);
+      display: none;
+      z-index: 1000;
+    }
+    .chart-popup-overlay.active{ display: block; }
+
+    /* Unauffälliger Button */
+     .btn-stats-toggle{
+       appearance: none;
+       background: linear-gradient(135deg, #eef2ff, #e0e7ff);
+       border: 1.5px solid #c7d2fe;
+       color: #1e3a8a;
+       padding: 10px 18px;
+       border-radius: 999px; /* Pill-Form */
+       font-size: 14px;
+       font-weight: 700;
+       cursor: pointer;
+       transition: transform .08s ease, box-shadow .2s ease, background .2s ease, border-color .2s ease;
+       box-shadow: 0 6px 14px rgba(79,70,229,.18);
+       display: inline-flex;
+       align-items: center;
+       gap: 8px;
+     }
+     .btn-stats-toggle:hover{
+       background: linear-gradient(135deg, #e0e7ff, #c7d2fe);
+       border-color: #a5b4fc;
+       transform: translateY(-1px);
+       box-shadow: 0 10px 20px rgba(79,70,229,.25);
+     }
+     .btn-stats-toggle:active{
+       transform: translateY(0);
+       box-shadow: 0 4px 10px rgba(79,70,229,.2);
+     }
+     .btn-stats-toggle:focus-visible{
+       outline: 3px solid #c7d2fe;
+       outline-offset: 2px;
+     }
+
+
+    /* Einstellungs-Button */
+    .btn-settings{
+      appearance: none;
+      background: linear-gradient(135deg, #f0f9ff, #dbeafe);
+      border: 1.5px solid #bae6fd;
+      color: #0c4a6e;
+      padding: 10px 18px;
+      border-radius: 999px; /* Pill-Form */
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform .08s ease, box-shadow .2s ease, background .2s ease, border-color .2s ease;
+      box-shadow: 0 6px 14px rgba(2,132,199,.16);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .btn-settings:hover{
+      background: linear-gradient(135deg, #dbeafe, #bfdbfe);
+      border-color: #93c5fd;
+      transform: translateY(-1px);
+      box-shadow: 0 10px 20px rgba(2,132,199,.22);
+    }
+    .btn-settings:active{
+      transform: translateY(0);
+      box-shadow: 0 4px 10px rgba(2,132,199,.18);
+    }
+    .btn-settings:focus-visible{
+      outline: 3px solid #93c5fd;
+      outline-offset: 2px;
+    }
+
+    /* Einstellungs-Popup */
+    .settings-popup{
+      position: fixed;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      background: #ffffff;
+      border: 1px solid #e5e7eb;
+      border-radius: 16px;
+      box-shadow: 0 20px 40px rgba(31,41,55,.25);
+      padding: 24px;
+      width: min(560px, 92vw);
+      max-height: 85vh;
+      overflow-y: auto;
+      display: none;
+      z-index: 1002;
+    }
+    .settings-popup.active{ display: block; }
+    .settings-popup-overlay{
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0,0,0,0.4);
+      display: none;
+      z-index: 1001;
+    }
+    .settings-popup-overlay.active{ display: block; }
+    .settings-title{
+      font-size: 22px;
+      font-weight: 800;
+      margin-bottom: 8px;
+      color: var(--text);
+      text-align: center;
+    }
+    .settings-subtitle{
+      font-size: 14px;
+      color: var(--muted);
+      margin-bottom: 24px;
+      text-align: center;
+    }
+    .settings-section{
+      margin-bottom: 24px;
+    }
+    .settings-section-title{
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 12px;
+      color: var(--text);
+    }
+    .settings-description{
+      font-size: 13px;
+      color: var(--muted);
+      margin-bottom: 16px;
+      line-height: 1.6;
+    }
+    .settings-options{
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .settings-option{
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 14px;
+      border: 2px solid #e5e7eb;
+      border-radius: 12px;
+      background: #fff;
+      cursor: pointer;
+      transition: all .2s ease;
+    }
+    .settings-option:hover{
+      border-color: var(--primary);
+      background: #f8faff;
+    }
+    .settings-option.selected{
+      border-color: var(--primary);
+      background: linear-gradient(135deg, #eef2ff, #f8faff);
+      box-shadow: 0 4px 12px rgba(79,70,229,0.15);
+    }
+    .settings-option input[type="radio"]{
+      margin-top: 2px;
+      transform: scale(1.3);
+      accent-color: var(--primary);
+    }
+    .settings-option-content{
+      flex: 1;
+    }
+    .settings-option-title{
+      font-weight: 700;
+      font-size: 14px;
+      color: var(--text);
+      margin-bottom: 4px;
+    }
+    .settings-option-desc{
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+    .settings-info-box{
+      padding: 14px;
+      background: #eff6ff;
+      border-left: 4px solid var(--primary);
+      border-radius: 8px;
+      font-size: 12px;
+      color: #1e40af;
+      line-height: 1.6;
+      margin-top: 16px;
+    }
+    .settings-info-box strong{
+      color: #1e3a8a;
+    }
+
+    .legend{
+      display:flex; flex-wrap:wrap; gap:10px 14px; margin: 10px 0 14px; color:var(--muted); font-size: 13px;
+    }
+    .legend span{ display: flex; align-items: center; gap: 6px; }
+
+    .cal{
+      display:grid; grid-template-columns: repeat(7, 1fr); gap:8px; margin-bottom: 10px;
+      position: relative;
+    }
+    .weekday{
+      text-align:center; font-weight:700; font-size:12px; color:#475569; padding:6px 0;
+      background:#f1f5f9; border-radius:8px; border:1px solid #e7eef6;
+    }
+
+    /* Tageszellen */
+    .day{
+      aspect-ratio:1; display:flex; align-items:center; justify-content:center;
+      border-radius:10px; border:1px solid #e7eef6; background:#fff; font-weight:700; cursor:pointer;
+      transition:.1s ease; position:relative; z-index: 1; user-select:none;
+    }
+    .day:hover{ transform: scale(1.03); box-shadow: 0 8px 18px rgba(0,0,0,.08); }
+    .day.sober{ background:#10b981; color:#fff; }
+    .day.wellness{ background:#22c55e; color:#fff; }
+    .day.wellness::after{ content:"❗"; position:absolute; top:4px; right:6px; font-size:12px; }
+    .day.moderate{ background:#f59e0b; color:#fff; }
+    .day.mixed{ background:#dc2626; color:#fff; }
+    .day.mixed::after{ content:"❤️"; position:absolute; top:4px; right:6px; font-size:12px; }
+    .day.alcohol{ background:#ef4444; color:#fff; }
+    .day.superday{ background:#059669; color:#fff; }
+    .day.superday::after{ content:"⭐"; position:absolute; top:4px; right:6px; font-size:12px; }
+
+    /* HEUTE: nur Ring, KEIN Hintergrund-Override! */
+    .day.today{
+      outline: 3px solid var(--primary);
+      outline-offset: -3px;
+    }
+
+    /* Kommentar-Tooltip für Kalendertage */
+    .day-comment-tooltip{
+      display: none;
+      position: absolute;
+      bottom: calc(100% + 8px);
+      left: 50%;
+      transform: translateX(-50%);
+      min-width: 200px;
+      max-width: 280px;
+      padding: 10px 12px;
+      background: #1f2937;
+      color: white;
+      border-radius: 8px;
+      font-size: 11px;
+      line-height: 1.5;
+      z-index: 1000;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+      text-align: left;
+      font-weight: 400;
+      pointer-events: none;
+      white-space: pre-wrap;
+      word-wrap: break-word;
+    }
+    .day-comment-tooltip::after{
+      content: '';
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      border: 6px solid transparent;
+      border-top-color: #1f2937;
+    }
+    .day.has-comment{
+      position: relative;
+    }
+    .day.has-comment::before{
+      content: '💬';
+      position: absolute;
+      top: 2px;
+      right: 2px;
+      font-size: 10px;
+      opacity: 0.8;
+    }
+    .day.has-comment:hover .day-comment-tooltip{
+      display: block;
+    }
+
+    /* Spendenbereich */
+    .support{
+      background:#f8fafc; border:1px solid #e5e7eb; border-radius: 14px; padding: 14px; margin: 12px 0 12px;
+      text-align:center; position: relative; z-index: 0;
+    }
+    .support p{ margin: 0 0 6px; }
+    .support-buttons{ margin-top: 0; }
+
+    .support-buttons{
+      display:flex; flex-wrap:wrap; gap:12px; justify-content:center; align-items:center;
+    }
+    .support-buttons .btn-holder{ height:48px; display:flex; align-items:center; justify-content:center; }
+
+    #kofi-holder, #kofi-holder iframe{ margin:0 !important; }
+    #kofi-holder iframe{ height:48px !important; min-height:48px !important; }
     @media (max-width: 420px){
-      .btn-stats-toggle, .btn-settings{ padding: 9px 14px; font-size: 13px; gap: 6px; }
+      #kofi-holder iframe{ height:44px !important; }
     }
 
-    /* ============ GOD-MODUS – neue Styles ============ */
-    .god-card{
-      margin-top:16px; padding:14px; background:#f9fafb; border:1px solid #e5e7eb; border-radius:14px;
-    }
-    .god-title{ font-weight:800; font-size:16px; margin:2px 0 10px; color:#0f172a; display:flex; align-items:center; gap:8px; }
-    .god-grid{ display:grid; grid-template-columns:1fr 1fr; gap:12px; }
-    @media (max-width:640px){ .god-grid{ grid-template-columns:1fr; } }
-    .god-field{
-      background:#fff; border:1px solid #e5e7eb; border-radius:10px; padding:10px;
-    }
-    .god-field label{ display:block; font-size:12px; color:#475569; margin-bottom:6px; font-weight:600; }
-    .god-field input, .god-field select{
-      width:100%; padding:10px; border:1px solid #d1d5db; border-radius:8px; font-size:13px; font-family:inherit; background:#fff;
-    }
-    .god-note{ font-size:12px; color:#64748b; margin-top:8px; }
-    .pill{
-      display:inline-block; padding:6px 10px; border-radius:999px; background:#eef2ff; border:1px solid #c7d2fe; color:#1e3a8a; font-weight:700; font-size:12px;
-    }
-    .calc-line{ margin-top:8px; font-size:13px; font-weight:700; color:#0f172a; }
-    .mini-muted{ font-size:11px; color:#64748b; }
+    .month-head{ display:flex; align-items:center; justify-content:center; gap:10px; margin: 10px 0 6px; }
+    .month-title{ font-weight: 800; font-size: 20px; }
 
-    /* Toggle-Switch */
-    .switch{ position:relative; display:inline-block; width:52px; height:28px; }
-    .switch input{ opacity:0; width:0; height:0; }
-    .slider{
-      position:absolute; cursor:pointer; inset:0; background:#e5e7eb; transition:.2s; border-radius:999px; border:1px solid #cbd5e1;
+    .month-top-nav{
+      display:flex; gap:10px; justify-content:center; margin: 8px 0 14px;
     }
-    .slider:before{
-      position:absolute; content:""; height:22px; width:22px; left:3px; top:2px; background:white; transition:.2s; border-radius:50%; box-shadow: 0 2px 6px rgba(0,0,0,0.15);
-    }
-    .switch input:checked + .slider{ background:#c7d2fe; border-color:#a5b4fc; }
-    .switch input:checked + .slider:before{ transform: translateX(24px); }
+    .month-top-nav .btn{ width:auto; min-width: 140px; }
+    @media (max-width:420px){ .month-top-nav .btn{ min-width: 120px; } }
 
-    /* Detaillierte Analyse (Popup) */
-    .detail-analysis{ margin-top:16px; padding:16px; background:#fff; border:1px solid #e5e7eb; border-radius:12px; display:none; }
-    .detail-grid{ display:grid; grid-template-columns:1fr 1fr; gap:12px; }
-    @media (max-width:560px){ .detail-grid{ grid-template-columns:1fr; } }
-    .detail-item{ padding:12px; background:#f8fafc; border:1px solid #e5e7eb; border-radius:10px; }
-    .detail-item .label{ font-size:12px; color:#64748b; margin-bottom:6px; }
-    .detail-item .value{ font-size:18px; font-weight:800; color:#0f172a; }
-    .stage-badge{
-      margin-top:12px; padding:12px; border-radius:12px; text-align:center; font-weight:900; font-size:18px; border:2px solid transparent;
+    /* Edit-Karte – unsichtbar bis .active */
+    .edit-pop{
+      position: fixed; left:50%; top: 18px; transform: translateX(-50%);
+      background:#ffffff; border:1px solid #e5e7eb; border-radius:16px; box-shadow: var(--shadow);
+      padding:14px; width: min(560px, 92vw); display:none; z-index: 1000;
     }
-    .stage-1{ background:linear-gradient(135deg,#d1fae5,#a7f3d0); color:#065f46; border-color:#34d399; }
-    .stage-2{ background:linear-gradient(135deg,#fef3c7,#fde68a); color:#92400e; border-color:#fbbf24; }
-    .stage-3{ background:linear-gradient(135deg,#fed7aa,#fdba74); color:#9a3412; border-color:#fb923c; }
-    .stage-4{ background:linear-gradient(135deg,#fecaca,#fca5a5); color:#7f1d1d; border-color:#ef4444; }
-    .stage-5{ background:linear-gradient(135deg,#fecdd3,#fda4af); color:#7f1d1d; border-color:#ef4444; }
-    .detail-warning{ margin-top:10px; padding:10px; background:#fff7ed; border-left:4px solid #fb923c; border-radius:8px; font-size:12px; color:#9a3412; }
-    .detail-actions{ margin-top:12px; text-align:center; }
-    .detail-toggle{ margin-top:10px; }
+    .edit-pop.active{ display:block; }
+    .edit-title{ font-weight:800; font-size:18px; margin: 4px 0 8px; color:#111827; }
+    .edit-grid{ display:grid; grid-template-columns: 1fr 1fr; gap:10px; }
+    @media (max-width:560px){ .edit-grid{ grid-template-columns: 1fr; } }
+    .edit-option{
+      width:100%; padding:12px 14px; border-radius:12px; border:2px solid #edf2f7; background:#fff; cursor:pointer; text-align:left;
+      transition:.12s ease; font-size:15px;
+    }
+    .edit-option:hover{ transform: translateY(-1px); box-shadow: 0 8px 18px rgba(0,0,0,.08); }
+    .edit-option.sober{ border-color:#c0f1df; background:#f4fffa; }
+    .edit-option.wellness{ border-color:#b3f5cc; background:#f0fdf5; position:relative; }
+    .edit-option.wellness::after{ content:"❗"; position:absolute; right:14px; top:50%; transform:translateY(-50%); }
+    .edit-option.moderate{ border-color:#ffe5b5; background:#fff9ec; }
+    .edit-option.mixed{ border-color:#fecaca; background:#fef2f2; position:relative; }
+    .edit-option.mixed::after{ content:"❤️"; position:absolute; right:14px; top:50%; transform:translateY(-50%); }
+    .edit-option.alcohol{ border-color:#ffcaca; background:#fff2f2; }
+    .edit-option.superday{ border-color:#b7f3d2; background:linear-gradient(135deg,#f6fff9,#f1fff7); position:relative; }
+    .edit-option.superday::after{ content:"⭐"; position:absolute; right:14px; top:50%; transform:translateY(-50%); }
+    .edit-option.delete{ border-color:#e2e8f0; background:#f8fafc; }
+
+    footer{ margin-top: 18px; text-align:center; color:#475569; font-size: 13px; }
+    .reset-bar{ margin-top: 16px; display:flex; justify-content:center; }
+	
+	@media (max-width: 420px){
+    .btn-stats-toggle, .btn-settings{
+      padding: 9px 14px;
+      font-size: 13px;
+      gap: 6px;
+      }
+    }
+
+    /* Neue Stile für God-Modus-Elemente (passend zum bestehenden Stil) */
+    .god-mode-section {
+      margin-top: 32px;
+      padding: 20px;
+      background: linear-gradient(135deg, #f8fafc, #f1f5f9);
+      border-radius: 14px;
+      border: 2px solid #e5e7eb;
+    }
+    .assessment-title{
+      font-size: 18px;
+      font-weight: 700;
+      text-align: center;
+      margin-bottom: 20px;
+      color: var(--text);
+    }
+    .assessment-badge{
+      text-align: center;
+      margin-bottom: 24px;
+      padding: 16px;
+      border-radius: 12px;
+      font-size: 24px;
+      font-weight: 800;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    .assessment-badge.zen{ 
+      background: linear-gradient(135deg, #d1fae5, #a7f3d0); 
+      color: #065f46;
+      border: 2px solid #34d399;
+    }
+    .assessment-badge.balance{ 
+      background: linear-gradient(135deg, #fef3c7, #fde68a); 
+      color: #92400e;
+      border: 2px solid #fbbf24;
+    }
+    .assessment-badge.weekend{ 
+      background: linear-gradient(135deg, #fed7aa, #fdba74); 
+      color: #9a3412;
+      border: 2px solid #fb923c;
+    }
+    .assessment-badge.red{ 
+      background: linear-gradient(135deg, #fecaca, #fca5a5); 
+      color: #7f1d1d;
+      border: 2px solid #ef4444;
+    }
+    .assessment-metrics{
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+    @media (max-width: 560px){ 
+      .assessment-metrics{ grid-template-columns: 1fr; } 
+    }
+    .metric-item{
+      padding: 12px;
+      background: white;
+      border-radius: 10px;
+      border: 1px solid #e5e7eb;
+      position: relative;
+    }
+    .metric-label{
+      font-size: 12px;
+      color: var(--muted);
+      margin-bottom: 4px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .metric-info{
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 16px;
+      height: 16px;
+      background: var(--primary);
+      color: white;
+      border-radius: 50%;
+      font-size: 10px;
+      font-weight: 700;
+      cursor: help;
+      position: relative;
+    }
+    .metric-info:hover .metric-tooltip{
+      display: block;
+    }
+    .metric-tooltip{
+      display: none;
+      position: absolute;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 280px;
+      padding: 12px;
+      background: #1f2937;
+      color: white;
+      border-radius: 8px;
+      font-size: 11px;
+      line-height: 1.5;
+      z-index: 1000;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+      text-align: left;
+      font-weight: 400;
+    }
+    .metric-tooltip::after{
+      content: '';
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      border: 6px solid transparent;
+      border-top-color: #1f2937;
+    }
+    .metric-tooltip strong{
+      color: #60a5fa;
+      font-weight: 600;
+    }
+    @media (max-width: 560px){
+      .metric-tooltip{
+        width: 220px;
+        font-size: 10px;
+        padding: 10px;
+      }
+    }
+    .metric-value{
+      font-size: 20px;
+      font-weight: 800;
+      color: var(--text);
+    }
+    .assessment-description{
+      padding: 12px;
+      background: white;
+      border-radius: 10px;
+      border: 1px solid #e5e7eb;
+      font-size: 13px;
+      line-height: 1.6;
+      color: var(--text);
+    }
+    .assessment-description strong{
+      color: var(--primary);
+    }
+    .assessment-warning{
+      margin-top: 12px;
+      padding: 10px;
+      background: #fff7ed;
+      border-left: 4px solid #fb923c;
+      border-radius: 6px;
+      font-size: 12px;
+      color: #9a3412;
+    }
+
+    /* Settings für neutrale Tage */
+    .settings-section{
+      margin-top: 20px;
+      padding: 16px;
+      background: white;
+      border-radius: 12px;
+      border: 2px solid #e5e7eb;
+    }
+    .settings-title{
+      font-size: 14px;
+      font-weight: 700;
+      margin-bottom: 12px;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .settings-option{
+      margin-bottom: 10px;
+      padding: 10px;
+      background: #f9fafb;
+      border-radius: 8px;
+      border: 2px solid transparent;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .settings-option:hover{
+      border-color: var(--primary);
+      background: #eff6ff;
+    }
+    .settings-option input[type="radio"]{
+      margin-right: 8px;
+    }
+    .settings-option label{
+      cursor: pointer;
+      font-size: 13px;
+      color: var(--text);
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+    }
+    .settings-option.selected{
+      border-color: var(--primary);
+      background: #eff6ff;
+    }
+    .settings-explanation{
+      margin-top: 12px;
+      padding: 12px;
+      background: #f0f9ff;
+      border-left: 4px solid var(--primary);
+      border-radius: 6px;
+      font-size: 12px;
+      line-height: 1.6;
+      color: #1e40af;
+    }
+
+    /* AUDIT-C Quiz */
+    .audit-quiz{
+      margin-top: 20px;
+      padding: 16px;
+      background: white;
+      border-radius: 12px;
+      border: 2px solid #e5e7eb;
+    }
+    .audit-question{
+      margin-bottom: 16px;
+    }
+    .audit-question-label{
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 8px;
+      color: var(--text);
+      display: block;
+    }
+    .audit-options{
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .audit-option{
+      padding: 8px 12px;
+      background: #f9fafb;
+      border-radius: 6px;
+      border: 2px solid transparent;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-size: 12px;
+    }
+    .audit-option:hover{
+      border-color: var(--primary);
+      background: #eff6ff;
+    }
+    .audit-option input[type="radio"]{
+      margin-right: 8px;
+    }
+    .audit-option label{
+      cursor: pointer;
+    }
+    .audit-result{
+      margin-top: 16px;
+      padding: 16px;
+      border-radius: 10px;
+      font-size: 13px;
+      line-height: 1.6;
+    }
+    .audit-result.low{
+      background: #d1fae5;
+      border: 2px solid #34d399;
+      color: #065f46;
+    }
+    .audit-result.medium{
+      background: #fef3c7;
+      border: 2px solid #fbbf24;
+      color: #92400e;
+    }
+    .audit-result.high{
+      background: #fecaca;
+      border: 2px solid #ef4444;
+      color: #7f1d1d;
+    }
+    .audit-result strong{
+      font-size: 16px;
+      display: block;
+      margin-bottom: 8px;
+    }
+
+    /* Chart-Popup */
+    .chart-popup{
+      position: fixed; 
+      left: 50%; 
+      top: 50%; 
+      transform: translate(-50%, -50%);
+      background: #ffffff; 
+      border: 1px solid #e5e7eb; 
+      border-radius: 16px; 
+      box-shadow: 0 20px 40px rgba(31,41,55,.2);
+      padding: 20px; 
+      width: min(680px, 92vw); 
+      max-height: 85vh;
+      overflow-y: auto;
+      display: none; 
+      z-index: 1001;
+    }
+    .chart-popup.active{ display: block; }
+    .chart-popup-overlay{
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0,0,0,0.4);
+      display: none;
+      z-index: 1000;
+    }
+    .chart-popup-overlay.active{ display: block; }
+
+    /* Unauffälliger Button */
+     .btn-stats-toggle{
+       appearance: none;
+       background: linear-gradient(135deg, #eef2ff, #e0e7ff);
+       border: 1.5px solid #c7d2fe;
+       color: #1e3a8a;
+       padding: 10px 18px;
+       border-radius: 999px; /* Pill-Form */
+       font-size: 14px;
+       font-weight: 700;
+       cursor: pointer;
+       transition: transform .08s ease, box-shadow .2s ease, background .2s ease, border-color .2s ease;
+       box-shadow: 0 6px 14px rgba(79,70,229,.18);
+       display: inline-flex;
+       align-items: center;
+       gap: 8px;
+     }
+     .btn-stats-toggle:hover{
+       background: linear-gradient(135deg, #e0e7ff, #c7d2fe);
+       border-color: #a5b4fc;
+       transform: translateY(-1px);
+       box-shadow: 0 10px 20px rgba(79,70,229,.25);
+     }
+     .btn-stats-toggle:active{
+       transform: translateY(0);
+       box-shadow: 0 4px 10px rgba(79,70,229,.2);
+     }
+     .btn-stats-toggle:focus-visible{
+       outline: 3px solid #c7d2fe;
+       outline-offset: 2px;
+     }
+
+
+    /* Einstellungs-Button */
+    .btn-settings{
+      appearance: none;
+      background: linear-gradient(135deg, #f0f9ff, #dbeafe);
+      border: 1.5px solid #bae6fd;
+      color: #0c4a6e;
+      padding: 10px 18px;
+      border-radius: 999px; /* Pill-Form */
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform .08s ease, box-shadow .2s ease, background .2s ease, border-color .2s ease;
+      box-shadow: 0 6px 14px rgba(2,132,199,.16);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .btn-settings:hover{
+      background: linear-gradient(135deg, #dbeafe, #bfdbfe);
+      border-color: #93c5fd;
+      transform: translateY(-1px);
+      box-shadow: 0 10px 20px rgba(2,132,199,.22);
+    }
+    .btn-settings:active{
+      transform: translateY(0);
+      box-shadow: 0 4px 10px rgba(2,132,199,.18);
+    }
+    .btn-settings:focus-visible{
+      outline: 3px solid #93c5fd;
+      outline-offset: 2px;
+    }
+
+    /* Einstellungs-Popup */
+    .settings-popup{
+      position: fixed;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      background: #ffffff;
+      border: 1px solid #e5e7eb;
+      border-radius: 16px;
+      box-shadow: 0 20px 40px rgba(31,41,55,.25);
+      padding: 24px;
+      width: min(560px, 92vw);
+      max-height: 85vh;
+      overflow-y: auto;
+      display: none;
+      z-index: 1002;
+    }
+    .settings-popup.active{ display: block; }
+    .settings-popup-overlay{
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0,0,0,0.4);
+      display: none;
+      z-index: 1001;
+    }
+    .settings-popup-overlay.active{ display: block; }
+    .settings-title{
+      font-size: 22px;
+      font-weight: 800;
+      margin-bottom: 8px;
+      color: var(--text);
+      text-align: center;
+    }
+    .settings-subtitle{
+      font-size: 14px;
+      color: var(--muted);
+      margin-bottom: 24px;
+      text-align: center;
+    }
+    .settings-section{
+      margin-bottom: 24px;
+    }
+    .settings-section-title{
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 12px;
+      color: var(--text);
+    }
+    .settings-description{
+      font-size: 13px;
+      color: var(--muted);
+      margin-bottom: 16px;
+      line-height: 1.6;
+    }
+    .settings-options{
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .settings-option{
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 14px;
+      border: 2px solid #e5e7eb;
+      border-radius: 12px;
+      background: #fff;
+      cursor: pointer;
+      transition: all .2s ease;
+    }
+    .settings-option:hover{
+      border-color: var(--primary);
+      background: #f8faff;
+    }
+    .settings-option.selected{
+      border-color: var(--primary);
+      background: linear-gradient(135deg, #eef2ff, #f8faff);
+      box-shadow: 0 4px 12px rgba(79,70,229,0.15);
+    }
+    .settings-option input[type="radio"]{
+      margin-top: 2px;
+      transform: scale(1.3);
+      accent-color: var(--primary);
+    }
+    .settings-option-content{
+      flex: 1;
+    }
+    .settings-option-title{
+      font-weight: 700;
+      font-size: 14px;
+      color: var(--text);
+      margin-bottom: 4px;
+    }
+    .settings-option-desc{
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+    .settings-info-box{
+      padding: 14px;
+      background: #eff6ff;
+      border-left: 4px solid var(--primary);
+      border-radius: 8px;
+      font-size: 12px;
+      color: #1e40af;
+      line-height: 1.6;
+      margin-top: 16px;
+    }
+    .settings-info-box strong{
+      color: #1e3a8a;
+    }
+
+    .legend{
+      display:flex; flex-wrap:wrap; gap:10px 14px; margin: 10px 0 14px; color:var(--muted); font-size: 13px;
+    }
+    .legend span{ display: flex; align-items: center; gap: 6px; }
+
+    .cal{
+      display:grid; grid-template-columns: repeat(7, 1fr); gap:8px; margin-bottom: 10px;
+      position: relative;
+    }
+    .weekday{
+      text-align:center; font-weight:700; font-size:12px; color:#475569; padding:6px 0;
+      background:#f1f5f9; border-radius:8px; border:1px solid #e7eef6;
+    }
+
+    /* Tageszellen */
+    .day{
+      aspect-ratio:1; display:flex; align-items:center; justify-content:center;
+      border-radius:10px; border:1px solid #e7eef6; background:#fff; font-weight:700; cursor:pointer;
+      transition:.1s ease; position:relative; z-index: 1; user-select:none;
+    }
+    .day:hover{ transform: scale(1.03); box-shadow: 0 8px 18px rgba(0,0,0,.08); }
+    .day.sober{ background:#10b981; color:#fff; }
+    .day.wellness{ background:#22c55e; color:#fff; }
+    .day.wellness::after{ content:"❗"; position:absolute; top:4px; right:6px; font-size:12px; }
+    .day.moderate{ background:#f59e0b; color:#fff; }
+    .day.mixed{ background:#dc2626; color:#fff; }
+    .day.mixed::after{ content:"❤️"; position:absolute; top:4px; right:6px; font-size:12px; }
+    .day.alcohol{ background:#ef4444; color:#fff; }
+    .day.superday{ background:#059669; color:#fff; }
+    .day.superday::after{ content:"⭐"; position:absolute; top:4px; right:6px; font-size:12px; }
+
+    /* HEUTE: nur Ring, KEIN Hintergrund-Override! */
+    .day.today{
+      outline: 3px solid var(--primary);
+      outline-offset: -3px;
+    }
+
+    /* Kommentar-Tooltip für Kalendertage */
+    .day-comment-tooltip{
+      display: none;
+      position: absolute;
+      bottom: calc(100% + 8px);
+      left: 50%;
+      transform: translateX(-50%);
+      min-width: 200px;
+      max-width: 280px;
+      padding: 10px 12px;
+      background: #1f2937;
+      color: white;
+      border-radius: 8px;
+      font-size: 11px;
+      line-height: 1.5;
+      z-index: 1000;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+      text-align: left;
+      font-weight: 400;
+      pointer-events: none;
+      white-space: pre-wrap;
+      word-wrap: break-word;
+    }
+    .day-comment-tooltip::after{
+      content: '';
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      border: 6px solid transparent;
+      border-top-color: #1f2937;
+    }
+    .day.has-comment{
+      position: relative;
+    }
+    .day.has-comment::before{
+      content: '💬';
+      position: absolute;
+      top: 2px;
+      right: 2px;
+      font-size: 10px;
+      opacity: 0.8;
+    }
+    .day.has-comment:hover .day-comment-tooltip{
+      display: block;
+    }
+
+    /* Spendenbereich */
+    .support{
+      background:#f8fafc; border:1px solid #e5e7eb; border-radius: 14px; padding: 14px; margin: 12px 0 12px;
+      text-align:center; position: relative; z-index: 0;
+    }
+    .support p{ margin: 0 0 6px; }
+    .support-buttons{ margin-top: 0; }
+
+    .support-buttons{
+      display:flex; flex-wrap:wrap; gap:12px; justify-content:center; align-items:center;
+    }
+    .support-buttons .btn-holder{ height:48px; display:flex; align-items:center; justify-content:center; }
+
+    #kofi-holder, #kofi-holder iframe{ margin:0 !important; }
+    #kofi-holder iframe{ height:48px !important; min-height:48px !important; }
+    @media (max-width: 420px){
+      #kofi-holder iframe{ height:44px !important; }
+    }
+
+    .month-head{ display:flex; align-items:center; justify-content:center; gap:10px; margin: 10px 0 6px; }
+    .month-title{ font-weight: 800; font-size: 20px; }
+
+    .month-top-nav{
+      display:flex; gap:10px; justify-content:center; margin: 8px 0 14px;
+    }
+    .month-top-nav .btn{ width:auto; min-width: 140px; }
+    @media (max-width:420px){ .month-top-nav .btn{ min-width: 120px; } }
+
+    /* Edit-Karte – unsichtbar bis .active */
+    .edit-pop{
+      position: fixed; left:50%; top: 18px; transform: translateX(-50%);
+      background:#ffffff; border:1px solid #e5e7eb; border-radius:16px; box-shadow: var(--shadow);
+      padding:14px; width: min(560px, 92vw); display:none; z-index: 1000;
+    }
+    .edit-pop.active{ display:block; }
+    .edit-title{ font-weight:800; font-size:18px; margin: 4px 0 8px; color:#111827; }
+    .edit-grid{ display:grid; grid-template-columns: 1fr 1fr; gap:10px; }
+    @media (max-width:560px){ .edit-grid{ grid-template-columns: 1fr; } }
+    .edit-option{
+      width:100%; padding:12px 14px; border-radius:12px; border:2px solid #edf2f7; background:#fff; cursor:pointer; text-align:left;
+      transition:.12s ease; font-size:15px;
+    }
+    .edit-option:hover{ transform: translateY(-1px); box-shadow: 0 8px 18px rgba(0,0,0,.08); }
+    .edit-option.sober{ border-color:#c0f1df; background:#f4fffa; }
+    .edit-option.wellness{ border-color:#b3f5cc; background:#f0fdf5; position:relative; }
+    .edit-option.wellness::after{ content:"❗"; position:absolute; right:14px; top:50%; transform:translateY(-50%); }
+    .edit-option.moderate{ border-color:#ffe5b5; background:#fff9ec; }
+    .edit-option.mixed{ border-color:#fecaca; background:#fef2f2; position:relative; }
+    .edit-option.mixed::after{ content:"❤️"; position:absolute; right:14px; top:50%; transform:translateY(-50%); }
+    .edit-option.alcohol{ border-color:#ffcaca; background:#fff2f2; }
+    .edit-option.superday{ border-color:#b7f3d2; background:linear-gradient(135deg,#f6fff9,#f1fff7); position:relative; }
+    .edit-option.superday::after{ content:"⭐"; position:absolute; right:14px; top:50%; transform:translateY(-50%); }
+    .edit-option.delete{ border-color:#e2e8f0; background:#f8fafc; }
+
+    footer{ margin-top: 18px; text-align:center; color:#475569; font-size: 13px; }
+    .reset-bar{ margin-top: 16px; display:flex; justify-content:center; }
+	
+	@media (max-width: 420px){
+    .btn-stats-toggle, .btn-settings{
+      padding: 9px 14px;
+      font-size: 13px;
+      gap: 6px;
+      }
+    }
+
   </style>
 </head>
 <body>
   <div class="container">
     <!-- Tag-Eingabe Ansicht -->
     <div id="dayInputView" class="view active">
-      <h1>🍷 Ralles wunderbarer Booze-Tracker</h1>
+      <h1>🍷 Ralles wunderbarer Booze-Tracker Grok edit Vers 1 11:42</h1>
       <div class="current-date" id="currentDateDisplay"></div>
 
       <div style="margin-top: 16px;">
@@ -474,59 +2251,6 @@
           <input type="radio" name="dayChoice" value="alcohol" />
           <span>🔴 Alkohol – Viel Alkohol getrunken</span>
         </label>
-      </div>
-
-      <!-- GOD-MODUS: Detaillierte Eingabe (nur sichtbar, wenn aktiviert) -->
-      <div id="godModeCard" class="god-card" style="display:none;">
-        <div class="god-title">🧠 God-Modus – Detailliertes Tracking <span class="pill">optional, aber empfohlen</span></div>
-
-        <div class="god-grid">
-          <!-- Alkohol -->
-          <div class="god-field">
-            <label>🍺 Getränketyp</label>
-            <select id="gmAlcoholType">
-              <option value="beer" data-abv="5">Bier (5%)</option>
-              <option value="radler" data-abv="2.5">Radler (2.5%)</option>
-              <option value="wine" data-abv="10">Wein (10%)</option>
-              <option value="liqueur" data-abv="15">Likör (15%)</option>
-              <option value="other20" data-abv="20">Sonstiges 20%</option>
-              <option value="other30" data-abv="30">Sonstiges 30%</option>
-              <option value="spirits" data-abv="40">Spirituosen (40%)</option>
-            </select>
-
-            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:8px; margin-top:8px;">
-              <div>
-                <label>Menge (ml)</label>
-                <input id="gmAlcoholMl" type="number" min="0" step="10" placeholder="z.B. 500" />
-              </div>
-              <div>
-                <label>Anzahl Portionen</label>
-                <input id="gmAlcoholPortions" type="number" min="1" step="1" value="1" />
-              </div>
-            </div>
-
-            <div class="calc-line">
-              ≈ <span id="gmAlcoholGrams">0</span> g Alkohol · ≈ <span id="gmAlcoholDrinks">0</span> Drinks
-              <div class="mini-muted">(1 Drink = 10 g Alkohol)</div>
-            </div>
-          </div>
-
-          <!-- Marijuana -->
-          <div class="god-field">
-            <label>🍀 Marijuana – Menge (g)</label>
-            <input id="gmWeedGrams" type="number" min="0" step="0.1" placeholder="z.B. 0.5" />
-            <div style="margin-top:8px;">
-              <label>Häufigkeit</label>
-              <select id="gmWeedFreq">
-                <option value="einmalig">einmalig</option>
-                <option value="mehrmals">mehrmals am Tag</option>
-              </select>
-            </div>
-            <div class="god-note">Hinweis: Für die Wochenanalyse wird bei „mehrmals“ konservativ mit Faktor 2 gerechnet.</div>
-          </div>
-        </div>
-
-        <div class="god-note">💡 Die Kategorien oben bleiben Pflicht. Details werden automatisch gespeichert, sobald ein Tagesstatus gesetzt ist.</div>
       </div>
 
       <div class="submit-row">
@@ -589,13 +2313,18 @@
       <section class="support">
         <p><strong>Findest diese kleine Anwendung nützlich?</strong> Dann spendier mir doch einen Kaffee:</p>
         <div class="support-buttons">
+          <!-- Ko-fi Button -->
           <div id="kofi-holder" class="btn-holder">
             <div id="kofi-widget" aria-label="Ko-fi Unterstützungsbutton"></div>
           </div>
+
+          <!-- Buy Me a Coffee Button -->
           <div class="btn-holder">
             <a href="https://www.buymeacoffee.com/rduwenbecky"><img src="https://img.buymeacoffee.com/button-api/?text=Spendier mir ´n Kaffee! &emoji=☕&slug=rduwenbecky&button_colour=5F7FFF&font_colour=ffffff&font_family=Lato&outline_colour=000000&coffee_colour=FFDD00" /></a>
           </div>
         </div>
+
+        <!-- Ko-fi Widget-Script -->
         <script type="text/javascript" src="https://storage.ko-fi.com/cdn/widget/Widget_2.js"></script>
         <script type="text/javascript">
           kofiwidget2.init('Spendier mir n´ Kaffee Ko-fi', '#72a4f2', 'R5R319DK8N');
@@ -644,6 +2373,7 @@
       <div class="chart-section">
         <div class="chart-title">📊 Letzte 100 Tage im Überblick</div>
         <div class="chart-bars">
+          <!-- Negativer Balken -->
           <div class="chart-bar-container">
             <div class="chart-bar-header">
               <div class="chart-bar-label">
@@ -659,6 +2389,7 @@
               <div class="chart-bar negative" id="chartNegative" style="width: 0%;"></div>
             </div>
           </div>
+          <!-- Positiver Balken -->
           <div class="chart-bar-container">
             <div class="chart-bar-header">
               <div class="chart-bar-label">
@@ -677,20 +2408,25 @@
         </div>
       </div>
 
-      <!-- Gesundheitsbewertung (Basis bleibt) -->
+      <!-- Gesundheitsbewertung -->
       <div class="health-assessment">
         <div class="assessment-title">🎯 Deine Gesundheitseinschätzung</div>
-        <div class="assessment-badge" id="assessmentBadge"></div>
+        
+        <div class="assessment-badge" id="assessmentBadge">
+          <!-- Wird dynamisch gefüllt -->
+        </div>
 
         <div class="assessment-metrics">
           <div class="metric-item">
             <div class="metric-label">
               AF-Quote (alkoholfrei)
-              <span class="metric-info">ℹ
+              <span class="metric-info">
+                ℹ
                 <span class="metric-tooltip">
                   Prozentsatz alkoholfreier Tage:<br>
                   <strong>Supertag + Wellness + Alkoholfrei</strong><br><br>
-                  Je höher, desto besser.
+                  WHO-Standard für gesunde Abstinenz.<br>
+                  Je höher, desto besser!
                 </span>
               </span>
             </div>
@@ -699,10 +2435,16 @@
           <div class="metric-item">
             <div class="metric-label">
               Gewichtete Gesundheit
-              <span class="metric-info">ℹ
+              <span class="metric-info">
+                ℹ
                 <span class="metric-tooltip">
-                  Score über Tageskategorien (Supertag=100% … Viel=0%).<br>
-                  Einstellungen für neutrale Tage wirken hier hinein.
+                  Dein Gesundheits-Score:<br>
+                  • <strong>Supertag = 100%</strong> (Gold!)<br>
+                  • Wellness = 90% (Sehr gut)<br>
+                  • Alkoholfrei = 75% (Gut)<br>
+                  • Moderat = 40% (Risiko-arm)<br>
+                  • "Schadensbegrenzung" = 25% (Kompensiert nichts)<br>
+                  • Viel = 0% (Schädlich)
                 </span>
               </span>
             </div>
@@ -710,10 +2452,16 @@
           </div>
           <div class="metric-item">
             <div class="metric-label">
-              Binge-Nähe
-              <span class="metric-info">ℹ
+              Binge-Nähe (Hochrisiko)
+              <span class="metric-info">
+                ℹ
                 <span class="metric-tooltip">
-                  Hochrisiko-Tage: "Viel" + "Schadensbegrenzung".
+                  Zählt Hochrisiko-Tage:<br>
+                  <strong>"Viel Alkohol" + "Schadensbegrenzung"</strong><br><br>
+                  ⚠️ <strong>Ab 13/100</strong> (≈ wöchentlich):<br>
+                  Erhöhtes Risiko (RKI/WHO)<br><br>
+                  🚨 <strong>Ab 20/100</strong> (≈ mehrmals wöchentlich):<br>
+                  Hohes Risiko, Hilfe empfohlen
                 </span>
               </span>
             </div>
@@ -722,9 +2470,13 @@
           <div class="metric-item">
             <div class="metric-label">
               Längster Cluster
-              <span class="metric-info">ℹ
+              <span class="metric-info">
+                ℹ
                 <span class="metric-tooltip">
-                  Längste Serie Hochrisiko-Tage am Stück.
+                  Längste Serie von Hochrisiko-Tagen am Stück.<br><br>
+                  🔥 <strong>Ab 3+ Tagen hintereinander:</strong><br>
+                  Deutlicher Risiko-Spike für Leber & Herz-Kreislauf<br><br>
+                  Beispiel: Mo-Di-Mi jeweils "Viel" = 3-Tage-Cluster
                 </span>
               </span>
             </div>
@@ -732,46 +2484,12 @@
           </div>
         </div>
 
-        <div class="assessment-description" id="assessmentDescription"></div>
-        <div id="assessmentWarning" class="assessment-warning" style="display: none;"></div>
-
-        <!-- Detaillierte Analyse: nur bei aktivem God-Modus sichtbar -->
-        <div id="detailToggleHolder" class="detail-toggle" style="display:none; text-align:center;">
-          <button class="btn-stats-toggle" onclick="toggleGodAnalysis()">🔎 Detaillierte Analyse anzeigen</button>
+        <div class="assessment-description" id="assessmentDescription">
+          <!-- Wird dynamisch gefüllt -->
         </div>
-        <div id="godDetailSection" class="detail-analysis">
-          <div class="detail-grid">
-            <div class="detail-item">
-              <div class="label">Ø Drinks / Woche</div>
-              <div class="value" id="detailAvgDrinks">0</div>
-            </div>
-            <div class="detail-item">
-              <div class="label">Binge-Tage / 100</div>
-              <div class="value" id="detailBingeDays">0</div>
-            </div>
-            <div class="detail-item">
-              <div class="label">Längster Cluster (&gt;20 g)</div>
-              <div class="value" id="detailCluster">0</div>
-            </div>
-            <div class="detail-item">
-              <div class="label">Marijuana (g / Woche)</div>
-              <div class="value" id="detailWeedWeek">0</div>
-            </div>
-            <div class="detail-item">
-              <div class="label">Gesamt-Risiko-Score</div>
-              <div class="value" id="detailRiskScore">0 / 100</div>
-            </div>
-            <div class="detail-item">
-              <div class="label">Muster</div>
-              <div class="value" id="detailPattern">–</div>
-            </div>
-          </div>
-          <div id="detailStageBadge" class="stage-badge stage-1">Stufe 1: Zen-Meister</div>
-          <div id="detailTip" class="detail-warning" style="display:none;"></div>
-          <div id="detailFallbackNote" class="detail-warning" style="display:none;"></div>
-          <div class="detail-actions">
-            <button class="btn secondary" onclick="toggleGodAnalysis()">Schließen</button>
-          </div>
+
+        <div id="assessmentWarning" class="assessment-warning" style="display: none;">
+          <!-- Wird bei Bedarf angezeigt -->
         </div>
       </div>
 
@@ -779,9 +2497,12 @@
       <div class="settings-section">
         <div class="settings-title">
           ⚙️ Einstellung: Wie sollen nicht-eingetragene Tage gewertet werden?
-          <span class="metric-info">ℹ
+          <span class="metric-info">
+            ℹ
             <span class="metric-tooltip">
-              <strong>Wichtig für genaue Statistiken!</strong><br> Neutrale Tage (ohne Eintrag) können die Berechnung verzerren.
+              <strong>Wichtig für genaue Statistiken!</strong><br><br>
+              Neutrale Tage (ohne Eintrag) können die Berechnung verzerren.<br><br>
+              Wähle, wie sie bewertet werden sollen:
             </span>
           </span>
         </div>
@@ -791,7 +2512,7 @@
             <input type="radio" name="neutralDays" value="ignore" checked>
             <div>
               <strong>Ignorieren</strong> – Nur eingetragene Tage zählen<br>
-              <small style="color: #6b7280;">Fairste Option: Statistik basiert nur auf bekannten Daten.</small>
+              <small style="color: #6b7280;">Fairste Option: Statistik basiert nur auf bekannten Daten. Bei wenig Einträgen kann Quote aber künstlich hoch/niedrig sein.</small>
             </div>
           </label>
         </div>
@@ -801,7 +2522,7 @@
             <input type="radio" name="neutralDays" value="neutral">
             <div>
               <strong>Eher positiv werten</strong> – Wie 50% Gesundheit<br>
-              <small style="color: #6b7280;">Neutrale zählen als „neutral“.</small>
+              <small style="color: #6b7280;">Neutrale zählen als "neutral", weder gut noch schlecht. Motiviert zum Tracken, ohne zu hart zu bestrafen.</small>
             </div>
           </label>
         </div>
@@ -811,7 +2532,7 @@
             <input type="radio" name="neutralDays" value="negative">
             <div>
               <strong>Eher negativ werten</strong> – Wie 30% Gesundheit<br>
-              <small style="color: #6b7280;">Spornt an, jeden Tag zu tracken.</small>
+              <small style="color: #6b7280;">Neutrale als potenzielle Risiko-Tage betrachten. Strengere Bewertung, motiviert zum konsequenten Tracken.</small>
             </div>
           </label>
         </div>
@@ -821,21 +2542,21 @@
             <input type="radio" name="neutralDays" value="very-negative">
             <div>
               <strong>Sehr negativ werten</strong> – Wie 15% Gesundheit<br>
-              <small style="color: #6b7280;">Strengste Option.</small>
+              <small style="color: #6b7280;">Maximaler Ansporn: Nicht eingetragen = verdächtig. Nur für sehr disziplinierte Tracker!</small>
             </div>
           </label>
         </div>
 
         <div class="settings-explanation">
-          💡 <strong>Tipp:</strong> Verwende „Ignorieren“ für realistische Statistiken.
+          💡 <strong>Tipp:</strong> Verwende "Ignorieren" für realistische Statistiken. Die Berechnung zeigt dir dann "Basierend auf X von 100 Tagen", damit du weißt, wie vollständig deine Daten sind.
         </div>
       </div>
 
-      <!-- AUDIT-C Quiz (unverändert) -->
+      <!-- AUDIT-C Quiz -->
       <div class="audit-quiz">
         <div class="settings-title">📝 AUDIT-C Schnelltest (WHO)</div>
         <p style="font-size: 12px; color: #6b7280; margin-bottom: 16px;">
-          Beantworte 3 kurze Fragen zu deinem Alkoholkonsum im <strong>letzten Jahr</strong>.
+          Beantworte 3 kurze Fragen zu deinem Alkoholkonsum im <strong>letzten Jahr</strong>. Dies ist ein validiertes WHO-Screening-Tool – keine Diagnose, aber ein guter Indikator.
         </p>
 
         <div style="margin-bottom: 16px;">
@@ -880,6 +2601,7 @@
         </div>
 
         <button class="btn" style="width: 100%; margin-top: 16px;" onclick="calculateAuditScore()">Ergebnis berechnen</button>
+
         <div id="auditResult" style="display: none;"></div>
       </div>
 
@@ -892,28 +2614,11 @@
       <div class="settings-title">⚙️ Einstellungen</div>
       <div class="settings-subtitle">Passe die Bewertung an deine Bedürfnisse an</div>
 
-      <!-- God-Modus Toggle -->
-      <div class="settings-section">
-        <div class="settings-section-title">🧠 God-Modus aktivieren (detailliertes Tracking)</div>
-        <div class="settings-description">
-          Erweitert die Tages-Eingabe um Mengenfelder (Alkohol/Marijuana) und fügt eine feinere Analyse im Statistik-Popup hinzu.
-        </div>
-        <div style="display:flex; align-items:center; justify-content:space-between; padding:10px 12px; background:#f9fafb; border:1px solid #e5e7eb; border-radius:12px;">
-          <div>
-            <div style="font-weight:700; font-size:14px;">God-Modus</div>
-            <div style="font-size:12px; color:#64748b;">Optional & lokal. Keine Daten werden hochgeladen.</div>
-          </div>
-          <label class="switch">
-            <input id="godModeToggle" type="checkbox">
-            <span class="slider"></span>
-          </label>
-        </div>
-      </div>
-
       <div class="settings-section">
         <div class="settings-section-title">🎯 Wie sollen nicht eingetragene Tage bewertet werden?</div>
         <div class="settings-description">
-          Tage ohne Eintrag können die Statistik verfälschen. Wähle eine Gewichtung.
+          Tage ohne Eintrag (weiße Felder im Kalender) können die Statistik verfälschen. 
+          Wähle, wie diese "neutralen" Tage in die Gesundheitsbewertung einfließen sollen:
         </div>
 
         <div class="settings-options">
@@ -921,7 +2626,10 @@
             <input type="radio" name="neutralDays" value="ignore" checked>
             <div class="settings-option-content">
               <div class="settings-option-title">🎯 Ignorieren (Empfohlen)</div>
-              <div class="settings-option-desc">Nur eingetragene Tage zählen.</div>
+              <div class="settings-option-desc">
+                Nur eingetragene Tage zählen. Deine Quote wird realistischer berechnet.<br>
+                <strong>Beispiel:</strong> 10 Alkohol + 5 Alkoholfrei von 15 Einträgen = 67% Binge-Nähe → Alarm!
+              </div>
             </div>
           </label>
 
@@ -929,7 +2637,10 @@
             <input type="radio" name="neutralDays" value="neutral">
             <div class="settings-option-content">
               <div class="settings-option-title">⚖️ Als neutral werten</div>
-              <div class="settings-option-desc">Leicht positiv (50%).</div>
+              <div class="settings-option-desc">
+                Neutrale Tage werden wie "leicht positiv" (50% Gesundheit) gewertet.<br>
+                <strong>Beispiel:</strong> 10 Alkohol + 90 leer = 10% Binge-Nähe (milder)
+              </div>
             </div>
           </label>
 
@@ -937,7 +2648,10 @@
             <input type="radio" name="neutralDays" value="negative">
             <div class="settings-option-content">
               <div class="settings-option-title">⚠️ Als eher negativ werten</div>
-              <div class="settings-option-desc">Motivation zum täglichen Tracking.</div>
+              <div class="settings-option-desc">
+                Nicht tracken = kleine Strafe (30% Gesundheit, ähnlich Moderat).<br>
+                <strong>Motivation:</strong> Spornt an, jeden Tag zu tracken!
+              </div>
             </div>
           </label>
 
@@ -945,17 +2659,22 @@
             <input type="radio" name="neutralDays" value="very-negative">
             <div class="settings-option-content">
               <div class="settings-option-title">🚨 Als sehr negativ werten</div>
-              <div class="settings-option-desc">Strengste Option.</div>
+              <div class="settings-option-desc">
+                Nicht tracken = deutliche Strafe (15% Gesundheit, fast wie Alkohol).<br>
+                <strong>Strikt:</strong> Maximale Motivation für tägliches Tracking!
+              </div>
             </div>
           </label>
         </div>
 
         <div class="settings-info-box">
-          💡 <strong>Tipp:</strong> Wenn du erst seit kurzem trackst, wähle „Ignorieren“.
+          💡 <strong>Tipp:</strong> Wenn du erst seit kurzem trackst, wähle "Ignorieren". 
+          So werden nur deine tatsächlichen Einträge bewertet und die Statistik ist realistischer.<br><br>
+          📊 Die Anzeige zeigt dir immer: "Basierend auf X von 100 Tagen"
         </div>
       </div>
 
-      <!-- Backup & Wiederherstellung -->
+      <!-- Backup & Wiederherstellung (nur lokal) -->
       <div class="settings-section">
         <div class="settings-section-title">🗄️ Daten-Backup (lokal)</div>
         <div class="settings-description">
@@ -981,30 +2700,38 @@
     let dayData = {};
     let editingDate = null;
     let storageWorking = false;
-    let neutralDaysSetting = 'ignore'; // Default
-    let godMode = false;
+    let neutralDaysSetting = 'ignore'; // Default: Ignorieren
 
     const monthNames = ['Januar','Februar','März','April','Mai','Juni','Juli','August','September','Oktober','November','Dezember'];
     const weekdays   = ['Mo','Di','Mi','Do','Fr','Sa','So'];
 
-    const FALLBACK_GRAMS = { superday:0, wellness:0, sober:0, moderate:20, mixed:40, alcohol:50 };
-    const ETHANOL_DENSITY = 0.789; // g/ml
-
     const formatDateKey = (date)=> `${date.getFullYear()}-${date.getMonth()+1}-${date.getDate()}`;
-    const formatDisplayDate = (date)=> `${date.getDate()}. ${monthNames[date.getMonth()]} ${date.getFullYear()}`;
 
-    // Helpers – kompatibel mit altem & neuem Format
+    
+    // Helper: Hole Status aus dayData (kompatibel mit altem String-Format und neuem Object-Format)
     const getDayStatus = (key) => {
       const data = dayData[key];
       if(!data) return null;
       return typeof data === 'string' ? data : data.status;
     };
+    
+    // Helper: Hole Kommentar aus dayData
     const getDayComment = (key) => {
       const data = dayData[key];
       if(!data || typeof data === 'string') return '';
       return data.comment || '';
     };
+    
+    // Helper: Setze Status und Kommentar
+    const setDayData = (key, status, comment = '') => {
+      dayData[key] = {
+        status: status,
+        comment: comment
+      };
+    };
+    const formatDisplayDate = (date)=> `${date.getDate()}. ${monthNames[date.getMonth()]} ${date.getFullYear()}`;
 
+    /* Storage */
     function testStorage(){ try{ localStorage.setItem('__test__','1'); localStorage.removeItem('__test__'); storageWorking = true; }catch{ storageWorking=false; } }
     function updateStorageStatus(message){
       const status = document.getElementById('storageStatus');
@@ -1020,32 +2747,27 @@
         updateStorageStatus('✅ Daten gespeichert'); return true;
       }catch{ updateStorageStatus('❌ Speicher-Fehler'); return false; }
     }
-    function getMergedSettings(){
-      // liest beide möglichen Keys und merged defensiv
-      let A={}, B={};
-      try{ A = JSON.parse(localStorage.getItem('alcoholTrackerSettings')||'{}') || {}; }catch{}
-      try{ B = JSON.parse(localStorage.getItem('boozeTrackerSettings')||'{}') || {}; }catch{}
-      return { ...B, ...A }; // 'alcoholTrackerSettings' gewinnt
-    }
     function loadData(){
       if(!storageWorking){ updateStorageStatus('⚠️ Kein persistenter Speicher'); return; }
       try{
         const savedData = localStorage.getItem('alcoholTrackerData');
         dayData = savedData && savedData !== 'null' ? JSON.parse(savedData) : {};
         currentInputDate = new Date();
-
+        
         // Settings laden
-        const settings = getMergedSettings();
-        neutralDaysSetting = settings.neutralDays || 'ignore';
-        godMode = !!settings.godMode;
-
+        const savedSettings = localStorage.getItem('alcoholTrackerSettings');
+        if(savedSettings){
+          const settings = JSON.parse(savedSettings);
+          neutralDaysSetting = settings.neutralDays || 'ignore';
+        }
+        
         updateStorageStatus(`✅ ${Object.keys(dayData).length} Tage geladen`);
       }catch{
         dayData = {}; currentInputDate = new Date(); updateStorageStatus('❌ Laden fehlgeschlagen');
       }
     }
 
-    /* Erfolgsquote */
+    /* Erfolgsquote - ANGEPASST */
     function setSuccessCardTint(pct){
       const card = document.getElementById('successCard');
       card.classList.remove('rate-good','rate-warn','rate-bad');
@@ -1066,61 +2788,100 @@
         else if(st==='wellness') total += 0.9;
         else if(st==='sober') total += 0.75;
         else if(st==='moderate') total += 0.4;
-        else if(st==='mixed') total += 0.25;
+        else if(st==='mixed') total += 0.25;  // ANGEPASST auf 25%
       }
       const pct = max>0 ? Math.round((total/max)*100) : 0;
       document.getElementById('successRate').textContent = pct + '%';
       setSuccessCardTint(pct);
     }
 
-    /* 100 Tage Balken */
+    /* Balkendiagramm für letzte 100 Tage - ANGEPASST für horizontales Design */
     function calculate100DaysChart(){
-      let negative = 0; // alcohol, mixed, moderate
-      let positive = 0; // sober, wellness, superday
+      let negative = 0; // unter 50%: alcohol, mixed, moderate
+      let positive = 0; // über 50%: sober, wellness, superday
       
       const today = new Date();
       for(let i=0; i<100; i++){
         const probe = new Date(today);
         probe.setDate(probe.getDate() - i);
         const st = getDayStatus(formatDateKey(probe));
-        if(st === 'alcohol' || st === 'mixed' || st === 'moderate') negative++;
-        else if(st === 'sober' || st === 'wellness' || st === 'superday') positive++;
+        
+        if(st === 'alcohol' || st === 'mixed' || st === 'moderate'){
+          negative++;
+        } else if(st === 'sober' || st === 'wellness' || st === 'superday'){
+          positive++;
+        }
       }
+
+      // Prozent berechnen (von 100 Tagen)
       const negPct = Math.round((negative / 100) * 100);
       const posPct = Math.round((positive / 100) * 100);
+
+      // Balken aktualisieren mit Animation
       setTimeout(() => {
+        // Negative Bar
         document.getElementById('chartNegative').style.width = negPct + '%';
         document.getElementById('chartNegativeNum').textContent = negative;
         document.getElementById('chartNegativePct').textContent = negPct + '%';
+        
+        // Positive Bar
         document.getElementById('chartPositive').style.width = posPct + '%';
         document.getElementById('chartPositiveNum').textContent = positive;
         document.getElementById('chartPositivePct').textContent = posPct + '%';
       }, 100);
     }
 
-    /* Gesundheitsbewertung (Basis) */
+    /* GESUNDHEITSBEWERTUNG - Wissenschaftlich fundiert nach WHO/DGE/RKI/DSM-5 */
     function calculateHealthAssessment(){
       const today = new Date();
-      let counts = { superday:0, wellness:0, sober:0, moderate:0, mixed:0, alcohol:0, empty:0 };
+      let counts = {
+        superday: 0,
+        wellness: 0,
+        sober: 0,
+        moderate: 0,
+        mixed: 0,
+        alcohol: 0,
+        empty: 0
+      };
+      
+      // Zähle Kategorien für letzte 100 Tage
       const last100Days = [];
       for(let i=0; i<100; i++){
-        const probe = new Date(today); probe.setDate(probe.getDate() - i);
+        const probe = new Date(today);
+        probe.setDate(probe.getDate() - i);
         const key = formatDateKey(probe);
         const st = getDayStatus(key);
         last100Days.push(st || null);
-        if(st && counts[st] !== undefined) counts[st]++; else if(!st) counts.empty++;
+        if(st && counts[st] !== undefined) counts[st]++;
+        else if(!st) counts.empty++;
       }
 
+      // Anzahl der tatsächlich eingetragenen Tage
       const enteredDays = 100 - counts.empty;
-      let divisor = 100, neutralWeight = 0;
-      if(neutralDaysSetting === 'ignore'){ divisor = enteredDays > 0 ? enteredDays : 1; }
-      else if(neutralDaysSetting === 'neutral'){ neutralWeight = 0.5; }
-      else if(neutralDaysSetting === 'negative'){ neutralWeight = 0.3; }
-      else if(neutralDaysSetting === 'very-negative'){ neutralWeight = 0.15; }
+      
+      // Berechne basierend auf Einstellung
+      let divisor = 100; // Default: alle 100 Tage
+      let neutralWeight = 0; // Gewicht für leere Tage
+      
+      if(neutralDaysSetting === 'ignore'){
+        // Nur eingetragene Tage zählen
+        divisor = enteredDays > 0 ? enteredDays : 1;
+      } else if(neutralDaysSetting === 'neutral'){
+        // Neutral = 50% Gesundheit
+        neutralWeight = 0.5;
+      } else if(neutralDaysSetting === 'negative'){
+        // Eher negativ = 30% Gesundheit
+        neutralWeight = 0.3;
+      } else if(neutralDaysSetting === 'very-negative'){
+        // Sehr negativ = 15% Gesundheit
+        neutralWeight = 0.15;
+      }
 
+      // 1. AF-Quote (Alkoholfreie Quote) - WHO-Standard
       const afCount = counts.superday + counts.wellness + counts.sober;
       const afQuote = afCount / divisor;
-
+      
+      // 2. Gewichtete Gesundheitsquote - Differenzierte Bewertung
       const weightedScore = (
         counts.superday * 1.0 +
         counts.wellness * 0.9 +
@@ -1130,61 +2891,209 @@
         counts.alcohol * 0.0 +
         counts.empty * neutralWeight
       ) / 100;
-
+      
+      // 3. Binge-Nähe - RKI-Risikoindikator
       const bingeProximity = counts.alcohol + counts.mixed;
-      const bingeQuote = bingeProximity / divisor;
-
-      let maxCluster = 0, currentCluster = 0;
-      for(let i=0;i<last100Days.length;i++){
+      const bingeQuote = bingeProximity / divisor; // Als Quote für bessere Bewertung
+      
+      // 4. Cluster-Erkennung - 3+ Hochrisiko-Tage am Stück
+      let maxCluster = 0;
+      let currentCluster = 0;
+      for(let i = 0; i < last100Days.length; i++){
         const st = last100Days[i];
-        if(st === 'alcohol' || st === 'mixed'){ currentCluster++; if(currentCluster>maxCluster) maxCluster=currentCluster; }
-        else currentCluster=0;
+        if(st === 'alcohol' || st === 'mixed'){
+          currentCluster++;
+          if(currentCluster > maxCluster) maxCluster = currentCluster;
+        } else {
+          currentCluster = 0;
+        }
       }
 
-      let label, badgeClass, description, warning='', humorQuote='';
+      // 5. Label-Zuweisung nach wissenschaftlichen Schwellenwerten
+      // WICHTIG: Von STRENG nach LOCKER prüfen (Alarm vor Kipppunkt!)
+      let label, badgeClass, description, warning, humorQuote;
+      
+      // STUFE 5: SUCHT-ALARM (strengste Prüfung zuerst!)
       if(bingeProximity >= 40 || afQuote < 0.20 || (bingeQuote >= 0.40 && enteredDays >= 10)){
-        label = '🚨 Sucht-Alarm: Rote Lampen!'; badgeClass='red';
-        description = '<strong>Sehr hohes Risiko</strong> – häufige Hochrisiko-Tage oder kaum abstinente Tage.';
-      } else if((bingeProximity >= 20) || (afQuote < 0.30) || (bingeQuote >= 0.20 && enteredDays >= 10)){
-        label = '🎲 Risiko-Roulette'; badgeClass='red';
-        description = '<strong>Hohes Risiko</strong> – mehrmals wöchentlich riskant oder geringe AF-Quote.';
-      } else if(afQuote <= 0.39 || (bingeProximity >= 13 && bingeProximity <= 19) || (bingeQuote >= 0.13 && enteredDays >= 10)){
-        label = '🚨 Kipppunkt-Kandidat'; badgeClass='weekend';
-        description = '<strong>Erhöhtes Risiko</strong> – kritische Schwelle erreicht.';
-      } else if(afQuote >= 0.40 && afQuote < 0.70 && bingeProximity <= 12){
-        label = '🧘 Balance-Buddha'; badgeClass='balance';
-        description = '<strong>Moderates Risiko</strong> – solide AF-Quote, Binge selten.';
-      } else {
-        label = '🦸 Leber-Superheld'; badgeClass='zen';
-        description = '<strong>Niedriges Gesamtrisiko</strong> – viele grüne Tage, Binge selten.';
+        label = '🚨 Sucht-Alarm: Rote Lampen!';
+        badgeClass = 'red';
+        description = '<strong>Sehr hohes Risiko / Potenzielle Abhängigkeit</strong> – Binge-Nähe (≥40/100 ≈ fast täglich) oder fast täglicher Konsum (AF-Quote <20%) zeigt extremes Risiko für Herz, Gehirn, Krebs und Leber. DSM-5-Warnzeichen für schwere AUD (6+ Kriterien): starkes Verlangen (Craving), Entzug, Kontrollverlust, Toleranz, Weitermachen trotz Schäden, Vernachlässigung anderer Aktivitäten.';
+        humorQuote = '';
+        warning = '🆘 Professionelle Hilfe SOFORT empfohlen: SAMHSA-Hotline, lokale Suchtberatung, medizinisches Gespräch. Dies ist keine Diagnose, aber ein klares Signal! Ab AUDIT ≥ 8 Punkten ist professionelle Abklärung essentiell (ICD-10/DSM-5).';
       }
-      if(maxCluster >= 3) warning += '<br>🔥 <strong>Cluster:</strong> '+maxCluster+' Hochrisiko-Tage am Stück.';
-      if(counts.mixed >= 15) warning += '<br>💊 <strong>Schadensbegrenzung oft:</strong> Sport kompensiert Alkohol nicht wesentlich.';
+      // STUFE 4: RISIKO-ROULETTE
+      else if((bingeProximity >= 20 && bingeProximity < 40) || (afQuote < 0.30 && afQuote >= 0.20) || (bingeQuote >= 0.20 && enteredDays >= 10)){
+        label = '🎲 Risiko-Roulette';
+        badgeClass = 'red';
+        description = '<strong>Hohes Risiko</strong> – Du spielst Russian Roulette mit deiner Gesundheit. Binge-Nähe (20-39/100 ≈ mehrmals wöchentlich) oder niedrige AF-Quote (20-29%) zeigen ein kritisches Muster. Hohes Risiko für Krebs, Leberzirrhose, Herz-Kreislauf-Erkrankungen und Unfälle. Sport kann diese Risiken NICHT kompensieren (WHO).';
+        humorQuote = '💡 <em>"Leider saugt der Staubsauger keinen Rausch weg. Sport ≠ Gegengift."</em> (WHO)';
+        warning = '🚨 Moderate bis schwere AUD wahrscheinlich (4-5 DSM-5-Kriterien wie Toleranz, soziale Probleme, Kontrollverlust). Medizinisches Gespräch und professionelle Beratung DRINGEND empfohlen!';
+      }
+      // STUFE 3: KIPPPUNKT-KANDIDAT
+      else if(afQuote <= 0.39 || (bingeProximity >= 13 && bingeProximity <= 19) || (bingeQuote >= 0.13 && enteredDays >= 10)){
+        label = '🚨 Kipppunkt-Kandidat';
+        badgeClass = 'weekend';
+        description = '<strong>Erhöhtes Risiko – Kritische Schwelle erreicht</strong> – Deine AF-Quote (<40%) oder Binge-Nähe (13-19/100 ≈ wöchentlich) liegt im WHO-Risikolevel "moderat bis hoch". Du befindest dich an einem Kipppunkt: Häufige Rauschsituationen sind nachweisliche Treiber für Leber-, Krebs- und Herzprobleme.';
+        humorQuote = '💡 <em>"Schadensbegrenzung ist wie Zähneputzen nach Karamell-Fladen: gut, aber die Karies kam vorher."</em>';
+        warning = '⚠️ Dringend empfohlen: AUDIT-Screening durchführen (siehe unten im Quiz)! Sport neutralisiert Alkoholrisiken NICHT (WHO/DHS). Potenziell mildes AUD bei 2-3 DSM-5-Kriterien (z.B. Kontrollverlust, mehr trinken als geplant).';
+      }
+      // STUFE 2: BALANCE-BUDDHA
+      else if(afQuote >= 0.40 && afQuote < 0.70 && bingeProximity <= 12){
+        label = '🧘 Balance-Buddha';
+        badgeClass = 'balance';
+        description = '<strong>Moderates Risiko</strong> – Du meditierst mit einem Glas Wasser – zen, aber nicht fanatisch! AF-Quote 40-69% ist solide. Prüfe kritisch: Bleiben "moderate" Tage wirklich moderat (≤2 Einheiten/Woche nach DGE)? Binge-Events (≤12/100 ≈ höchstens viertel- bis monatlich) sind überschaubar.';
+        humorQuote = '💡 <em>"Moderate Tage sind wie Parken in der gelben Zone: geht mal gut, aber zur Regel wird\'s besser nicht – vor allem nicht täglich."</em> (DGE/DHS)';
+        warning = 'Tipp: Mehr Supertage/Wellness-Tage einstreuen – Sport + Abstinenz = doppelter Gesundheitsboost!';
+      }
+      // STUFE 1: LEBER-SUPERHELD
+      else {
+        label = '🦸 Leber-Superheld';
+        badgeClass = 'zen';
+        description = '<strong>Niedriges Gesamtrisiko</strong> – Du bist der Batman der Bars – unsichtbar für Alkohol! Deine alkoholfreien Tage (≥70%) mit sportlichen/erholsamen Puffern zeigen ein vorbildliches Muster. Binge-Events sind selten (≤4/100 Tage ≈ seltener als monatlich). Deine Leber schickt dir Dankeskarten! 💚';
+        humorQuote = '💡 <em>"Du bist, was du trinkst – aber auch, was du an Supertagen tust. Jeder grüne Tag ist wie ein Staubsauger für Risikokrümel."</em>';
+        warning = '⚠️ Trotzdem kein "Freifahrtschein" – WHO empfiehlt weiterhin Wachsamkeit.';
+      }
 
-      const afDisplay = neutralDaysSetting === 'ignore' ? `${Math.round(afQuote * 100)}% (${afCount}/${enteredDays})` : `${Math.round(afQuote * 100)}%`;
+      // Sonder-Warnungen
+      let extraWarnings = '';
+      if(maxCluster >= 3){
+        extraWarnings += '<br>🔥 <strong>Cluster-Stürmer erkannt:</strong> ' + maxCluster + ' Hochrisiko-Tage am Stück bedeuten deutlichen Risiko-Spike!';
+      }
+      if(counts.mixed >= 15){
+        extraWarnings += '<br>💊 <strong>Schadensbegrenzungs-Illusionist:</strong> Sport kaschiert Alkoholrisiken, senkt sie aber NICHT substanziell (WHO). ' + counts.mixed + ' "Schadensbegrenzung"-Tage zeigen ein problematisches Muster.';
+      }
+
+      // UI aktualisieren
+      const afDisplay = neutralDaysSetting === 'ignore' ? 
+        `${Math.round(afQuote * 100)}% (${afCount}/${enteredDays})` : 
+        `${Math.round(afQuote * 100)}%`;
+      
       document.getElementById('metricAF').textContent = afDisplay;
       document.getElementById('metricHealth').textContent = Math.round(weightedScore * 100) + '%';
-      document.getElementById('metricBinge').textContent = neutralDaysSetting === 'ignore' ? `${bingeProximity} (${Math.round(bingeQuote * 100)}%)` : bingeProximity;
+      document.getElementById('metricBinge').textContent = neutralDaysSetting === 'ignore' ? 
+        `${bingeProximity} (${Math.round(bingeQuote * 100)}%)` : 
+        bingeProximity;
       document.getElementById('metricCluster').textContent = maxCluster > 0 ? maxCluster + ' Tage' : 'Keiner';
 
       const badge = document.getElementById('assessmentBadge');
       badge.textContent = label;
       badge.className = 'assessment-badge ' + badgeClass;
 
+      // Zeige Basis-Info
       const basisInfo = neutralDaysSetting === 'ignore' ? 
         `<div style="text-align:center; font-size:12px; color:var(--muted); margin-bottom:12px;">📊 Basierend auf <strong>${enteredDays} von 100 Tagen</strong></div>` :
-        `<div style="text-align:center; font-size:12px; color:var(--muted); margin-bottom:12px;">📊 Basierend auf <strong>100 Tagen</strong> (${enteredDays} eingetragen)</div>`;
-      document.getElementById('assessmentDescription').innerHTML = basisInfo + description + (humorQuote ? '<br><br>'+humorQuote : '');
+        `<div style="text-align:center; font-size:12px; color:var(--muted); margin-bottom:12px;">📊 Basierend auf <strong>100 Tagen</strong> (${enteredDays} eingetragen, ${counts.empty} neutral gewertet)</div>`;
+
+      document.getElementById('assessmentDescription').innerHTML = basisInfo + description + (humorQuote ? '<br><br>' + humorQuote : '');
 
       const warningEl = document.getElementById('assessmentWarning');
-      if(warning){ warningEl.innerHTML = warning; warningEl.style.display='block'; } else { warningEl.style.display='none'; }
-
-      // Toggle für Detailanalyse ein-/ausblenden
-      document.getElementById('detailToggleHolder').style.display = godMode ? 'block' : 'none';
-      if(godMode) computeGodAnalysis(); // vorfüllen, aber versteckt lassen
+      if(warning || extraWarnings){
+        warningEl.innerHTML = (warning || '') + extraWarnings;
+        warningEl.style.display = 'block';
+      } else {
+        warningEl.style.display = 'none';
+      }
+      
+      // God-Modus: Detaillierte Analyse berechnen
+      if(godMode) {
+        calculateDetailedAnalysis(last100Days);
+      }
     }
 
-    /* Streak */
+    function calculateDetailedAnalysis(last100Days){
+      let alcoholGramsTotal = 0;
+      let marijuanaGramsTotal = 0;
+      let bingeDays = 0;
+      let currentCluster = 0;
+      let maxCluster = 0;
+      let weekendBinger = false;
+      let dailyLow = false;
+      let abstinentSlips = false;
+      let alcoholDays = 0;
+      let marijuanaDays = 0;
+      let fallbackCount = 0;
+
+      last100Days.forEach((st, index) => {
+        const probe = new Date();
+        probe.setDate(probe.getDate() - index);
+        const key = formatDateKey(probe);
+        let alcGrams = getAlcohol(key).grams;
+        if (alcGrams == null) {
+          alcGrams = fallbackGrams[st] || 0;
+          fallbackCount++;
+        }
+        alcoholGramsTotal += alcGrams;
+        let marGrams = getMarijuana(key).grams;
+        marijuanaGramsTotal += marGrams;
+
+        if (alcGrams > 0) alcoholDays++;
+        if (marGrams > 0) marijuanaDays++;
+
+        if (alcGrams > 40) bingeDays++;
+        if (alcGrams > 20) {
+          currentCluster++;
+          maxCluster = Math.max(maxCluster, currentCluster);
+        } else {
+          currentCluster = 0;
+        }
+
+        if (probe.getDay() === 5 || probe.getDay() === 6) {
+          if (alcGrams > 40) weekendBinger = true;
+        }
+      });
+
+      const weeks = 100 / 7;
+      const avgDrinksWeek = (alcoholGramsTotal / 10) / weeks;
+      const avgMarGramsWeek = marijuanaGramsTotal / weeks;
+
+      const quantScore = alcoholGramsTotal / 100;
+      const bingeClusterScore = (bingeDays / 100 * 50) + (maxCluster / 10 * 50);
+      const marijuanaScore = avgMarGramsWeek > 1 ? 10 : (avgMarGramsWeek > 2 ? 20 : 0);
+      const totalScore = 0.5 * quantScore + 0.3 * bingeClusterScore + 0.2 * marijuanaScore;
+
+      let level, levelClass, levelDesc, levelTips;
+      if (totalScore < 20) {
+        level = 'Zen-Meister';
+        levelClass = 'zen';
+        levelDesc = 'Niedriges Risiko';
+        levelTips = 'Weiter so!';
+      } else if (totalScore < 40) {
+        level = 'Balance-Künstler';
+        levelClass = 'balance';
+        levelDesc = 'Niedriges Risiko';
+        levelTips = 'Weiter so!';
+      } else if (totalScore < 60) {
+        level = 'Kipppunkt-Wanderer';
+        levelClass = 'weekend';
+        levelDesc = 'Mittleres Risiko';
+        levelTips = 'Reduziere Binge durch Alternativen.';
+      } else if (totalScore < 80) {
+        level = 'Risiko-Jongleur';
+        levelClass = 'red';
+        levelDesc = 'Hohes Risiko';
+        levelTips = 'Reduziere Binge durch Alternativen.';
+      } else {
+        level = 'Alarmstufe Rot';
+        levelClass = 'red';
+        levelDesc = 'Hohes Risiko';
+        levelTips = 'Reduziere Binge durch Alternativen.';
+      }
+
+      // Muster
+      if (weekendBinger) levelDesc += ' Muster: Weekend-Binger.';
+      if (dailyLow) levelDesc += ' Muster: Daily Low.';
+      if (abstinentSlips) levelDesc += ' Muster: Abstinent mit Slips.';
+
+      // UI
+      document.getElementById('detailedBadge').textContent = level;
+      document.getElementById('detailedBadge').className = 'assessment-badge ' + levelClass;
+      document.getElementById('detailedDesc').textContent = levelDesc;
+      document.getElementById('detailedTips').textContent = levelTips;
+      document.getElementById('assessmentWarning').textContent = fallbackCount > 50 ? 'Genauere Daten für bessere Analyse eingeben.' : '';
+      document.getElementById('assessmentWarning').style.display = fallbackCount > 50 ? 'block' : 'none';
+    }
+
+    /* Streak - ANGEPASST: Geht sofort auf 0 bei nicht-grünen Tagen */
     function setStreakCardTint(streak){
       const card = document.getElementById('streakCard');
       const numEl = document.getElementById('streakNumber');
@@ -1197,14 +3106,28 @@
     }
     function isGreen(state){ return state==='sober' || state==='superday' || state==='wellness'; }
     function calculateStreak(){
-      let probe = new Date(); let streak = 0;
+      let probe = new Date(); // heute
+      let streak = 0;
+      
+      // Zähle rückwärts von heute
       while(true){
         const key = formatDateKey(probe);
         const st = getDayStatus(key);
-        if(isGreen(st)){ streak++; probe.setDate(probe.getDate()-1); }
-        else break;
+        
+        // Wenn grüner Tag: Streak erhöhen
+        if(isGreen(st)){
+          streak++;
+          probe.setDate(probe.getDate()-1);
+        }
+        // Wenn nicht-grüner Tag oder kein Eintrag: Streak beenden
+        else {
+          break;
+        }
+        
+        // Sicherheit: Max 1000 Tage prüfen
         if(streak > 1000) break;
       }
+      
       setStreakCardTint(streak);
     }
 
@@ -1216,8 +3139,10 @@
       const existing = getDayStatus(key);
       const existingComment = getDayComment(key);
       const btn = document.getElementById('submitDay');
-
-      document.getElementById('dayCommentInput').value = existingComment || '';
+      
+      // Lade Kommentar wenn vorhanden
+      document.getElementById('dayCommentInput').value = existingComment;
+      
       if(existing){
         const radio = document.querySelector(`input[name="dayChoice"][value="${existing}"]`);
         if(radio) radio.checked = true;
@@ -1226,10 +3151,6 @@
       }else{
         btn.textContent = 'Tag speichern';
       }
-
-      // God-Modus UI
-      document.getElementById('godModeCard').style.display = godMode ? 'block' : 'none';
-      if(godMode) loadGodInputsForToday();
     }
 
     function showMonthView(){
@@ -1250,13 +3171,16 @@
     function updateMonthView(){
       const y = currentViewDate.getFullYear(), m = currentViewDate.getMonth();
       document.getElementById('monthHeader').textContent = `${monthNames[m]} ${y}`;
+
       const grid = document.getElementById('monthGrid');
       grid.innerHTML = '';
 
       const weekdays = ['Mo','Di','Mi','Do','Fr','Sa','So'];
       for(const w of weekdays){
         const h = document.createElement('div');
-        h.className = 'weekday'; h.textContent = w; grid.appendChild(h);
+        h.className = 'weekday';
+        h.textContent = w;
+        grid.appendChild(h);
       }
 
       const first = new Date(y, m, 1);
@@ -1265,7 +3189,9 @@
 
       for(let i=0;i<startDay;i++){
         const e = document.createElement('div');
-        e.className='day'; e.style.visibility='hidden'; grid.appendChild(e);
+        e.className='day';
+        e.style.visibility='hidden';
+        grid.appendChild(e);
       }
 
       const today = new Date();
@@ -1284,6 +3210,8 @@
         
         if(st) cell.classList.add(st);
         if(dt.toDateString() === today.toDateString()) cell.classList.add('today');
+        
+        // Füge Kommentar-Tooltip hinzu wenn vorhanden
         if(comment){
           cell.classList.add('has-comment');
           const tooltip = document.createElement('div');
@@ -1291,11 +3219,12 @@
           tooltip.textContent = comment;
           cell.appendChild(tooltip);
         }
+
         grid.appendChild(cell);
       }
     }
 
-    /* Event-Delegation Kalender */
+    /* Event-Delegation */
     document.addEventListener('click', (e)=>{
       const grid = document.getElementById('monthGrid');
       if(!grid || !grid.contains(e.target)) return;
@@ -1315,9 +3244,12 @@
     function openEditPopup(date){
       editingDate = date;
       document.getElementById('editDate').textContent = formatDisplayDate(date);
+      
+      // Lade existierenden Kommentar
       const key = formatDateKey(date);
       const comment = getDayComment(key);
-      document.getElementById('editCommentInput').value = comment || '';
+      document.getElementById('editCommentInput').value = comment;
+      
       const pop = document.getElementById('editPopup');
       pop.classList.add('active');
       pop.setAttribute('aria-hidden','false');
@@ -1329,41 +3261,73 @@
       editingDate = null;
     }
 
-    /* Einstellung neutrale Tage (im Popup-Chart) */
+    /* Einstellung für neutrale Tage */
     function selectNeutralOption(option){
+      // Update global variable
       neutralDaysSetting = option;
+      
+      // Save to localStorage
       const settings = JSON.parse(localStorage.getItem('boozeTrackerSettings') || '{}');
       settings.neutralDays = option;
       localStorage.setItem('boozeTrackerSettings', JSON.stringify(settings));
+      
+      // Update UI
       document.querySelectorAll('.settings-option').forEach(el => el.classList.remove('selected'));
       document.querySelectorAll('input[name="neutralDays"]').forEach(el => {
         el.checked = (el.value === option);
         if(el.checked) el.closest('.settings-option').classList.add('selected');
       });
+      
+      // Recalculate assessment
       calculateHealthAssessment();
     }
 
-    /* AUDIT-C */
+    /* AUDIT-C Score Berechnung */
     function calculateAuditScore(){
       const q1 = parseInt(document.querySelector('input[name="auditQ1"]:checked')?.value);
       const q2 = parseInt(document.querySelector('input[name="auditQ2"]:checked')?.value);
       const q3 = parseInt(document.querySelector('input[name="auditQ3"]:checked')?.value);
-      if(isNaN(q1) || isNaN(q2) || isNaN(q3)){ alert('Bitte beantworte alle 3 Fragen!'); return; }
+
+      if(isNaN(q1) || isNaN(q2) || isNaN(q3)){
+        alert('Bitte beantworte alle 3 Fragen!');
+        return;
+      }
+
       const score = q1 + q2 + q3;
       const gender = document.getElementById('auditGender').value;
+      
       let risk, riskClass, riskText;
-      if(score === 0){ risk='Niedriges Risiko'; riskClass='low'; riskText='Abstinenz oder sehr geringer Konsum.'; }
-      else if((gender === 'female' && score < 3) || (gender === 'male' && score < 4)){ risk='Geringes Risiko'; riskClass='low'; riskText='Unterer Bereich. Maßhalten beibehalten.'; }
-      else if(score < 5){ risk='Riskanter Konsum'; riskClass='medium'; riskText='Potentiell schädlich. Reduktion erwägen.'; }
-      else { risk='Hohes Risiko'; riskClass='high'; riskText='Hohes Risiko für AUD. Beratung empfohlen.'; }
+      
+      if(score === 0){
+        risk = 'Niedriges Risiko';
+        riskClass = 'low';
+        riskText = 'Abstinenz oder sehr geringer Konsum. Kein Hinweis auf problematischen Alkoholkonsum. Weiter so! 💚';
+      } else if((gender === 'female' && score < 3) || (gender === 'male' && score < 4)){
+        risk = 'Geringes Risiko';
+        riskClass = 'low';
+        riskText = 'Dein Konsum liegt im unteren Bereich. Achte weiterhin auf Maßhalten und vermeide Rauschsituationen.';
+      } else if(score < 5){
+        risk = 'Riskanter Konsum';
+        riskClass = 'medium';
+        riskText = 'Dein Konsum ist potenziell schädlich für deine Gesundheit. Erwäge eine Reduzierung und sprich ggf. mit einem Arzt oder einer Beratungsstelle. WHO-Empfehlung: Reduziere Frequenz und Menge!';
+      } else {
+        risk = 'Hohes Risiko';
+        riskClass = 'high';
+        riskText = 'Hohes Risiko für Alkohol Use Disorder (AUD). Professionelle Beratung wird dringend empfohlen! Kontaktiere: SAMHSA-Hotline (USA: 1-800-662-4357), DHS-Suchtberatung oder deine*n Hausarzt*ärztin.';
+      }
+
       const resultDiv = document.getElementById('auditResult');
       resultDiv.className = 'audit-result ' + riskClass;
       resultDiv.innerHTML = `
         <strong>AUDIT-C Score: ${score} von 12</strong>
         <strong style="font-size: 14px; margin-top: 8px; display: block;">${risk}</strong>
         ${riskText}
+        <br><br>
+        <small><strong>Wichtig:</strong> Dies ist ein Screening-Tool, keine Diagnose. Bei Score ≥${gender === 'female' ? '3' : '4'} empfiehlt die WHO eine professionelle Abklärung. Mehr Info: <a href="https://www.who.int/tools/audit" target="_blank" style="color: inherit; text-decoration: underline;">WHO AUDIT</a></small>
       `;
       resultDiv.style.display = 'block';
+
+      // Scroll zum Ergebnis
       resultDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     }
 
@@ -1372,15 +3336,25 @@
       const popup = document.getElementById('chartPopup');
       const overlay = document.getElementById('chartOverlay');
       const isActive = popup.classList.contains('active');
+      
       if(isActive){
-        popup.classList.remove('active'); overlay.classList.remove('active'); popup.setAttribute('aria-hidden','true');
-        document.getElementById('godDetailSection').style.display='none';
+        popup.classList.remove('active');
+        overlay.classList.remove('active');
+        popup.setAttribute('aria-hidden','true');
       } else {
         calculate100DaysChart();
         calculateHealthAssessment();
+        
+        // Setze die richtige Settings-Option
         const radio = document.querySelector(`input[name="neutralDays"][value="${neutralDaysSetting}"]`);
-        if(radio){ radio.checked = true; radio.closest('.settings-option').classList.add('selected'); }
-        popup.classList.add('active'); overlay.classList.add('active'); popup.setAttribute('aria-hidden','false');
+        if(radio){
+          radio.checked = true;
+          radio.closest('.settings-option').classList.add('selected');
+        }
+        
+        popup.classList.add('active');
+        overlay.classList.add('active');
+        popup.setAttribute('aria-hidden','false');
       }
     }
 
@@ -1389,119 +3363,125 @@
       const popup = document.getElementById('settingsPopup');
       const overlay = document.getElementById('settingsOverlay');
       const isActive = popup.classList.contains('active');
+      
       if(isActive){
-        popup.classList.remove('active'); overlay.classList.remove('active'); popup.setAttribute('aria-hidden','true');
+        popup.classList.remove('active');
+        overlay.classList.remove('active');
+        popup.setAttribute('aria-hidden','true');
       } else {
+        // Lade aktuelle Einstellung
         const radio = document.querySelector(`input[name="neutralDays"][value="${neutralDaysSetting}"]`);
         if(radio) radio.checked = true;
         updateSettingsUI();
-        popup.classList.add('active'); overlay.classList.add('active'); popup.setAttribute('aria-hidden','false');
+        
+        popup.classList.add('active');
+        overlay.classList.add('active');
+        popup.setAttribute('aria-hidden','false');
       }
     }
+
     function updateSettingsUI(){
+      // Update selected class
       document.querySelectorAll('.settings-option').forEach(opt => opt.classList.remove('selected'));
       const selectedOption = document.querySelector(`input[name="neutralDays"]:checked`);
-      if(selectedOption){ selectedOption.closest('.settings-option').classList.add('selected'); }
-      // God-Modus Toggle spiegeln
-      const gmToggle = document.getElementById('godModeToggle');
-      if(gmToggle) gmToggle.checked = !!godMode;
+      if(selectedOption){
+        selectedOption.closest('.settings-option').classList.add('selected');
+      }
     }
+
     function saveSettings(){
       const selected = document.querySelector('input[name="neutralDays"]:checked');
-      const gmToggle = document.getElementById('godModeToggle');
       if(selected){
         neutralDaysSetting = selected.value;
-        godMode = gmToggle?.checked ?? false;
+        
+        // Speichern
         if(storageWorking){
           try{
             localStorage.setItem('alcoholTrackerSettings', JSON.stringify({
-              neutralDays: neutralDaysSetting,
-              godMode: godMode
+              neutralDays: neutralDaysSetting
             }));
-            // Kompatibler Zweitschlüssel, falls vorher genutzt
-            localStorage.setItem('boozeTrackerSettings', JSON.stringify({
-              neutralDays: neutralDaysSetting,
-              godMode: godMode
-            }));
-          }catch(e){ console.warn('Settings konnten nicht gespeichert werden:', e); }
+          }catch(e){
+            console.warn('Settings konnten nicht gespeichert werden:', e);
+          }
         }
+        
+        // Popup schließen
         toggleSettingsPopup();
-        alert('✅ Einstellungen gespeichert!');
-        updateDayInputView();
+        
+        // Info anzeigen
+        alert('✅ Einstellungen gespeichert! Die Statistik wird beim nächsten Öffnen mit den neuen Einstellungen berechnet.');
       }
     }
 
     function updateDay(action){
       if(!editingDate) return;
       const key = formatDateKey(editingDate);
+
       if(action === 'delete'){
         delete dayData[key];
       } else {
+        // NEU: Kommentareingabe aus dem Edit-Feld live übernehmen
         const pendingComment = (document.getElementById('editCommentInput').value || '').trim();
-        const prev = dayData[key];
-        const prevObj = (prev && typeof prev === 'object') ? prev : {};
-        dayData[key] = { status: action, comment: pendingComment, alcohol: prevObj.alcohol, marijuana: prevObj.marijuana };
+        dayData[key] = {
+          status: action,
+          comment: pendingComment
+        };
       }
+
       saveData();
       closeEditPopup();
       updateMonthView();
       calculateStreak();
       calculateSuccessRate();
     }
+    
+    /* Speichere Kommentar */
     function saveEditComment(){
       if(!editingDate) return;
       const key = formatDateKey(editingDate);
       const comment = document.getElementById('editCommentInput').value.trim();
       const existingStatus = getDayStatus(key);
+      
       if(existingStatus){
-        const prev = dayData[key];
-        const prevObj = (prev && typeof prev === 'object') ? prev : {};
-        dayData[key] = { status: existingStatus, comment, alcohol: prevObj.alcohol, marijuana: prevObj.marijuana };
-        saveData(); updateMonthView();
-        const btn = event.target; const originalText = btn.textContent; btn.textContent = '✅ Gespeichert!'; setTimeout(() => btn.textContent = originalText, 1200);
+        // Update nur den Kommentar, Status bleibt gleich
+        dayData[key] = {
+          status: existingStatus,
+          comment: comment
+        };
+        saveData();
+        updateMonthView();
+        
+        // Feedback
+        const btn = event.target;
+        const originalText = btn.textContent;
+        btn.textContent = '✅ Gespeichert!';
+        setTimeout(() => btn.textContent = originalText, 1200);
       }
+    
       closeEditPopup();
-    }
+}
 
     function previousMonth(){ currentViewDate.setMonth(currentViewDate.getMonth()-1); updateMonthView(); calculateStreak(); calculateSuccessRate(); }
     function nextMonth(){     currentViewDate.setMonth(currentViewDate.getMonth()+1); updateMonthView(); calculateStreak(); calculateSuccessRate(); }
 
-    /* ===== Tag speichern – erweitert für God-Modus ===== */
+    /* Save day */
     function saveDay(){
-      const selected = document.querySelector('input[name="dayChoice"]:checked');
-      if(!selected) return;
-      const key = formatDateKey(new Date()); // bleibt wie zuvor „heute“
-      const comment = (document.getElementById('dayCommentInput').value || '').trim();
+  const selected = document.querySelector('input[name="dayChoice"]:checked');
+  if(!selected) return;
 
-      // bestehende Zusatzdaten (falls schon vorhanden) nicht verlieren
-      const prev = dayData[key];
-      const prevObj = (prev && typeof prev === 'object') ? prev : {};
+  const key = formatDateKey(new Date());
+  const comment = (document.getElementById('dayCommentInput').value || '').trim();
 
-      // Basis speichern
-      dayData[key] = { status: selected.value, comment, alcohol: prevObj.alcohol, marijuana: prevObj.marijuana };
+  dayData[key] = { status: selected.value, comment };
+  saveData();
 
-      // Falls God-Modus aktiv und Felder gefüllt → direkt mitschreiben
-      if(godMode){
-        const gm = readGodInputs();
-        if(gm.alcohol || gm.marijuana){
-          const cur = dayData[key];
-          if(gm.alcohol) cur.alcohol = gm.alcohol;
-          if(gm.marijuana) cur.marijuana = gm.marijuana;
-        }
-      }
+  document.getElementById('dayCommentInput').value = '';
+  document.getElementById('submitDay').disabled = true;
 
-      saveData();
-      document.getElementById('dayCommentInput').value = '';
-      document.getElementById('submitDay').disabled = true;
+  // Direkt weiter in die Monatsansicht
+  showMonthView();
+}
 
-      // Navigation: Standard bleibt wie bisher → Monatsansicht
-      // Im God-Modus bleiben wir auf der Tagesansicht, damit Details direkt ergänzt werden können.
-      if(godMode){
-        updateDayInputView();
-      } else {
-        showMonthView();
-      }
-    }
 
     /* Reset */
     function resetStorage(){
@@ -1510,207 +3490,8 @@
       try{
         localStorage.removeItem('alcoholTrackerData');
         localStorage.removeItem('alcoholTrackerCurrentDate');
-        localStorage.removeItem('alcoholTrackerSettings');
-        localStorage.removeItem('boozeTrackerSettings');
       }catch(e){ console.warn('LocalStorage-Bereinigung fehlgeschlagen:', e); }
       location.reload();
-    }
-
-    // ===== GOD-MODUS: Eingabe & Speicherung =====
-    function calcAlcohol(ml, abvPercent, portions){
-      const volMl = (Number(ml)||0) * (Number(portions)||1);
-      const abv = (Number(abvPercent)||0)/100;
-      const grams = volMl * abv * ETHANOL_DENSITY; // g
-      const drinks = grams / 10; // 10 g pro Drink
-      return { grams: +grams.toFixed(1), drinks: +drinks.toFixed(2) };
-    }
-    function readGodInputs(){
-      const typeEl = document.getElementById('gmAlcoholType');
-      const mlEl = document.getElementById('gmAlcoholMl');
-      const pEl = document.getElementById('gmAlcoholPortions');
-      const weedEl = document.getElementById('gmWeedGrams');
-      const freqEl = document.getElementById('gmWeedFreq');
-
-      let alcohol=null, marijuana=null;
-
-      const abv = typeEl ? parseFloat(typeEl.selectedOptions[0]?.dataset.abv || '0') : 0;
-      const ml = mlEl ? Number(mlEl.value || 0) : 0;
-      const portions = pEl ? Number(pEl.value || 1) : 1;
-      if(ml>0 && portions>0 && abv>0){
-        const { grams, drinks } = calcAlcohol(ml, abv, portions);
-        alcohol = { grams, drinks, type: typeEl.value, abv };
-      }
-
-      const g = weedEl ? Number(weedEl.value || 0) : 0;
-      const fq = freqEl ? freqEl.value : 'einmalig';
-      if(g>0){
-        marijuana = { grams: +g.toFixed(2), frequency: fq };
-      }
-      return { alcohol, marijuana };
-    }
-    function updateGodPreview(){
-      const typeEl = document.getElementById('gmAlcoholType');
-      const mlEl = document.getElementById('gmAlcoholMl');
-      const pEl = document.getElementById('gmAlcoholPortions');
-      const abv = parseFloat(typeEl.selectedOptions[0]?.dataset.abv || '0');
-      const ml = Number(mlEl.value || 0);
-      const portions = Number(pEl.value || 1);
-      const { grams, drinks } = calcAlcohol(ml, abv, portions);
-      document.getElementById('gmAlcoholGrams').textContent = grams.toFixed(1);
-      document.getElementById('gmAlcoholDrinks').textContent = drinks.toFixed(2);
-    }
-    function persistGodInputsIfDaySet(){
-      const key = formatDateKey(new Date());
-      const status = getDayStatus(key);
-      if(!status) return; // erst speichern, wenn ein Tagesstatus existiert
-      const gm = readGodInputs();
-      const cur = dayData[key] || { status, comment:'' };
-      if(gm.alcohol) cur.alcohol = gm.alcohol; else delete cur.alcohol;
-      if(gm.marijuana) cur.marijuana = gm.marijuana; else delete cur.marijuana;
-      dayData[key] = cur;
-      saveData();
-    }
-    function loadGodInputsForToday(){
-      const key = formatDateKey(new Date());
-      const entry = dayData[key];
-      const alcohol = entry && typeof entry==='object' ? entry.alcohol : null;
-      const marijuana = entry && typeof entry==='object' ? entry.marijuana : null;
-
-      if(alcohol){
-        const map = { beer:5, radler:2.5, wine:10, liqueur:15, other20:20, other30:30, spirits:40 };
-        // grobe Zuordnung über abv
-        const sel = document.getElementById('gmAlcoholType');
-        if(sel){
-          // wähle passende Option nach abv oder type
-          const opt = [...sel.options].find(o => parseFloat(o.dataset.abv) === Number(alcohol.abv)) || [...sel.options].find(o => o.value === alcohol.type);
-          if(opt) sel.value = opt.value;
-        }
-        document.getElementById('gmAlcoholMl').value = ''; // Menge pro Portion ist nicht exakt rekonstruierbar ⇒ leer lassen
-        document.getElementById('gmAlcoholPortions').value = 1;
-        // Vorschau aus gespeicherten Gramm/Drinks
-        document.getElementById('gmAlcoholGrams').textContent = (alcohol.grams ?? 0).toFixed?.(1) ?? alcohol.grams;
-        document.getElementById('gmAlcoholDrinks').textContent = (alcohol.drinks ?? 0).toFixed?.(2) ?? alcohol.drinks;
-      } else {
-        document.getElementById('gmAlcoholGrams').textContent = '0';
-        document.getElementById('gmAlcoholDrinks').textContent = '0';
-      }
-
-      if(marijuana){
-        document.getElementById('gmWeedGrams').value = marijuana.grams ?? '';
-        document.getElementById('gmWeedFreq').value = marijuana.frequency || 'einmalig';
-      } else {
-        document.getElementById('gmWeedGrams').value = '';
-        document.getElementById('gmWeedFreq').value = 'einmalig';
-      }
-    }
-
-    // ===== GOD-MODUS: Detaillierte Analyse =====
-    function toggleGodAnalysis(){
-      const sec = document.getElementById('godDetailSection');
-      const isShown = sec.style.display === 'block';
-      sec.style.display = isShown ? 'none' : 'block';
-      if(!isShown) computeGodAnalysis();
-    }
-
-    function computeGodAnalysis(){
-      // sammle 100 Tage: Gramm Alkohol (detail oder Fallback) + Weed
-      const today = new Date();
-      let totalGrams = 0;
-      let bingeDays = 0; // > 40 g
-      let longestCluster = 0, currentCluster = 0; // > 20 g
-      let weedTotal = 0;
-      let detailDays = 0, knownDays = 0;
-      let weekendBinge = 0;
-      let lowDailyCount = 0; // 0<g<=20
-      for(let i=0; i<100; i++){
-        const dt = new Date(today); dt.setDate(dt.getDate()-i);
-        const key = formatDateKey(dt);
-        const entry = dayData[key];
-        const st = getDayStatus(key);
-
-        if(st){ knownDays++; }
-
-        // Alkohol g
-        let grams = 0;
-        if(entry && typeof entry==='object' && entry.alcohol && typeof entry.alcohol.grams === 'number'){
-          grams = entry.alcohol.grams; detailDays++;
-        } else if(st){ grams = FALLBACK_GRAMS[st] ?? 0; }
-        totalGrams += grams;
-
-        // Binge/Cluster
-        if(grams > 40) {
-          bingeDays++;
-          const dayIdx = dt.getDay(); // 0=So ... 6=Sa
-          if(dayIdx===5 || dayIdx===6) weekendBinge++;
-        }
-        if(grams > 20){ currentCluster++; if(currentCluster>longestCluster) longestCluster=currentCluster; }
-        else currentCluster=0;
-
-        if(grams>0 && grams<=20) lowDailyCount++;
-
-        // Marijuana
-        if(entry && entry.marijuana && typeof entry.marijuana.grams==='number'){
-          const mult = entry.marijuana.frequency === 'mehrmals' ? 2 : 1;
-          weedTotal += entry.marijuana.grams * mult;
-        }
-      }
-
-      const weeklyGrams = (totalGrams * 7) / 100; // Ø pro Woche über 100 Tage
-      const avgDrinksWeek = weeklyGrams / 10;
-
-      const weedWeek = (weedTotal * 7) / 100; // Ø pro Woche
-      const weedBoost = weedWeek > 1 ? 1.10 : 1.0;
-
-      // Teil-Scores (0 gut → 100 schlecht)
-      const Q = Math.min(weeklyGrams / 80, 1) * 100; // >80 g/Woche = 100
-      const B = Math.min( (0.7*(bingeDays/100) + 0.3*(longestCluster/10)), 1) * 100; // Cluster auf 10 gecappt
-      const M = Math.min(weedWeek / 2, 1) * 100; // >2 g/Woche = 100
-      let riskScore = (0.5*Q + 0.3*B + 0.2*M) * weedBoost;
-      riskScore = Math.max(0, Math.min(100, riskScore));
-
-      // Muster
-      let pattern = '—';
-      if(bingeDays >= 3 && weekendBinge/bingeDays >= 0.6) pattern = 'Weekend-Binger';
-      else if(lowDailyCount >= 60 && bingeDays <= 3) pattern = 'Daily Low (meist < 20 g)';
-      else if((100 - (totalGrams>0 ? Math.round(totalGrams/ (totalGrams/100)) : 0)) > 70 && bingeDays >= 1 && bingeDays <= 5){
-        pattern = 'Abstinent mit Slips';
-      }
-
-      // 5-Stufen-Skala
-      let stage=1, stageText='Stufe 1: Zen-Meister', stageClass='stage-1', tip='';
-      if(weeklyGrams > 80 || bingeDays > 30 || longestCluster > 7 || weedWeek > 2){
-        stage=5; stageText='Stufe 5: Alarmstufe Rot'; stageClass='stage-5'; tip='Sofortige Reduktion & ärztliche Beratung erwägen.';
-      } else if(weeklyGrams >= 40 || bingeDays >= 15 || longestCluster > 5){
-        stage=4; stageText='Stufe 4: Risiko-Jongleur'; stageClass='stage-4'; tip='Binge-Frequenz und Cluster aktiv aufbrechen (Plan: alkoholfreie Fenster + Alternativen).';
-      } else if(weeklyGrams >= 20 || (bingeDays >=5 && bingeDays <=15) || (longestCluster >=3 && longestCluster <=5) || (weedWeek >=0.5 && weedWeek <=2)){
-        stage=3; stageText='Stufe 3: Kipppunkt-Wanderer'; stageClass='stage-3'; tip='Mengen limitieren (<20 g/Tag), v.a. Wochenenden entschärfen.';
-      } else if(weeklyGrams >= 10 || (bingeDays>0 && bingeDays<5) || (longestCluster>0 && longestCluster<3)){
-        stage=2; stageText='Stufe 2: Balance-Künstler'; stageClass='stage-2'; tip='Ziele setzen: 1–2 zusätzliche AF-Tage/Woche.';
-      } else {
-        stage=1; stageText='Stufe 1: Zen-Meister'; stageClass='stage-1'; tip='Weiter so: AF-Quote hoch halten.';
-      }
-
-      // UI füllen
-      document.getElementById('detailAvgDrinks').textContent = avgDrinksWeek.toFixed(2);
-      document.getElementById('detailBingeDays').textContent = `${bingeDays}`;
-      document.getElementById('detailCluster').textContent = `${longestCluster}`;
-      document.getElementById('detailWeedWeek').textContent = weedWeek.toFixed(2);
-      document.getElementById('detailRiskScore').textContent = `${Math.round(riskScore)} / 100`;
-      document.getElementById('detailPattern').textContent = pattern;
-      const badge = document.getElementById('detailStageBadge');
-      badge.className = `stage-badge ${stageClass}`;
-      badge.textContent = stageText;
-
-      const tipEl = document.getElementById('detailTip');
-      if(tip){ tipEl.style.display='block'; tipEl.textContent = 'Tipp: ' + tip; } else { tipEl.style.display='none'; }
-
-      const fallbackEl = document.getElementById('detailFallbackNote');
-      if(knownDays>0 && detailDays/knownDays < 0.5){
-        fallbackEl.style.display='block';
-        fallbackEl.textContent = `🔎 Hinweis: Für ${knownDays-detailDays} von ${knownDays} erkannten Tagen wurden Mengen aus Kategorien geschätzt. Genauere Daten verbessern die Analyse.`;
-      } else {
-        fallbackEl.style.display='none';
-      }
     }
 
     // Expose
@@ -1728,32 +3509,19 @@
     document.addEventListener('DOMContentLoaded', ()=>{
       testStorage();
       loadData();
-
-      // Radio-Änderungen: Verhalten wie bisher → aber Navigation abhängig vom God-Modus
-      document.querySelectorAll('input[name="dayChoice"]').forEach(radio=>{
-        radio.addEventListener('change', ()=>{ saveDay(); });
-      });
-
-      // God-Modus Listeners (live Vorschau & Autosave sobald Status existiert)
-      const ids = ['gmAlcoholType','gmAlcoholMl','gmAlcoholPortions','gmWeedGrams','gmWeedFreq'];
-      ids.forEach(id=>{
-        const el = document.getElementById(id);
-        if(!el) return;
-        el.addEventListener('input', ()=>{
-          if(id.startsWith('gmAlcohol')) updateGodPreview();
-          persistGodInputsIfDaySet();
-        });
-        el.addEventListener('change', ()=>{
-          if(id.startsWith('gmAlcohol')) updateGodPreview();
-          persistGodInputsIfDaySet();
-        });
-      });
-
-      updateDayInputView();
-
-      document.getElementById('submitDay').addEventListener('click', ()=>{ saveDay(); });
+    document.querySelectorAll('input[name="dayChoice"]').forEach(radio=>{
+      radio.addEventListener('change', ()=>{
+    // Direkt speichern & in die Monatsansicht springen
+    saveDay(); // saveDay ruft am Ende showMonthView() auf
+     });
     });
 
+      updateDayInputView();
+	  document.getElementById('submitDay').addEventListener('click', ()=>{
+      saveDay(); // saveDay springt am Ende in die Monatsansicht
+       });
+      });
+  
 /* ---------------------------
    Backup & Restore (local)
 --------------------------- */
@@ -1764,13 +3532,11 @@ function exportData(){
     let settings = {};
     try{ if(settingsRawA) settings = JSON.parse(settingsRawA) || {}; }catch{}
     try{ if(settingsRawB) settings = { ...settings, ...(JSON.parse(settingsRawB)||{}) }; }catch{}
-
     settings.neutralDays = (typeof neutralDaysSetting !== 'undefined' ? neutralDaysSetting : (settings.neutralDays || 'ignore'));
-    settings.godMode = (typeof godMode !== 'undefined' ? godMode : !!settings.godMode);
 
     const payload = {
       type: 'booze-tracker-backup',
-      version: 2,
+      version: 1,
       exportedAt: new Date().toISOString(),
       dayData,
       settings
@@ -1813,46 +3579,43 @@ function importData(){
         }
 
         const isDateKey = k => /^\d{4}-\d{1,2}-\d{1,2}$/.test(k);
+
+    // macht aus "YYYY-MM-DD" einen App-kompatiblen Key wie "YYYY-M-D"
         const normalizeKey = (k) => {
-          const [y, m, d] = k.split('-').map(n => parseInt(n, 10));
-          const dt = new Date(y, m - 1, d);
-          return formatDateKey(dt);
+        const [y, m, d] = k.split('-').map(n => parseInt(n, 10));
+        const dt = new Date(y, m - 1, d);
+        return formatDateKey(dt); // nutzt deine bestehende unpadded-Logik
         };
 
         const validEntries = {};
         Object.keys(importedDayData || {}).forEach(k => {
           if (isDateKey(k)) {
-            const normKey = normalizeKey(k);
-            const v = importedDayData[k];
-            if (typeof v === 'string') {
-              validEntries[normKey] = { status: v, comment: '' };
-            } else if (v && typeof v === 'object' && typeof v.status === 'string') {
-              // Kommentare + (neue) Detailobjekte übernehmen
-              validEntries[normKey] = {
-                status: v.status,
-                comment: v.comment || '',
-                alcohol: v.alcohol || undefined,
-                marijuana: v.marijuana || undefined
-              };
-            }
+        const normKey = normalizeKey(k);
+        const v = importedDayData[k];
+          if (typeof v === 'string') {
+             validEntries[normKey] = { status: v, comment: '' };
+             } else if (v && typeof v === 'object' && typeof v.status === 'string') {
+             validEntries[normKey] = { status: v.status, comment: v.comment || '' };
+             }
           }
         });
+
+
+
 
         dayData = { ...dayData, ...validEntries };
 
         const newNeutral = importedSettings.neutralDays;
-        const newGod = importedSettings.godMode;
-        const merged = { 
-          neutralDays: newNeutral || neutralDaysSetting || 'ignore',
-          godMode: typeof newGod === 'boolean' ? newGod : godMode
-        };
-        try{
-          localStorage.setItem('alcoholTrackerSettings', JSON.stringify(merged));
-          localStorage.setItem('boozeTrackerSettings', JSON.stringify(merged));
-        }catch{}
+        if(newNeutral){
+          window.neutralDaysSetting = newNeutral;
+          try{
+            localStorage.setItem('alcoholTrackerSettings', JSON.stringify({ neutralDays: newNeutral }));
+            localStorage.setItem('boozeTrackerSettings', JSON.stringify({ neutralDays: newNeutral }));
+          }catch{}
+        }
 
-        alert('✅ Daten importiert. Die Ansicht wird aktualisiert.');
         saveData();
+        alert('✅ Daten importiert. Die Ansicht wird aktualisiert.');
         location.reload();
       }catch(err){
         console.error(err);
@@ -1869,3 +3632,4 @@ window.importData = importData;
 </script>
 </body>
 </html>
+```
