@@ -682,13 +682,45 @@
 
 
 <style>
+/* --- Heute-Button schmal (surgical override) --- */
+.month-top-nav .btn.today-btn{
+  min-width:48px;
+  width:auto;
+  padding:0 12px;
+}
+@media (max-width:640px){
+  .month-top-nav .btn.today-btn .label{ display:none; }
+}
+</style>
+
+
+<style>
+/* === Kategorie-Layout zurück zu EINER Spalte (schlank) === */
 .choice-container{ grid-template-columns: 1fr !important; }
 @media (max-width:640px){
   .choice-container{ grid-template-columns: 1fr !important; }
 }
-.choice-option{ min-height: unset !important; height: auto !important; }
-.month-hint{ margin-top: 4px; font-size: 12px; line-height: 1.2; color: var(--muted); text-align: center; font-weight: 400; }
-.month-hint .gm-badge{ color:#e11d48; font-weight:700; margin-left:8px; font-size:11px; }
+/* Karten wieder schlank machen */
+.choice-option{
+  min-height: unset !important;
+  height: auto !important;
+}
+
+/* Monat-Hinweis unter der Überschrift */
+.month-hint{
+  margin-top: 4px;
+  font-size: 12px;
+  line-height: 1.2;
+  color: var(--muted);
+  text-align: center;
+  font-weight: 400;
+}
+.month-hint .gm-badge{
+  color: #e11d48; /* rot */
+  font-weight: 700;
+  margin-left: 8px;
+  font-size: 11px;
+}
 </style>
 
 </head>
@@ -743,7 +775,7 @@
           <input type="radio" name="dayChoice" value="mixed" />
           <div class="choice-label">
             <div>❤️ Schadensbegrenzung</div>
-            <div class="choice-desc">Selbstbetrug = Sport + feiern (21-60g)</div>
+            <div class="choice-desc">Selbstbetrug = Sport + feiern</div>
           </div>
           <div class="choice-warning">⚠️ Auto-Vorschlag passt nicht zur Eingabe!</div>
         </label>
@@ -818,7 +850,7 @@
           </div>
           <div class="checkbox-item">
             <input type="checkbox" id="checkHangover">
-            <label for="checkHangover">😵 Katertag</label>
+            <label for="checkHangover">😵 Vollrausch/Katertag</label>
           </div>
         </div>
 
@@ -921,9 +953,9 @@
         <span>💚 Wellness</span>
         <span>🟢 Alkoholfrei</span>
         <span>🟡 Moderat (👟 = mit Sport)</span>
-        <span>❤️ Schadensbegrenzung</span>
+        <span>❤️ Schadensbegrenzung (Sport+Alk)</span>
         <span>🔴 Alkohol</span>
-        <span>😵 Katertag (⚠️ = mit Weiter-Alkohol)</span>
+        <span>😵 Vollrausch/Katertag (⚠️ = mit Weiter-Alkohol)</span>
       </div>
 
       <div id="monthGrid" class="cal" aria-label="Kalender"></div>
@@ -966,7 +998,7 @@
             <div class="chart-bar-header">
               <div class="chart-bar-label">
                 🔴 Unter 50%
-                <small>Alkohol, Schadensbegrenzung, Moderat, Katertag</small>
+                <small>Alkohol, "Schadensbegrenzung", Moderat, Vollrausch/Katertag</small>
               </div>
               <div class="chart-bar-value">
                 <span class="chart-bar-number" id="chartNegativeNum">0</span>
@@ -1201,7 +1233,6 @@
     let neutralDaysSetting = 'ignore';
     let neutralDaysWeight = 30; // Prozent (0-50)
     let godMode = false;
-    let categoryManual = false; // prevents auto category overriding manual choice
     let userGender = 'male'; // male | female
     let userWeight = null; // kg, null = default 75kg
     
@@ -1744,9 +1775,9 @@
         wellness: '💚 Wellness',
         sober: '🟢 Alkoholfrei',
         moderate: '🟡 Moderat',
-        mixed: '❤️ Schadensbegrenzung',
+        mixed: '❤️ "Schadensbegrenzung"',
         alcohol: '🔴 Alkohol',
-        hangover: '😵 Katertag',
+        hangover: '😵 Vollrausch/Katertag',
         hangoverLight: '😌 Hangover Light'
       };
       suggestedEl.textContent = catNames[suggested] || '—';
@@ -1814,10 +1845,10 @@
         
         if (entry && entry.drinks && Array.isArray(entry.drinks)) {
           // Getränke laden
-          if (entry && Array.isArray(entry.drinks) && entry.drinks.length) { entry.drinks.forEach(d => addDrink(d)); }
+          entry.drinks.forEach(d => addDrink(d));
         } else {
           // FIX: Initial ein leeres Getränk hinzufügen
-
+          addDrink();
         }
         
         // Checkboxen
@@ -1851,7 +1882,6 @@
 
     function saveDay() {
       const selected = document.querySelector('input[name="dayChoice"]:checked');
-      const choice = selected ? selected.value : null;
       if (!selected) {
         alert('Bitte eine Kategorie wählen.');
         return;
@@ -2039,8 +2069,11 @@
       
       // Mobile: Toggle Tooltip
       if (window.innerWidth <= 640 && cell.classList.contains('has-comment')) {
-        cell.classList.toggle('tooltip-active');
-        return;
+        if (!cell.classList.contains('tooltip-active')) {
+  cell.classList.add('tooltip-active');
+  return;
+}
+// Tooltip war schon aktiv → jetzt Tag öffnen
       }
       
       // Tag zur Eingabe wechseln
@@ -2199,7 +2232,7 @@
         counts.moderate * 0.4 +
         counts.mixed * 0.25 +
         counts.alcohol * 0.0 +
-        hangoverClean * 0.1 +        // Katertag ohne Alkohol = 10% (leidet, aber trinkt nicht)
+        hangoverClean * 0.4 +        // Katertag ohne Alkohol = 10% (leidet, aber trinkt nicht)
         counts.hangoverWithAlc * 0.0 + // Katertag MIT Alkohol = 0% (doppelt problematisch!)
         counts.empty * neutralWeight
       ) / 100;
@@ -2223,7 +2256,7 @@
       
       // Spezial-Warnung bei Katertagen mit Alkohol
       const morningDrinkingWarning = counts.hangoverWithAlc > 0 ? 
-        `<br><br>🚨 <strong>KRITISCH:</strong> ${counts.hangoverWithAlc} Katertag(e) mit Weiter-Alkohol! Dies ist ein DSM-5-Kriterium für schwere Alkoholabhängigkeit (morgendliches Trinken zur Linderung). Dringend professionelle Hilfe empfohlen!` : 
+        `<br><br>🚨 <strong>KRITISCH:</strong> ${counts.hangoverWithAlc} Vollrausch/Katertag(e) mit Weiter-Alkohol! Dies ist ein DSM-5-Kriterium für schwere Alkoholabhängigkeit (morgendliches Trinken zur Linderung). Dringend professionelle Hilfe empfohlen!` : 
         '';
       
       if (bingeProximity >= 40 || afQuote < 0.20 || (bingeQuote >= 0.40 && enteredDays >= 10) || counts.hangoverWithAlc >= 3) {
@@ -2558,7 +2591,7 @@
             <div><strong>Tolerance Creep (90d vs. 90d):</strong> ${creepStatus}</div>
             <div><strong>Ø Recovery (Binge→Binge):</strong> ${avgRecovery} Tage</div>
             <div><strong>Comment Risk (30d):</strong> ${commentRisk} <span style="font-size:12px;">(${triggerCount} Trigger-Wörter)</span></div>
-            ${hangoverWithAlc > 0 ? `<div style="margin-top:8px; padding:8px; background:#fee2e2; border-left:3px solid #dc2626; border-radius:4px;"><strong>🚨 Katertage mit Weiter-Alkohol:</strong> ${hangoverWithAlc} (DSM-5-Kriterium für schwere AUD!)</div>` : ''}
+            ${hangoverWithAlc > 0 ? `<div style="margin-top:8px; padding:8px; background:#fee2e2; border-left:3px solid #dc2626; border-radius:4px;"><strong>🚨 Vollrausch/Katertage mit Weiter-Alkohol:</strong> ${hangoverWithAlc} (DSM-5-Kriterium für schwere AUD!)</div>` : ''}
           </div>
           
           <div style="margin-bottom:16px; padding:16px; background:#ede9fe; border-radius:8px; border:1px solid #c4b5fd;">
@@ -2585,7 +2618,7 @@
             • RKI: Riskanter Konsum = >20g/Tag regelmäßig<br>
             • DSM-5: AUD-Kriterien bei Kontrollverlust, Toleranz, Craving, <strong>morgendlichem Trinken</strong><br>
             • Markov-Chain: Historische Übergangsmuster<br>
-            • <strong>Katertag ohne Alkohol = 10% Gesundheit</strong> (leidet, trinkt aber nicht weiter)<br>
+            • <strong>Katertag ohne Alkohol = 40% Gesundheit</strong> (leidet, trinkt aber nicht weiter)<br>
             • <strong>Katertag MIT Alkohol = 0% Gesundheit</strong> (doppelt problematisch, DSM-5-Kriterium!)
           </div>
           
@@ -2696,13 +2729,12 @@
       
       // FIX: Initial Drink beim God-Mode laden
       if (godMode && activeDrinks.length === 0) {
-
+        addDrink();
       }
       
       // Kategorie-Auswahl mit Auto-Select
       document.querySelectorAll('input[name="dayChoice"]').forEach(radio => {
         radio.addEventListener('change', () => {
-          categoryManual = true;
           // Prüfe ob manuell geändert (nicht Auto-Select)
           const isManual = !radio.dataset.autoSelected;
           delete radio.dataset.autoSelected; // Reset
@@ -2726,13 +2758,13 @@
         
         // Initial Drink hinzufügen wenn leer
         if (godMode && activeDrinks.length === 0) {
-
+          addDrink();
         }
       });
       
       // Add Drink
       document.getElementById('addDrinkBtn').addEventListener('click', () => {
-
+        addDrink();
       });
       
       // Drinks Input Delegation
@@ -2813,8 +2845,10 @@
       var gmActive = (typeof godMode !== 'undefined' && !!godMode);
       var base = 'Hinweis: Für genaue Eingabe der Alkoholmengen in den Einstellungen den God-Mode aktivieren.';
       hint.innerHTML = gmActive ? base + ' <span class="gm-badge">Godmode activated</span>' : base;
-    }catch(e){}
+    }catch(e){ /* no-op */ }
   }
+
+  // Hook into updateMonthView (call afterwards)
   if(typeof updateMonthView === 'function'){
     var _updateMonthView = updateMonthView;
     window.updateMonthView = function(){
@@ -2823,11 +2857,16 @@
       return res;
     };
   } else {
+    // Fallback: try once on DOM ready
     document.addEventListener('DOMContentLoaded', ensureMonthHint);
   }
+
+  // Update when settings saved or checkbox toggled
   document.addEventListener('DOMContentLoaded', function(){
     var tgm = document.getElementById('toggleGodMode');
-    if(tgm){ tgm.addEventListener('change', ensureMonthHint); }
+    if(tgm){
+      tgm.addEventListener('change', ensureMonthHint);
+    }
   });
 })();
 </script>
