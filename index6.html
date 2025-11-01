@@ -680,6 +680,19 @@
 }
 </style>
 
+
+<style>
+/* --- Heute-Button schmal (surgical override) --- */
+.month-top-nav .btn.today-btn{
+  min-width:48px;
+  width:auto;
+  padding:0 12px;
+}
+@media (max-width:640px){
+  .month-top-nav .btn.today-btn .label{ display:none; }
+}
+</style>
+
 </head>
 <body>
   <div class="container">
@@ -2026,8 +2039,11 @@
       
       // Mobile: Toggle Tooltip
       if (window.innerWidth <= 640 && cell.classList.contains('has-comment')) {
-        cell.classList.toggle('tooltip-active');
-        return;
+        if (!cell.classList.contains('tooltip-active')) {
+  cell.classList.add('tooltip-active');
+  return;
+}
+// Tooltip war schon aktiv → jetzt Tag öffnen
       }
       
       // Tag zur Eingabe wechseln
