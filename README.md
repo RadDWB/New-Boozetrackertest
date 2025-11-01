@@ -1,6 +1,7 @@
 # New-Boozetrackertest
 
 index.hmtl = productive
-index1.html = Grok
-index2.hmtl = ChatGPT5
+index0.html = claude
+index1.html = ChatGpT
+index2.hmtl = grok
 index3.html = gemini Pro
