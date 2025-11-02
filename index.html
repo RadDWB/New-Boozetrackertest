@@ -965,7 +965,7 @@
       <div id="monthGrid" class="cal" aria-label="Kalender"></div>
 
       <div style="text-align: center; margin-top: 16px; display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
-        <button class="btn-stats-toggle" onclick="toggleChartPopup()">📊 100-Tage-Statistik</button>
+        <button class="btn-stats-toggle" onclick="toggleChartPopup()">📊 Langzeit-Statistik</button>
         <button class="btn-settings" onclick="toggleSettingsPopup()">⚙️ Einstellungen</button>
       </div>
 
@@ -1293,7 +1293,7 @@
     /* ========================================
        GLOBALE VARIABLEN & KONFIGURATION
     ======================================== */
-    const APP_VERSION = 'v3.0 (02.11.2025 14:14)';
+    const APP_VERSION = 'v3.3 (02.11.2025 15:25)';
     
     let dayData = {};
     let currentInputDate = new Date();
@@ -2839,7 +2839,25 @@
         'N/A';
       
       // === 9. COMMENT RISK ANALYSIS ===
-      const triggerWords = ['party', 'feier', 'stress', 'schlecht', 'scheiße', 'traurig', 'ärger', 'wut', 'problem', 'streit'];
+      const triggerWords = [
+        // Emotionale Belastung
+        'stress', 'traurig', 'wut', 'ärger', 'depressiv', 'einsam', 'verzweifelt', 'überfordert', 'nervös', 'erschöpft',
+
+        // Soziale Kontexte
+        'party', 'feier', 'geburtstag', 'wochenende', 'urlaub', 'kneipe', 'bar', 'club', 'festival', 'runde', 'trinken', 'anstoßen',
+
+        // Konflikte & Probleme
+        'streit', 'problem', 'scheiße', 'schlecht', 'stressig', 'diskussion', 'trennung', 'verlust', 'kündigung', 'stressphase',
+
+        // Selbstabwertung & Flucht
+        'versagt', 'nicht geschafft', 'egal', 'scheiß drauf', 'flucht', 'abschalten', 'betäuben', 'vergessen', 'nichts fühlen',
+
+        // Gewohnheiten & Muster
+        'bier', 'wein', 'schnaps', 'whisky', 'cocktail', 'trinklust', 'durst', 'gewohnheit', 'ritual', 'belohnung',
+
+        // Körperliche Hinweise
+        'kopfschmerzen', 'kater', 'übelkeit', 'zittern', 'schwindel', 'nicht geschlafen', 'müde', 'ausgelaugt'
+      ];
       let triggerCount = 0;
       
       last30.forEach(day => {
