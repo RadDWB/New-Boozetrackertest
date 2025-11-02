@@ -52,10 +52,13 @@
       font-size: clamp(26px, 4.2vw, 34px);
     }
     .app-version{
-      text-align:center;
+      position: fixed;
+      top: 4px;
+      right: 4px;
       color: var(--muted);
-      font-size: 12px;
-      margin-bottom: 10px;
+      font-size: 8px;
+      opacity: 0.4;
+      z-index: 9999;
     }
 
     /* === EINGABE === */
@@ -100,8 +103,7 @@
       border-color: #b7f3d2;
       background: linear-gradient(135deg, #f3fff9, #ecfff8);
     }
-    .choice-option.hangover{ border-color: #d4d4d8; background: #fafafa; }
-    .choice-option.hangoverLight{ border-color: #e4e4e7; background: #fef9f3; }
+    .choice-option.hangover{ border-color: #7f1d1d; background: #fef2f2; }
     
     .choice-label{ flex:1; }
     .choice-desc{ font-size: 12px; color: var(--muted); margin-top: 2px; }
@@ -372,8 +374,8 @@
     .day.alcohol{ background:#ef4444; color:#fff; }
     .day.superday{ background:#059669; color:#fff; }
     .day.superday::after{ content:"⭐"; position:absolute; top:2px; right:4px; font-size:10px; }
-    .day.hangover{ background:#71717a; color:#fff; }
-    .day.hangover::after{ content:"😵"; position:absolute; top:2px; right:4px; font-size:10px; }
+    .day.hangover{ background:#7f1d1d; color:#fff; }
+    .day.hangover::after{ content:"🍺💥"; position:absolute; top:2px; right:4px; font-size:10px; }
 
     .day.today{ outline: 3px solid var(--primary); outline-offset:-3px; }
 
@@ -766,11 +768,11 @@
           <input type="radio" name="dayChoice" value="moderate" />
           <div class="choice-label">
             <div>🟡 Moderat</div>
-            <div class="choice-desc">Wenig Alkohol (≤20g) - auch mit Sport ok 👟</div>
+            <div class="choice-desc">1-2 Drinks (~40g, ca. 2x0.5L Bier)</div>
           </div>
           <div class="choice-warning">⚠️ Auto-Vorschlag passt nicht zur Eingabe!</div>
         </label>
-        
+
         <label class="choice-option mixed" data-value="mixed">
           <input type="radio" name="dayChoice" value="mixed" />
           <div class="choice-label">
@@ -779,12 +781,12 @@
           </div>
           <div class="choice-warning">⚠️ Auto-Vorschlag passt nicht zur Eingabe!</div>
         </label>
-        
+
         <label class="choice-option alcohol" data-value="alcohol">
           <input type="radio" name="dayChoice" value="alcohol" />
           <div class="choice-label">
             <div>🔴 Alkohol</div>
-            <div class="choice-desc">Viel Alkohol getrunken (>20g)</div>
+            <div class="choice-desc">Viel Alkohol getrunken (41-80g)</div>
           </div>
           <div class="choice-warning">⚠️ Auto-Vorschlag passt nicht zur Eingabe!</div>
         </label>
@@ -792,17 +794,8 @@
         <label class="choice-option hangover" data-value="hangover">
           <input type="radio" name="dayChoice" value="hangover" />
           <div class="choice-label">
-            <div>😵 Vollrausch</div>
-            <div class="choice-desc">Totalabsturz</div>
-          </div>
-          <div class="choice-warning">⚠️ Auto-Vorschlag passt nicht zur Eingabe!</div>
-        </label>
-        
-        <label class="choice-option hangoverLight" data-value="hangoverLight">
-          <input type="radio" name="dayChoice" value="hangoverLight" />
-          <div class="choice-label">
-            <div>😌 Hangover Light</div>
-            <div class="choice-desc">Leichter Kater (1-10g Vortag) - für sensible Personen</div>
+            <div>🍺💥 Vollrausch</div>
+            <div class="choice-desc">Sehr viel Alkohol getrunken (>80g)</div>
           </div>
           <div class="choice-warning">⚠️ Auto-Vorschlag passt nicht zur Eingabe!</div>
         </label>
@@ -854,7 +847,11 @@
           </div>
           <div class="checkbox-item">
             <input type="checkbox" id="checkHangover">
-            <label for="checkHangover">😵 Katertag</label>
+            <label for="checkHangover">🤢 Katertag</label>
+          </div>
+          <div class="checkbox-item">
+            <input type="checkbox" id="checkHangoverLight" title="Wenig getrunken, trotzdem Kopfweh - für sensible Personen">
+            <label for="checkHangoverLight">😌 Kater Light</label>
           </div>
         </div>
 
@@ -963,7 +960,7 @@
         <span>🟡 Moderat (👟 = mit Sport)</span>
         <span>❤️ Schadensbegrenzung (Sport+Alk)</span>
         <span>🔴 Alkohol</span>
-        <span>😵 Vollrausch</span>
+        <span>🍺💥 Vollrausch</span>
       </div>
 
       <div id="monthGrid" class="cal" aria-label="Kalender"></div>
@@ -1297,7 +1294,7 @@
     /* ========================================
        GLOBALE VARIABLEN & KONFIGURATION
     ======================================== */
-    const APP_VERSION = 'Optimized_v2.0';
+    const APP_VERSION = 'v2.1';
     
     let dayData = {};
     let currentInputDate = new Date();
@@ -1801,34 +1798,29 @@
     }
 
     function suggestCategory(grams, sport, crash, hangover) {
-      // Korrigierte Auto-Reklassifikation
-      if (crash) return 'hangover'; // Totalabsturz = immer Katertag
-      if (hangover && grams > 10) return 'hangover'; // Katertag MIT viel Alkohol = sehr problematisch
-      if (hangover && grams >= 1 && grams <= 10) return 'hangoverLight'; // Katertag MIT wenig Alkohol (1-10g) = Hangover Light
-      if (hangover && grams === 0) return 'hangoverLight'; // Katertag OHNE Alkohol = Hangover Light
-      
+      // Totalabsturz → immer Vollrausch
+      if (crash) return 'hangover';
+
       if (grams === 0) {
         return sport ? 'superday' : 'sober';
       }
-      
-      // Hangover Light für sensible Menschen (1-10g)
-      if (grams >= 1 && grams <= 10 && !sport) {
-        return 'hangoverLight';
+
+      // Moderat: 1-2 Drinks (bis ~40g, ca. 2x0.5L Bier)
+      if (grams <= 40) {
+        return 'moderate';
       }
-      
-      // FIX: Schadensbegrenzung erst ab 21g + Sport
-      if (sport && grams >= 21 && grams <= 60) {
-        return 'mixed'; // Schadensbegrenzung = Selbstbetrug
+
+      // Schadensbegrenzung: 41-80g + Sport
+      if (sport && grams > 40 && grams <= 80) {
+        return 'mixed';
       }
-      
-      if (grams <= 20) {
-        return 'moderate'; // Moderat - auch mit Sport!
+
+      // Vollrausch: >80g
+      if (grams > 80) {
+        return 'hangover';
       }
-      
-      if (grams > 60) {
-        return 'hangover'; // Extreme Menge = wahrscheinlich Totalabsturz
-      }
-      
+
+      // Alkohol: 41-80g ohne Sport
       return 'alcohol';
     }
 
@@ -1865,8 +1857,7 @@
         moderate: '🟡 Moderat',
         mixed: '❤️ "Schadensbegrenzung"',
         alcohol: '🔴 Alkohol',
-        hangover: '😵 Vollrausch',
-        hangoverLight: '😌 Hangover Light'
+        hangover: '🍺💥 Vollrausch'
       };
       suggestedEl.textContent = catNames[suggested] || '—';
       
@@ -1944,7 +1935,8 @@
         document.getElementById('checkCompensation').checked = !!entry?.compensation;
         document.getElementById('checkDope').checked = !!(entry?.marijuana && entry.marijuana.grams > 0);
         document.getElementById('checkCrash').checked = !!entry?.crash;
-        document.getElementById('checkHangover').checked = entry?.status === 'hangover';
+        document.getElementById('checkHangover').checked = !!entry?.hangover;
+        document.getElementById('checkHangoverLight').checked = !!entry?.hangoverLight;
         
         // Dope Details
         if (entry?.marijuana) {
@@ -2001,6 +1993,8 @@
         entry.sport = document.getElementById('checkSport').checked;
         entry.crash = document.getElementById('checkCrash').checked;
         entry.compensation = document.getElementById('checkCompensation').checked;
+        entry.hangover = document.getElementById('checkHangover').checked;
+        entry.hangoverLight = document.getElementById('checkHangoverLight').checked;
         
         // Marijuana
         const dopeChecked = document.getElementById('checkDope').checked;
@@ -2100,19 +2094,38 @@
           sportIcon.style.cssText = 'position:absolute; bottom:2px; right:2px; font-size:10px;';
           cell.appendChild(sportIcon);
         }
-        
-        // Katertag-Differenzierung
-        if (st === 'hangover' && entry) {
-          const hasAlcohol = entry.totalAlcohol && entry.totalAlcohol > 0;
-          if (hasAlcohol) {
-            // Katertag MIT Alkohol = extrem problematisch
-            cell.style.background = '#991b1b'; // Dunkleres Rot
-            const warning = document.createElement('span');
-            warning.textContent = '⚠️';
-            warning.style.cssText = 'position:absolute; top:2px; left:2px; font-size:10px;';
-            cell.appendChild(warning);
+
+        // Checkbox-Symbole
+        if (entry) {
+          // Totalabsturz
+          if (entry.crash) {
+            const crashIcon = document.createElement('span');
+            crashIcon.textContent = '💥';
+            crashIcon.style.cssText = 'position:absolute; top:2px; left:2px; font-size:10px;';
+            cell.appendChild(crashIcon);
           }
-          // Ohne Alkohol: normales Grau bleibt
+
+          // Katertag
+          if (entry.hangover) {
+            const hangoverIcon = document.createElement('span');
+            const hasAlcohol = entry.totalAlcohol && entry.totalAlcohol > 0;
+            if (hasAlcohol) {
+              // Doppeltes Symbol bei Kater MIT Alkohol
+              hangoverIcon.textContent = '🤢🤢';
+            } else {
+              hangoverIcon.textContent = '🤢';
+            }
+            hangoverIcon.style.cssText = 'position:absolute; bottom:2px; left:2px; font-size:10px;';
+            cell.appendChild(hangoverIcon);
+          }
+
+          // Kater Light
+          if (entry.hangoverLight) {
+            const hangoverLightIcon = document.createElement('span');
+            hangoverLightIcon.textContent = '😌';
+            hangoverLightIcon.style.cssText = 'position:absolute; top:2px; right:2px; font-size:10px;';
+            cell.appendChild(hangoverLightIcon);
+          }
         }
 
         if (comment) {
@@ -2743,7 +2756,7 @@
         moderate: '🟡',
         mixed: '❤️',
         alcohol: '🔴',
-        hangover: '😵'
+        hangover: '🍺💥'
       };
       
       let html = `
@@ -3001,6 +3014,7 @@
       document.getElementById('checkCompensation').addEventListener('change', updateLiveCalc);
       document.getElementById('checkCrash').addEventListener('change', updateLiveCalc);
       document.getElementById('checkHangover').addEventListener('change', updateLiveCalc);
+      document.getElementById('checkHangoverLight').addEventListener('change', updateLiveCalc);
       
       document.getElementById('checkDope').addEventListener('change', (e) => {
         document.getElementById('dopeDetails').style.display = e.target.checked ? 'block' : 'none';
