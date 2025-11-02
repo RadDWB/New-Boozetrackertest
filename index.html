@@ -1293,7 +1293,7 @@
     /* ========================================
        GLOBALE VARIABLEN & KONFIGURATION
     ======================================== */
-    const APP_VERSION = 'v2.6 (02.11.2025 13:50)';
+    const APP_VERSION = 'v3.0 (02.11.2025 14:14)';
     
     let dayData = {};
     let currentInputDate = new Date();
@@ -2721,106 +2721,105 @@
       else if (creep < -5) creepStatus = '✅ Reduzierung (-' + Math.abs(creep).toFixed(0) + 'g)';
       
       // === 7. MARKOV-CHAIN 7-TAGE-PROGNOSE (VERBESSERT) ===
-const states = ['superday', 'wellness', 'sober', 'moderate', 'mixed', 'alcohol', 'hangover'];
-const idx = {};
-states.forEach((s, i) => idx[s] = i);
+      const states = ['superday', 'wellness', 'sober', 'moderate', 'mixed', 'alcohol', 'hangover'];
+      const idx = {};
+      states.forEach((s, i) => idx[s] = i);
 
-// Transition Matrix mit exponentieller Recency-Gewichtung
-const M = Array(7).fill(0).map(() => Array(7).fill(0.1)); // Minimales Laplace Smoothing
+      // Transition Matrix mit exponentieller Recency-Gewichtung
+      const M = Array(7).fill(0).map(() => Array(7).fill(0.1)); // Minimales Laplace Smoothing
 
-let prev = null;
-for (let i = 179; i >= 1; i--) {
-  const st = last180Days[i].status;
-  if (!st) continue;
-
-  // Exponentielle Gewichtung: je jünger, desto mehr Gewicht
-  // Letzte 7 Tage: ~10x, letzte 30: ~2.5x, älter: 1x
-  const daysAgo = i;
-  const weight = Math.exp(-daysAgo / 60); // Decay-Faktor
-
-  if (prev && idx[prev] !== undefined && idx[st] !== undefined) {
-    M[idx[prev]][idx[st]] += weight;
-  }
-  prev = st;
-}
-
-// Normalisieren zu Wahrscheinlichkeiten
-M.forEach(row => {
-  const sum = row.reduce((s, v) => s + v, 0);
-  if (sum > 0) {
-    for (let i = 0; i < row.length; i++) {
-      row[i] /= sum;
-    }
-  } else {
-    // Fallback: gleichmäßige Verteilung
-    for (let i = 0; i < row.length; i++) {
-      row[i] = 1 / states.length;
-    }
-  }
-});
-
-// Monte-Carlo Simulation: 1000 Durchläufe
-const currentState = last180Days[0].status || 'sober';
-const simulations = 1000;
-const dayPredictions = Array(7).fill(0).map(() => ({}));
-
-// Initialisiere Zähler
-states.forEach(s => {
-  for (let d = 0; d < 7; d++) {
-    dayPredictions[d][s] = 0;
-  }
-});
-
-// Stochastische Simulationen
-for (let sim = 0; sim < simulations; sim++) {
-  let state = currentState;
-
-  for (let day = 0; day < 7; day++) {
-    const probs = M[idx[state]];
-
-    // Stochastische Auswahl: Würfeln basierend auf Wahrscheinlichkeiten
-    const random = Math.random();
-    let cumulative = 0;
-    let nextState = state;
-
-    for (let i = 0; i < states.length; i++) {
-      cumulative += probs[i];
-      if (random <= cumulative) {
-        nextState = states[i];
-        break;
+      let prev = null;
+      for (let i = 179; i >= 1; i--) {
+        const st = last180Days[i].status;
+        if (!st) continue;
+        
+        // Exponentielle Gewichtung: je jünger, desto mehr Gewicht
+        // Letzte 7 Tage: ~10x, letzte 30: ~2.5x, älter: 1x
+        const daysAgo = i;
+        const weight = Math.exp(-daysAgo / 60); // Decay-Faktor
+        
+        if (prev && idx[prev] !== undefined && idx[st] !== undefined) {
+          M[idx[prev]][idx[st]] += weight;
+        }
+        prev = st;
       }
-    }
 
-    // Zähle Vorhersage
-    dayPredictions[day][nextState]++;
-    state = nextState;
-  }
-}
+      // Normalisieren zu Wahrscheinlichkeiten
+      M.forEach(row => {
+        const sum = row.reduce((s, v) => s + v, 0);
+        if (sum > 0) {
+          for (let i = 0; i < row.length; i++) {
+            row[i] /= sum;
+          }
+        } else {
+          // Fallback: gleichmäßige Verteilung
+          for (let i = 0; i < row.length; i++) {
+            row[i] = 1 / states.length;
+          }
+        }
+      });
 
-// Berechne Durchschnitt und Konfidenzintervalle
-let forecast = [];
-for (let day = 0; day < 7; day++) {
-  // Sortiere Zustände nach Häufigkeit
-  const sorted = Object.entries(dayPredictions[day])
-    .sort((a, b) => b[1] - a[1]);
+      // Monte-Carlo Simulation: 1000 Durchläufe
+      const currentState = last180Days[0].status || 'sober';
+      const simulations = 1000;
+      const dayPredictions = Array(7).fill(0).map(() => ({}));
 
-  const mostLikely = sorted[0][0];
-  const probability = (sorted[0][1] / simulations * 100).toFixed(0);
+      // Initialisiere Zähler
+      states.forEach(s => {
+        for (let d = 0; d < 7; d++) {
+          dayPredictions[d][s] = 0;
+        }
+      });
 
-  // Top-3 Wahrscheinlichkeiten für Konfidenzintervall
-  const top3 = sorted.slice(0, 3).map(([state, count]) => ({
-    state,
-    prob: (count / simulations * 100).toFixed(0)
-  }));
+      // Stochastische Simulationen
+      for (let sim = 0; sim < simulations; sim++) {
+        let state = currentState;
+        
+        for (let day = 0; day < 7; day++) {
+          const probs = M[idx[state]];
+          
+          // Stochastische Auswahl: Würfeln basierend auf Wahrscheinlichkeiten
+          const random = Math.random();
+          let cumulative = 0;
+          let nextState = state;
+          
+          for (let i = 0; i < states.length; i++) {
+            cumulative += probs[i];
+            if (random <= cumulative) {
+              nextState = states[i];
+              break;
+            }
+          }
+          
+          // Zähle Vorhersage
+          dayPredictions[day][nextState]++;
+          state = nextState;
+        }
+      }
 
-  forecast.push({
-    day: day + 1,
-    state: mostLikely,
-    prob: probability,
-    alternatives: top3
-  });
-}
-
+      // Berechne Durchschnitt und Konfidenzintervalle
+      let forecast = [];
+      for (let day = 0; day < 7; day++) {
+        // Sortiere Zustände nach Häufigkeit
+        const sorted = Object.entries(dayPredictions[day])
+          .sort((a, b) => b[1] - a[1]);
+        
+        const mostLikely = sorted[0][0];
+        const probability = (sorted[0][1] / simulations * 100).toFixed(0);
+        
+        // Top-3 Wahrscheinlichkeiten für Konfidenzintervall
+        const top3 = sorted.slice(0, 3).map(([state, count]) => ({
+          state,
+          prob: (count / simulations * 100).toFixed(0)
+        }));
+        
+        forecast.push({
+          day: day + 1,
+          state: mostLikely,
+          prob: probability,
+          alternatives: top3
+        });
+      }
       
       // === 8. RECOVERY RATE ===
       let recoveryTimes = [];
@@ -2907,60 +2906,53 @@ for (let day = 0; day < 7; day++) {
           </div>
           
           <div style="margin-bottom:16px; padding:16px; background:linear-gradient(135deg, #ede9fe, #faf5ff); border-radius:12px; border:2px solid #c4b5fd; box-shadow:0 4px 12px rgba(196,181,253,0.2);">
-  <div style="font-weight:800; margin-bottom:8px; font-size:18px; text-align:center; color:#6b21a8;">
-    🔮 Markov-Prognose (7 Tage)
-  </div>
-
-  <div style="font-size:12px; color:#7c3aed; margin-bottom:12px; text-align:center; background:white; padding:8px; border-radius:6px;">
-    <strong>Monte-Carlo Simulation</strong> (1000 Durchläufe) · Exponentielle Recency-Gewichtung · Stochastische Auswahl
-  </div>
-
-  <div style="display:grid; grid-template-columns:repeat(7, 1fr); gap:10px; text-align:center; margin-top:16px;">
-    ${forecast.map(f => {
-      // Farbcodierung nach Wahrscheinlichkeit
-      let bgGradient = 'linear-gradient(135deg, #f3f4f6, #e5e7eb)';
-      let borderColor = '#d1d5db';
-      const prob = parseInt(f.prob);
-
-      if (prob >= 70) {
-        bgGradient = 'linear-gradient(135deg, #d1fae5, #a7f3d0)';
-        borderColor = '#34d399';
-      } else if (prob >= 50) {
-        bgGradient = 'linear-gradient(135deg, #fef3c7, #fde68a)';
-        borderColor = '#fbbf24';
-      } else if (prob >= 30) {
-        bgGradient = 'linear-gradient(135deg, #fee2e2, #fecaca)';
-        borderColor = '#f87171';
-      }
-
-      return `
-        <div style="padding:12px 8px; background:${bgGradient}; border-radius:10px; border:2px solid ${borderColor}; box-shadow:0 2px 8px rgba(0,0,0,0.08); transition:transform 0.2s ease;">
-          <div style="font-size:28px; margin-bottom:4px;">${catNames[f.state] || '❓'}</div>
-          <div style="font-size:11px; font-weight:700; color:#374151; margin-bottom:2px;">Tag ${f.day}</div>
-          <div style="font-size:14px; font-weight:800; color:#1f2937;">${f.prob}%</div>
-          ${f.alternatives.length > 1 ? `
-            <div style="font-size:9px; color:#6b7280; margin-top:6px; padding-top:6px; border-top:1px solid rgba(0,0,0,0.1);">
-              ${f.alternatives.slice(1, 3).map(alt => `${catNames[alt.state]} ${alt.prob}%`).join(' · ')}
+          <div style="font-weight:800; margin-bottom:8px; font-size:18px; text-align:center; color:#6b21a8;">🔮 Markov-Prognose (7 Tage)</div>
+          <div style="font-size:12px; color:#7c3aed; margin-bottom:12px; text-align:center; background:white; padding:8px; border-radius:6px;">
+            <strong>Monte-Carlo Simulation</strong> (1000 Durchläufe) · Exponentielle Recency-Gewichtung · Stochastische Auswahl
+          </div>
+          <div style="display:grid; grid-template-columns:repeat(7, 1fr); gap:10px; text-align:center; margin-top:16px;">
+            ${forecast.map(f => {
+              // Farbcodierung nach Wahrscheinlichkeit
+              let bgGradient = 'linear-gradient(135deg, #f3f4f6, #e5e7eb)';
+              let borderColor = '#d1d5db';
+              const prob = parseInt(f.prob);
+              
+              if (prob >= 70) {
+                bgGradient = 'linear-gradient(135deg, #d1fae5, #a7f3d0)';
+                borderColor = '#34d399';
+              } else if (prob >= 50) {
+                bgGradient = 'linear-gradient(135deg, #fef3c7, #fde68a)';
+                borderColor = '#fbbf24';
+              } else if (prob >= 30) {
+                bgGradient = 'linear-gradient(135deg, #fee2e2, #fecaca)';
+                borderColor = '#f87171';
+              }
+              
+              return `
+                <div style="padding:12px 8px; background:${bgGradient}; border-radius:10px; border:2px solid ${borderColor}; box-shadow:0 2px 8px rgba(0,0,0,0.08); transition:transform 0.2s ease;">
+                  <div style="font-size:28px; margin-bottom:4px;">${catNames[f.state] || '❓'}</div>
+                  <div style="font-size:11px; font-weight:700; color:#374151; margin-bottom:2px;">Tag ${f.day}</div>
+                  <div style="font-size:14px; font-weight:800; color:#1f2937;">${f.prob}%</div>
+                  ${f.alternatives.length > 1 ? `
+                    <div style="font-size:9px; color:#6b7280; margin-top:6px; padding-top:6px; border-top:1px solid rgba(0,0,0,0.1);">
+                      ${f.alternatives.slice(1, 3).map(alt => `${catNames[alt.state]} ${alt.prob}%`).join(' · ')}
+                    </div>
+                  ` : ''}
+                </div>
+              `;
+            }).join('')}
+          </div>
+          <div style="margin-top:16px; padding:12px; background:white; border-radius:8px; border-left:4px solid #a855f7;">
+            <div style="font-size:12px; color:#6b7280; line-height:1.6;">
+              <strong style="color:#7c3aed;">📊 Interpretation:</strong><br>
+              • <strong>≥70%</strong>: Sehr wahrscheinlich (grün)<br>
+              • <strong>50-69%</strong>: Wahrscheinlich (gelb)<br>
+              • <strong>30-49%</strong>: Möglich (orange)<br>
+              • <strong><30%</strong>: Unsicher (grau)<br>
+              <em style="display:block; margin-top:8px; color:#9ca3af;">⚠️ Statistische Prognose basierend auf historischen Mustern. Deine Entscheidungen können den Trend jederzeit ändern!</em>
             </div>
-          ` : ''}
+          </div>
         </div>
-      `;
-    }).join('')}
-  </div>
-
-  <div style="margin-top:16px; padding:12px; background:white; border-radius:8px; border-left:4px solid #a855f7;">
-    <div style="font-size:12px; color:#6b7280; line-height:1.6;">
-      <strong style="color:#7c3aed;">📊 Interpretation:</strong><br>
-      • <strong>≥70%</strong>: Sehr wahrscheinlich (grün)<br>
-      • <strong>50-69%</strong>: Wahrscheinlich (gelb)<br>
-      • <strong>30-49%</strong>: Möglich (orange)<br>
-      • <strong><30%</strong>: Unsicher (grau)<br>
-      <em style="display:block; margin-top:8px; color:#9ca3af;">
-        ⚠️ Statistische Prognose basierend auf historischen Mustern. Deine Entscheidungen können den Trend jederzeit ändern!
-      </em>
-    </div>
-  </div>
-</div>
           
           <div style="padding:12px; background:#fef2f2; border-left:4px solid #ef4444; border-radius:6px; font-size:12px; line-height:1.6;">
             <strong>📚 Wissenschaftliche Basis:</strong><br>
