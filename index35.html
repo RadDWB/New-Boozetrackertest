@@ -901,10 +901,7 @@
           </div>
           <div class="checkbox-item">
             <input type="checkbox" id="checkCompensation">
-            <label for="checkCompensation">
-              😓 Kompensationstrinken (Stress etc.)
-              <span class="tooltip-icon" data-tooltip="Trinken zur Stressbewältigung oder nach Sport als 'Belohnung'. Zeigt emotionale Abhängigkeit - ein kritisches Warnzeichen für problematisches Trinkverhalten.">?</span>
-            </label>
+            <label for="checkCompensation">😓 Kompensationstrinken (Stress etc.)</label>
           </div>
           <div class="checkbox-item">
             <input type="checkbox" id="checkDope">
@@ -916,17 +913,11 @@
           </div>
           <div class="checkbox-item">
             <input type="checkbox" id="checkHangover">
-            <label for="checkHangover">
-              🤢 Katertag
-              <span class="tooltip-icon" data-tooltip="WICHTIG: Ob du heute WEITERTRINKEN wirst, ist entscheidend für die Analyse! Katertag OHNE Weitertrinken = positives Verhalten (Kreislauf gestoppt). Katertag MIT Weitertrinken = 0% Score + DSM-5-Kriterium für schwere Abhängigkeit.">?</span>
-            </label>
+            <label for="checkHangover">🤢 Katertag</label>
           </div>
           <div class="checkbox-item">
-            <input type="checkbox" id="checkHangoverLight">
-            <label for="checkHangoverLight">
-              😌 Kater Light
-              <span class="tooltip-icon" data-tooltip="Wenig getrunken, trotzdem Kopfweh - für sensible Personen oder nach langer Abstinenz. Zeigt niedrige Toleranz (positiv!), aber trotzdem körperliche Reaktion.">?</span>
-            </label>
+            <input type="checkbox" id="checkHangoverLight" title="Wenig getrunken, trotzdem Kopfweh - für sensible Personen">
+            <label for="checkHangoverLight">😌 Kater Light</label>
           </div>
         </div>
 
@@ -971,15 +962,10 @@
           </div>
           <div class="live-calc-item">
             <div class="live-calc-value" id="liveDGE">—</div>
-            <div class="live-calc-label" id="liveDGELabel">
-              DGE-Limit
-              <span class="tooltip-icon" data-tooltip="Deutsche Gesellschaft für Ernährung: Risikoarmes Limit ist ♀ 12g/Tag, ♂ 24g/Tag. Zeigt prozentual, wie viel du vom Tageslimit bereits erreicht hast. >100% = über dem Limit.">?</span>
-            </div>
+            <div class="live-calc-label" id="liveDGELabel">DGE-Limit</div>
           </div>
           <div class="live-calc-suggest" id="liveSuggest">
-            💡 Vorschlag
-            <span class="tooltip-icon" data-tooltip="Automatische Empfehlung für Tageskategorie basierend auf deiner Eingabe (Gramm, Sport, Checkboxen). Hilft bei der Einordnung: Ist das noch 'Moderat' oder schon 'Alkohol'? Orientiert sich an DGE-Limits und deinen Aktivitäten.">?</span>:
-            <strong id="suggestedCat">—</strong>
+            💡 Vorschlag: <strong id="suggestedCat">—</strong>
           </div>
         </div>
       </div>
@@ -1191,9 +1177,6 @@
         <div class="assessment-title">🎯 Deine Gesundheitseinschätzung</div>
         <div class="assessment-badge" id="assessmentBadge"></div>
 
-        <!-- Basierend auf Info (direkt nach Plakette) -->
-        <div id="assessmentBasis" style="text-align:center; font-size:12px; color:var(--muted); margin:16px 0 24px 0; padding:8px; background:#f9fafb; border-radius:6px;"></div>
-
         <div class="assessment-metrics">
           <div class="metric-item">
             <div class="metric-label">
@@ -1398,7 +1381,7 @@
     /* ========================================
        GLOBALE VARIABLEN & KONFIGURATION
     ======================================== */
-    const APP_VERSION = 'v3.6 (02.11.2025 18:46)';
+    const APP_VERSION = 'v3.5 (02.11.2025 18:24)';
     
     let dayData = {};
     let currentInputDate = new Date();
@@ -2659,7 +2642,7 @@
         if (counts.hangoverWithAlc >= 3) reasons.push(`${counts.hangoverWithAlc} Katertage mit Alkohol`);
         if (maxCluster >= 5) reasons.push(`Cluster ${maxCluster} Tage in Folge`);
 
-        description = '<strong>Sehr hohes Risiko / Potenzielle Abhängigkeit</strong> — Extremes Risiko für Herz, Gehirn, Krebs und Leber. DSM-5-Warnzeichen für schwere AUD (6+ Kriterien): starkes Verlangen (Craving), Entzug, Kontrollverlust, Toleranz, Weitermachen trotz Schäden, Vernachlässigung anderer Aktivitäten.<br><br><strong>Auslöser <span class="tooltip-icon" data-tooltip="Diese Metriken haben die Risiko-Einstufung ausgelöst. Binge-Nähe=absolute Anzahl, Hochrisiko-Anteil=relativer Prozentsatz aller erfassten Tage.">?</span>:</strong> ' + reasons.join(' · ') + morningDrinkingWarning;
+        description = '<strong>Sehr hohes Risiko / Potenzielle Abhängigkeit</strong> — Extremes Risiko für Herz, Gehirn, Krebs und Leber. DSM-5-Warnzeichen für schwere AUD (6+ Kriterien): starkes Verlangen (Craving), Entzug, Kontrollverlust, Toleranz, Weitermachen trotz Schäden, Vernachlässigung anderer Aktivitäten.<br><br><strong>Auslöser:</strong> ' + reasons.join(' · ') + morningDrinkingWarning;
         warning = '🆘 Professionelle Hilfe SOFORT empfohlen: SAMHSA-Hotline, lokale Suchtberatung, medizinisches Gespräch. Dies ist keine Diagnose, aber ein klares Signal! Ab AUDIT ≥ 8 Punkten ist professionelle Abklärung essentiell (ICD-10/DSM-5).';
       } else if ((bingeProximity >= 20 && bingeProximity < 40) || (afQuote < 0.30 && afQuote >= 0.20) || (bingeQuote >= 0.20 && enteredDays >= 10) || counts.hangoverWithAlc >= 1) {
         label = '🎲 Risiko-Roulette';
@@ -2673,7 +2656,7 @@
         if (counts.hangoverWithAlc >= 1) reasons.push(`${counts.hangoverWithAlc} Katertag(e) mit Alkohol`);
         if (maxCluster >= 4) reasons.push(`Cluster ${maxCluster} Tage in Folge`);
 
-        description = '<strong>Hohes Risiko</strong> — Du spielst Russian Roulette mit deiner Gesundheit. Hohes Risiko für Krebs, Leberzirrhose, Herz-Kreislauf-Erkrankungen und Unfälle. Sport kann diese Risiken NICHT kompensieren (WHO).<br><br><strong>Auslöser <span class="tooltip-icon" data-tooltip="Diese Metriken haben die Risiko-Einstufung ausgelöst. Binge-Nähe=absolute Anzahl, Hochrisiko-Anteil=relativer Prozentsatz aller erfassten Tage.">?</span>:</strong> ' + reasons.join(' · ') + morningDrinkingWarning;
+        description = '<strong>Hohes Risiko</strong> — Du spielst Russian Roulette mit deiner Gesundheit. Hohes Risiko für Krebs, Leberzirrhose, Herz-Kreislauf-Erkrankungen und Unfälle. Sport kann diese Risiken NICHT kompensieren (WHO).<br><br><strong>Auslöser:</strong> ' + reasons.join(' · ') + morningDrinkingWarning;
         warning = '🚨 Moderate bis schwere AUD wahrscheinlich (4-5 DSM-5-Kriterien wie Toleranz, soziale Probleme, Kontrollverlust). Medizinisches Gespräch und professionelle Beratung DRINGEND empfohlen!';
       } else if (afQuote <= 0.39 || (bingeProximity >= 13 && bingeProximity <= 19) || (bingeQuote >= 0.13 && enteredDays >= 10)) {
         label = '🚨 Kipppunkt-Kandidat';
@@ -2686,7 +2669,7 @@
         if (bingeQuote >= 0.13 && enteredDays >= 10) reasons.push(`Hochrisiko-Anteil ${Math.round(bingeQuote*100)}% (≥13%)`);
         if (maxCluster >= 3) reasons.push(`Cluster ${maxCluster} Tage in Folge`);
 
-        description = '<strong>Erhöhtes Risiko – Kritische Schwelle erreicht</strong> — Du befindest dich an einem Kipppunkt: Häufige Rauschsituationen sind nachweisliche Treiber für Leber-, Krebs- und Herzprobleme.<br><br><strong>Auslöser <span class="tooltip-icon" data-tooltip="Diese Metriken haben die Risiko-Einstufung ausgelöst. Binge-Nähe=absolute Anzahl, Hochrisiko-Anteil=relativer Prozentsatz aller erfassten Tage.">?</span>:</strong> ' + reasons.join(' · ');
+        description = '<strong>Erhöhtes Risiko – Kritische Schwelle erreicht</strong> — Du befindest dich an einem Kipppunkt: Häufige Rauschsituationen sind nachweisliche Treiber für Leber-, Krebs- und Herzprobleme.<br><br><strong>Auslöser:</strong> ' + reasons.join(' · ');
         warning = '⚠️ Dringend empfohlen: AUDIT-Screening durchführen! Sport neutralisiert Alkoholrisiken NICHT (WHO/DHS). Potenziell mildes AUD bei 2-3 DSM-5-Kriterien (z.B. Kontrollverlust, mehr trinken als geplant).';
       } else if (afQuote >= 0.40 && afQuote < 0.70 && bingeProximity <= 12) {
         label = '🧘 Balance-Buddha';
@@ -2737,12 +2720,11 @@
         }, 600);
       };
 
-      const basisInfo = neutralDaysSetting === 'ignore' ?
-        `📊 Basierend auf <strong>${enteredDays} von 100 Tagen</strong>` :
-        `📊 Basierend auf <strong>100 Tagen</strong> (${enteredDays} eingetragen)`;
-
-      document.getElementById('assessmentBasis').innerHTML = basisInfo;
-      document.getElementById('assessmentDescription').innerHTML = description;
+      const basisInfo = neutralDaysSetting === 'ignore' ? 
+        `<div style="text-align:center; font-size:12px; color:var(--muted); margin-bottom:12px;">📊 Basierend auf <strong>${enteredDays} von 100 Tagen</strong></div>` :
+        `<div style="text-align:center; font-size:12px; color:var(--muted); margin-bottom:12px;">📊 Basierend auf <strong>100 Tagen</strong> (${enteredDays} eingetragen)</div>`;
+      
+      document.getElementById('assessmentDescription').innerHTML = basisInfo + description;
       
       const warningEl = document.getElementById('assessmentWarning');
       if (warning || extraWarnings) {
@@ -3112,18 +3094,9 @@
           
           <div style="margin-bottom:24px; padding:16px; background:#f0fdf4; border-radius:8px; border:1px solid #bbf7d0;">
             <div style="font-weight:800; margin-bottom:12px; font-size:16px;">📈 Trends & Tolerance</div>
-            <div>
-              <strong>Tolerance Creep (90d vs. 90d):</strong> ${creepStatus}
-              <span class="tooltip-icon" data-tooltip="Toleranzentwicklung: Vergleicht den Median-Alkoholkonsum der letzten 90 Tage mit den 90 Tagen davor. Anstieg deutet auf Gewöhnung hin (brauche mehr für gleichen Effekt).">?</span>
-            </div>
-            <div>
-              <strong>Ø Recovery (Binge→Binge):</strong> ${avgRecovery} Tage
-              <span class="tooltip-icon" data-tooltip="Durchschnittliche Tage zwischen zwei Binge-Events (≥${userGender==='female' ? 40 : 60}g). Kürzere Recovery-Zeit = höheres Risiko. 'N/A' bedeutet keine oder nur 1 Binge-Episode erfasst.">?</span>
-            </div>
-            <div>
-              <strong>Comment Risk (30d):</strong> ${commentRisk} <span style="font-size:12px;">(${triggerCount} Trigger-Wörter)</span>
-              <span class="tooltip-icon" data-tooltip="Analyse deiner Tages-Kommentare auf Risiko-Wörter (Stress, Frust, Angst, Druck, Müde, etc.). Viele Trigger = emotionale Trinkgründe. Niedrig=gut, Moderat=Achtung, Hoch=Warnung.">?</span>
-            </div>
+            <div><strong>Tolerance Creep (90d vs. 90d):</strong> ${creepStatus}</div>
+            <div><strong>Ø Recovery (Binge→Binge):</strong> ${avgRecovery} Tage</div>
+            <div><strong>Comment Risk (30d):</strong> ${commentRisk} <span style="font-size:12px;">(${triggerCount} Trigger-Wörter)</span></div>
             <div><strong>Kompensationstrinken (180d):</strong> ${compensationCount} ${compensationCount > 0 ? '<span style="color:#f59e0b;">⚠️</span>' : '✅'}</div>
             ${compensationCount > 15 ? `<div style="margin-top:8px; padding:8px; background:#fef3c7; border-left:3px solid #f59e0b; border-radius:4px;"><strong>⚠️ Emotionale Abhängigkeit:</strong> ${compensationCount} Kompensations-Trinktage deuten auf Stressbewältigung durch Alkohol hin - ein klares Warnzeichen!</div>` : ''}
             ${hangoverWithAlc > 0 ? `<div style="margin-top:8px; padding:8px; background:#fee2e2; border-left:3px solid #dc2626; border-radius:4px;"><strong>🚨 Katertage mit Weiter-Alkohol:</strong> ${hangoverWithAlc} (DSM-5-Kriterium für schwere AUD!)</div>` : ''}
