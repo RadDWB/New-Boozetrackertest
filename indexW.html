@@ -768,7 +768,7 @@
           <input type="radio" name="dayChoice" value="moderate" />
           <div class="choice-label">
             <div>🟡 Moderat</div>
-            <div class="choice-desc">1-2 Drinks (~40g, ca. 2x0.5L Bier)</div>
+            <div class="choice-desc" id="moderateDesc">1-2 Drinks</div>
           </div>
           <div class="choice-warning">⚠️ Auto-Vorschlag passt nicht zur Eingabe!</div>
         </label>
@@ -1530,6 +1530,8 @@
         userGender = settings.gender || 'male';
         userWeight = settings.weight || null;
 
+        updateCategoryDescriptions(); // Beschreibungen aktualisieren
+
         migrateData();
         updateStorageStatus(`✅ ${Object.keys(dayData).length} Tage geladen`);
       } catch {
@@ -1805,13 +1807,16 @@
         return sport ? 'superday' : 'sober';
       }
 
-      // Moderat: 1-2 Drinks (bis ~40g, ca. 2x0.5L Bier)
-      if (grams <= 40) {
+      // Geschlechtsspezifische Grenze für Moderat
+      const moderateLimit = userGender === 'female' ? 20 : 30;
+
+      // Moderat: bis Grenze (Männer 30g, Frauen 20g)
+      if (grams <= moderateLimit) {
         return 'moderate';
       }
 
-      // Schadensbegrenzung: 41-80g + Sport
-      if (sport && grams > 40 && grams <= 80) {
+      // Schadensbegrenzung: Sport + Alkohol (über Moderat-Grenze)
+      if (sport && grams > moderateLimit && grams <= 80) {
         return 'mixed';
       }
 
@@ -1820,8 +1825,20 @@
         return 'hangover';
       }
 
-      // Alkohol: 41-80g ohne Sport
+      // Alkohol: über Moderat-Grenze, ohne Sport
       return 'alcohol';
+    }
+
+    function updateCategoryDescriptions() {
+      // Geschlechtsspezifische Beschreibungen für Kategorie "Moderat"
+      const moderateDescEl = document.getElementById('moderateDesc');
+      if (moderateDescEl) {
+        if (userGender === 'female') {
+          moderateDescEl.textContent = '1-2 Drinks (~20g, ca. 2x0,33L Bier)';
+        } else {
+          moderateDescEl.textContent = '1-2 Drinks (~30g, ca. 1x0,5L + 1x0,33L Bier)';
+        }
+      }
     }
 
     function updateLiveCalc() {
@@ -2895,8 +2912,11 @@
       if (selectedNeutral) neutralDaysSetting = selectedNeutral.value;
       
       const selectedGender = document.querySelector('input[name="gender"]:checked');
-      if (selectedGender) userGender = selectedGender.value;
-      
+      if (selectedGender) {
+        userGender = selectedGender.value;
+        updateCategoryDescriptions(); // Beschreibungen aktualisieren
+      }
+
       // Gewicht auslesen (optional)
       const weightInput = document.getElementById('userWeightInput');
       const weightValue = parseInt(weightInput.value);
