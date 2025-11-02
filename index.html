@@ -52,10 +52,13 @@
       font-size: clamp(26px, 4.2vw, 34px);
     }
     .app-version{
-      text-align:center;
+      position: fixed;
+      top: 4px;
+      right: 4px;
       color: var(--muted);
-      font-size: 12px;
-      margin-bottom: 10px;
+      font-size: 8px;
+      opacity: 0.4;
+      z-index: 9999;
     }
 
     /* === EINGABE === */
@@ -372,7 +375,7 @@
     .day.superday{ background:#059669; color:#fff; }
     .day.superday::after{ content:"⭐"; position:absolute; top:2px; right:4px; font-size:10px; }
     .day.hangover{ background:#7f1d1d; color:#fff; }
-    .day.hangover::after{ content:"😵"; position:absolute; top:2px; right:4px; font-size:10px; }
+    .day.hangover::after{ content:"🍺💥"; position:absolute; top:2px; right:4px; font-size:10px; }
 
     .day.today{ outline: 3px solid var(--primary); outline-offset:-3px; }
 
@@ -791,7 +794,7 @@
         <label class="choice-option hangover" data-value="hangover">
           <input type="radio" name="dayChoice" value="hangover" />
           <div class="choice-label">
-            <div>😵 Vollrausch</div>
+            <div>🍺💥 Vollrausch</div>
             <div class="choice-desc">Sehr viel Alkohol getrunken (>80g)</div>
           </div>
           <div class="choice-warning">⚠️ Auto-Vorschlag passt nicht zur Eingabe!</div>
@@ -844,7 +847,7 @@
           </div>
           <div class="checkbox-item">
             <input type="checkbox" id="checkHangover">
-            <label for="checkHangover">😵 Katertag</label>
+            <label for="checkHangover">🤢 Katertag</label>
           </div>
           <div class="checkbox-item">
             <input type="checkbox" id="checkHangoverLight" title="Wenig getrunken, trotzdem Kopfweh - für sensible Personen">
@@ -957,7 +960,7 @@
         <span>🟡 Moderat (👟 = mit Sport)</span>
         <span>❤️ Schadensbegrenzung (Sport+Alk)</span>
         <span>🔴 Alkohol</span>
-        <span>😵 Vollrausch</span>
+        <span>🍺💥 Vollrausch</span>
       </div>
 
       <div id="monthGrid" class="cal" aria-label="Kalender"></div>
@@ -1291,7 +1294,7 @@
     /* ========================================
        GLOBALE VARIABLEN & KONFIGURATION
     ======================================== */
-    const APP_VERSION = 'Optimized_v2.0';
+    const APP_VERSION = 'v2.1';
     
     let dayData = {};
     let currentInputDate = new Date();
@@ -1854,7 +1857,7 @@
         moderate: '🟡 Moderat',
         mixed: '❤️ "Schadensbegrenzung"',
         alcohol: '🔴 Alkohol',
-        hangover: '😵 Vollrausch'
+        hangover: '🍺💥 Vollrausch'
       };
       suggestedEl.textContent = catNames[suggested] || '—';
       
@@ -2108,9 +2111,9 @@
             const hasAlcohol = entry.totalAlcohol && entry.totalAlcohol > 0;
             if (hasAlcohol) {
               // Doppeltes Symbol bei Kater MIT Alkohol
-              hangoverIcon.textContent = '😵😵';
+              hangoverIcon.textContent = '🤢🤢';
             } else {
-              hangoverIcon.textContent = '🐱';
+              hangoverIcon.textContent = '🤢';
             }
             hangoverIcon.style.cssText = 'position:absolute; bottom:2px; left:2px; font-size:10px;';
             cell.appendChild(hangoverIcon);
@@ -2753,7 +2756,7 @@
         moderate: '🟡',
         mixed: '❤️',
         alcohol: '🔴',
-        hangover: '😵'
+        hangover: '🍺💥'
       };
       
       let html = `
