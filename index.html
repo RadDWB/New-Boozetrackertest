@@ -1293,7 +1293,7 @@
     /* ========================================
        GLOBALE VARIABLEN & KONFIGURATION
     ======================================== */
-    const APP_VERSION = 'v2.2 (02.11.2025 08:03)';
+    const APP_VERSION = 'v2.4 (02.11.2025 09:00)';
     
     let dayData = {};
     let currentInputDate = new Date();
@@ -1493,6 +1493,15 @@
             status: dayData[key],
             comment: ''
           };
+        }
+      }
+
+      // Migration 3: Leere/ungültige Einträge bereinigen
+      for (const key of Object.keys(dayData)) {
+        const entry = dayData[key];
+        // Lösche Einträge ohne Status UND ohne Daten
+        if (!entry || (typeof entry === 'object' && !entry.status && !entry.totalAlcohol && !entry.comment && !entry.drinks)) {
+          delete dayData[key];
         }
       }
     }
@@ -2410,9 +2419,9 @@
         
         if (st && counts[st] !== undefined) {
           counts[st]++;
-          
-          // Differenziere Katertage
-          if (st === 'hangover' && entry && entry.totalAlcohol && entry.totalAlcohol > 0) {
+
+          // Differenziere Katertage: Prüfe CHECKBOX hangover, nicht Status!
+          if (entry && entry.hangover && entry.totalAlcohol && entry.totalAlcohol > 0) {
             counts.hangoverWithAlc++;
           }
         } else if (!st) {
@@ -2561,12 +2570,12 @@
         let grams = 0;
         if (entry && entry.totalAlcohol) {
           grams = entry.totalAlcohol;
-          
-          // Zähle Katertage mit Alkohol
-          if (status === 'hangover' && grams > 0) {
+
+          // Zähle Katertage mit Alkohol: Prüfe CHECKBOX hangover, nicht Status!
+          if (entry.hangover && grams > 0) {
             hangoverWithAlc++;
           }
-          
+
           // Zähle Kompensationstrinken (NEU)
           if (entry.compensation && grams > 0) {
             compensationCount++;
