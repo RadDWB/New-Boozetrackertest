@@ -1293,7 +1293,7 @@
     /* ========================================
        GLOBALE VARIABLEN & KONFIGURATION
     ======================================== */
-    const APP_VERSION = 'v3.4 (02.11.2025 17:50)';
+    const APP_VERSION = 'v3.3 (02.11.2025 15:25)';
     
     let dayData = {};
     let currentInputDate = new Date();
@@ -2473,52 +2473,20 @@
       const afCount = counts.superday + counts.wellness + counts.sober;
       const afQuote = afCount / divisor;
       
-      // Gewichtete Gesundheitsquote - ADAPTIVE KATERTAG-LOGIK mit Recovery-Multiplier
+      // Gewichtete Gesundheitsquote - KORRIGIERT
       const hangoverClean = counts.hangover - counts.hangoverWithAlc; // Katertage OHNE Alkohol
-
-      // Standard-Scores (ohne Katertage, die werden adaptiv berechnet)
-      let totalScore =
+      
+      const weightedScore = (
         counts.superday * 1.0 +
         counts.wellness * 0.9 +
         counts.sober * 0.75 +
         counts.moderate * 0.4 +
         counts.mixed * 0.25 +
         counts.alcohol * 0.0 +
+        hangoverClean * 0.4 +        // Katertag ohne Alkohol = 10% (leidet, aber trinkt nicht)
         counts.hangoverWithAlc * 0.0 + // Katertag MIT Alkohol = 0% (doppelt problematisch!)
-        counts.empty * neutralWeight;
-
-      // Adaptives Katertag-Scoring mit Vortags-Recovery-Multiplier
-      for (let i = 0; i < last100Days.length; i++) {
-        const day = last100Days[i];
-        if (day.st === 'hangover') {
-          // Prüfe, ob es ein CLEAN hangover ist (kein Alkohol heute)
-          const todayAlc = day.entry?.totalAlcohol || 0;
-          const hasHangoverCheckbox = day.entry?.hangover || false;
-
-          // Clean hangover = Status hangover ABER kein/wenig Alkohol heute
-          const isCleanHangover = (todayAlc === 0) || (hasHangoverCheckbox && todayAlc === 0);
-
-          if (isCleanHangover) {
-            // Prüfe Vortag für Recovery-Multiplier
-            const yesterday = (i < last100Days.length - 1) ? last100Days[i + 1] : null;
-            const yesterdayGrams = yesterday?.entry?.totalAlcohol || 0;
-
-            // BehaviorComponent: Kater ohne Trinken = 0.6
-            const behaviorComponent = 0.6;
-
-            // RecoveryMultiplier basierend auf Vortags-Gramm
-            let recoveryMultiplier = 1.0;
-            if (yesterdayGrams >= 80) recoveryMultiplier = 0.5;
-            else if (yesterdayGrams >= 60) recoveryMultiplier = 0.7;
-            else if (yesterdayGrams >= 40) recoveryMultiplier = 0.85;
-
-            totalScore += behaviorComponent * recoveryMultiplier;
-          }
-          // Wenn nicht clean (d.h. hangoverWithAlc), wurde bereits mit 0.0 gewertet
-        }
-      }
-
-      const weightedScore = totalScore / 100;
+        counts.empty * neutralWeight
+      ) / 100;
       
       // Binge-Nähe inkl. problematische Katertage
       const bingeProximity = counts.alcohol + counts.mixed + counts.hangover;
@@ -2545,43 +2513,17 @@
       if (bingeProximity >= 40 || afQuote < 0.20 || (bingeQuote >= 0.40 && enteredDays >= 10) || counts.hangoverWithAlc >= 3) {
         label = '🚨 Sucht-Alarm: Rote Lampen!';
         badgeClass = 'red';
-
-        // Sammle explizite Auslöser
-        const reasons = [];
-        if (bingeProximity >= 40) reasons.push(`Binge-Nähe ${bingeProximity}/100 (≥40)`);
-        if (afQuote < 0.20) reasons.push(`AF-Quote ${Math.round(afQuote*100)}% (<20%)`);
-        if (bingeQuote >= 0.40 && enteredDays >= 10) reasons.push(`Hochrisiko-Anteil ${Math.round(bingeQuote*100)}% (≥40%)`);
-        if (counts.hangoverWithAlc >= 3) reasons.push(`${counts.hangoverWithAlc} Katertage mit Alkohol`);
-        if (maxCluster >= 5) reasons.push(`Cluster ${maxCluster} Tage in Folge`);
-
-        description = '<strong>Sehr hohes Risiko / Potenzielle Abhängigkeit</strong> — Extremes Risiko für Herz, Gehirn, Krebs und Leber. DSM-5-Warnzeichen für schwere AUD (6+ Kriterien): starkes Verlangen (Craving), Entzug, Kontrollverlust, Toleranz, Weitermachen trotz Schäden, Vernachlässigung anderer Aktivitäten.<br><br><strong>Auslöser:</strong> ' + reasons.join(' · ') + morningDrinkingWarning;
+        description = '<strong>Sehr hohes Risiko / Potenzielle Abhängigkeit</strong> — Binge-Nähe (≥40/100 ≈ fast täglich) oder fast täglicher Konsum (AF-Quote <20%) zeigt extremes Risiko für Herz, Gehirn, Krebs und Leber. DSM-5-Warnzeichen für schwere AUD (6+ Kriterien): starkes Verlangen (Craving), Entzug, Kontrollverlust, Toleranz, Weitermachen trotz Schäden, Vernachlässigung anderer Aktivitäten.' + morningDrinkingWarning;
         warning = '🆘 Professionelle Hilfe SOFORT empfohlen: SAMHSA-Hotline, lokale Suchtberatung, medizinisches Gespräch. Dies ist keine Diagnose, aber ein klares Signal! Ab AUDIT ≥ 8 Punkten ist professionelle Abklärung essentiell (ICD-10/DSM-5).';
       } else if ((bingeProximity >= 20 && bingeProximity < 40) || (afQuote < 0.30 && afQuote >= 0.20) || (bingeQuote >= 0.20 && enteredDays >= 10) || counts.hangoverWithAlc >= 1) {
         label = '🎲 Risiko-Roulette';
         badgeClass = 'red';
-
-        // Sammle explizite Auslöser
-        const reasons = [];
-        if (bingeProximity >= 20 && bingeProximity < 40) reasons.push(`Binge-Nähe ${bingeProximity}/100 (20-39)`);
-        if (afQuote < 0.30 && afQuote >= 0.20) reasons.push(`AF-Quote ${Math.round(afQuote*100)}% (20-29%)`);
-        if (bingeQuote >= 0.20 && enteredDays >= 10) reasons.push(`Hochrisiko-Anteil ${Math.round(bingeQuote*100)}% (≥20%)`);
-        if (counts.hangoverWithAlc >= 1) reasons.push(`${counts.hangoverWithAlc} Katertag(e) mit Alkohol`);
-        if (maxCluster >= 4) reasons.push(`Cluster ${maxCluster} Tage in Folge`);
-
-        description = '<strong>Hohes Risiko</strong> — Du spielst Russian Roulette mit deiner Gesundheit. Hohes Risiko für Krebs, Leberzirrhose, Herz-Kreislauf-Erkrankungen und Unfälle. Sport kann diese Risiken NICHT kompensieren (WHO).<br><br><strong>Auslöser:</strong> ' + reasons.join(' · ') + morningDrinkingWarning;
+        description = '<strong>Hohes Risiko</strong> — Du spielst Russian Roulette mit deiner Gesundheit. Binge-Nähe (20-39/100 ≈ mehrmals wöchentlich) oder niedrige AF-Quote (20-29%) zeigen ein kritisches Muster. Hohes Risiko für Krebs, Leberzirrhose, Herz-Kreislauf-Erkrankungen und Unfälle. Sport kann diese Risiken NICHT kompensieren (WHO).' + morningDrinkingWarning;
         warning = '🚨 Moderate bis schwere AUD wahrscheinlich (4-5 DSM-5-Kriterien wie Toleranz, soziale Probleme, Kontrollverlust). Medizinisches Gespräch und professionelle Beratung DRINGEND empfohlen!';
       } else if (afQuote <= 0.39 || (bingeProximity >= 13 && bingeProximity <= 19) || (bingeQuote >= 0.13 && enteredDays >= 10)) {
         label = '🚨 Kipppunkt-Kandidat';
         badgeClass = 'weekend';
-
-        // Sammle explizite Auslöser
-        const reasons = [];
-        if (afQuote <= 0.39) reasons.push(`AF-Quote ${Math.round(afQuote*100)}% (<40%)`);
-        if (bingeProximity >= 13 && bingeProximity <= 19) reasons.push(`Binge-Nähe ${bingeProximity}/100 (≥13)`);
-        if (bingeQuote >= 0.13 && enteredDays >= 10) reasons.push(`Hochrisiko-Anteil ${Math.round(bingeQuote*100)}% (≥13%)`);
-        if (maxCluster >= 3) reasons.push(`Cluster ${maxCluster} Tage in Folge`);
-
-        description = '<strong>Erhöhtes Risiko – Kritische Schwelle erreicht</strong> — Du befindest dich an einem Kipppunkt: Häufige Rauschsituationen sind nachweisliche Treiber für Leber-, Krebs- und Herzprobleme.<br><br><strong>Auslöser:</strong> ' + reasons.join(' · ');
+        description = '<strong>Erhöhtes Risiko – Kritische Schwelle erreicht</strong> — Deine AF-Quote (<40%) oder Binge-Nähe (13-19/100 ≈ wöchentlich) liegt im WHO-Risikolevel "moderat bis hoch". Du befindest dich an einem Kipppunkt: Häufige Rauschsituationen sind nachweisliche Treiber für Leber-, Krebs- und Herzprobleme.';
         warning = '⚠️ Dringend empfohlen: AUDIT-Screening durchführen! Sport neutralisiert Alkoholrisiken NICHT (WHO/DHS). Potenziell mildes AUD bei 2-3 DSM-5-Kriterien (z.B. Kontrollverlust, mehr trinken als geplant).';
       } else if (afQuote >= 0.40 && afQuote < 0.70 && bingeProximity <= 12) {
         label = '🧘 Balance-Buddha';
@@ -2687,30 +2629,19 @@
       const avgPerWeek = (gramsTotal / weeks).toFixed(1);
       const avgDrinksPerWeek = (avgPerWeek / DRINK_UNIT).toFixed(1);
       
-      // DGE/WHO Schwellenwerte - geschlechtsspezifisch
-      const dgeDailyLimit = (userGender === 'female') ? 12 : 24;
-      const dgeVeryHigh = 40; // allgemeiner "sehr hoch"-Marker
-
-      let dgeRisk = `niedrig (≤${dgeDailyLimit}g/Tag ${userGender==='female' ? '♀' : '♂'}-Limit)`;
-      if (avgPerDay > dgeDailyLimit) {
-        dgeRisk = `hoch (⚠️ >${dgeDailyLimit}g/Tag ${userGender==='female' ? '♀' : '♂'}-Limit)`;
-      }
-      if (avgPerDay > dgeVeryHigh) {
-        dgeRisk = `sehr hoch (⚠️ >${dgeVeryHigh}g/Tag)`;
-      }
-      // Bonus: zeige bei Männern die Zwischenlage an
-      if (userGender === 'male' && avgPerDay > 12 && avgPerDay <= 24) {
-        dgeRisk = 'moderat (über ♀-Limit, unter ♂-Limit)';
-      }
+      // DGE/WHO Schwellenwerte
+      let dgeRisk = 'niedrig';
+      if (avgPerDay > 40) dgeRisk = 'sehr hoch (⚠️ >40g/Tag)';
+      else if (avgPerDay > 24) dgeRisk = 'hoch (⚠️ >24g/Tag Männer-Limit)';
+      else if (avgPerDay > 12) dgeRisk = 'moderat (⚠️ >12g/Tag Frauen-Limit)';
       
       // === 2. BINGE-ANALYSE ===
-      const bingeThreshold = (userGender === 'female') ? 40 : 60; // Frauen 40g, Männer 60g
       let bingeDays = 0;
       let maxBac = 0;
       let bacPeaks = [];
-
+      
       last100.forEach(day => {
-        if (day.grams >= bingeThreshold) {
+        if (day.grams >= 60) {
           bingeDays++;
           const bac = estimateBAC(day.grams);
           bacPeaks.push({date: day.date, bac: parseFloat(bac), grams: day.grams});
@@ -2963,7 +2894,7 @@
           
           <div style="margin-bottom:24px; padding:16px; background:#fef3c7; border-radius:8px; border:1px solid #fde68a;">
             <div style="font-weight:800; margin-bottom:12px; font-size:16px;">⚠️ Binge-Analyse (100 Tage)</div>
-            <div><strong>Binge-Tage (≥${bingeThreshold}g):</strong> ${bingeDays}/100 ${bingeDays > 10 ? '⚠️' : ''}</div>
+            <div><strong>Binge-Tage (≥60g):</strong> ${bingeDays}/100 ${bingeDays > 10 ? '⚠️' : ''}</div>
             <div><strong>Max. BAC (geschätzt):</strong> ${maxBac.toFixed(2)}‰</div>
             ${top3Peaks.length > 0 ? `
               <div style="margin-top:8px;"><strong>Top-3 Peaks:</strong></div>
@@ -3099,16 +3030,7 @@
           radio.closest('.settings-option').classList.add('selected');
         }
         document.getElementById('toggleGodMode').checked = godMode;
-
-        // Gender-Radio korrekt vorselektieren
-        const gInput = document.querySelector(`input[name="gender"][value="${userGender}"]`);
-        if (gInput) {
-          gInput.checked = true;
-          document.querySelectorAll('#settingsGender .settings-option')
-            .forEach(opt => opt.classList.remove('selected'));
-          gInput.closest('.settings-option')?.classList.add('selected');
-        }
-
+        
         // Gewicht anzeigen
         const weightInput = document.getElementById('userWeightInput');
         weightInput.value = userWeight || '';
