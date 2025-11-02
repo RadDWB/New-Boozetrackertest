@@ -1191,11 +1191,7 @@
         <div class="assessment-title">🎯 Deine Gesundheitseinschätzung</div>
         <div class="assessment-badge" id="assessmentBadge"></div>
 
-        <!-- Beschreibung mit Auslöser (direkt nach Plakette) -->
-        <div class="assessment-description" id="assessmentDescription"></div>
-        <div id="assessmentWarning" class="assessment-warning" style="display:none;"></div>
-
-        <!-- Basierend auf Info -->
+        <!-- Basierend auf Info (direkt nach Plakette) -->
         <div id="assessmentBasis" style="text-align:center; font-size:12px; color:var(--muted); margin:16px 0 24px 0; padding:8px; background:#f9fafb; border-radius:6px;"></div>
 
         <div class="assessment-metrics">
@@ -1402,7 +1398,7 @@
     /* ========================================
        GLOBALE VARIABLEN & KONFIGURATION
     ======================================== */
-    const APP_VERSION = 'v4.0 (02.11.2025 19:00)';
+    const APP_VERSION = 'v3.6 (02.11.2025 18:46)';
     
     let dayData = {};
     let currentInputDate = new Date();
@@ -2506,74 +2502,23 @@
       
       // Durchschnittliche Risikotage pro Monat
       const avgRiskPerMonth = Math.round((negative / 6));
-
-      // Langzeit-Einschätzung mit Motivation & Kontext
+      
+      // Langzeit-Einschätzung
       let assessment = '';
-
-      // Basis-Assessment nach Risikotage-Prozentsatz
       if (negPct < 10) {
-        assessment = '🌟 <strong>Exzellent!</strong> Nur ' + negPct + '% Risikotage über 6 Monate - das ist hervorragend! ';
-        if (trendText === '↓ Verbessert') {
-          assessment += 'Und du verbesserst dich sogar weiter (Trend: ' + trendEmoji + '). Bleib auf diesem Kurs!';
-        } else if (trendText === '↑ Verschlechtert') {
-          assessment += 'Achtung: Der Trend zeigt eine leichte Verschlechterung (' + trendEmoji + '). Bleib wachsam, damit dein exzellentes Niveau erhalten bleibt.';
-        } else {
-          assessment += 'Konstant stark über alle Quartale. Du hast ein stabiles, gesundes Muster entwickelt!';
-        }
-        assessment += ' <em>Nächster Schritt:</em> Dieses Level halten und als Vorbild für andere dienen.';
-
+        assessment = '🌟 Exzellent! Sehr konstante gesunde Entwicklung über 6 Monate.';
       } else if (negPct < 20) {
-        assessment = '💪 <strong>Sehr gut!</strong> Mit ' + negPct + '% Risikotagen und ⌀' + avgRiskPerMonth + ' Risikotagen/Monat zeigst du langfristig starke Disziplin. ';
-        if (trendText === '↓ Verbessert') {
-          assessment += 'Besonders beeindruckend: Du verbesserst dich stetig (' + trendEmoji + ')! Weiter so - die 10%-Marke ist in Reichweite!';
-        } else if (trendText === '↑ Verschlechtert') {
-          assessment += 'Aber Vorsicht: Der Trend zeigt eine Verschlechterung (' + trendEmoji + '). Reflektiere, was sich geändert hat, und steuere gegen.';
-        } else {
-          assessment += 'Stabil auf hohem Niveau (' + trendEmoji + '). Sehr solide!';
-        }
-        assessment += ' <em>Nächster Schritt:</em> Risikotage unter 15% drücken - probiere mehr Wellness-/Sporttage.';
-
+        assessment = '💪 Sehr gut! Langfristig stabile positive Entwicklung.';
       } else if (negPct < 35) {
-        assessment = '👍 <strong>Solide Entwicklung.</strong> ' + negPct + '% Risikotage bedeuten etwa ' + avgRiskPerMonth + ' kritische Tage pro Monat. ';
-        if (trendText === '↓ Verbessert') {
-          assessment += 'Positiv: Du bist auf dem richtigen Weg (' + trendEmoji + ')! Die Verbesserung ist messbar - bleib dran!';
-        } else if (trendText === '↑ Verschlechtert') {
-          assessment += 'Aber: Der Trend zeigt eine Verschlechterung (' + trendEmoji + '). Das ist ein Warnsignal - handle jetzt, bevor es kippt!';
-        } else {
-          assessment += 'Aktuell stabil (' + trendEmoji + '), aber noch Luft nach oben.';
-        }
-        assessment += ' <em>Nächster Schritt:</em> Setze dir konkrete Wochenziele (z.B. max. 1 Risikotag/Woche). Nutze die Streak-Funktion!';
-
+        assessment = '👍 Solide Entwicklung. Achte weiter auf Regelmäßigkeit.';
       } else if (negPct < 50) {
-        assessment = '⚠️ <strong>Gemischt - Handlungsbedarf!</strong> ' + negPct + '% Risikotage = fast jeder 2.-3. Tag problematisch (⌀' + avgRiskPerMonth + '/Monat). ';
-        if (trendText === '↓ Verbessert') {
-          assessment += 'Immerhin: Du verbesserst dich (' + trendEmoji + ')! Das ist der erste Schritt - jetzt konsequent weitermachen!';
-        } else if (trendText === '↑ Verschlechtert') {
-          assessment += 'ACHTUNG: Der Trend verschlechtert sich (' + trendEmoji + ')! Du rutschst in einen kritischen Bereich - professionelle Beratung erwägen!';
-        } else {
-          assessment += 'Aktuell stabil (' + trendEmoji + '), aber auf kritischem Niveau.';
-        }
-        assessment += ' <em>Nächster Schritt:</em> Identifiziere Trigger (Stress, Langeweile, Soziales). Überlege 7-Tage-Challenge: alkoholfrei ab heute!';
-
+        assessment = '⚠️ Gemischt. Langfristige Muster zeigen Verbesserungspotenzial.';
       } else {
-        assessment = '🚨 <strong>KRITISCH - Dringender Handlungsbedarf!</strong> ' + negPct + '% Risikotage bedeuten: Die Mehrheit deiner Tage ist problematisch (⌀' + avgRiskPerMonth + '/Monat). ';
-        if (trendText === '↓ Verbessert') {
-          assessment += 'Positiv: Du beginnst gegenzusteuern (' + trendEmoji + '). Das ist mutig! Jetzt nicht aufgeben - jeder Tag zählt!';
-        } else if (trendText === '↑ Verschlechtert') {
-          assessment += 'ALARM: Der Trend verschlechtert sich weiter (' + trendEmoji + ')! Das ist ein medizinischer Notfall. BITTE hole dir JETZT professionelle Hilfe!';
-        } else {
-          assessment += 'Das Level ist gefährlich stabil (' + trendEmoji + '). Ohne Intervention ändert sich nichts!';
-        }
-        assessment += ' <em>Nächster Schritt:</em> Professionelle Suchtberatung SOFORT (SAMHSA 1-800-662-4357, lokale Ambulanz). Du brauchst externe Unterstützung - das ist keine Schande!';
+        assessment = '🚨 Kritisch. Die 6-Monats-Daten zeigen deutlichen Handlungsbedarf.';
       }
-
-      // Kompensationstrinken-Warnung
-      if (compensationCount > 15) {
-        assessment += '<br><br>🚨 <strong>Zusätzlich kritisch:</strong> ' + compensationCount + ' Kompensations-Trinktage in 6 Monaten! Das deutet stark auf emotionale Abhängigkeit hin (Alkohol als Stressbewältigungsmittel). Dringend: Therapeutische Begleitung + alternative Copingstrategien entwickeln (Sport, Meditation, soziale Kontakte).';
-      } else if (compensationCount > 10) {
-        assessment += '<br><br>⚠️ <strong>Achtung Kompensation:</strong> ' + compensationCount + ' Kompensations-Trinktage zeigen emotionale Muster. Frage dich: Trinke ich, um zu fühlen - oder um NICHT zu fühlen? Entwickle gesündere Stressbewältigung!';
-      } else if (compensationCount > 5) {
-        assessment += '<br><br>💡 <strong>Tipp:</strong> ' + compensationCount + ' Kompensations-Trinktage - achte darauf, dass Alkohol nicht zur Stress-Lösung wird. Sport, Freunde, Hobbys sind bessere Ventile!';
+      
+      if (compensationCount > 10) {
+        assessment += ` Achtung: ${compensationCount} Kompensations-Trinktage in 6 Monaten deuten auf emotionale Abhängigkeit hin.`;
       }
       
       setTimeout(() => {
@@ -2587,7 +2532,7 @@
         document.getElementById('metric6mTrend').innerHTML = `${trendEmoji} ${trendText}`;
         document.getElementById('metric6mAvgRisk').textContent = avgRiskPerMonth;
         document.getElementById('metric6mCompensation').textContent = compensationCount;
-        document.getElementById('longTermAssessment').innerHTML = assessment;
+        document.getElementById('longTermAssessment').textContent = assessment;
       }, 100);
     }
 
@@ -2698,36 +2643,10 @@
       let label, badgeClass, description, warning = '';
       
       // Spezial-Warnung bei Katertagen mit Alkohol
-      const morningDrinkingWarning = counts.hangoverWithAlc > 0 ?
-        `<br><br>🚨 <strong>KRITISCH:</strong> ${counts.hangoverWithAlc} Katertag(e) mit Weiter-Alkohol! Dies ist ein DSM-5-Kriterium für schwere Alkoholabhängigkeit (morgendliches Trinken zur Linderung). Dringend professionelle Hilfe empfohlen!` :
+      const morningDrinkingWarning = counts.hangoverWithAlc > 0 ? 
+        `<br><br>🚨 <strong>KRITISCH:</strong> ${counts.hangoverWithAlc} Katertag(e) mit Weiter-Alkohol! Dies ist ein DSM-5-Kriterium für schwere Alkoholabhängigkeit (morgendliches Trinken zur Linderung). Dringend professionelle Hilfe empfohlen!` : 
         '';
-
-      // Helper-Funktion: Tooltip nach erstem Wort des ersten Triggers einfügen
-      function formatReasonsWithTooltip(reasons) {
-        if (reasons.length === 0) return '';
-
-        const tooltipHTML = '<span class="tooltip-icon" data-tooltip="Diese Metriken haben die Risiko-Einstufung ausgelöst. Binge-Nähe=absolute Anzahl, Hochrisiko-Anteil=relativer Prozentsatz aller erfassten Tage.">?</span>';
-
-        const firstReason = reasons[0];
-        const spaceIndex = firstReason.indexOf(' ');
-
-        if (spaceIndex > 0) {
-          // Füge Tooltip nach erstem Wort ein
-          const firstWord = firstReason.substring(0, spaceIndex);
-          const restOfFirst = firstReason.substring(spaceIndex);
-          let formatted = firstWord + ' ' + tooltipHTML + restOfFirst;
-
-          // Füge restliche Reasons hinzu
-          if (reasons.length > 1) {
-            formatted += ' · ' + reasons.slice(1).join(' · ');
-          }
-          return formatted;
-        } else {
-          // Fallback: Tooltip am Ende wenn kein Leerzeichen
-          return reasons.join(' · ') + ' ' + tooltipHTML;
-        }
-      }
-
+      
       if (bingeProximity >= 40 || afQuote < 0.20 || (bingeQuote >= 0.40 && enteredDays >= 10) || counts.hangoverWithAlc >= 3) {
         label = '🚨 Sucht-Alarm: Rote Lampen!';
         badgeClass = 'red';
@@ -2740,7 +2659,7 @@
         if (counts.hangoverWithAlc >= 3) reasons.push(`${counts.hangoverWithAlc} Katertage mit Alkohol`);
         if (maxCluster >= 5) reasons.push(`Cluster ${maxCluster} Tage in Folge`);
 
-        description = '<strong>Sehr hohes Risiko / Potenzielle Abhängigkeit</strong> — Extremes Risiko für Herz, Gehirn, Krebs und Leber. DSM-5-Warnzeichen für schwere AUD (6+ Kriterien): starkes Verlangen (Craving), Entzug, Kontrollverlust, Toleranz, Weitermachen trotz Schäden, Vernachlässigung anderer Aktivitäten.<br><br><strong>Auslöser:</strong> ' + formatReasonsWithTooltip(reasons) + morningDrinkingWarning;
+        description = '<strong>Sehr hohes Risiko / Potenzielle Abhängigkeit</strong> — Extremes Risiko für Herz, Gehirn, Krebs und Leber. DSM-5-Warnzeichen für schwere AUD (6+ Kriterien): starkes Verlangen (Craving), Entzug, Kontrollverlust, Toleranz, Weitermachen trotz Schäden, Vernachlässigung anderer Aktivitäten.<br><br><strong>Auslöser <span class="tooltip-icon" data-tooltip="Diese Metriken haben die Risiko-Einstufung ausgelöst. Binge-Nähe=absolute Anzahl, Hochrisiko-Anteil=relativer Prozentsatz aller erfassten Tage.">?</span>:</strong> ' + reasons.join(' · ') + morningDrinkingWarning;
         warning = '🆘 Professionelle Hilfe SOFORT empfohlen: SAMHSA-Hotline, lokale Suchtberatung, medizinisches Gespräch. Dies ist keine Diagnose, aber ein klares Signal! Ab AUDIT ≥ 8 Punkten ist professionelle Abklärung essentiell (ICD-10/DSM-5).';
       } else if ((bingeProximity >= 20 && bingeProximity < 40) || (afQuote < 0.30 && afQuote >= 0.20) || (bingeQuote >= 0.20 && enteredDays >= 10) || counts.hangoverWithAlc >= 1) {
         label = '🎲 Risiko-Roulette';
@@ -2754,7 +2673,7 @@
         if (counts.hangoverWithAlc >= 1) reasons.push(`${counts.hangoverWithAlc} Katertag(e) mit Alkohol`);
         if (maxCluster >= 4) reasons.push(`Cluster ${maxCluster} Tage in Folge`);
 
-        description = '<strong>Hohes Risiko</strong> — Du spielst Russian Roulette mit deiner Gesundheit. Hohes Risiko für Krebs, Leberzirrhose, Herz-Kreislauf-Erkrankungen und Unfälle. Sport kann diese Risiken NICHT kompensieren (WHO).<br><br><strong>Auslöser:</strong> ' + formatReasonsWithTooltip(reasons) + morningDrinkingWarning;
+        description = '<strong>Hohes Risiko</strong> — Du spielst Russian Roulette mit deiner Gesundheit. Hohes Risiko für Krebs, Leberzirrhose, Herz-Kreislauf-Erkrankungen und Unfälle. Sport kann diese Risiken NICHT kompensieren (WHO).<br><br><strong>Auslöser <span class="tooltip-icon" data-tooltip="Diese Metriken haben die Risiko-Einstufung ausgelöst. Binge-Nähe=absolute Anzahl, Hochrisiko-Anteil=relativer Prozentsatz aller erfassten Tage.">?</span>:</strong> ' + reasons.join(' · ') + morningDrinkingWarning;
         warning = '🚨 Moderate bis schwere AUD wahrscheinlich (4-5 DSM-5-Kriterien wie Toleranz, soziale Probleme, Kontrollverlust). Medizinisches Gespräch und professionelle Beratung DRINGEND empfohlen!';
       } else if (afQuote <= 0.39 || (bingeProximity >= 13 && bingeProximity <= 19) || (bingeQuote >= 0.13 && enteredDays >= 10)) {
         label = '🚨 Kipppunkt-Kandidat';
@@ -2767,7 +2686,7 @@
         if (bingeQuote >= 0.13 && enteredDays >= 10) reasons.push(`Hochrisiko-Anteil ${Math.round(bingeQuote*100)}% (≥13%)`);
         if (maxCluster >= 3) reasons.push(`Cluster ${maxCluster} Tage in Folge`);
 
-        description = '<strong>Erhöhtes Risiko – Kritische Schwelle erreicht</strong> — Du befindest dich an einem Kipppunkt: Häufige Rauschsituationen sind nachweisliche Treiber für Leber-, Krebs- und Herzprobleme.<br><br><strong>Auslöser:</strong> ' + formatReasonsWithTooltip(reasons);
+        description = '<strong>Erhöhtes Risiko – Kritische Schwelle erreicht</strong> — Du befindest dich an einem Kipppunkt: Häufige Rauschsituationen sind nachweisliche Treiber für Leber-, Krebs- und Herzprobleme.<br><br><strong>Auslöser <span class="tooltip-icon" data-tooltip="Diese Metriken haben die Risiko-Einstufung ausgelöst. Binge-Nähe=absolute Anzahl, Hochrisiko-Anteil=relativer Prozentsatz aller erfassten Tage.">?</span>:</strong> ' + reasons.join(' · ');
         warning = '⚠️ Dringend empfohlen: AUDIT-Screening durchführen! Sport neutralisiert Alkoholrisiken NICHT (WHO/DHS). Potenziell mildes AUD bei 2-3 DSM-5-Kriterien (z.B. Kontrollverlust, mehr trinken als geplant).';
       } else if (afQuote >= 0.40 && afQuote < 0.70 && bingeProximity <= 12) {
         label = '🧘 Balance-Buddha';
