@@ -1468,68 +1468,40 @@
     }
 
     function migrateData() {
-  // Migration 1: Schema-Version prüfen
+      // Migration 1: Date-Keys normieren
       const schemaVersion = localStorage.getItem('alcoholTrackerSchemaVersion') || '0';
-  
-  // Migration 2: String-Einträge zu Objekten
-      for (const key of Object.keys(dayData)) {
-      if (typeof dayData[key] === 'string') {
-        dayData[key] = {
-        status: dayData[key],
-        comment: ''
-        };
-      }
-    }
-
-  // Migration 3: Duplikate entfernen + Datumsgültigkeit prüfen
-  // Läuft bei Version < 2, um Altlasten aus v2.3 zu bereinigen
-      if (parseInt(schemaVersion) < 2) {
-      const normalized = {};
-        let removed = 0;
-    
-        Object.keys(dayData).forEach(key => {
-      const parts = key.split('-').map(n => parseInt(n, 10));
-      if (parts.length !== 3) {
-        normalized[key] = dayData[key];
-        return;
-      }
-      
-      const [y, m, d] = parts;
-      
-      // Datumsgültigkeit prüfen (filtert ungültige Daten wie 31. September)
-      const dt = new Date(y, m - 1, d);
-      if (dt.getFullYear() !== y || (dt.getMonth() + 1) !== m || dt.getDate() !== d) {
-        console.log('❌ Ungültiges Datum entfernt:', key);
-        removed++;
-        return;
-      }
-      
-      // Zero-Padding normalisieren
-      const normKey = `${y}-${pad(m)}-${pad(d)}`;
-      
-      // Nur erste Version behalten, Duplikate ignorieren
-      if (!normalized[normKey]) {
-         normalized[normKey] = dayData[key];
-         } else {
-            console.log('🗑️ Duplikat entfernt:', key);
-            removed++;
-      }
-      });
-    
-        dayData = normalized;
-    
-        if (removed > 0) {
-          console.log(`🧹 ${removed} Einträge bereinigt`);
+      if (schemaVersion === '0') {
+        const newData = {};
+        for (const key of Object.keys(dayData)) {
+          const parts = key.split('-').map(n => parseInt(n, 10));
+          if (parts.length !== 3) {
+            newData[key] = dayData[key];
+            continue;
+          }
+          const [y, m, d] = parts;
+          const normalizedKey = `${y}-${pad(m)}-${pad(d)}`;
+          newData[normalizedKey] = dayData[key];
         }
-    
-        localStorage.setItem('alcoholTrackerSchemaVersion', '2');
+        dayData = newData;
+        localStorage.setItem('alcoholTrackerSchemaVersion', '1');
       }
 
-  // Migration 4: Leere Einträge entfernen
+      // Migration 2: String-Einträge zu Objekten
+      for (const key of Object.keys(dayData)) {
+        if (typeof dayData[key] === 'string') {
+          dayData[key] = {
+            status: dayData[key],
+            comment: ''
+          };
+        }
+      }
+
+      // Migration 3: Leere/ungültige Einträge bereinigen
       for (const key of Object.keys(dayData)) {
         const entry = dayData[key];
-      if (!entry || (typeof entry === 'object' && !entry.status && !entry.totalAlcohol && !entry.comment && !entry.drinks)) {
-        delete dayData[key];
+        // Lösche Einträge ohne Status UND ohne Daten
+        if (!entry || (typeof entry === 'object' && !entry.status && !entry.totalAlcohol && !entry.comment && !entry.drinks)) {
+          delete dayData[key];
         }
       }
     }
