@@ -480,15 +480,6 @@
       font-size: 22px;
       font-weight: 800;
       box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-      cursor: pointer;
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
-    }
-    .assessment-badge:hover{
-      transform: translateY(-2px);
-      box-shadow: 0 6px 16px rgba(0,0,0,0.15);
-    }
-    .assessment-badge:active{
-      transform: translateY(0);
     }
     .assessment-badge.zen{ background: linear-gradient(135deg, #d1fae5, #a7f3d0); color: #065f46; border: 2px solid #34d399; }
     .assessment-badge.balance{ background: linear-gradient(135deg, #fef3c7, #fde68a); color: #92400e; border: 2px solid #fbbf24; }
@@ -667,64 +658,6 @@
     @media (max-width:640px){
     /* Variante: auf Mobile nur das Icon zeigen */
     .month-top-nav .btn.btn-icon .label{ display:none; }
-    }
-
-    /* === TOOLTIP SYSTEM === */
-    .tooltip-trigger{
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-      cursor: help;
-    }
-    .tooltip-icon{
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: 16px;
-      height: 16px;
-      border-radius: 50%;
-      background: rgba(59, 130, 246, 0.1);
-      color: #3b82f6;
-      font-size: 11px;
-      font-weight: 700;
-      cursor: help;
-      transition: all 0.2s ease;
-    }
-    .tooltip-icon:hover{
-      background: rgba(59, 130, 246, 0.2);
-      transform: scale(1.1);
-    }
-    .tooltip-content{
-      position: absolute;
-      background: #1f2937;
-      color: white;
-      padding: 8px 12px;
-      border-radius: 8px;
-      font-size: 12px;
-      line-height: 1.5;
-      max-width: 280px;
-      z-index: 10000;
-      pointer-events: none;
-      opacity: 0;
-      transform: translateY(-5px);
-      transition: opacity 0.2s ease, transform 0.2s ease;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-    }
-    .tooltip-content.show{
-      opacity: 1;
-      transform: translateY(0);
-    }
-    .tooltip-content::before{
-      content: '';
-      position: absolute;
-      bottom: -4px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 0;
-      height: 0;
-      border-left: 5px solid transparent;
-      border-right: 5px solid transparent;
-      border-top: 5px solid #1f2937;
     }
   </style>
 
@@ -1144,24 +1077,15 @@
         <!-- 6-Monats-Metriken -->
         <div class="assessment-metrics" style="margin-top:16px;">
           <div class="metric-item">
-            <div class="metric-label">
-              Trend (letztes Quartal)
-              <span class="tooltip-icon" data-tooltip="Vergleicht die letzten 90 Tage mit den 90 Tagen davor. 📈=Verbesserung (mehr positive Tage), 📉=Verschlechterung (mehr Risikotage), ➡️=Stabil">?</span>
-            </div>
+            <div class="metric-label">Trend (letztes Quartal)</div>
             <div class="metric-value" id="metric6mTrend">-</div>
           </div>
           <div class="metric-item">
-            <div class="metric-label">
-              Ø Risikotage/Monat
-              <span class="tooltip-icon" data-tooltip="Durchschnittliche Anzahl von Risikotagen (Alkohol, Mixed, Moderat, Katertag mit Alkohol) pro Monat über 6 Monate. Niedriger ist besser.">?</span>
-            </div>
+            <div class="metric-label">Ø Risikotage/Monat</div>
             <div class="metric-value" id="metric6mAvgRisk">0</div>
           </div>
           <div class="metric-item">
-            <div class="metric-label">
-              Kompensationstrinken
-              <span class="tooltip-icon" data-tooltip="Trinken nach Sport/Wellness-Aktivitäten (Checkbox 'Kompensation'). Zeigt problematisches Muster: Sport wird als 'Erlaubnis' zum Trinken missbraucht.">?</span>
-            </div>
+            <div class="metric-label">Kompensationstrinken</div>
             <div class="metric-value" id="metric6mCompensation">0</div>
           </div>
         </div>
@@ -1179,31 +1103,19 @@
 
         <div class="assessment-metrics">
           <div class="metric-item">
-            <div class="metric-label">
-              AF-Quote (alkoholfrei)
-              <span class="tooltip-icon" data-tooltip="Alkoholfreie-Tage-Quote: Anteil von Superday/Wellness/Sober-Tagen der letzten 100 Tage. Je höher, desto besser!">?</span>
-            </div>
+            <div class="metric-label">AF-Quote (alkoholfrei)</div>
             <div class="metric-value" id="metricAF">0%</div>
           </div>
           <div class="metric-item">
-            <div class="metric-label">
-              Gewichtete Gesundheit
-              <span class="tooltip-icon" data-tooltip="Gesundheitsquote mit Gewichtung: Superday=100%, Wellness=90%, Nüchtern=75%, Moderat=40%, Mixed=25%, Alkohol=0%. Katertage werden adaptiv bewertet je nach Vortag.">?</span>
-            </div>
+            <div class="metric-label">Gewichtete Gesundheit</div>
             <div class="metric-value" id="metricHealth">0%</div>
           </div>
           <div class="metric-item">
-            <div class="metric-label">
-              Binge-Nähe (Hochrisiko)
-              <span class="tooltip-icon" data-tooltip="Anzahl problematischer Tage (Alkohol/Mixed/Hangover) der letzten 100 Tage. Schwellen: 13-19=Kipppunkt, 20-39=Hoch, ≥40=Sehr hoch">?</span>
-            </div>
+            <div class="metric-label">Binge-Nähe (Hochrisiko)</div>
             <div class="metric-value" id="metricBinge">0</div>
           </div>
           <div class="metric-item">
-            <div class="metric-label">
-              Längster Cluster
-              <span class="tooltip-icon" data-tooltip="Längste Kette aufeinanderfolgender Tage mit Alkoholkonsum (≥20g). Cluster ≥3 Tage erhöhen das Gesundheitsrisiko signifikant.">?</span>
-            </div>
+            <div class="metric-label">Längster Cluster</div>
             <div class="metric-value" id="metricCluster">0</div>
           </div>
         </div>
@@ -1381,7 +1293,7 @@
     /* ========================================
        GLOBALE VARIABLEN & KONFIGURATION
     ======================================== */
-    const APP_VERSION = 'v3.5 (02.11.2025 18:24)';
+    const APP_VERSION = 'v3.4 (02.11.2025 17:50)';
     
     let dayData = {};
     let currentInputDate = new Date();
@@ -2706,20 +2618,7 @@
       const badge = document.getElementById('assessmentBadge');
       badge.textContent = label;
       badge.className = 'assessment-badge ' + badgeClass;
-
-      // Plakette klickbar machen - scrollt zur Beschreibung und hebt sie hervor
-      badge.onclick = () => {
-        const descEl = document.getElementById('assessmentDescription');
-        descEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-        descEl.style.transition = 'all 0.3s ease';
-        descEl.style.transform = 'scale(1.02)';
-        descEl.style.boxShadow = '0 0 0 3px rgba(59, 130, 246, 0.3)';
-        setTimeout(() => {
-          descEl.style.transform = 'scale(1)';
-          descEl.style.boxShadow = '';
-        }, 600);
-      };
-
+      
       const basisInfo = neutralDaysSetting === 'ignore' ? 
         `<div style="text-align:center; font-size:12px; color:var(--muted); margin-bottom:12px;">📊 Basierend auf <strong>${enteredDays} von 100 Tagen</strong></div>` :
         `<div style="text-align:center; font-size:12px; color:var(--muted); margin-bottom:12px;">📊 Basierend auf <strong>100 Tagen</strong> (${enteredDays} eingetragen)</div>`;
@@ -3059,22 +2958,13 @@
             <div><strong>Ø Gramm/Tag:</strong> ${avgPerDay}g <span style="color:var(--muted);">(${daysCount} Tage mit Konsum)</span></div>
             <div><strong>Ø Gramm/Woche:</strong> ${avgPerWeek}g</div>
             <div><strong>Ø Drinks/Woche:</strong> ${avgDrinksPerWeek} <span style="font-size:12px;">(à 10g)</span></div>
-            <div style="margin-top:8px; padding:8px; background:white; border-radius:6px;">
-              <strong>DGE/WHO-Risiko:</strong> ${dgeRisk}
-              <span class="tooltip-icon" data-tooltip="Deutsche Gesellschaft für Ernährung / Weltgesundheitsorganisation. Risikoarmes Limit: ♀ 12g/Tag, ♂ 24g/Tag. Ab 40g/Tag sehr hohes Risiko für alle Geschlechter.">?</span>
-            </div>
+            <div style="margin-top:8px; padding:8px; background:white; border-radius:6px;"><strong>DGE/WHO-Risiko:</strong> ${dgeRisk}</div>
           </div>
-
+          
           <div style="margin-bottom:24px; padding:16px; background:#fef3c7; border-radius:8px; border:1px solid #fde68a;">
             <div style="font-weight:800; margin-bottom:12px; font-size:16px;">⚠️ Binge-Analyse (100 Tage)</div>
-            <div>
-              <strong>Binge-Tage (≥${bingeThreshold}g):</strong> ${bingeDays}/100 ${bingeDays > 10 ? '⚠️' : ''}
-              <span class="tooltip-icon" data-tooltip="Binge-Schwelle: ♀ ≥40g, ♂ ≥60g pro Tag. Ab 10 Binge-Tagen in 100 Tagen erhöhtes Gesundheitsrisiko.">?</span>
-            </div>
-            <div>
-              <strong>Max. BAC (geschätzt):</strong> ${maxBac.toFixed(2)}‰
-              <span class="tooltip-icon" data-tooltip="BAC = Blood Alcohol Concentration (Blutalkoholkonzentration in Promille). 0,5‰=Fahruntüchtig, 1,0‰=Deutlich betrunken, 2,0‰=Stark betrunken, 3,0‰+=Lebensgefährlich">?</span>
-            </div>
+            <div><strong>Binge-Tage (≥${bingeThreshold}g):</strong> ${bingeDays}/100 ${bingeDays > 10 ? '⚠️' : ''}</div>
+            <div><strong>Max. BAC (geschätzt):</strong> ${maxBac.toFixed(2)}‰</div>
             ${top3Peaks.length > 0 ? `
               <div style="margin-top:8px;"><strong>Top-3 Peaks:</strong></div>
               <ul style="margin:4px 0; padding-left:20px; font-size:13px;">
@@ -3103,13 +2993,9 @@
           </div>
           
           <div style="margin-bottom:16px; padding:16px; background:linear-gradient(135deg, #ede9fe, #faf5ff); border-radius:12px; border:2px solid #c4b5fd; box-shadow:0 4px 12px rgba(196,181,253,0.2);">
-          <div style="font-weight:800; margin-bottom:8px; font-size:18px; text-align:center; color:#6b21a8;">
-            🔮 Markov-Prognose (7 Tage)
-            <span class="tooltip-icon" data-tooltip="Markov-Chain-Prognose analysiert deine historischen Verhaltensmuster. Sie berechnet die Wahrscheinlichkeit für jeden Tagtyp basierend auf deinen bisherigen Übergängen (z.B. nach 'Alkohol' folgt oft 'Katertag'). Neuere Tage werden stärker gewichtet.">?</span>
-          </div>
+          <div style="font-weight:800; margin-bottom:8px; font-size:18px; text-align:center; color:#6b21a8;">🔮 Markov-Prognose (7 Tage)</div>
           <div style="font-size:12px; color:#7c3aed; margin-bottom:12px; text-align:center; background:white; padding:8px; border-radius:6px;">
             <strong>Monte-Carlo Simulation</strong> (1000 Durchläufe) · Exponentielle Recency-Gewichtung · Stochastische Auswahl
-            <span class="tooltip-icon" data-tooltip="Monte-Carlo: 1000 zufällige Simulationen deiner nächsten 7 Tage basierend auf deinen Verhaltensmustern. Recency: Neuere Tage wiegen stärker. Stochastisch: Zufallsbasiert, aber realistisch.">?</span>
           </div>
           <div style="display:grid; grid-template-columns:repeat(7, 1fr); gap:10px; text-align:center; margin-top:16px;">
             ${forecast.map(f => {
@@ -3421,59 +3307,6 @@
     window.importData = importData;
     window.resetStorage = resetStorage;
     window.removeDrink = removeDrink;
-
-    /* ========================================
-       TOOLTIP SYSTEM
-    ======================================== */
-    function initTooltips() {
-      // Erstelle Tooltip-Container falls nicht vorhanden
-      if (!document.getElementById('tooltipContainer')) {
-        const container = document.createElement('div');
-        container.id = 'tooltipContainer';
-        document.body.appendChild(container);
-      }
-
-      // Event Delegation für alle Tooltip-Icons
-      document.addEventListener('mouseover', (e) => {
-        const trigger = e.target.closest('.tooltip-icon');
-        if (!trigger) return;
-
-        const text = trigger.dataset.tooltip;
-        if (!text) return;
-
-        // Erstelle Tooltip
-        const tooltip = document.createElement('div');
-        tooltip.className = 'tooltip-content';
-        tooltip.textContent = text;
-        tooltip.id = 'activeTooltip';
-        document.getElementById('tooltipContainer').appendChild(tooltip);
-
-        // Positioniere Tooltip
-        const rect = trigger.getBoundingClientRect();
-        tooltip.style.position = 'fixed';
-        tooltip.style.left = (rect.left + rect.width / 2) + 'px';
-        tooltip.style.top = (rect.top - 10) + 'px';
-        tooltip.style.transform = 'translate(-50%, -100%)';
-
-        // Zeige Tooltip
-        setTimeout(() => tooltip.classList.add('show'), 10);
-      });
-
-      document.addEventListener('mouseout', (e) => {
-        const trigger = e.target.closest('.tooltip-icon');
-        if (!trigger) return;
-
-        // Entferne Tooltip
-        const tooltip = document.getElementById('activeTooltip');
-        if (tooltip) {
-          tooltip.classList.remove('show');
-          setTimeout(() => tooltip.remove(), 200);
-        }
-      });
-    }
-
-    // Initialisiere Tooltips beim Laden
-    document.addEventListener('DOMContentLoaded', initTooltips);
   </script>
 
 <script>
