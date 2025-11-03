@@ -928,17 +928,17 @@
             step="1"
             style="flex: 1; height: 8px; border-radius: 4px; background: linear-gradient(to right, #10b981, #fbbf24, #ef4444); cursor: pointer; appearance: none; -webkit-appearance: none;"
           >
-          <div id="stressValue" style="min-width: 180px; font-size: 16px; font-weight: 700; text-align: center; padding: 8px; background: white; border-radius: 8px; border: 2px solid #bae6fd;">
-            😐 Der normale Wahnsinn (0)
+          <div id="stressValue" style="min-width: 140px; font-size: 16px; font-weight: 700; text-align: center; padding: 8px; background: white; border-radius: 8px; border: 2px solid #bae6fd;">
+            😐 Normal (0)
           </div>
         </div>
 
         <div style="display: flex; justify-content: space-between; margin-top: 8px; font-size: 11px; color: #0369a1;">
-          <span>😌 Max-Gechillt</span>
-          <span>😊 ziemlich Relaxed</span>
-          <span style="font-weight: 700;">😐 Der normale Wahnsinn</span>
-          <span>😤 leicht genervt</span>
-          <span>😡 Alarmstufe</span>
+          <span>😌 Gechillt</span>
+          <span>😊 Relaxed</span>
+          <span style="font-weight: 700;">😐 Normal</span>
+          <span>😤 Genervt</span>
+          <span>😡 Alarm!</span>
         </div>
       </div>
 
@@ -1497,7 +1497,7 @@
     /* ========================================
        GLOBALE VARIABLEN & KONFIGURATION
     ======================================== */
-    const APP_VERSION = 'v5.0 (03.11.2025 18:45 - Predictive Nudging: Auto-Calculate & Settings-Toggle)';
+    const APP_VERSION = 'v4.4 (03.11.2025 - 15:43)';
     
     let dayData = {};
     let currentInputDate = new Date();
@@ -1509,7 +1509,6 @@
     let categoryManual = false;
     let markovForecast = []; // Für Markov-Popup
     let nudgingEnabled = false; // Predictive Nudging Ein/Aus
-    let nudgingDismissed = {}; // {date: true} für dismissed alerts
     let userGender = 'male'; // male | female
     let userWeight = null; // kg, null = default 75kg
     
@@ -1771,7 +1770,6 @@
         neutralDaysWeight = settings.neutralDaysWeight || 30;
         godMode = !!settings.godMode;
         nudgingEnabled = !!settings.nudgingEnabled;
-        nudgingDismissed = settings.nudgingDismissed || {};
         userGender = settings.gender || 'male';
         userWeight = settings.weight || null;
 
@@ -2220,11 +2218,11 @@
       const stressLevel = entry?.stress !== undefined ? entry.stress : 0;
       document.getElementById('stressSlider').value = stressLevel;
       const stressLabels = {
-        '-2': '😌 Max-Gechillt (-2)',
-        '-1': '😊 ziemlich Relaxed (-1)',
-        '0': '😐 Der normale Wahnsinn (0)',
-        '1': '😤 leicht genervt (+1)',
-        '2': '😡 Alarmstufe (+2)'
+        '-2': '😌 Supergechillt (-2)',
+        '-1': '😊 Relaxed (-1)',
+        '0': '😐 Normal (0)',
+        '1': '😤 Genervt (+1)',
+        '2': '😡 Alarm! (+2)'
       };
       document.getElementById('stressValue').textContent = stressLabels[stressLevel];
 
@@ -2338,7 +2336,7 @@
       // Zurücksetzen
       document.getElementById('dayCommentInput').value = '';
       document.getElementById('stressSlider').value = '0';
-      document.getElementById('stressValue').textContent = '😐 Der normale Wahnsinn (0)';
+      document.getElementById('stressValue').textContent = '😐 Normal (0)';
       activeDrinks = [];
       document.getElementById('drinksList').innerHTML = '';
       document.querySelectorAll('.checkbox-item input').forEach(cb => cb.checked = false);
@@ -3070,12 +3068,12 @@
       const dgeDailyLimit = (userGender === 'female') ? 12 : 24;
       const dgeVeryHigh = 40; // allgemeiner "sehr hoch"-Marker
 
-      let dgeRisk = `niedrig (≤${dgeDailyLimit}g pro Tag mit Alk-Konsum ${userGender==='female' ? '♀' : '♂'}-Limit)`;
+      let dgeRisk = `niedrig (≤${dgeDailyLimit}g/Tag ${userGender==='female' ? '♀' : '♂'}-Limit)`;
       if (avgPerDay > dgeDailyLimit) {
-        dgeRisk = `hoch (⚠️ >${dgeDailyLimit}g pro Tag mit Alk-Konsum ${userGender==='female' ? '♀' : '♂'}-Limit)`;
+        dgeRisk = `hoch (⚠️ >${dgeDailyLimit}g/Tag ${userGender==='female' ? '♀' : '♂'}-Limit)`;
       }
       if (avgPerDay > dgeVeryHigh) {
-        dgeRisk = `sehr hoch (⚠️ >${dgeVeryHigh}g pro Tag mit Alk-Konsum)`;
+        dgeRisk = `sehr hoch (⚠️ >${dgeVeryHigh}g/Tag)`;
       }
       // Bonus: zeige bei Männern die Zwischenlage an
       if (userGender === 'male' && avgPerDay > 12 && avgPerDay <= 24) {
@@ -3186,112 +3184,7 @@
         liverRisk = 'leicht 🟢';
       }
 
-      // === 7. CORRELATION ANALYSIS (CBT-fokussiert) ===
-      // Pearson Correlation Coefficient Funktion
-      const pearsonCorrelation = (x, y) => {
-        const n = x.length;
-        if (n === 0 || n !== y.length) return 0;
-
-        const sumX = x.reduce((a, b) => a + b, 0);
-        const sumY = y.reduce((a, b) => a + b, 0);
-        const sumXY = x.reduce((sum, xi, i) => sum + xi * y[i], 0);
-        const sumX2 = x.reduce((sum, xi) => sum + xi * xi, 0);
-        const sumY2 = y.reduce((sum, yi) => sum + yi * yi, 0);
-
-        const numerator = n * sumXY - sumX * sumY;
-        const denominator = Math.sqrt((n * sumX2 - sumX * sumX) * (n * sumY2 - sumY * sumY));
-
-        return denominator === 0 ? 0 : numerator / denominator;
-      };
-
-      // Sammle Daten für Korrelationen (letzte 90 Tage)
-      const last90Data = last180Days.slice(0, 90);
-      const stressValues = [];
-      const gramsValues = [];
-      const sportValues = [];
-      const socialValues = [];
-
-      last90Data.forEach(day => {
-        if (day.entry && day.entry.stress !== undefined) {
-          stressValues.push(day.entry.stress);
-          gramsValues.push(day.grams);
-          sportValues.push(day.entry.sport ? 1 : 0);
-          socialValues.push(day.entry.social ? 1 : 0);
-        }
-      });
-
-      // Berechne Stress-Durchschnitt
-      let avgStress = 0;
-      let avgStressLabel = '';
-      let avgStressEmoji = '';
-      if (stressValues.length > 0) {
-        avgStress = (stressValues.reduce((sum, s) => sum + s, 0) / stressValues.length).toFixed(2);
-        const avgStressRounded = Math.round(avgStress);
-
-        const stressLabelMap = {
-          '-2': {emoji: '😌', label: 'Max-Gechillt', color: '#10b981'},
-          '-1': {emoji: '😊', label: 'ziemlich Relaxed', color: '#34d399'},
-          '0': {emoji: '😐', label: 'Der normale Wahnsinn', color: '#fbbf24'},
-          '1': {emoji: '😤', label: 'leicht genervt', color: '#fb923c'},
-          '2': {emoji: '😡', label: 'Alarmstufe', color: '#ef4444'}
-        };
-
-        const mapped = stressLabelMap[avgStressRounded] || stressLabelMap['0'];
-        avgStressEmoji = mapped.emoji;
-        avgStressLabel = mapped.label;
-      }
-
-      // Berechne Korrelationen
-      const correlations = {
-        stressAlcohol: 0,
-        sportAlcohol: 0,
-        socialAlcohol: 0,
-        stressInterpretation: '',
-        sportInterpretation: '',
-        socialInterpretation: ''
-      };
-
-      if (stressValues.length >= 10) { // Minimum 10 Datenpunkte für valide Korrelation
-        correlations.stressAlcohol = pearsonCorrelation(stressValues, gramsValues);
-        correlations.sportAlcohol = pearsonCorrelation(sportValues, gramsValues);
-        correlations.socialAlcohol = pearsonCorrelation(socialValues, gramsValues);
-
-        // Interpretationen (CBT-fokussiert)
-        const r_stress = correlations.stressAlcohol;
-        if (r_stress > 0.5) {
-          correlations.stressInterpretation = '🚨 STARK positiv (Stress → Alkohol ist Haupttrigger!)';
-        } else if (r_stress > 0.3) {
-          correlations.stressInterpretation = '⚠️ MODERAT positiv (Stress triggert oft Konsum)';
-        } else if (r_stress > 0.1) {
-          correlations.stressInterpretation = '🟡 SCHWACH positiv (leichter Zusammenhang)';
-        } else if (r_stress < -0.1) {
-          correlations.stressInterpretation = '✅ NEGATIV (gechillt = mehr Konsum? Party-Trinken!)';
-        } else {
-          correlations.stressInterpretation = '➖ KEIN Zusammenhang (Stress ist kein direkter Trigger)';
-        }
-
-        const r_sport = correlations.sportAlcohol;
-        if (r_sport < -0.3) {
-          correlations.sportInterpretation = '✅ STARK negativ (Sport ist Schutzfaktor!)';
-        } else if (r_sport < -0.1) {
-          correlations.sportInterpretation = '🟢 SCHWACH negativ (Sport hilft etwas)';
-        } else if (r_sport > 0.1) {
-          correlations.sportInterpretation = '⚠️ POSITIV (Sport & Alkohol gleichzeitig? Belohnungsmuster!)';
-        } else {
-          correlations.sportInterpretation = '➖ KEIN Zusammenhang';
-        }
-
-        const r_social = correlations.socialAlcohol;
-        if (r_social > 0.3) {
-          correlations.socialInterpretation = '⚠️ POSITIV (soziale Events = Risiko-Trigger!)';
-        } else if (r_social < -0.1) {
-          correlations.socialInterpretation = '✅ NEGATIV (soziale Kontakte schützen!)';
-        } else {
-          correlations.socialInterpretation = '➖ KEIN klarer Zusammenhang';
-        }
-      }
-
-      // === 8. TOLERANCE CREEP ===
+      // === 7. TOLERANCE CREEP ===
       const first90 = last180Days.slice(90, 180);
       const recent90 = last180Days.slice(0, 90);
       
@@ -3311,55 +3204,24 @@
       else if (creep > 5) creepStatus = '⚠️ Toleranzentwicklung (+' + creep.toFixed(0) + 'g)';
       else if (creep < -5) creepStatus = '✅ Reduzierung (-' + Math.abs(creep).toFixed(0) + 'g)';
       
-      // === 9. MARKOV-CHAIN 7-TAGE-PROGNOSE mit STRESS-INTEGRATION (HMM) ===
+      // === 7. MARKOV-CHAIN 7-TAGE-PROGNOSE (VERBESSERT) ===
       const states = ['superday', 'wellness', 'sober', 'moderate', 'mixed', 'alcohol', 'hangover'];
       const idx = {};
       states.forEach((s, i) => idx[s] = i);
 
-      // Transition Matrix mit exponentieller Recency-Gewichtung + STRESS-MODULATION
+      // Transition Matrix mit exponentieller Recency-Gewichtung
       const M = Array(7).fill(0).map(() => Array(7).fill(0.1)); // Minimales Laplace Smoothing
 
       let prev = null;
       for (let i = 179; i >= 1; i--) {
-        const day = last180Days[i];
-        const st = day.status;
+        const st = last180Days[i].status;
         if (!st) continue;
-
+        
         // Exponentielle Gewichtung: je jünger, desto mehr Gewicht
+        // Letzte 7 Tage: ~10x, letzte 30: ~2.5x, älter: 1x
         const daysAgo = i;
-        let weight = Math.exp(-daysAgo / 60); // Decay-Faktor
-
-        // === STRESS-BASED WEIGHT MODULATION (HMM Integration) ===
-        // Höherer Stress = höheres Risiko für negative Transitions
-        if (day.entry && day.entry.stress !== undefined) {
-          const stressLevel = day.entry.stress; // -2 bis +2
-          const riskStates = ['moderate', 'mixed', 'alcohol', 'hangover'];
-          const positiveStates = ['superday', 'wellness', 'sober'];
-
-          // Stress-Multiplikator: +2 = 1.5x, +1 = 1.2x, 0 = 1x, -1 = 0.8x, -2 = 0.6x
-          const stressMultiplier = 1 + (stressLevel * 0.25);
-
-          // Wenn Transition zu Risiko-State: erhöhe Gewicht bei hohem Stress
-          if (st && riskStates.includes(st) && stressLevel > 0) {
-            weight *= stressMultiplier;
-          }
-          // Wenn Transition zu positivem State: reduziere Gewicht bei hohem Stress
-          else if (st && positiveStates.includes(st) && stressLevel > 0) {
-            weight *= (2 - stressMultiplier); // Inverse
-          }
-        }
-
-        // === SPORT/SOCIAL PROTECTION FACTORS ===
-        // Sport/Social reduzieren Risiko-Transitions
-        if (day.entry) {
-          if (day.entry.sport) weight *= 0.7; // Sport = 30% weniger Gewicht für Risiko
-          if (day.entry.social) {
-            // Social ist ambivalent: kann schützen ODER triggern (je nach Korrelation)
-            if (correlations.socialAlcohol < 0) weight *= 0.8; // schützend
-            else if (correlations.socialAlcohol > 0.2) weight *= 1.2; // triggernd
-          }
-        }
-
+        const weight = Math.exp(-daysAgo / 60); // Decay-Faktor
+        
         if (prev && idx[prev] !== undefined && idx[st] !== undefined) {
           M[idx[prev]][idx[st]] += weight;
         }
@@ -3511,7 +3373,7 @@
         <div style="line-height:2.0; font-size:14px;">
           <div style="margin-bottom:24px; padding:16px; background:#f0f9ff; border-radius:8px; border:1px solid #bae6fd;">
             <div style="font-weight:800; margin-bottom:12px; font-size:16px;">📊 Mengen-Analyse (180 Tage)</div>
-            <div><strong>Ø Gramm pro Tag mit Alk-Konsum:</strong> ${avgPerDay}g <span style="color:var(--muted);">(${daysCount} Tage)</span></div>
+            <div><strong>Ø Gramm/Tag:</strong> ${avgPerDay}g <span style="color:var(--muted);">(${daysCount} Tage mit Konsum)</span></div>
             <div><strong>Ø Gramm/Woche:</strong> ${avgPerWeek}g</div>
             <div><strong>Ø Drinks/Woche:</strong> ${avgDrinksPerWeek} <span style="font-size:12px;">(à 10g)</span></div>
             <div style="margin-top:8px; padding:8px; background:white; border-radius:6px;">
@@ -3560,58 +3422,6 @@
             </div>
             ${liverWarning}
           </div>
-
-          ${stressValues.length > 0 ? `
-          <div style="margin-bottom:24px; padding:16px; background:#f3f4f6; border-radius:8px; border:1px solid #d1d5db;">
-            <div style="font-weight:800; margin-bottom:12px; font-size:16px;">🧠 Durchschnittliches Stress-Level (90d)</div>
-            <div style="display: flex; align-items: center; gap: 12px;">
-              <div style="font-size: 48px;">${avgStressEmoji}</div>
-              <div style="flex: 1;">
-                <div style="font-size: 18px; font-weight: 700; color: #374151;">${avgStressLabel}</div>
-                <div style="font-size: 14px; color: #6b7280;">Durchschnitt: ${avgStress} <span style="font-size:12px;">(${stressValues.length} Tage erfasst)</span></div>
-                <div style="margin-top: 8px; height: 12px; background: linear-gradient(to right, #10b981, #34d399, #fbbf24, #fb923c, #ef4444); border-radius: 6px; position: relative;">
-                  <div style="position: absolute; left: ${((parseFloat(avgStress) + 2) / 4) * 100}%; top: -4px; width: 4px; height: 20px; background: #1f2937; border-radius: 2px;"></div>
-                </div>
-                <div style="display: flex; justify-content: space-between; margin-top: 4px; font-size: 10px; color: #9ca3af;">
-                  <span>-2</span>
-                  <span>-1</span>
-                  <span>0</span>
-                  <span>+1</span>
-                  <span>+2</span>
-                </div>
-              </div>
-            </div>
-          </div>
-          ` : ''}
-
-          ${stressValues.length >= 10 ? `
-          <div style="margin-bottom:24px; padding:16px; background:#ede9fe; border-radius:8px; border:1px solid #c4b5fd;">
-            <div style="font-weight:800; margin-bottom:12px; font-size:16px;">🧠 Korrelations-Analyse (CBT-fokussiert)</div>
-            <div style="font-size:13px; color:#6b21a8; margin-bottom:8px;">
-              <em>Pearson-Korrelation (90d, r zwischen -1 und +1)</em>
-            </div>
-            <div>
-              <strong>Stress → Alkohol:</strong> ${correlations.stressInterpretation}
-              <span class="tooltip-icon" data-tooltip="Misst den Zusammenhang zwischen deinem Stress-Level und Alkoholkonsum. Positive Korrelation (r>0) = Stress triggert Konsum. Negative Korrelation (r<0) = paradox, du trinkst mehr wenn entspannt (Party-Muster). Je höher |r|, desto stärker der Zusammenhang.">?</span>
-              <span style="font-size:12px;">(r=${correlations.stressAlcohol.toFixed(2)})</span>
-            </div>
-            <div>
-              <strong>Sport → Alkohol:</strong> ${correlations.sportInterpretation}
-              <span class="tooltip-icon" data-tooltip="Negative Korrelation ist gut: Sport schützt vor Konsum. Positive Korrelation kann auf Belohnungsmuster hindeuten ('Hab trainiert, jetzt darf ich'). Kein Zusammenhang = Sport hat keinen Einfluss auf dein Trinkverhalten.">?</span>
-              <span style="font-size:12px;">(r=${correlations.sportAlcohol.toFixed(2)})</span>
-            </div>
-            <div>
-              <strong>Social → Alkohol:</strong> ${correlations.socialInterpretation}
-              <span class="tooltip-icon" data-tooltip="Positive Korrelation = soziale Events sind Risiko-Trigger. Negative Korrelation = soziale Kontakte schützen. Ambivalent: kann beides sein, je nach sozialem Umfeld.">?</span>
-              <span style="font-size:12px;">(r=${correlations.socialAlcohol.toFixed(2)})</span>
-            </div>
-            ${correlations.stressAlcohol > 0.3 ? `
-            <div style="margin-top:8px; padding:8px; background:#fef3c7; border-left:3px solid #f59e0b; border-radius:4px;">
-              <strong>🎯 CBT-Empfehlung:</strong> Dein Stress-Level korreliert deutlich mit Alkoholkonsum. Entwickle alternative Stress-Bewältigungs-Strategien (Sport, Atemübungen, soziale Unterstützung). Tracker-Nutzung zeigt bereits Selbstbeobachtung - das ist der erste Schritt!
-            </div>
-            ` : ''}
-          </div>
-          ` : ''}
 
           <div style="margin-bottom:24px; padding:16px; background:#f0fdf4; border-radius:8px; border:1px solid #bbf7d0;">
             <div style="font-weight:800; margin-bottom:12px; font-size:16px;">📈 Trends & Tolerance</div>
@@ -3822,7 +3632,6 @@
             neutralDaysWeight,
             godMode,
             nudgingEnabled,
-            nudgingDismissed,
             gender: userGender,
             weight: userWeight
           }));
@@ -3837,159 +3646,6 @@
     }
 
     /* ========================================
-       MARKOV QUICK CALCULATION (für Nudging)
-    ======================================== */
-    function calculateQuickMarkovForecast() {
-      // Sammle letzte 180 Tage
-      const last180Days = [];
-      for (let i = 0; i < 180; i++) {
-        const d = new Date();
-        d.setDate(d.getDate() - i);
-        const key = d.toISOString().split('T')[0];
-        const entry = dayData[key];
-        const status = getDayStatus(key);
-        let grams = 0;
-        if (entry && entry.totalAlcohol) {
-          grams = entry.totalAlcohol;
-        } else if (status) {
-          const fallback = {superday: 0, wellness: 0, sober: 0, moderate: 20, mixed: 40, alcohol: 50, hangover: 60};
-          grams = fallback[status] || 0;
-        }
-        last180Days.push({date: d, status, entry, grams});
-      }
-
-      // Berechne schnelle Korrelation für Social (wird für Markov benötigt)
-      const last90Data = last180Days.slice(0, 90);
-      let socialAlcoholCorr = 0;
-      const socialVals = [];
-      const gramsVals = [];
-      last90Data.forEach(day => {
-        if (day.entry && day.entry.social !== undefined) {
-          socialVals.push(day.entry.social ? 1 : 0);
-          gramsVals.push(day.grams);
-        }
-      });
-      if (socialVals.length > 5) {
-        const n = socialVals.length;
-        const sumX = socialVals.reduce((a, b) => a + b, 0);
-        const sumY = gramsVals.reduce((a, b) => a + b, 0);
-        const sumXY = socialVals.reduce((sum, xi, i) => sum + xi * gramsVals[i], 0);
-        const sumX2 = socialVals.reduce((sum, xi) => sum + xi * xi, 0);
-        const sumY2 = gramsVals.reduce((sum, yi) => sum + yi * yi, 0);
-        const num = n * sumXY - sumX * sumY;
-        const denom = Math.sqrt((n * sumX2 - sumX * sumX) * (n * sumY2 - sumY * sumY));
-        socialAlcoholCorr = denom === 0 ? 0 : num / denom;
-      }
-
-      // Markov-Chain Berechnung
-      const states = ['superday', 'wellness', 'sober', 'moderate', 'mixed', 'alcohol', 'hangover'];
-      const idx = {};
-      states.forEach((s, i) => idx[s] = i);
-
-      const M = Array(7).fill(0).map(() => Array(7).fill(0.1));
-
-      let prev = null;
-      for (let i = 179; i >= 1; i--) {
-        const day = last180Days[i];
-        const st = day.status;
-        if (!st) continue;
-
-        const daysAgo = i;
-        let weight = Math.exp(-daysAgo / 60);
-
-        // Stress-Modulation
-        if (day.entry && day.entry.stress !== undefined) {
-          const stressLevel = day.entry.stress;
-          const riskStates = ['moderate', 'mixed', 'alcohol', 'hangover'];
-          const positiveStates = ['superday', 'wellness', 'sober'];
-          const stressMultiplier = 1 + (stressLevel * 0.25);
-
-          if (st && riskStates.includes(st) && stressLevel > 0) {
-            weight *= stressMultiplier;
-          } else if (st && positiveStates.includes(st) && stressLevel > 0) {
-            weight *= (2 - stressMultiplier);
-          }
-        }
-
-        // Sport/Social Protection
-        if (day.entry) {
-          if (day.entry.sport) weight *= 0.7;
-          if (day.entry.social) {
-            if (socialAlcoholCorr < 0) weight *= 0.8;
-            else if (socialAlcoholCorr > 0.2) weight *= 1.2;
-          }
-        }
-
-        if (prev && idx[prev] !== undefined && idx[st] !== undefined) {
-          M[idx[prev]][idx[st]] += weight;
-        }
-        prev = st;
-      }
-
-      // Normalisieren
-      M.forEach(row => {
-        const sum = row.reduce((s, v) => s + v, 0);
-        if (sum > 0) {
-          for (let i = 0; i < row.length; i++) {
-            row[i] /= sum;
-          }
-        } else {
-          for (let i = 0; i < row.length; i++) {
-            row[i] = 1 / states.length;
-          }
-        }
-      });
-
-      // Monte-Carlo Simulation
-      const currentState = last180Days[0].status || 'sober';
-      const simulations = 1000;
-      const dayPredictions = Array(7).fill(0).map(() => ({}));
-
-      states.forEach(s => {
-        for (let d = 0; d < 7; d++) {
-          dayPredictions[d][s] = 0;
-        }
-      });
-
-      for (let sim = 0; sim < simulations; sim++) {
-        let state = currentState;
-        for (let day = 0; day < 7; day++) {
-          const probs = M[idx[state]];
-          const random = Math.random();
-          let cumulative = 0;
-          let nextState = state;
-
-          for (let i = 0; i < states.length; i++) {
-            cumulative += probs[i];
-            if (random <= cumulative) {
-              nextState = states[i];
-              break;
-            }
-          }
-
-          dayPredictions[day][nextState]++;
-          state = nextState;
-        }
-      }
-
-      // Erzeuge Forecast
-      const forecast = [];
-      for (let day = 0; day < 7; day++) {
-        const sorted = Object.entries(dayPredictions[day]).sort((a, b) => b[1] - a[1]);
-        const mostLikely = sorted[0][0];
-        const probability = (sorted[0][1] / simulations * 100).toFixed(0);
-
-        forecast.push({
-          day: day + 1,
-          state: mostLikely,
-          prob: probability
-        });
-      }
-
-      return forecast;
-    }
-
-    /* ========================================
        PREDICTIVE NUDGING
     ======================================== */
     function checkAndShowNudging() {
@@ -3998,26 +3654,8 @@
         return;
       }
 
-      // Berechne Markov-Prognose falls noch nicht vorhanden
-      if (markovForecast.length === 0) {
-        try {
-          markovForecast = calculateQuickMarkovForecast();
-        } catch (e) {
-          console.warn('Markov-Berechnung für Nudging fehlgeschlagen:', e);
-          document.getElementById('nudgingAlert').style.display = 'none';
-          return;
-        }
-      }
-
       // Prüfe ob Markov-Prognose für heute ≥40% Risiko zeigt
       if (markovForecast.length === 0) {
-        document.getElementById('nudgingAlert').style.display = 'none';
-        return;
-      }
-
-      // Dismissal Memory: Prüfe ob heute schon dismissed
-      const today = new Date().toISOString().split('T')[0]; // YYYY-MM-DD
-      if (nudgingDismissed[today]) {
         document.getElementById('nudgingAlert').style.display = 'none';
         return;
       }
@@ -4028,55 +3666,14 @@
       const probability = parseInt(todayForecast.prob);
 
       if (isRiskDay && probability >= 40) {
-        // Berechne Countdown bis typisches Risiko-Fenster
-        const countdown = calculateRiskWindowCountdown();
-
         // Zeige Alert
-        let message = `Dein Verhaltensmuster deutet auf <strong>${probability}% Wahrscheinlichkeit</strong> für einen <strong>${getStateLabel(todayForecast.state)}</strong> hin. `;
-
-        if (countdown) {
-          message += `<br><br>⏰ ${countdown}`;
-        } else {
-          message += `Jetzt ist der richtige Moment für eine bewusste Entscheidung!`;
-        }
-
+        const message = `Dein Verhaltensmuster deutet auf <strong>${probability}% Wahrscheinlichkeit</strong> für einen <strong>${getStateLabel(todayForecast.state)}</strong> hin. ` +
+                       `Jetzt ist der richtige Moment für eine bewusste Entscheidung!`;
         document.getElementById('nudgingMessage').innerHTML = message;
         document.getElementById('nudgingAlert').style.display = 'block';
       } else {
         document.getElementById('nudgingAlert').style.display = 'none';
       }
-    }
-
-    function calculateRiskWindowCountdown() {
-      // Analysiere historische Einträge um typische Trinkzeit zu finden
-      const now = new Date();
-      const currentHour = now.getHours();
-
-      // Standardannahme: Risiko-Fenster 18-22 Uhr (typisch für Abendkonsum)
-      const riskWindowStart = 18;
-      const riskWindowEnd = 22;
-
-      // Wenn vor dem Fenster
-      if (currentHour < riskWindowStart) {
-        const hoursUntil = riskWindowStart - currentHour;
-        if (hoursUntil === 1) {
-          return `In <strong>1 Stunde</strong> beginnt dein typisches Risiko-Fenster (${riskWindowStart}-${riskWindowEnd} Uhr). Jetzt ist der beste Moment für einen Plan B!`;
-        } else {
-          return `In <strong>${hoursUntil} Stunden</strong> beginnt dein typisches Risiko-Fenster (${riskWindowStart}-${riskWindowEnd} Uhr). Jetzt ist der beste Moment für einen Plan B!`;
-        }
-      }
-
-      // Wenn im Fenster
-      if (currentHour >= riskWindowStart && currentHour < riskWindowEnd) {
-        return `Du bist <strong>jetzt im Risiko-Fenster</strong> (${riskWindowStart}-${riskWindowEnd} Uhr). Welche Alternative hast du vorbereitet?`;
-      }
-
-      // Wenn nach dem Fenster
-      if (currentHour >= riskWindowEnd) {
-        return `Das kritische Fenster (${riskWindowStart}-${riskWindowEnd} Uhr) ist vorbei - aber bleib wachsam!`;
-      }
-
-      return null;
     }
 
     function getStateLabel(state) {
@@ -4090,32 +3687,6 @@
     }
 
     function dismissNudging() {
-      // Speichere dass heute dismissed wurde
-      const today = new Date().toISOString().split('T')[0]; // YYYY-MM-DD
-      nudgingDismissed[today] = true;
-
-      // Bereinige alte Einträge (älter als 7 Tage)
-      const sevenDaysAgo = new Date();
-      sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
-      const sevenDaysAgoStr = sevenDaysAgo.toISOString().split('T')[0];
-
-      Object.keys(nudgingDismissed).forEach(date => {
-        if (date < sevenDaysAgoStr) {
-          delete nudgingDismissed[date];
-        }
-      });
-
-      // Speichere in localStorage
-      if (storageWorking) {
-        try {
-          const settings = JSON.parse(localStorage.getItem('alcoholTrackerSettings') || '{}');
-          settings.nudgingDismissed = nudgingDismissed;
-          localStorage.setItem('alcoholTrackerSettings', JSON.stringify(settings));
-        } catch (e) {
-          console.warn('Nudging dismissal konnte nicht gespeichert werden:', e);
-        }
-      }
-
       document.getElementById('nudgingAlert').style.display = 'none';
     }
 
@@ -4213,11 +3784,11 @@
 
       // Stress-Slider
       const stressLabels = {
-        '-2': '😌 Max-Gechillt (-2)',
-        '-1': '😊 ziemlich Relaxed (-1)',
-        '0': '😐 Der normale Wahnsinn (0)',
-        '1': '😤 leicht genervt (+1)',
-        '2': '😡 Alarmstufe (+2)'
+        '-2': '😌 Supergechillt (-2)',
+        '-1': '😊 Relaxed (-1)',
+        '0': '😐 Normal (0)',
+        '1': '😤 Genervt (+1)',
+        '2': '😡 Alarm! (+2)'
       };
 
       document.getElementById('stressSlider').addEventListener('input', (e) => {
