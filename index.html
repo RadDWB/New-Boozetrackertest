@@ -2921,8 +2921,11 @@
         const status = getDayStatus(key);
         
         let grams = 0;
+        let hasActualConsumption = false; // Track ob echter Alkoholkonsum
+
         if (entry && entry.totalAlcohol) {
           grams = entry.totalAlcohol;
+          hasActualConsumption = true;
 
           // Zähle Katertage mit Alkohol: Prüfe CHECKBOX hangover, nicht Status!
           if (entry.hangover && grams > 0) {
@@ -2934,13 +2937,15 @@
             compensationCount++;
           }
         } else if (status) {
-          // Fallback-Werte
+          // Fallback-Werte für Berechnung
           const fallback = {superday: 0, wellness: 0, sober: 0, moderate: 20, mixed: 40, alcohol: 50, hangover: 60};
           grams = fallback[status] || 0;
+          // Nur als Konsum zählen wenn Status ein Alkohol-Tag ist
+          hasActualConsumption = (status === 'moderate' || status === 'mixed' || status === 'alcohol' || status === 'hangover');
         }
-        
+
         last180Days.push({key, status, grams, entry, date: new Date(dt)});
-        if (grams > 0) daysCount++; // Nur Tage mit tatsächlichem Alkoholkonsum zählen
+        if (hasActualConsumption) daysCount++; // Nur echte Konsum-Tage zählen
         gramsData.push(grams);
       }
       
