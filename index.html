@@ -2293,16 +2293,15 @@
         if (st) cell.classList.add(st);
         if (dt.toDateString() === today.toDateString()) cell.classList.add('today');
 
-        // Sport-Marker bei moderaten Tagen
-        if (st === 'moderate' && entry && entry.sport) {
-          const sportIcon = document.createElement('span');
-          sportIcon.textContent = '👟';
-          sportIcon.style.cssText = 'position:absolute; bottom:2px; right:2px; font-size:10px;';
-          cell.appendChild(sportIcon);
-        }
-
         // Checkbox-Symbole
         if (entry) {
+          // Sport-Marker bei ALLEN Tagen mit Sport
+          if (entry.sport) {
+            const sportIcon = document.createElement('span');
+            sportIcon.textContent = '👟';
+            sportIcon.style.cssText = 'position:absolute; bottom:2px; right:2px; font-size:10px;';
+            cell.appendChild(sportIcon);
+          }
           // Totalabsturz
           if (entry.crash) {
             const crashIcon = document.createElement('span');
