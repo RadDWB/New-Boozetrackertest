@@ -1402,7 +1402,7 @@
     /* ========================================
        GLOBALE VARIABLEN & KONFIGURATION
     ======================================== */
-    const APP_VERSION = 'v4.1 (03.11.2025 10:22)';
+    const APP_VERSION = 'v4.0 (02.11.2025 19:00)';
     
     let dayData = {};
     let currentInputDate = new Date();
@@ -1729,29 +1729,18 @@
             // Validierung & Merge
             const isDateKey = k => /^\d{4}-\d{1,2}-\d{1,2}$/.test(k);
             const validEntries = {};
-            const invalidDates = [];
-
+            
            // BEGIN: Normalisierte Übernahme (Padding + Gültigkeitscheck)
            Object.keys(importedDayData).forEach(k => {
-             if (!isDateKey(k)) {
-               invalidDates.push(k);
-               return;
-             }
+             if (!isDateKey(k)) return;
 
              const parts = k.split('-').map(n => parseInt(n, 10));
              const y = parts[0], m = parts[1], d = parts[2];
-             if (!(y && m && d)) {
-               invalidDates.push(k);
-               return;
-             }
+             if (!(y && m && d)) return;
 
-             // echte Datumsgültigkeit prüfen (droppe unmögliche Tage wie 31. Sept.)
+             // echte Datumsgültigkeit prüfen (droppe unmögliche Tage)
              const dt = new Date(y, m - 1, d);
-             if (dt.getFullYear() !== y || (dt.getMonth() + 1) !== m || dt.getDate() !== d) {
-               invalidDates.push(k);
-               console.warn(`⚠️ Ungültiges Datum übersprungen: ${k}`);
-               return;
-             }
+             if (dt.getFullYear() !== y || (dt.getMonth() + 1) !== m || dt.getDate() !== d) return;
 
              // Zero-Padding auf YYYY-MM-DD
              const normKey = `${y}-${pad(m)}-${pad(d)}`;
@@ -1765,47 +1754,14 @@
            });
            // END
 
-            // Benutzer fragen: MERGE oder REPLACE?
-            const existingCount = Object.keys(dayData).length;
-            const newCount = Object.keys(validEntries).length;
 
-            let shouldMerge = false;
-            if (existingCount > 0) {
-              const userChoice = confirm(
-                `⚠️ Es existieren bereits ${existingCount} Einträge.\n\n` +
-                `Der Import enthält ${newCount} Einträge.\n\n` +
-                `➡️ OK = ERSETZEN (alte Daten werden gelöscht)\n` +
-                `➡️ ABBRECHEN = ZUSAMMENFÜHREN (Einträge werden kombiniert)`
-              );
-              shouldMerge = !userChoice; // true = abbrechen = merge
-            }
-
-            // MERGE oder REPLACE basierend auf Benutzerwahl
-            if (shouldMerge) {
-              dayData = {...dayData, ...validEntries};
-            } else {
-              dayData = validEntries;
-            }
-
+            dayData = {...dayData, ...validEntries};
+            
             if (importedSettings.neutralDays) neutralDaysSetting = importedSettings.neutralDays;
             if (typeof importedSettings.godMode === 'boolean') godMode = importedSettings.godMode;
 
             saveData();
-
-            // Warnung bei ungültigen Daten
-            if (invalidDates.length > 0) {
-              alert(
-                `✅ Import abgeschlossen mit Warnungen:\n\n` +
-                `${Object.keys(validEntries).length} gültige Einträge importiert\n` +
-                `${invalidDates.length} ungültige Einträge übersprungen:\n\n` +
-                `${invalidDates.slice(0, 5).join(', ')}` +
-                `${invalidDates.length > 5 ? ` ... und ${invalidDates.length - 5} weitere` : ''}\n\n` +
-                `(Details in der Browser-Konsole)`
-              );
-            } else {
-              alert('✅ Daten importiert.');
-            }
-
+            alert('✅ Daten importiert.');
             location.reload();
           } catch (err) {
             console.error(err);
@@ -2293,15 +2249,16 @@
         if (st) cell.classList.add(st);
         if (dt.toDateString() === today.toDateString()) cell.classList.add('today');
 
+        // Sport-Marker bei moderaten Tagen
+        if (st === 'moderate' && entry && entry.sport) {
+          const sportIcon = document.createElement('span');
+          sportIcon.textContent = '👟';
+          sportIcon.style.cssText = 'position:absolute; bottom:2px; right:2px; font-size:10px;';
+          cell.appendChild(sportIcon);
+        }
+
         // Checkbox-Symbole
         if (entry) {
-          // Sport-Marker bei ALLEN Tagen mit Sport
-          if (entry.sport) {
-            const sportIcon = document.createElement('span');
-            sportIcon.textContent = '👟';
-            sportIcon.style.cssText = 'position:absolute; bottom:2px; right:2px; font-size:10px;';
-            cell.appendChild(sportIcon);
-          }
           // Totalabsturz
           if (entry.crash) {
             const crashIcon = document.createElement('span');
