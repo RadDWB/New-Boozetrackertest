@@ -791,117 +791,6 @@
 }
 </style>
 
-<!-- Neue Styles für Phase 1 Features -->
-<style>
-/* Stress-Regler */
-.stress-container {
-  margin-top: 16px;
-  padding: 12px;
-  background: #f8fafc;
-  border: 1px solid #e5e7eb;
-  border-radius: 8px;
-}
-.stress-options {
-  display: flex;
-  justify-content: space-between;
-  gap: 8px;
-}
-.stress-option {
-  flex: 1;
-  padding: 8px;
-  border: 1px solid #d1d5db;
-  border-radius: 8px;
-  text-align: center;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-.stress-option input[type="radio"] {
-  display: none;
-}
-.stress-option.selected {
-  background: #f0f4ff;
-  border-color: var(--primary);
-  box-shadow: 0 2px 4px rgba(79,70,229,0.1);
-}
-.stress-label {
-  font-size: 12px;
-  font-weight: 600;
-}
-.stress-desc {
-  font-size: 10px;
-  color: var(--muted);
-}
-
-/* Predictive Nudging Alert */
-.nudge-alert {
-  display: none;
-  margin-top: 16px;
-  padding: 12px;
-  background: #fef3c7;
-  border-left: 4px solid #fbbf24;
-  border-radius: 6px;
-  font-size: 13px;
-  color: #92400e;
-  line-height: 1.5;
-}
-.nudge-alert.active {
-  display: block;
-}
-.nudge-suggestions {
-  margin-top: 8px;
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
-}
-.nudge-btn {
-  padding: 6px 12px;
-  background: #fffbeb;
-  border: 1px solid #fde68a;
-  border-radius: 999px;
-  font-size: 12px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-.nudge-btn:hover {
-  background: #fef3c7;
-}
-
-/* Leber-Score Sektion */
-.leber-score-section {
-  margin-top: 24px;
-  padding: 16px;
-  background: #f0fdf4;
-  border: 1px solid #bbf7d0;
-  border-radius: 12px;
-}
-.leber-title {
-  font-weight: 700;
-  font-size: 16px;
-  margin-bottom: 12px;
-  text-align: center;
-}
-.leber-value {
-  font-size: 28px;
-  font-weight: 900;
-  text-align: center;
-  margin-bottom: 8px;
-}
-.leber-desc {
-  font-size: 12px;
-  color: var(--muted);
-  text-align: center;
-  line-height: 1.5;
-}
-.leber-warning {
-  margin-top: 8px;
-  padding: 8px;
-  background: #d1fae5;
-  border-radius: 6px;
-  font-size: 12px;
-  text-align: center;
-}
-</style>
-
 </head>
 <body>
   <div class="container">
@@ -988,53 +877,6 @@
           placeholder="Notizen zum Tag (z.B. Anlass, Gefühle, Situation)..."
           style="width:100%; min-height:80px; resize:vertical; padding:10px; border:1px solid #d1d5db; border-radius:8px; font-size:13px; font-family:inherit;"
         ></textarea>
-      </div>
-
-      <!-- Neu: Stress-Regler -->
-      <div class="stress-container">
-        <label style="display: block; font-size: 14px; font-weight: 600; margin-bottom: 8px; color: var(--text);">
-          😌 Stresslevel heute:
-          <span class="tooltip-icon" data-tooltip="Dein Stresslevel hilft bei der Analyse von Triggermustern. Wähle ehrlich aus.">?</span>
-        </label>
-        <div class="stress-options">
-          <label class="stress-option" data-value="-2">
-            <input type="radio" name="stressLevel" value="-2" />
-            <div class="stress-label">-2</div>
-            <div class="stress-desc">Supergechilled</div>
-          </label>
-          <label class="stress-option" data-value="-1">
-            <input type="radio" name="stressLevel" value="-1" />
-            <div class="stress-label">-1</div>
-            <div class="stress-desc">Relaxed</div>
-          </label>
-          <label class="stress-option" data-value="0">
-            <input type="radio" name="stressLevel" value="0" />
-            <div class="stress-label">0</div>
-            <div class="stress-desc">Normaler Wahnsinn, okay</div>
-          </label>
-          <label class="stress-option" data-value="1">
-            <input type="radio" name="stressLevel" value="1" />
-            <div class="stress-label">1</div>
-            <div class="stress-desc">Leicht genervt</div>
-          </label>
-          <label class="stress-option" data-value="2">
-            <input type="radio" name="stressLevel" value="2" />
-            <div class="stress-label">2</div>
-            <div class="stress-desc">Ich dreh durch</div>
-          </label>
-        </div>
-      </div>
-
-      <!-- Neu: Predictive Nudging Alert -->
-      <div id="nudgeAlert" class="nudge-alert">
-        <strong>🚨 Risiko-Alert für heute:</strong> <span id="nudgeRiskPct"></span>% Chance für einen Hochrisiko-Tag (basierend auf deinen Mustern).
-        <br>Was ist dein Plan B?
-        <div class="nudge-suggestions">
-          <button class="nudge-btn" onclick="nudgeAction('sport')">Sport machen</button>
-          <button class="nudge-btn" onclick="nudgeAction('friends')">Freunde anrufen</button>
-          <button class="nudge-btn" onclick="nudgeAction('relax')">Entspannen (z.B. Yoga)</button>
-          <button class="nudge-btn" onclick="nudgeAction('dismiss')">Ignorieren</button>
-        </div>
       </div>
 
       <!-- God-Modus Bereich -->
@@ -1162,7 +1004,7 @@
 
     <!-- === MONATSÜBERSICHT VIEW === -->
     <div id="monthView" class="view">
-      <h1>📊 Ralles wunderbarer Booze-Tracker previewgrok</h1>
+      <h1>📊 Ralles wunderbarer Booze-Tracker</h1>
       <div class="app-version" id="appVersion2"></div>
 
       <div class="month-head">
@@ -1375,7 +1217,1539 @@
           <div class="metric-item">
             <div class="metric-label">
               Binge-Nähe (Hochrisiko)
-              <span class="tooltip-icon" data-tooltip="Anzahl problematischer Tage ...(truncated 62400 characters)...t bingeQuote = bingeProximity / divisor;
+              <span class="tooltip-icon" data-tooltip="Anzahl problematischer Tage (Alkohol/Mixed/Hangover) der letzten 100 Tage. Schwellen: 13-19=Kipppunkt, 20-39=Hoch, ≥40=Sehr hoch">?</span>
+            </div>
+            <div class="metric-value" id="metricBinge">0</div>
+          </div>
+          <div class="metric-item">
+            <div class="metric-label">
+              Längster Cluster
+              <span class="tooltip-icon" data-tooltip="Längste Kette aufeinanderfolgender Tage mit Alkoholkonsum (≥20g). Cluster ≥3 Tage erhöhen das Gesundheitsrisiko signifikant.">?</span>
+            </div>
+            <div class="metric-value" id="metricCluster">0</div>
+          </div>
+        </div>
+
+        <div class="assessment-description" id="assessmentDescription"></div>
+        <div id="assessmentWarning" class="assessment-warning" style="display:none;"></div>
+
+        <!-- Detailanalyse -->
+        <div class="analysis-advanced">
+          <button id="analysisToggle" class="analysis-toggle">🔍 Detaillierte Analyse anzeigen</button>
+          <div id="analysisBox" class="analysis-box">
+            <div style="font-weight:800; margin-bottom:8px;">Feinere Analyse</div>
+            <div id="godMetricsList" style="font-size:13px; line-height:1.7;"></div>
+          </div>
+        </div>
+      </div>
+
+      <button class="btn secondary" style="margin-top: 24px; width: 100%;" onclick="toggleChartPopup()">Schließen</button>
+    </div>
+
+    <!-- === MARKOV POPUP === -->
+    <div class="chart-popup-overlay" id="markovOverlay" onclick="toggleMarkovPopup()"></div>
+    <div id="markovPopup" class="chart-popup">
+      <div class="chart-section">
+        <div class="chart-title">🔮 Markov-Prognose (7 Tage)</div>
+        <div id="markovContent" style="margin-top:16px;"></div>
+      </div>
+      <button class="btn secondary" style="margin-top: 24px; width: 100%;" onclick="toggleMarkovPopup()">Schließen</button>
+    </div>
+
+    <!-- === SETTINGS POPUP === -->
+    <div class="settings-popup-overlay" id="settingsOverlay" onclick="toggleSettingsPopup()"></div>
+    <div id="settingsPopup" class="settings-popup">
+      <div class="settings-title">⚙️ Einstellungen</div>
+      <div class="settings-subtitle">Passe die Bewertung an deine Bedürfnisse an</div>
+
+      <!-- God-Modus Section -->
+      <div class="settings-section" id="settingsGodMode">
+        <div class="settings-section-header" onclick="toggleSettingsSection('settingsGodMode')">
+          <div class="settings-section-title">🧠 God-Modus</div>
+          <div class="settings-section-toggle">▼</div>
+        </div>
+        <div class="settings-section-content">
+          <div class="settings-description">
+            Aktiviere detaillierte Eingaben (Getränke, Mengen, Sport, Checkboxen).
+          </div>
+          <label style="display:flex; align-items:center; gap:12px;">
+            <input id="toggleGodMode" type="checkbox">
+            <span><strong>God-Modus aktivieren</strong></span>
+          </label>
+        </div>
+      </div>
+
+      <!-- Geschlecht Section -->
+      <div class="settings-section" id="settingsGender">
+        <div class="settings-section-header" onclick="toggleSettingsSection('settingsGender')">
+          <div class="settings-section-title">⚧ Geschlecht (für DGE/WHO-Grenzwerte)</div>
+          <div class="settings-section-toggle">▼</div>
+        </div>
+        <div class="settings-section-content">
+          <div class="settings-description">
+            DGE-Empfehlungen: Männer ≤24g/Tag, Frauen ≤12g/Tag. WHO-Binge: Männer ≥60g, Frauen ≥40g.
+          </div>
+          <div class="settings-options">
+            <label class="settings-option" id="option-male">
+              <input type="radio" name="gender" value="male" checked>
+              <div class="settings-option-content">
+                <div class="settings-option-title">♂ Männlich</div>
+                <div class="settings-option-desc">DGE-Limit: ≤24g/Tag · WHO-Binge: ≥60g</div>
+              </div>
+            </label>
+            <label class="settings-option" id="option-female">
+              <input type="radio" name="gender" value="female">
+              <div class="settings-option-content">
+                <div class="settings-option-title">♀ Weiblich</div>
+                <div class="settings-option-desc">DGE-Limit: ≤12g/Tag · WHO-Binge: ≥40g</div>
+              </div>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Gewicht Section (NEU) -->
+      <div class="settings-section" id="settingsWeight">
+        <div class="settings-section-header" onclick="toggleSettingsSection('settingsWeight')">
+          <div class="settings-section-title">⚖️ Körpergewicht (optional)</div>
+          <div class="settings-section-toggle">▼</div>
+        </div>
+        <div class="settings-section-content">
+          <div class="settings-description">
+            Für genauere Promille-Schätzungen (Widmark-Formel). Bleibt leer = Standardannahme 75kg.
+          </div>
+          <div style="display:flex; gap:12px; align-items:center; margin-top:12px;">
+            <input type="number" id="userWeightInput" 
+              placeholder="z.B. 70" 
+              min="40" max="200" step="1"
+              style="padding:10px 14px; border:1px solid #d1d5db; border-radius:8px; font-size:14px; width:120px;">
+            <span style="color:var(--muted); font-weight:600;">kg</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Neutrale Tage Section -->
+      <div class="settings-section" id="settingsNeutralDays">
+        <div class="settings-section-header" onclick="toggleSettingsSection('settingsNeutralDays')">
+          <div class="settings-section-title">🎯 Neutrale Tage</div>
+          <div class="settings-section-toggle">▼</div>
+        </div>
+        <div class="settings-section-content">
+          <div class="settings-description">
+            Wie sollen nicht eingetragene Tage in die Statistik einfließen?
+          </div>
+          <div class="settings-options">
+            <label class="settings-option" id="option-ignore">
+              <input type="radio" name="neutralDays" value="ignore" checked>
+              <div class="settings-option-content">
+                <div class="settings-option-title">🎯 Ignorieren (Empfohlen)</div>
+                <div class="settings-option-desc">Nur eingetragene Tage zählen.</div>
+              </div>
+            </label>
+            <label class="settings-option" id="option-weighted">
+              <input type="radio" name="neutralDays" value="weighted">
+              <div class="settings-option-content">
+                <div class="settings-option-title">⚖️ Mit Prozent werten</div>
+                <div class="settings-option-desc">
+                  Neutral mit <span id="neutralWeightDisplay">30</span>% Gesundheit werten
+                  <div style="margin-top:8px;">
+                    <input type="range" id="neutralWeightSlider" min="0" max="50" value="30" 
+                           style="width:100%; accent-color:var(--primary);">
+                    <div style="display:flex; justify-content:space-between; font-size:10px; color:var(--muted); margin-top:2px;">
+                      <span>0% (sehr negativ)</span>
+                      <span>25%</span>
+                      <span>50% (neutral)</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </label>
+          </div>
+          <div class="settings-info-box" style="margin-top:12px;">
+            💡 <strong>Empfehlung:</strong> "Ignorieren" ist am fairsten, wenn du (noch) nicht täglich trackst.
+            Bei "Mit Prozent" empfehle ich 30% (zwischen vorsichtig und neutral).
+          </div>
+        </div>
+      </div>
+
+      <!-- Backup Section -->
+      <div class="settings-section collapsed" id="settingsBackup">
+        <div class="settings-section-header" onclick="toggleSettingsSection('settingsBackup')">
+          <div class="settings-section-title">🗄️ Daten-Backup</div>
+          <div class="settings-section-toggle">▼</div>
+        </div>
+        <div class="settings-section-content">
+          <div class="settings-description">
+            Export/Import bleibt 100% lokal im Browser.
+          </div>
+          <div class="submit-row">
+            <button class="btn secondary" onclick="exportData()">📤 Exportieren</button>
+            <button class="btn secondary" onclick="importData()">📥 Importieren</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Speicher löschen Section -->
+      <div class="settings-section collapsed" id="settingsReset">
+        <div class="settings-section-header" onclick="toggleSettingsSection('settingsReset')">
+          <div class="settings-section-title">🧹 Speicher löschen</div>
+          <div class="settings-section-toggle">▼</div>
+        </div>
+        <div class="settings-section-content">
+          <div class="settings-description">
+            Setzt alle Tage & Einstellungen zurück. Erst exportieren!
+          </div>
+          <button class="btn danger" onclick="resetStorage()">🧹 Lokalen Speicher löschen</button>
+        </div>
+      </div>
+
+      <button class="btn" style="width: 100%; margin-top:16px;" onclick="saveSettings()">Einstellungen speichern</button>
+    </div>
+
+    <footer>© 2025 by R. Duwenbeck</footer>
+  </div>
+
+  <script>
+    /* ========================================
+       GLOBALE VARIABLEN & KONFIGURATION
+    ======================================== */
+    const APP_VERSION = 'v4.3 (03.11.2025 - 11:06)';
+    
+    let dayData = {};
+    let currentInputDate = new Date();
+    let currentViewDate = new Date();
+    let storageWorking = false;
+    let neutralDaysSetting = 'ignore';
+    let neutralDaysWeight = 30; // Prozent (0-50)
+    let godMode = false;
+    let categoryManual = false;
+    let markovForecast = []; // Für Markov-Popup
+    let userGender = 'male'; // male | female
+    let userWeight = null; // kg, null = default 75kg
+    
+    const DENSITY = 0.789; // g/ml für Ethanol
+    const DRINK_UNIT = 10; // 1 Drink = 10g Alkohol (DE Standard)
+    const DRINK_UNIT_UK = 8; // UK Unit
+    const DRINK_UNIT_USA = 14; // USA Standard Drink
+    
+    // Getränke-Datenbank mit typischen Mengen
+    const DRINKS_DB = {
+      beer: {
+        name: 'Bier',
+        abv: 5,
+        portions: [
+          {label: 'Flasche klein (0,33l)', ml: 330},
+          {label: 'Flasche groß (0,5l)', ml: 500},
+          {label: 'Maß (1l)', ml: 1000},
+          {label: 'Eigene Menge', ml: 0}
+        ]
+      },
+      radler: {
+        name: 'Radler / Biermischgetränk',
+        abv: 2.5,
+        portions: [
+          {label: 'Flasche (0,33l)', ml: 330},
+          {label: 'Flasche (0,5l)', ml: 500},
+          {label: 'Eigene Menge', ml: 0}
+        ]
+      },
+      wine: {
+        name: 'Wein',
+        abv: 12,
+        portions: [
+          {label: 'Glas klein (100ml)', ml: 100},
+          {label: 'Glas standard (150ml)', ml: 150},
+          {label: 'Glas groß (200ml)', ml: 200},
+          {label: 'Flasche (750ml)', ml: 750},
+          {label: 'Eigene Menge', ml: 0}
+        ]
+      },
+      champagne: {
+        name: 'Sekt / Champagner',
+        abv: 11,
+        portions: [
+          {label: 'Glas (100ml)', ml: 100},
+          {label: 'Flasche (750ml)', ml: 750},
+          {label: 'Eigene Menge', ml: 0}
+        ]
+      },
+      liquor: {
+        name: 'Likör',
+        abv: 15,
+        portions: [
+          {label: 'Shot (20ml)', ml: 20},
+          {label: 'Glas (50ml)', ml: 50},
+          {label: 'Eigene Menge', ml: 0}
+        ]
+      },
+      spirit: {
+        name: 'Spirituosen (Vodka, Whisky, etc.)',
+        abv: 40,
+        portions: [
+          {label: 'Shot (20ml)', ml: 20},
+          {label: 'Doppel-Shot (40ml)', ml: 40},
+          {label: 'Glas (50ml)', ml: 50},
+          {label: 'Eigene Menge', ml: 0}
+        ]
+      },
+      aperol: {
+        name: 'Aperol Spritz',
+        abv: 8,
+        portions: [
+          {label: 'Glas (200ml)', ml: 200},
+          {label: 'Glas groß (300ml)', ml: 300},
+          {label: 'Eigene Menge', ml: 0}
+        ]
+      },
+      lillet: {
+        name: 'Lillet Wildberry / Rosé Spritz',
+        abv: 8,
+        portions: [
+          {label: 'Glas (200ml)', ml: 200},
+          {label: 'Glas groß (300ml)', ml: 300},
+          {label: 'Karaffe (500ml)', ml: 500},
+          {label: 'Eigene Menge', ml: 0}
+        ]
+      },
+      hugo: {
+        name: 'Hugo',
+        abv: 7,
+        portions: [
+          {label: 'Glas (200ml)', ml: 200},
+          {label: 'Glas groß (300ml)', ml: 300},
+          {label: 'Eigene Menge', ml: 0}
+        ]
+      },
+      mojito: {
+        name: 'Mojito / Rum-Cocktail',
+        abv: 10,
+        portions: [
+          {label: 'Standard (200ml)', ml: 200},
+          {label: 'Long Drink (300ml)', ml: 300},
+          {label: 'Eigene Menge', ml: 0}
+        ]
+      },
+      longisland: {
+        name: 'Long Island Iced Tea',
+        abv: 22,
+        portions: [
+          {label: 'Standard (250ml)', ml: 250},
+          {label: 'Eigene Menge', ml: 0}
+        ]
+      },
+      cocktail: {
+        name: 'Cocktail (allgemein)',
+        abv: 15,
+        portions: [
+          {label: 'Standard (200ml)', ml: 200},
+          {label: 'Long Drink (300ml)', ml: 300},
+          {label: 'Eigene Menge', ml: 0}
+        ]
+      }
+    };
+
+    const monthNames = ['Januar','Februar','März','April','Mai','Juni','Juli','August','September','Oktober','November','Dezember'];
+    
+    /* ========================================
+       HELPER FUNCTIONS
+    ======================================== */
+    const pad = (n) => n < 10 ? '0' + n : '' + n;
+    const formatDateKey = (date) => `${date.getFullYear()}-${pad(date.getMonth()+1)}-${pad(date.getDate())}`;
+    const formatDisplayDate = (date) => `${date.getDate()}. ${monthNames[date.getMonth()]} ${date.getFullYear()}`;
+    
+    const getDayStatus = (key) => {
+      const entry = dayData[key];
+      if (!entry) return null;
+      return typeof entry === 'string' ? entry : entry.status;
+    };
+    
+    const getDayComment = (key) => {
+      const entry = dayData[key];
+      return (entry && typeof entry === 'object' && entry.comment) ? entry.comment : '';
+    };
+
+    /* ========================================
+       STORAGE & MIGRATION
+    ======================================== */
+    function testStorage() {
+      try {
+        localStorage.setItem('__test__', '1');
+        localStorage.removeItem('__test__');
+        storageWorking = true;
+      } catch {
+        storageWorking = false;
+      }
+    }
+
+    function updateStorageStatus(message) {
+      const status = document.getElementById('storageStatus');
+      const count = document.getElementById('savedDaysCount');
+      if (status) status.textContent = message ?? '';
+      if (count) count.textContent = Object.keys(dayData).length;
+    }
+
+    function migrateData() {
+  // Migration 1: Schema-Version prüfen
+      const schemaVersion = localStorage.getItem('alcoholTrackerSchemaVersion') || '0';
+  
+  // Migration 2: String-Einträge zu Objekten
+      for (const key of Object.keys(dayData)) {
+      if (typeof dayData[key] === 'string') {
+        dayData[key] = {
+        status: dayData[key],
+        comment: ''
+        };
+      }
+    }
+
+  // Migration 3: Duplikate entfernen + Datumsgültigkeit prüfen
+  // Läuft bei Version < 2, um Altlasten aus v2.3 zu bereinigen
+      if (parseInt(schemaVersion) < 2) {
+      const normalized = {};
+        let removed = 0;
+    
+        Object.keys(dayData).forEach(key => {
+      const parts = key.split('-').map(n => parseInt(n, 10));
+      if (parts.length !== 3) {
+        normalized[key] = dayData[key];
+        return;
+      }
+      
+      const [y, m, d] = parts;
+      
+      // Datumsgültigkeit prüfen (filtert ungültige Daten wie 31. September)
+      const dt = new Date(y, m - 1, d);
+      if (dt.getFullYear() !== y || (dt.getMonth() + 1) !== m || dt.getDate() !== d) {
+        console.log('❌ Ungültiges Datum entfernt:', key);
+        removed++;
+        return;
+      }
+      
+      // Zero-Padding normalisieren
+      const normKey = `${y}-${pad(m)}-${pad(d)}`;
+      
+      // Nur erste Version behalten, Duplikate ignorieren
+      if (!normalized[normKey]) {
+         normalized[normKey] = dayData[key];
+         } else {
+            console.log('🗑️ Duplikat entfernt:', key);
+            removed++;
+      }
+      });
+    
+        dayData = normalized;
+    
+        if (removed > 0) {
+          console.log(`🧹 ${removed} Einträge bereinigt`);
+        }
+    
+        localStorage.setItem('alcoholTrackerSchemaVersion', '2');
+      }
+
+  // Migration 4: Leere Einträge entfernen
+      for (const key of Object.keys(dayData)) {
+        const entry = dayData[key];
+      if (!entry || (typeof entry === 'object' && !entry.status && !entry.totalAlcohol && !entry.comment && !entry.drinks)) {
+        delete dayData[key];
+        }
+      }
+    }
+
+    function saveData() {
+      if (!storageWorking) {
+        updateStorageStatus('❌ Speichern nicht möglich');
+        return false;
+      }
+      try {
+        localStorage.setItem('alcoholTrackerData', JSON.stringify(dayData));
+        updateStorageStatus('✅ Daten gespeichert');
+        return true;
+      } catch {
+        updateStorageStatus('❌ Speicher-Fehler');
+        return false;
+      }
+    }
+
+    function loadData() {
+      if (!storageWorking) {
+        updateStorageStatus('⚠️ Kein persistenter Speicher');
+        return;
+      }
+      try {
+        const savedData = localStorage.getItem('alcoholTrackerData');
+        dayData = savedData && savedData !== 'null' ? JSON.parse(savedData) : {};
+        
+        // Settings laden
+        const settings = JSON.parse(localStorage.getItem('alcoholTrackerSettings') || '{}');
+        neutralDaysSetting = settings.neutralDays || 'ignore';
+        neutralDaysWeight = settings.neutralDaysWeight || 30;
+        godMode = !!settings.godMode;
+        userGender = settings.gender || 'male';
+        userWeight = settings.weight || null;
+
+        updateCategoryDescriptions(); // Beschreibungen aktualisieren
+
+        migrateData();
+        updateStorageStatus(`✅ ${Object.keys(dayData).length} Tage geladen`);
+      } catch {
+        dayData = {};
+        updateStorageStatus('❌ Laden fehlgeschlagen');
+      }
+    }
+
+    function exportData() {
+      try {
+        const settings = {
+          neutralDays: neutralDaysSetting,
+          godMode
+        };
+        const payload = {
+          type: 'booze-tracker-backup',
+          version: 2,
+          exportedAt: new Date().toISOString(),
+          dayData,
+          settings
+        };
+        const blob = new Blob([JSON.stringify(payload, null, 2)], {type: 'application/json'});
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `booze-tracker-backup-${new Date().toISOString().split('T')[0]}.json`;
+        a.click();
+        URL.revokeObjectURL(url);
+        alert('✅ Export abgeschlossen.');
+      } catch (e) {
+        console.error(e);
+        alert('❌ Export fehlgeschlagen.');
+      }
+    }
+
+    function importData() {
+      const input = document.createElement('input');
+      input.type = 'file';
+      input.accept = '.json,application/json';
+      input.onchange = e => {
+        const file = e.target.files && e.target.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = ev => {
+          try {
+            const parsed = JSON.parse(ev.target.result);
+            let importedDayData   = parsed.dayData || parsed.data || parsed.alcoholTrackerData || parsed;
+            let importedSettings  = parsed.settings || parsed.alcoholTrackerSettings || {};
+
+            // Validierung & Merge
+            const isDateKey = k => /^\d{4}-\d{1,2}-\d{1,2}$/.test(k);
+            const validEntries = {};
+            const invalidDates = [];
+
+           // BEGIN: Normalisierte Übernahme (Padding + Gültigkeitscheck)
+           Object.keys(importedDayData).forEach(k => {
+             if (!isDateKey(k)) {
+               invalidDates.push(k);
+               return;
+             }
+
+             const parts = k.split('-').map(n => parseInt(n, 10));
+             const y = parts[0], m = parts[1], d = parts[2];
+             if (!(y && m && d)) {
+               invalidDates.push(k);
+               return;
+             }
+
+             // echte Datumsgültigkeit prüfen (droppe unmögliche Tage wie 31. Sept.)
+             const dt = new Date(y, m - 1, d);
+             if (dt.getFullYear() !== y || (dt.getMonth() + 1) !== m || dt.getDate() !== d) {
+               invalidDates.push(k);
+               console.warn(`⚠️ Ungültiges Datum übersprungen: ${k}`);
+               return;
+             }
+
+             // Zero-Padding auf YYYY-MM-DD
+             const normKey = `${y}-${pad(m)}-${pad(d)}`;
+
+             const v = importedDayData[k];
+             if (typeof v === 'string') {
+               validEntries[normKey] = { status: v, comment: '' };
+             } else if (v && typeof v === 'object' && v.status) {
+               validEntries[normKey] = { ...v };
+             }
+           });
+           // END
+
+            // Benutzer fragen: MERGE oder REPLACE?
+            const existingCount = Object.keys(dayData).length;
+            const newCount = Object.keys(validEntries).length;
+
+            let shouldMerge = false;
+            if (existingCount > 0) {
+              const userChoice = confirm(
+                `⚠️ Es existieren bereits ${existingCount} Einträge.\n\n` +
+                `Der Import enthält ${newCount} Einträge.\n\n` +
+                `➡️ OK = ERSETZEN (alte Daten werden gelöscht)\n` +
+                `➡️ ABBRECHEN = ZUSAMMENFÜHREN (Einträge werden kombiniert)`
+              );
+              shouldMerge = !userChoice; // true = abbrechen = merge
+            }
+
+            // MERGE oder REPLACE basierend auf Benutzerwahl
+            if (shouldMerge) {
+              dayData = {...dayData, ...validEntries};
+            } else {
+              dayData = validEntries;
+            }
+
+            if (importedSettings.neutralDays) neutralDaysSetting = importedSettings.neutralDays;
+            if (typeof importedSettings.godMode === 'boolean') godMode = importedSettings.godMode;
+
+            saveData();
+
+            // Warnung bei ungültigen Daten
+            if (invalidDates.length > 0) {
+              alert(
+                `✅ Import abgeschlossen mit Warnungen:\n\n` +
+                `${Object.keys(validEntries).length} gültige Einträge importiert\n` +
+                `${invalidDates.length} ungültige Einträge übersprungen:\n\n` +
+                `${invalidDates.slice(0, 5).join(', ')}` +
+                `${invalidDates.length > 5 ? ` ... und ${invalidDates.length - 5} weitere` : ''}\n\n` +
+                `(Details in der Browser-Konsole)`
+              );
+            } else {
+              alert('✅ Daten importiert.');
+            }
+
+            location.reload();
+          } catch (err) {
+            console.error(err);
+            alert('❌ Ungültige Datei.');
+          }
+        };
+        reader.readAsText(file);
+      };
+      input.click();
+    }
+
+    function resetStorage() {
+      if (!confirm('⚠️ Wirklich ALLE lokalen Daten löschen? Vorher exportieren!')) return;
+      try {
+        localStorage.removeItem('alcoholTrackerData');
+        localStorage.removeItem('alcoholTrackerSettings');
+        localStorage.removeItem('alcoholTrackerSchemaVersion');
+      } catch (e) {
+        console.warn('Bereinigung fehlgeschlagen:', e);
+      }
+      location.reload();
+    }
+
+    /* ========================================
+       GOD-MODUS: GETRÄNKE-VERWALTUNG
+    ======================================== */
+    let drinksCounter = 0;
+    let activeDrinks = [];
+
+    function addDrink(data = null) {
+      drinksCounter++;
+      const drinkId = `drink-${drinksCounter}`;
+      
+      const drink = {
+        id: drinkId,
+        type: data?.type || 'beer',
+        portionIndex: data?.portionIndex || 0,
+        customMl: data?.customMl || 0,
+        units: data?.units || 1
+      };
+      
+      activeDrinks.push(drink);
+      renderDrinkItem(drink);
+      updateLiveCalc();
+    }
+
+    function renderDrinkItem(drink) {
+      const container = document.getElementById('drinksList');
+      const drinkData = DRINKS_DB[drink.type];
+      
+      const div = document.createElement('div');
+      div.className = 'drink-item';
+      div.id = drink.id;
+      
+      // Portion-Options generieren
+      let portionOptions = '';
+      drinkData.portions.forEach((p, idx) => {
+        portionOptions += `<option value="${idx}" ${idx === drink.portionIndex ? 'selected' : ''}>${p.label}</option>`;
+      });
+      
+      // Units-Options (1-20)
+      let unitOptions = '';
+      for (let i = 1; i <= 20; i++) {
+        unitOptions += `<option value="${i}" ${i === drink.units ? 'selected' : ''}>${i}x</option>`;
+      }
+      
+      const selectedPortion = drinkData.portions[drink.portionIndex];
+      const showCustom = selectedPortion.ml === 0;
+      
+      div.innerHTML = `
+        <div class="drink-remove" onclick="removeDrink('${drink.id}')">×</div>
+        <div class="drink-row">
+          <div class="drink-field">
+            <label class="drink-label">Getränk</label>
+            <select class="drink-select" data-drink="${drink.id}" data-field="type">
+              ${Object.keys(DRINKS_DB).map(key => 
+                `<option value="${key}" ${key === drink.type ? 'selected' : ''}>${DRINKS_DB[key].name}</option>`
+              ).join('')}
+            </select>
+          </div>
+          <div class="drink-field">
+            <label class="drink-label">Menge</label>
+            <select class="drink-select" data-drink="${drink.id}" data-field="portion">
+              ${portionOptions}
+            </select>
+          </div>
+          <div class="drink-field">
+            <label class="drink-label">Anzahl</label>
+            <select class="drink-select" data-drink="${drink.id}" data-field="units">
+              ${unitOptions}
+            </select>
+          </div>
+        </div>
+        <div class="drink-field" style="display:${showCustom ? 'block' : 'none'};" data-custom="${drink.id}">
+          <label class="drink-label">Eigene Menge (ml)</label>
+          <input type="number" class="drink-input" data-drink="${drink.id}" data-field="custom" 
+                 min="0" step="10" value="${drink.customMl}" placeholder="z.B. 330">
+        </div>
+        <div class="drink-summary">
+          <strong>${drinkData.name}</strong> · ${drinkData.abv}% Vol · 
+          <span data-summary="${drink.id}">—</span>
+        </div>
+      `;
+      
+      container.appendChild(div);
+      updateDrinkSummary(drink);
+    }
+
+    function updateDrinkSummary(drink) {
+      const drinkData = DRINKS_DB[drink.type];
+      const portion = drinkData.portions[drink.portionIndex];
+      const ml = portion.ml === 0 ? drink.customMl : portion.ml;
+      const totalMl = ml * drink.units;
+      const grams = totalMl * (drinkData.abv / 100) * DENSITY;
+      
+      const summary = document.querySelector(`[data-summary="${drink.id}"]`);
+      if (summary) {
+        summary.textContent = `${totalMl}ml gesamt → ${Math.round(grams)}g Alkohol`;
+      }
+    }
+
+    function removeDrink(drinkId) {
+      activeDrinks = activeDrinks.filter(d => d.id !== drinkId);
+      const elem = document.getElementById(drinkId);
+      if (elem) elem.remove();
+      updateLiveCalc();
+    }
+
+    function updateDrinkFromInput(drinkId, field, value) {
+      const drink = activeDrinks.find(d => d.id === drinkId);
+      if (!drink) return;
+      
+      if (field === 'type') {
+        drink.type = value;
+        drink.portionIndex = 0;
+        drink.customMl = 0;
+        // Re-render
+        const elem = document.getElementById(drinkId);
+        elem.remove();
+        renderDrinkItem(drink);
+      } else if (field === 'portion') {
+        drink.portionIndex = parseInt(value);
+        const drinkData = DRINKS_DB[drink.type];
+        const showCustom = drinkData.portions[drink.portionIndex].ml === 0;
+        const customField = document.querySelector(`[data-custom="${drinkId}"]`);
+        if (customField) customField.style.display = showCustom ? 'block' : 'none';
+        updateDrinkSummary(drink);
+      } else if (field === 'units') {
+        drink.units = parseInt(value);
+        updateDrinkSummary(drink);
+      } else if (field === 'custom') {
+        drink.customMl = parseFloat(value) || 0;
+        updateDrinkSummary(drink);
+      }
+      
+      updateLiveCalc();
+    }
+
+    /* ========================================
+       LIVE-BERECHNUNG & AUTO-KATEGORIE
+    ======================================== */
+    function calculateTotalAlcohol() {
+      let totalGrams = 0;
+      activeDrinks.forEach(drink => {
+        const drinkData = DRINKS_DB[drink.type];
+        const portion = drinkData.portions[drink.portionIndex];
+        const ml = portion.ml === 0 ? drink.customMl : portion.ml;
+        const grams = ml * drink.units * (drinkData.abv / 100) * DENSITY;
+        totalGrams += grams;
+      });
+      return Math.round(totalGrams);
+    }
+
+    function estimateBAC(grams) {
+      // Widmark-Formel: BAC = (Alkohol in g) / (Körpergewicht in kg × r)
+      // r = Verteilungsfaktor: 0.68 für Männer, 0.55 für Frauen
+      const weight = userWeight || 75; // Annahme 75kg falls nicht gesetzt
+      const r = userGender === 'female' ? 0.55 : 0.68;
+      const bac = grams / (weight * r);
+      return Math.max(0, bac).toFixed(1);
+    }
+
+    function suggestCategory(grams, sport, crash, hangover) {
+      // Totalabsturz → immer Vollrausch
+      if (crash) return 'hangover';
+
+      if (grams === 0) {
+        return sport ? 'superday' : 'sober';
+      }
+
+      // Geschlechtsspezifische Grenze für Moderat
+      const moderateLimit = userGender === 'female' ? 20 : 30;
+
+      // Moderat: bis Grenze (Männer 30g, Frauen 20g)
+      if (grams <= moderateLimit) {
+        return 'moderate';
+      }
+
+      // Schadensbegrenzung: Sport + Alkohol (über Moderat-Grenze)
+      if (sport && grams > moderateLimit && grams <= 80) {
+        return 'mixed';
+      }
+
+      // Vollrausch: >80g
+      if (grams > 80) {
+        return 'hangover';
+      }
+
+      // Alkohol: über Moderat-Grenze, ohne Sport
+      return 'alcohol';
+    }
+
+    function updateCategoryDescriptions() {
+      // Geschlechtsspezifische Beschreibungen für Kategorie "Moderat"
+      const moderateDescEl = document.getElementById('moderateDesc');
+      if (moderateDescEl) {
+        if (userGender === 'female') {
+          moderateDescEl.textContent = '1-2 Drinks (~20g, ca. 2x0,33L Bier)';
+        } else {
+          moderateDescEl.textContent = '1-2 Drinks (~30g, ca. 1x0,5L + 1x0,33L Bier)';
+        }
+      }
+    }
+
+    function updateLiveCalc() {
+      const grams = calculateTotalAlcohol();
+      const drinks = (grams / DRINK_UNIT).toFixed(1);
+      const drinksUK = (grams / DRINK_UNIT_UK).toFixed(1);
+      const drinksUSA = (grams / DRINK_UNIT_USA).toFixed(1);
+      const bac = estimateBAC(grams);
+      
+      const sport = document.getElementById('checkSport').checked;
+      const crash = document.getElementById('checkCrash').checked;
+      const hangover = document.getElementById('checkHangover').checked;
+      
+      const suggested = suggestCategory(grams, sport, crash, hangover);
+      
+      document.getElementById('liveGrams').textContent = grams;
+      document.getElementById('liveDrinks').textContent = drinks;
+      document.getElementById('liveDrinksUK').textContent = drinksUK;
+      document.getElementById('liveDrinksUSA').textContent = drinksUSA;
+      document.getElementById('liveBAC').textContent = bac + '‰';
+      
+      // DGE-Limit geschlechtsspezifisch
+      const dgeLimit = userGender === 'female' ? 12 : 24;
+      const dgeStatus = grams === 0 ? '✅' : grams <= dgeLimit ? '🟡' : '🔴';
+      document.getElementById('liveDGE').textContent = dgeStatus;
+      document.getElementById('liveDGELabel').textContent = `DGE ${userGender === 'female' ? '♀' : '♂'} (${dgeLimit}g)`;
+      
+      const suggestedEl = document.getElementById('suggestedCat');
+      const catNames = {
+        superday: '⭐ Supertag',
+        wellness: '💚 Wellness',
+        sober: '🟢 Alkoholfrei',
+        moderate: '🟡 Moderat',
+        mixed: '❤️ "Schadensbegrenzung"',
+        alcohol: '🔴 Alkohol',
+        hangover: '🍺💥 Vollrausch'
+      };
+      suggestedEl.textContent = catNames[suggested] || '—';
+      
+      // FIX: Auto-Select des vorgeschlagenen Radio-Buttons
+      const suggestedRadio = document.querySelector(`input[name="dayChoice"][value="${suggested}"]`);
+      if (suggestedRadio && !suggestedRadio.checked) {
+        suggestedRadio.dataset.autoSelected = 'true'; // Markiere als Auto-Select
+        suggestedRadio.checked = true;
+      }
+      
+      // Warnungen bei manueller Diskrepanz
+      updateCategoryWarnings(suggested);
+    }
+
+    function updateCategoryWarnings(suggested) {
+      // Nur warnen wenn MANUELL abgewichen
+      const selectedRadio = document.querySelector('input[name="dayChoice"]:checked');
+      const selected = selectedRadio ? selectedRadio.value : null;
+      
+      // Wenn suggested nicht übergeben wurde, von aktueller Eingabe ableiten
+      if (!suggested && godMode) {
+        const grams = calculateTotalAlcohol();
+        const sport = document.getElementById('checkSport').checked;
+        const crash = document.getElementById('checkCrash').checked;
+        const hangover = document.getElementById('checkHangover').checked;
+        suggested = suggestCategory(grams, sport, crash, hangover);
+      }
+      
+      document.querySelectorAll('.choice-option').forEach(opt => {
+        opt.classList.remove('warning-active');
+      });
+      
+      // Nur warnen wenn Auto-Select vorhanden ist und manuell abgewichen wurde
+      if (selected && suggested && selected !== suggested && !selectedRadio.dataset.autoSelected) {
+        const opt = document.querySelector(`.choice-option[data-value="${selected}"]`);
+        if (opt) opt.classList.add('warning-active');
+      }
+    }
+
+    /* ========================================
+       TAG-EINGABE VIEW
+    ======================================== */
+    function updateDayInputView() {
+      document.getElementById('currentDateDisplay').textContent = formatDisplayDate(currentInputDate);
+      updateStorageStatus(`🍷 ${Object.keys(dayData).length} Tage`);
+      
+      const key = formatDateKey(currentInputDate);
+      const entry = dayData[key];
+      
+      // Kommentar laden
+      document.getElementById('dayCommentInput').value = getDayComment(key);
+      
+      // God-Modus Sichtbarkeit
+      const godSection = document.getElementById('godSection');
+      godSection.style.display = godMode ? 'block' : 'none';
+      
+      const godBtn = document.getElementById('godToggleBtn');
+      godBtn.textContent = godMode ? 'Ausblenden' : 'Einblenden';
+      
+      if (godMode) {
+        // Reset Drinks Liste
+        activeDrinks = [];
+        document.getElementById('drinksList').innerHTML = '';
+        
+        if (entry && entry.drinks && Array.isArray(entry.drinks)) {
+          // Getränke laden
+          if (entry && Array.isArray(entry.drinks) && entry.drinks.length) { entry.drinks.forEach(d => addDrink(d)); }
+        } else {
+          // FIX: Initial ein leeres Getränk hinzufügen
+
+        }
+        
+        // Checkboxen
+        document.getElementById('checkSport').checked = !!entry?.sport;
+        document.getElementById('checkCompensation').checked = !!entry?.compensation;
+        document.getElementById('checkDope').checked = !!(entry?.marijuana && entry.marijuana.grams > 0);
+        document.getElementById('checkCrash').checked = !!entry?.crash;
+        document.getElementById('checkHangover').checked = !!entry?.hangover;
+        document.getElementById('checkHangoverLight').checked = !!entry?.hangoverLight;
+        
+        // Dope Details
+        if (entry?.marijuana) {
+          document.getElementById('dopeGrams').value = entry.marijuana.grams || '';
+          document.getElementById('dopeFreq').value = entry.marijuana.frequency || 'einmalig';
+          document.getElementById('dopeDetails').style.display = 'block';
+        } else {
+          document.getElementById('dopeDetails').style.display = 'none';
+        }
+        
+        updateLiveCalc();
+      }
+      
+      // Kategorie auswählen
+      const status = getDayStatus(key);
+      if (status) {
+        const radio = document.querySelector(`input[name="dayChoice"][value="${status}"]`);
+        if (radio) {
+          radio.checked = true;
+          radio.dataset.autoSelected = 'true'; // Markiere als geladen, nicht manuell
+        }
+      }
+    }
+
+    function saveDay() {
+      const selected = document.querySelector('input[name="dayChoice"]:checked');
+  const choice = selected ? selected.value : null;
+      if (!selected) {
+        alert('Bitte eine Kategorie wählen.');
+        return;
+      }
+      
+      const key = formatDateKey(currentInputDate);
+      const comment = document.getElementById('dayCommentInput').value.trim();
+      
+      const entry = {
+        status: selected.value,
+        comment
+      };
+      
+      if (godMode) {
+        // Getränke speichern
+        if (activeDrinks.length > 0) {
+          entry.drinks = activeDrinks.map(d => ({
+            type: d.type,
+            portionIndex: d.portionIndex,
+            customMl: d.customMl,
+            units: d.units
+          }));
+          entry.totalAlcohol = calculateTotalAlcohol();
+        }
+        
+        // Checkboxen
+        entry.sport = document.getElementById('checkSport').checked;
+        entry.crash = document.getElementById('checkCrash').checked;
+        entry.compensation = document.getElementById('checkCompensation').checked;
+        entry.hangover = document.getElementById('checkHangover').checked;
+        entry.hangoverLight = document.getElementById('checkHangoverLight').checked;
+        
+        // Marijuana
+        const dopeChecked = document.getElementById('checkDope').checked;
+        if (dopeChecked) {
+          const grams = parseFloat(document.getElementById('dopeGrams').value) || 0;
+          if (grams > 0) {
+            entry.marijuana = {
+              grams,
+              frequency: document.getElementById('dopeFreq').value
+            };
+          }
+        }
+      }
+      
+      dayData[key] = entry;
+      saveData();
+      
+      // Zurücksetzen
+      document.getElementById('dayCommentInput').value = '';
+      activeDrinks = [];
+      document.getElementById('drinksList').innerHTML = '';
+      document.querySelectorAll('.checkbox-item input').forEach(cb => cb.checked = false);
+      document.getElementById('dopeDetails').style.display = 'none';
+      
+      showMonthView();
+    }
+
+    /* ========================================
+       MONATSÜBERSICHT
+    ======================================== */
+    function showMonthView() {
+      currentViewDate = new Date(currentInputDate);
+      document.getElementById('dayInputView').classList.remove('active');
+      document.getElementById('monthView').classList.add('active');
+      updateMonthView();
+      calculateStreak();
+      calculateSuccessRate();
+      document.getElementById('appVersion2').textContent = APP_VERSION;
+    }
+
+    function showDayInput() {
+      document.getElementById('monthView').classList.remove('active');
+      document.getElementById('dayInputView').classList.add('active');
+      document.getElementById('appVersion').textContent = APP_VERSION;
+    }
+
+    function updateMonthView() {
+      const y = currentViewDate.getFullYear();
+      const m = currentViewDate.getMonth();
+      document.getElementById('monthHeader').textContent = `${monthNames[m]} ${y}`;
+
+      const grid = document.getElementById('monthGrid');
+      grid.innerHTML = '';
+      
+      // Weekday headers
+      ['Mo','Di','Mi','Do','Fr','Sa','So'].forEach(w => {
+        const h = document.createElement('div');
+        h.className = 'weekday';
+        h.textContent = w;
+        grid.appendChild(h);
+      });
+
+      const first = new Date(y, m, 1);
+      const last = new Date(y, m + 1, 0);
+      const startDay = (first.getDay() + 6) % 7;
+
+      // Empty cells
+      for (let i = 0; i < startDay; i++) {
+        const e = document.createElement('div');
+        e.className = 'day';
+        e.style.visibility = 'hidden';
+        grid.appendChild(e);
+      }
+
+      const today = new Date();
+      for (let d = 1; d <= last.getDate(); d++) {
+        const dt = new Date(y, m, d);
+        const cell = document.createElement('div');
+        cell.className = 'day';
+        cell.textContent = d;
+        cell.dataset.y = String(y);
+        cell.dataset.m = String(m);
+        cell.dataset.d = String(d);
+
+        const key = formatDateKey(dt);
+        const st = getDayStatus(key);
+        const comment = getDayComment(key);
+        const entry = dayData[key];
+
+        if (st) cell.classList.add(st);
+        if (dt.toDateString() === today.toDateString()) cell.classList.add('today');
+
+        // Checkbox-Symbole
+        if (entry) {
+          // Sport-Marker bei ALLEN Tagen mit Sport
+          if (entry.sport) {
+            const sportIcon = document.createElement('span');
+            sportIcon.textContent = '👟';
+            sportIcon.style.cssText = 'position:absolute; bottom:2px; right:2px; font-size:10px;';
+            cell.appendChild(sportIcon);
+          }
+          // Totalabsturz
+          if (entry.crash) {
+            const crashIcon = document.createElement('span');
+            crashIcon.textContent = '💥';
+            crashIcon.style.cssText = 'position:absolute; top:2px; left:2px; font-size:10px;';
+            cell.appendChild(crashIcon);
+          }
+
+          // Katertag
+          if (entry.hangover) {
+            const hangoverIcon = document.createElement('span');
+            const hasAlcohol = entry.totalAlcohol && entry.totalAlcohol > 0;
+            if (hasAlcohol) {
+              // Doppeltes Symbol bei Kater MIT Alkohol
+              hangoverIcon.textContent = '🤢🤢';
+            } else {
+              hangoverIcon.textContent = '🤢';
+            }
+            hangoverIcon.style.cssText = 'position:absolute; bottom:2px; left:2px; font-size:10px;';
+            cell.appendChild(hangoverIcon);
+          }
+
+          // Kater Light
+          if (entry.hangoverLight) {
+            const hangoverLightIcon = document.createElement('span');
+            hangoverLightIcon.textContent = '😌';
+            hangoverLightIcon.style.cssText = 'position:absolute; top:2px; right:2px; font-size:10px;';
+            cell.appendChild(hangoverLightIcon);
+          }
+        }
+
+        if (comment) {
+          cell.classList.add('has-comment');
+          const tooltip = document.createElement('div');
+          tooltip.className = 'day-comment-tooltip';
+          tooltip.textContent = comment;
+          cell.appendChild(tooltip);
+        }
+
+        grid.appendChild(cell);
+      }
+    }
+
+    function previousMonth() {
+      currentViewDate.setMonth(currentViewDate.getMonth() - 1);
+      updateMonthView();
+      calculateStreak();
+      calculateSuccessRate();
+    }
+
+    function nextMonth() {
+      currentViewDate.setMonth(currentViewDate.getMonth() + 1);
+      updateMonthView();
+      calculateStreak();
+      calculateSuccessRate();
+    }
+
+    function currentMonth() {
+      currentViewDate = new Date();
+      updateMonthView();
+      calculateStreak();
+      calculateSuccessRate();
+    }
+
+    /* ========================================
+       KALENDER-KLICK (TAG EDITIEREN)
+    ======================================== */
+    document.addEventListener('click', (e) => {
+      const grid = document.getElementById('monthGrid');
+      if (!grid || !grid.contains(e.target)) return;
+      
+      const cell = e.target.closest('.day');
+      if (!cell || cell.style.visibility === 'hidden') return;
+      
+      // Mobile: Toggle Tooltip
+      if (window.innerWidth <= 640 && cell.classList.contains('has-comment')) {
+        if (!cell.classList.contains('tooltip-active')) {
+  cell.classList.add('tooltip-active');
+  return;
+}
+// Tooltip war schon aktiv → jetzt Tag öffnen
+      }
+      
+      // Tag zur Eingabe wechseln
+      const y = Number(cell.dataset.y);
+      const m = Number(cell.dataset.m);
+      const d = Number(cell.dataset.d);
+      currentInputDate = new Date(y, m, d);
+      showDayInput();
+      updateDayInputView();
+    });
+
+    /* ========================================
+       STATISTIKEN & HEALTH ASSESSMENT
+    ======================================== */
+    function isGreen(state) {
+      return state === 'sober' || state === 'superday' || state === 'wellness';
+    }
+
+    function calculateStreak() {
+      let probe = new Date();
+      let streak = 0;
+      while (true) {
+        const key = formatDateKey(probe);
+        const st = getDayStatus(key);
+        if (isGreen(st)) {
+          streak++;
+          probe.setDate(probe.getDate() - 1);
+        } else {
+          break;
+        }
+        if (streak > 1000) break;
+      }
+      
+      const card = document.getElementById('streakCard');
+      const numEl = document.getElementById('streakNumber');
+      card.classList.remove('streak-bad','streak-warn','streak-good','streak-great');
+      
+      if (streak >= 30) card.classList.add('streak-great');
+      else if (streak >= 21) card.classList.add('streak-good');
+      else if (streak >= 11) card.classList.add('streak-warn');
+      else if (streak >= 1) card.classList.add('streak-bad');
+      
+      numEl.textContent = String(streak) + (streak >= 30 ? ' 🎉' : '');
+    }
+
+    function calculateSuccessRate() {
+      const y = currentViewDate.getFullYear();
+      const m = currentViewDate.getMonth();
+      let total = 0, max = 0;
+      const last = new Date(y, m + 1, 0).getDate();
+      
+      for (let d = 1; d <= last; d++) {
+        const key = formatDateKey(new Date(y, m, d));
+        const st = getDayStatus(key);
+        if (!st) continue;
+        max += 1;
+        
+        // Gewichtung
+        if (st === 'superday') total += 1.0;
+        else if (st === 'wellness') total += 0.9;
+        else if (st === 'sober') total += 0.75;
+        else if (st === 'moderate') total += 0.4;
+        else if (st === 'mixed') total += 0.25;
+        else if (st === 'hangover') total += 0.0;
+      }
+      
+      const pct = max > 0 ? Math.round((total / max) * 100) : 0;
+      document.getElementById('successRate').textContent = pct + '%';
+      
+      const card = document.getElementById('successCard');
+      card.classList.remove('rate-good','rate-warn','rate-bad');
+      if (pct < 50) card.classList.add('rate-bad');
+      else if (pct < 75) card.classList.add('rate-warn');
+      else card.classList.add('rate-good');
+    }
+
+    function calculate100DaysChart() {
+      let negative = 0, positive = 0;
+      const today = new Date();
+      
+      for (let i = 0; i < 100; i++) {
+        const probe = new Date(today);
+        probe.setDate(probe.getDate() - i);
+        const st = getDayStatus(formatDateKey(probe));
+        
+        if (st === 'alcohol' || st === 'mixed' || st === 'moderate' || st === 'hangover') {
+          negative++;
+        } else if (st === 'sober' || st === 'wellness' || st === 'superday') {
+          positive++;
+        }
+      }
+      
+      const enteredDays = positive + negative;
+      const missingDays = 100 - enteredDays;
+      const denominator = neutralDaysSetting === 'ignore' ? enteredDays || 1 : 100;
+      const negPct = Math.round((negative / denominator) * 100);
+      const posPct = Math.round((positive / denominator) * 100);
+
+      // Info-Text über gewertete Tage
+      let daysInfoText = `Gewertet wurden die letzten <strong>${enteredDays}</strong> Tage!`;
+      if (missingDays > 0) {
+        const weightInfo = neutralDaysSetting === 'ignore'
+          ? 'nicht gewertet'
+          : `zu ${neutralDaysWeight}% gewichtet`;
+        daysInfoText = `Letzte <strong>100 Tage</strong>: ${enteredDays} eingetragen, ${missingDays} Tage nicht eingetragen (${weightInfo})`;
+      }
+
+      setTimeout(() => {
+        document.getElementById('chartNegative').style.width = negPct + '%';
+        document.getElementById('chartNegativeNum').textContent = negative;
+        document.getElementById('chartNegativePct').textContent = negPct + '%';
+        document.getElementById('chartPositive').style.width = posPct + '%';
+        document.getElementById('chartPositiveNum').textContent = positive;
+        document.getElementById('chartPositivePct').textContent = posPct + '%';
+        document.getElementById('chartDaysInfo').innerHTML = daysInfoText;
+      }, 100);
+    }
+
+    function calculate6MonthsChart() {
+      let negative = 0, positive = 0, compensationCount = 0;
+      const today = new Date();
+      const last90 = [], last180 = [];
+      
+      // 180 Tage durchgehen
+      for (let i = 0; i < 180; i++) {
+        const probe = new Date(today);
+        probe.setDate(probe.getDate() - i);
+        const key = formatDateKey(probe);
+        const st = getDayStatus(key);
+        const entry = dayData[key];
+        
+        if (st === 'alcohol' || st === 'mixed' || st === 'moderate' || st === 'hangover') {
+          negative++;
+          last180.push('negative');
+        } else if (st === 'sober' || st === 'wellness' || st === 'superday') {
+          positive++;
+          last180.push('positive');
+        } else {
+          last180.push('empty');
+        }
+        
+        // Letztes Quartal (90 Tage)
+        if (i < 90) {
+          if (st === 'alcohol' || st === 'mixed' || st === 'moderate' || st === 'hangover') {
+            last90.push('negative');
+          } else if (st === 'sober' || st === 'wellness' || st === 'superday') {
+            last90.push('positive');
+          } else {
+            last90.push('empty');
+          }
+        }
+        
+        // Kompensationstrinken zählen
+        if (entry && entry.compensation && st !== 'sober' && st !== 'wellness' && st !== 'superday') {
+          compensationCount++;
+        }
+      }
+      
+      const denominator = neutralDaysSetting === 'ignore' ? (positive + negative) || 1 : 180;
+      const negPct = Math.round((negative / denominator) * 100);
+      const posPct = Math.round((positive / denominator) * 100);
+      
+      // Trend berechnen (Vergleich erste vs. letzte 90 Tage)
+      const first90Neg = last180.slice(90, 180).filter(d => d === 'negative').length;
+      const last90Neg = last90.filter(d => d === 'negative').length;
+      const trendDiff = first90Neg - last90Neg;
+      let trendText = '→ Stabil';
+      let trendEmoji = '➡️';
+      if (trendDiff > 5) {
+        trendText = '↓ Verbessert';
+        trendEmoji = '📈';
+      } else if (trendDiff < -5) {
+        trendText = '↑ Verschlechtert';
+        trendEmoji = '📉';
+      }
+      
+      // Durchschnittliche Risikotage pro Monat
+      const avgRiskPerMonth = Math.round((negative / 6));
+
+      // Langzeit-Einschätzung mit Motivation & Kontext
+      let assessment = '';
+
+      // Basis-Assessment nach Risikotage-Prozentsatz
+      if (negPct < 10) {
+        assessment = '🌟 <strong>Exzellent!</strong> Nur ' + negPct + '% Risikotage über 6 Monate - das ist hervorragend! ';
+        if (trendText === '↓ Verbessert') {
+          assessment += 'Und du verbesserst dich sogar weiter (Trend: ' + trendEmoji + '). Bleib auf diesem Kurs!';
+        } else if (trendText === '↑ Verschlechtert') {
+          assessment += 'Achtung: Der Trend zeigt eine leichte Verschlechterung (' + trendEmoji + '). Bleib wachsam, damit dein exzellentes Niveau erhalten bleibt.';
+        } else {
+          assessment += 'Konstant stark über alle Quartale. Du hast ein stabiles, gesundes Muster entwickelt!';
+        }
+        assessment += ' <em>Nächster Schritt:</em> Dieses Level halten und als Vorbild für andere dienen.';
+
+      } else if (negPct < 20) {
+        assessment = '💪 <strong>Sehr gut!</strong> Mit ' + negPct + '% Risikotagen und ⌀' + avgRiskPerMonth + ' Risikotagen/Monat zeigst du langfristig starke Disziplin. ';
+        if (trendText === '↓ Verbessert') {
+          assessment += 'Besonders beeindruckend: Du verbesserst dich stetig (' + trendEmoji + ')! Weiter so - die 10%-Marke ist in Reichweite!';
+        } else if (trendText === '↑ Verschlechtert') {
+          assessment += 'Aber Vorsicht: Der Trend zeigt eine Verschlechterung (' + trendEmoji + '). Reflektiere, was sich geändert hat, und steuere gegen.';
+        } else {
+          assessment += 'Stabil auf hohem Niveau (' + trendEmoji + '). Sehr solide!';
+        }
+        assessment += ' <em>Nächster Schritt:</em> Risikotage unter 15% drücken - probiere mehr Wellness-/Sporttage.';
+
+      } else if (negPct < 35) {
+        assessment = '👍 <strong>Solide Entwicklung.</strong> ' + negPct + '% Risikotage bedeuten etwa ' + avgRiskPerMonth + ' kritische Tage pro Monat. ';
+        if (trendText === '↓ Verbessert') {
+          assessment += 'Positiv: Du bist auf dem richtigen Weg (' + trendEmoji + ')! Die Verbesserung ist messbar - bleib dran!';
+        } else if (trendText === '↑ Verschlechtert') {
+          assessment += 'Aber: Der Trend zeigt eine Verschlechterung (' + trendEmoji + '). Das ist ein Warnsignal - handle jetzt, bevor es kippt!';
+        } else {
+          assessment += 'Aktuell stabil (' + trendEmoji + '), aber noch Luft nach oben.';
+        }
+        assessment += ' <em>Nächster Schritt:</em> Setze dir konkrete Wochenziele (z.B. max. 1 Risikotag/Woche). Nutze die Streak-Funktion!';
+
+      } else if (negPct < 50) {
+        assessment = '⚠️ <strong>Gemischt - Handlungsbedarf!</strong> ' + negPct + '% Risikotage = fast jeder 2.-3. Tag problematisch (⌀' + avgRiskPerMonth + '/Monat). ';
+        if (trendText === '↓ Verbessert') {
+          assessment += 'Immerhin: Du verbesserst dich (' + trendEmoji + ')! Das ist der erste Schritt - jetzt konsequent weitermachen!';
+        } else if (trendText === '↑ Verschlechtert') {
+          assessment += 'ACHTUNG: Der Trend verschlechtert sich (' + trendEmoji + ')! Du rutschst in einen kritischen Bereich - professionelle Beratung erwägen!';
+        } else {
+          assessment += 'Aktuell stabil (' + trendEmoji + '), aber auf kritischem Niveau.';
+        }
+        assessment += ' <em>Nächster Schritt:</em> Identifiziere Trigger (Stress, Langeweile, Soziales). Überlege 7-Tage-Challenge: alkoholfrei ab heute!';
+
+      } else {
+        assessment = '🚨 <strong>KRITISCH - Dringender Handlungsbedarf!</strong> ' + negPct + '% Risikotage bedeuten: Die Mehrheit deiner Tage ist problematisch (⌀' + avgRiskPerMonth + '/Monat). ';
+        if (trendText === '↓ Verbessert') {
+          assessment += 'Positiv: Du beginnst gegenzusteuern (' + trendEmoji + '). Das ist mutig! Jetzt nicht aufgeben - jeder Tag zählt!';
+        } else if (trendText === '↑ Verschlechtert') {
+          assessment += 'ALARM: Der Trend verschlechtert sich weiter (' + trendEmoji + ')! Das ist ein medizinischer Notfall. BITTE hole dir JETZT professionelle Hilfe!';
+        } else {
+          assessment += 'Das Level ist gefährlich stabil (' + trendEmoji + '). Ohne Intervention ändert sich nichts!';
+        }
+        assessment += ' <em>Nächster Schritt:</em> Professionelle Suchtberatung SOFORT (SAMHSA 1-800-662-4357, lokale Ambulanz). Du brauchst externe Unterstützung - das ist keine Schande!';
+      }
+
+      // Kompensationstrinken-Warnung
+      if (compensationCount > 15) {
+        assessment += '<br><br>🚨 <strong>Zusätzlich kritisch:</strong> ' + compensationCount + ' Kompensations-Trinktage in 6 Monaten! Das deutet stark auf emotionale Abhängigkeit hin (Alkohol als Stressbewältigungsmittel). Dringend: Therapeutische Begleitung + alternative Copingstrategien entwickeln (Sport, Meditation, soziale Kontakte).';
+      } else if (compensationCount > 10) {
+        assessment += '<br><br>⚠️ <strong>Achtung Kompensation:</strong> ' + compensationCount + ' Kompensations-Trinktage zeigen emotionale Muster. Frage dich: Trinke ich, um zu fühlen - oder um NICHT zu fühlen? Entwickle gesündere Stressbewältigung!';
+      } else if (compensationCount > 5) {
+        assessment += '<br><br>💡 <strong>Tipp:</strong> ' + compensationCount + ' Kompensations-Trinktage - achte darauf, dass Alkohol nicht zur Stress-Lösung wird. Sport, Freunde, Hobbys sind bessere Ventile!';
+      }
+      
+      setTimeout(() => {
+        document.getElementById('chart6mNegative').style.width = negPct + '%';
+        document.getElementById('chart6mNegativeNum').textContent = negative;
+        document.getElementById('chart6mNegativePct').textContent = negPct + '%';
+        document.getElementById('chart6mPositive').style.width = posPct + '%';
+        document.getElementById('chart6mPositiveNum').textContent = positive;
+        document.getElementById('chart6mPositivePct').textContent = posPct + '%';
+        
+        document.getElementById('metric6mTrend').innerHTML = `${trendEmoji} ${trendText}`;
+        document.getElementById('metric6mAvgRisk').textContent = avgRiskPerMonth;
+        document.getElementById('metric6mCompensation').textContent = compensationCount;
+        document.getElementById('longTermAssessment').innerHTML = assessment;
+      }, 100);
+    }
+
+    function calculateHealthAssessment() {
+      const today = new Date();
+      let counts = {superday: 0, wellness: 0, sober: 0, moderate: 0, mixed: 0, alcohol: 0, hangover: 0, hangoverWithAlc: 0, empty: 0};
+      const last100Days = [];
+      
+      for (let i = 0; i < 100; i++) {
+        const probe = new Date(today);
+        probe.setDate(probe.getDate() - i);
+        const key = formatDateKey(probe);
+        const st = getDayStatus(key);
+        const entry = dayData[key];
+        
+        last100Days.push({st, entry});
+        
+        if (st && counts[st] !== undefined) {
+          counts[st]++;
+
+          // Differenziere Katertage: Prüfe CHECKBOX hangover, nicht Status!
+          if (entry && entry.hangover && entry.totalAlcohol && entry.totalAlcohol > 0) {
+            counts.hangoverWithAlc++;
+          }
+        } else if (!st) {
+          counts.empty++;
+        }
+      }
+      
+      const enteredDays = 100 - counts.empty;
+      let divisor = 100, neutralWeight = 0;
+      
+      if (neutralDaysSetting === 'ignore') {
+        divisor = enteredDays || 1;
+      } else if (neutralDaysSetting === 'neutral') {
+        neutralWeight = 0.5;
+      } else if (neutralDaysSetting === 'negative') {
+        neutralWeight = 0.3;
+      } else if (neutralDaysSetting === 'very-negative') {
+        neutralWeight = 0.15;
+      }
+      
+      const afCount = counts.superday + counts.wellness + counts.sober;
+      const afQuote = afCount / divisor;
+      
+      // Gewichtete Gesundheitsquote - ADAPTIVE KATERTAG-LOGIK mit Recovery-Multiplier
+      const hangoverClean = counts.hangover - counts.hangoverWithAlc; // Katertage OHNE Alkohol
+
+      // Standard-Scores (ohne Katertage, die werden adaptiv berechnet)
+      let totalScore =
+        counts.superday * 1.0 +
+        counts.wellness * 0.9 +
+        counts.sober * 0.75 +
+        counts.moderate * 0.4 +
+        counts.mixed * 0.25 +
+        counts.alcohol * 0.0 +
+        counts.hangoverWithAlc * 0.0 + // Katertag MIT Alkohol = 0% (doppelt problematisch!)
+        counts.empty * neutralWeight;
+
+      // Adaptives Katertag-Scoring mit Vortags-Recovery-Multiplier
+      for (let i = 0; i < last100Days.length; i++) {
+        const day = last100Days[i];
+        if (day.st === 'hangover') {
+          // Prüfe, ob es ein CLEAN hangover ist (kein Alkohol heute)
+          const todayAlc = day.entry?.totalAlcohol || 0;
+          const hasHangoverCheckbox = day.entry?.hangover || false;
+
+          // Clean hangover = Status hangover ABER kein/wenig Alkohol heute
+          const isCleanHangover = (todayAlc === 0) || (hasHangoverCheckbox && todayAlc === 0);
+
+          if (isCleanHangover) {
+            // Prüfe Vortag für Recovery-Multiplier
+            const yesterday = (i < last100Days.length - 1) ? last100Days[i + 1] : null;
+            const yesterdayGrams = yesterday?.entry?.totalAlcohol || 0;
+
+            // BehaviorComponent: Kater ohne Trinken = 0.6
+            const behaviorComponent = 0.6;
+
+            // RecoveryMultiplier basierend auf Vortags-Gramm
+            let recoveryMultiplier = 1.0;
+            if (yesterdayGrams >= 80) recoveryMultiplier = 0.5;
+            else if (yesterdayGrams >= 60) recoveryMultiplier = 0.7;
+            else if (yesterdayGrams >= 40) recoveryMultiplier = 0.85;
+
+            totalScore += behaviorComponent * recoveryMultiplier;
+          }
+          // Wenn nicht clean (d.h. hangoverWithAlc), wurde bereits mit 0.0 gewertet
+        }
+      }
+
+      const weightedScore = totalScore / 100;
+      
+      // Binge-Nähe inkl. problematische Katertage
+      const bingeProximity = counts.alcohol + counts.mixed + counts.hangover;
+      const bingeQuote = bingeProximity / divisor;
       
       // Cluster-Erkennung
       let maxCluster = 0, currentCluster = 0;
@@ -1667,16 +3041,6 @@
       else if (volatility > 20) volRisk = 'volatil';
       else if (volatility > 10) volRisk = 'moderat schwankend';
       
-      // Neu: CVaR statt Volatilität (Conditional Value-at-Risk)
-      let cvar = 0;
-      if (last14Grams.length > 0) {
-        const sortedGrams = last14Grams.sort((a, b) => b - a);
-        const worstPercent = Math.ceil(sortedGrams.length * 0.05); // 5%
-        const worstDays = sortedGrams.slice(0, worstPercent);
-        cvar = worstDays.reduce((sum, g) => sum + g, 0) / worstDays.length;
-      }
-      let cvarRisk = cvar > 60 ? 'sehr hoch ⚠️' : cvar > 40 ? 'hoch' : 'niedrig';
-      
       // === 6. TOLERANCE CREEP ===
       const first90 = last180Days.slice(90, 180);
       const recent90 = last180Days.slice(0, 90);
@@ -1851,16 +3215,6 @@
       
       const commentRisk = triggerCount > 5 ? '⚠️ hoch' : triggerCount > 2 ? 'moderat' : 'niedrig';
       
-      // === Neu: Leber-Belastungs-Score ===
-      let leberScore = 0;
-      const lambda = 0.05; // Decay-Rate für ~14-Tage Halbwert (ln(2)/14 ≈ 0.05)
-      gramsData.forEach((g, i) => {
-        leberScore += g * Math.exp(-lambda * i);
-      });
-      leberScore = Math.round(leberScore);
-      let leberRisk = leberScore > 5000 ? 'sehr hoch ⚠️' : leberScore > 3000 ? 'hoch' : 'niedrig';
-      let leberRecommendation = leberScore > 3000 ? 'Dringend: Min. 14 Tage alkoholfrei für Regeneration!' : 'Gut: Halte es so, um langfristige Schäden zu vermeiden.';
-      
       // === HTML GENERIERUNG ===
       const catNames = {
         superday: '⭐',
@@ -1909,8 +3263,7 @@
             <div><strong>Cluster-Events (≥3 Tage):</strong> ${clusterEvents.length}</div>
             <div><strong>Weekend-Binge Pattern:</strong> ${weekendBinger ? '⚠️ Ja (Fr/Sa-Fokus)' : 'Nein'} 
               <span style="font-size:12px;">(${weekendHigh}/${weekendTotal} Wochenenden)</span></div>
-            <div><strong>CVaR (Extremrisiko 5%):</strong> ${cvar.toFixed(1)}g Ø (${cvarRisk}) 
-              <span class="tooltip-icon" data-tooltip="Conditional Value-at-Risk: Durchschnitt der schlimmsten 5% Tage. Robuster Indikator für Binge-Schwere als Volatilität.">?</span></div>
+            <div><strong>Volatilität (14d):</strong> ${volRisk} <span style="font-size:12px;">(σ=${volatility.toFixed(1)}g)</span></div>
           </div>
           
           <div style="margin-bottom:24px; padding:16px; background:#f0fdf4; border-radius:8px; border:1px solid #bbf7d0;">
@@ -1924,20 +3277,12 @@
               <span class="tooltip-icon" data-tooltip="Durchschnittliche Tage zwischen zwei Binge-Events (≥${userGender==='female' ? 40 : 60}g). Kürzere Recovery-Zeit = höheres Risiko. 'N/A' bedeutet keine oder nur 1 Binge-Episode erfasst.">?</span>
             </div>
             <div>
-              <strong>Comment Risk (30d):</strong> ${commentRisk} <span style="font-size:12px;">(${triggerCount} Trigger Trigger-Wörter)</span>
+              <strong>Comment Risk (30d):</strong> ${commentRisk} <span style="font-size:12px;">(${triggerCount} Trigger-Wörter)</span>
               <span class="tooltip-icon" data-tooltip="Analyse deiner Tages-Kommentare auf Risiko-Wörter (Stress, Frust, Angst, Druck, Müde, etc.). Viele Trigger = emotionale Trinkgründe. Niedrig=gut, Moderat=Achtung, Hoch=Warnung.">?</span>
             </div>
             <div><strong>Kompensationstrinken (180d):</strong> ${compensationCount} ${compensationCount > 0 ? '<span style="color:#f59e0b;">⚠️</span>' : '✅'}</div>
             ${compensationCount > 15 ? `<div style="margin-top:8px; padding:8px; background:#fef3c7; border-left:3px solid #f59e0b; border-radius:4px;"><strong>⚠️ Emotionale Abhängigkeit:</strong> ${compensationCount} Kompensations-Trinktage deuten auf Stressbewältigung durch Alkohol hin - ein klares Warnzeichen!</div>` : ''}
             ${hangoverWithAlc > 0 ? `<div style="margin-top:8px; padding:8px; background:#fee2e2; border-left:3px solid #dc2626; border-radius:4px;"><strong>🚨 Katertage mit Weiter-Alkohol:</strong> ${hangoverWithAlc} (DSM-5-Kriterium für schwere AUD!)</div>` : ''}
-          </div>
-
-          <!-- Neu: Leber-Belastungs-Score Sektion -->
-          <div class="leber-score-section">
-            <div class="leber-title">🫀 Leber-Belastungs-Score (kumulativ 180d)</div>
-            <div class="leber-value">${leberScore}</div>
-            <div class="leber-desc">Gewichtete toxische Dosis mit exponentiellem Decay (simuliert Leber-Regeneration).</div>
-            <div class="leber-warning">${leberRisk}: ${leberRecommendation}</div>
           </div>
 
           <!-- Markov-Prognose Button -->
@@ -1955,9 +3300,7 @@
             • DSM-5: AUD-Kriterien bei Kontrollverlust, Toleranz, Craving, <strong>morgendlichem Trinken</strong><br>
             • Markov-Chain: Historische Übergangsmuster<br>
             • <strong>Katertag ohne Alkohol = 40% Gesundheit</strong> (leidet, trinkt aber nicht weiter)<br>
-            • <strong>Katertag MIT Alkohol = 0% Gesundheit</strong> (doppelt problematisch, DSM-5-Kriterium!)<br>
-            • CVaR: Conditional Value-at-Risk für Extremrisiken<br>
-            • Leber-Score: Exponentieller Decay basierend auf metabolischer Halbwertszeit (~14 Tage)
+            • <strong>Katertag MIT Alkohol = 0% Gesundheit</strong> (doppelt problematisch, DSM-5-Kriterium!)
           </div>
           
           <div style="margin-top:16px; font-size:12px; color:var(--muted);">
@@ -2095,9 +3438,6 @@
         const weightInput = document.getElementById('userWeightInput');
         weightInput.value = userWeight || '';
         
-        // Neu: Nudging-Toggle
-        document.getElementById('toggleNudging').checked = nudgingEnabled || false;
-        
         popup.classList.add('active');
         overlay.classList.add('active');
       }
@@ -2126,9 +3466,6 @@
       neutralDaysWeight = parseInt(document.getElementById('neutralWeightSlider').value) || 30;
       godMode = document.getElementById('toggleGodMode').checked;
 
-      // Neu: Nudging speichern
-      nudgingEnabled = document.getElementById('toggleNudging').checked;
-
       if (storageWorking) {
         try {
           localStorage.setItem('alcoholTrackerSettings', JSON.stringify({
@@ -2136,8 +3473,7 @@
             neutralDaysWeight,
             godMode,
             gender: userGender,
-            weight: userWeight,
-            nudgingEnabled
+            weight: userWeight
           }));
         } catch (e) {
           console.warn('Settings konnten nicht gespeichert werden:', e);
@@ -2245,15 +3581,6 @@
         document.getElementById('dopeDetails').style.display = e.target.checked ? 'block' : 'none';
       });
       
-      // Neu: Stress-Optionen Listener
-      document.querySelectorAll('input[name="stressLevel"]').forEach(radio => {
-        radio.addEventListener('change', () => {
-          document.querySelectorAll('.stress-option').forEach(opt => opt.classList.remove('selected'));
-          radio.closest('.stress-option').classList.add('selected');
-          updateLiveCalc(); // Optional: Stress in Calc einbeziehen
-        });
-      });
-      
       // Analysis Toggle
       document.getElementById('analysisToggle').addEventListener('click', () => {
         const box = document.getElementById('analysisBox');
@@ -2358,52 +3685,6 @@
 
     // Initialisiere Tooltips beim Laden
     document.addEventListener('DOMContentLoaded', initTooltips);
-
-    /* Neu: Nudge-Aktionen (Beispiel-Handler) */
-    window.nudgeAction = function(action) {
-      // Hier könnte man z.B. Checkboxen setzen oder Notizen hinzufügen
-      alert(`Plan B aktiviert: ${action}! Guter Schritt!`);
-      document.getElementById('nudgeAlert').style.display = 'none';
-    };
-
-    /* Neu: Predictive Nudging Logik (in updateDayInputView oder ähnlich aufrufen) */
-    function checkForNudge() {
-      if (!nudgingEnabled) return;
-      // Berechne Risiko aus Markov (z.B. forecast[0].prob für heute)
-      const todayRisk = markovForecast && markovForecast[0] ? parseInt(markovForecast[0].prob) : 0;
-      if (todayRisk >= 40) {
-        document.getElementById('nudgeRiskPct').textContent = todayRisk;
-        document.getElementById('nudgeAlert').classList.add('active');
-      } else {
-        document.getElementById('nudgeAlert').classList.remove('active');
-      }
-    }
-
-    // Rufe in updateDayInputView auf
-    const originalUpdateDayInputView = updateDayInputView;
-    updateDayInputView = function() {
-      originalUpdateDayInputView.apply(this, arguments);
-      checkForNudge();
-      // Stress laden, wenn Tag geladen
-      if (currentDayEntry && currentDayEntry.stressLevel !== undefined) {
-        const radio = document.querySelector(`input[name="stressLevel"][value="${currentDayEntry.stressLevel}"]`);
-        if (radio) {
-          radio.checked = true;
-          radio.closest('.stress-option').classList.add('selected');
-        }
-      }
-    };
-
-    // Erweitere saveDay um Stress
-    const originalSaveDay = saveDay;
-    saveDay = function() {
-      const stressRadio = document.querySelector('input[name="stressLevel"]:checked');
-      if (stressRadio) {
-        currentDayEntry.stressLevel = parseInt(stressRadio.value);
-      }
-      originalSaveDay.apply(this, arguments);
-    };
-
   </script>
 
 <script>
@@ -2447,27 +3728,6 @@
   });
 })();
 </script>
-
-<!-- Neu: Markov Popup (bereits vorhanden, aber für Vollständigkeit) -->
-<div class="chart-popup-overlay" id="markovOverlay" onclick="toggleMarkovPopup()"></div>
-<div id="markovPopup" class="chart-popup">
-  <div id="markovContent"></div>
-</div>
-
-<!-- Neu: Nudging Toggle in Settings (erweiterte Settings Sektion) -->
-<div id="settingsNudging" class="settings-section">
-  <div class="settings-section-header" onclick="toggleSettingsSection('settingsNudging')">
-    <span class="settings-section-title">Predictive Nudging</span>
-    <span class="settings-section-toggle">▼</span>
-  </div>
-  <div class="settings-section-content">
-    <div class="settings-description">Aktiviere proaktive Tipps basierend auf deiner Prognose. Hilft bei der Selbstwirksamkeit (evidenzbasiert aus CBT-Studien).</div>
-    <div class="checkbox-item">
-      <input type="checkbox" id="toggleNudging">
-      <label for="toggleNudging">Nudging aktivieren</label>
-    </div>
-  </div>
-</div>
 
 </body>
 </html>

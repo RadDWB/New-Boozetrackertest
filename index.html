@@ -801,6 +801,38 @@
 
       <div class="current-date" id="currentDateDisplay"></div>
 
+      <!-- Predictive Nudging Alert -->
+      <div id="nudgingAlert" style="display:none; margin:16px 0; padding:20px; background:linear-gradient(135deg, #fef3c7, #fde68a); border:3px solid #f59e0b; border-radius:12px; box-shadow:0 4px 12px rgba(245,158,11,0.3);">
+        <div style="display:flex; align-items:flex-start; gap:16px;">
+          <div style="font-size:40px;">🚨</div>
+          <div style="flex:1;">
+            <div style="font-size:18px; font-weight:800; color:#92400e; margin-bottom:8px;">
+              RISIKO-ALERT: Erhöhte Wahrscheinlichkeit für Risikotag!
+            </div>
+            <div style="font-size:14px; line-height:1.6; color:#78350f; margin-bottom:12px;" id="nudgingMessage">
+              Dein Verhaltensmuster deutet auf erhöhtes Risiko hin...
+            </div>
+            <div style="font-size:13px; font-weight:700; color:#78350f; margin-bottom:8px;">
+              💡 Was ist dein Plan B?
+            </div>
+            <div style="display:flex; flex-wrap:wrap; gap:8px;">
+              <button onclick="dismissNudging()" style="padding:8px 16px; background:#10b981; color:white; border:none; border-radius:6px; font-weight:700; cursor:pointer; font-size:12px;">
+                ⭐ Supertag planen
+              </button>
+              <button onclick="dismissNudging()" style="padding:8px 16px; background:#3b82f6; color:white; border:none; border-radius:6px; font-weight:700; cursor:pointer; font-size:12px;">
+                🏃 Sport machen
+              </button>
+              <button onclick="dismissNudging()" style="padding:8px 16px; background:#8b5cf6; color:white; border:none; border-radius:6px; font-weight:700; cursor:pointer; font-size:12px;">
+                📞 Freunde anrufen
+              </button>
+              <button onclick="dismissNudging()" style="padding:8px 16px; background:#gray; color:white; border:none; border-radius:6px; font-weight:600; cursor:pointer; font-size:12px; margin-left:auto;">
+                ✕ Schließen
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <!-- Kategorie-Auswahl mit Beschreibungen -->
       <div class="choice-container" role="group" aria-label="Tagesauswahl">
         <label class="choice-option superday" data-value="superday">
@@ -877,6 +909,37 @@
           placeholder="Notizen zum Tag (z.B. Anlass, Gefühle, Situation)..."
           style="width:100%; min-height:80px; resize:vertical; padding:10px; border:1px solid #d1d5db; border-radius:8px; font-size:13px; font-family:inherit;"
         ></textarea>
+      </div>
+
+      <!-- Stress-Level Slider -->
+      <div style="margin-top: 24px; padding: 16px; background: linear-gradient(135deg, #f0f9ff, #e0f2fe); border: 2px solid #bae6fd; border-radius: 12px;">
+        <label style="display: block; font-size: 14px; font-weight: 700; margin-bottom: 12px; color: #0369a1;">
+          🧠 Stress-Level heute:
+          <span class="tooltip-icon" data-tooltip="Wie gestresst fühlst du dich heute? Dies hilft, Muster zwischen Stress und Alkoholkonsum zu erkennen. Standard = 'Der normale Wahnsinn' (0).">?</span>
+        </label>
+
+        <div style="display: flex; align-items: center; gap: 12px;">
+          <input
+            type="range"
+            id="stressSlider"
+            min="-2"
+            max="2"
+            value="0"
+            step="1"
+            style="flex: 1; height: 8px; border-radius: 4px; background: linear-gradient(to right, #10b981, #fbbf24, #ef4444); cursor: pointer; appearance: none; -webkit-appearance: none;"
+          >
+          <div id="stressValue" style="min-width: 140px; font-size: 16px; font-weight: 700; text-align: center; padding: 8px; background: white; border-radius: 8px; border: 2px solid #bae6fd;">
+            😐 Normal (0)
+          </div>
+        </div>
+
+        <div style="display: flex; justify-content: space-between; margin-top: 8px; font-size: 11px; color: #0369a1;">
+          <span>😌 Gechillt</span>
+          <span>😊 Relaxed</span>
+          <span style="font-weight: 700;">😐 Normal</span>
+          <span>😤 Genervt</span>
+          <span>😡 Alarm!</span>
+        </div>
       </div>
 
       <!-- God-Modus Bereich -->
@@ -1328,6 +1391,27 @@
         </div>
       </div>
 
+      <!-- Predictive Nudging Section -->
+      <div class="settings-section" id="settingsNudging">
+        <div class="settings-section-header" onclick="toggleSettingsSection('settingsNudging')">
+          <div class="settings-section-title">🔮 Risiko-Alerts (Predictive Nudging)</div>
+          <div class="settings-section-toggle">▼</div>
+        </div>
+        <div class="settings-section-content">
+          <div class="settings-description">
+            <strong>Proaktive Warnung bei hohem Risiko.</strong><br>
+            Wenn die Markov-Prognose für heute ≥40% Wahrscheinlichkeit für einen Risikotag vorhersagt,
+            zeigt dir die App einen Alert mit Handlungsvorschlägen.<br><br>
+            <em>💡 Nutzen:</em> Stärkt deine <strong>Selbstwirksamkeit</strong> durch rechtzeitige Intervention.
+            Zentral in der Verhaltenstherapie: Vorbereitung ist der Schlüssel!
+          </div>
+          <label style="display:flex; align-items:center; gap:12px; margin-top:12px;">
+            <input id="toggleNudging" type="checkbox">
+            <span><strong>Risiko-Alerts aktivieren</strong></span>
+          </label>
+        </div>
+      </div>
+
       <!-- Neutrale Tage Section -->
       <div class="settings-section" id="settingsNeutralDays">
         <div class="settings-section-header" onclick="toggleSettingsSection('settingsNeutralDays')">
@@ -1413,7 +1497,7 @@
     /* ========================================
        GLOBALE VARIABLEN & KONFIGURATION
     ======================================== */
-    const APP_VERSION = 'v4.3 (03.11.2025 - 11:06)';
+    const APP_VERSION = 'v4.4 (03.11.2025 - 15:43)';
     
     let dayData = {};
     let currentInputDate = new Date();
@@ -1424,6 +1508,7 @@
     let godMode = false;
     let categoryManual = false;
     let markovForecast = []; // Für Markov-Popup
+    let nudgingEnabled = false; // Predictive Nudging Ein/Aus
     let userGender = 'male'; // male | female
     let userWeight = null; // kg, null = default 75kg
     
@@ -1684,6 +1769,7 @@
         neutralDaysSetting = settings.neutralDays || 'ignore';
         neutralDaysWeight = settings.neutralDaysWeight || 30;
         godMode = !!settings.godMode;
+        nudgingEnabled = !!settings.nudgingEnabled;
         userGender = settings.gender || 'male';
         userWeight = settings.weight || null;
 
@@ -2127,7 +2213,19 @@
       
       // Kommentar laden
       document.getElementById('dayCommentInput').value = getDayComment(key);
-      
+
+      // Stress-Level laden
+      const stressLevel = entry?.stress !== undefined ? entry.stress : 0;
+      document.getElementById('stressSlider').value = stressLevel;
+      const stressLabels = {
+        '-2': '😌 Supergechillt (-2)',
+        '-1': '😊 Relaxed (-1)',
+        '0': '😐 Normal (0)',
+        '1': '😤 Genervt (+1)',
+        '2': '😡 Alarm! (+2)'
+      };
+      document.getElementById('stressValue').textContent = stressLabels[stressLevel];
+
       // God-Modus Sichtbarkeit
       const godSection = document.getElementById('godSection');
       godSection.style.display = godMode ? 'block' : 'none';
@@ -2177,6 +2275,9 @@
           radio.dataset.autoSelected = 'true'; // Markiere als geladen, nicht manuell
         }
       }
+
+      // Predictive Nudging prüfen
+      checkAndShowNudging();
     }
 
     function saveDay() {
@@ -2189,10 +2290,12 @@
       
       const key = formatDateKey(currentInputDate);
       const comment = document.getElementById('dayCommentInput').value.trim();
-      
+      const stressLevel = parseInt(document.getElementById('stressSlider').value);
+
       const entry = {
         status: selected.value,
-        comment
+        comment,
+        stress: stressLevel
       };
       
       if (godMode) {
@@ -2232,6 +2335,8 @@
       
       // Zurücksetzen
       document.getElementById('dayCommentInput').value = '';
+      document.getElementById('stressSlider').value = '0';
+      document.getElementById('stressValue').textContent = '😐 Normal (0)';
       activeDrinks = [];
       document.getElementById('drinksList').innerHTML = '';
       document.querySelectorAll('.checkbox-item input').forEach(cb => cb.checked = false);
@@ -3026,22 +3131,60 @@
       });
       
       const weekendBinger = weekendTotal > 0 && (weekendHigh / weekendTotal) >= 0.4;
-      
-      // === 5. VOLATILITÄT (14-Tage-Schwankungen) ===
-      const last14Grams = gramsData.slice(0, 14).filter(g => g > 0);
-      let volatility = 0;
-      if (last14Grams.length > 1) {
-        const mean = last14Grams.reduce((sum, g) => sum + g, 0) / last14Grams.length;
-        const variance = last14Grams.reduce((sum, g) => sum + Math.pow(g - mean, 2), 0) / last14Grams.length;
-        volatility = Math.sqrt(variance);
+
+      // === 5. CVaR - CONDITIONAL VALUE AT RISK (95%) ===
+      // Misst den Durchschnitt der schlimmsten 5% Tage (robuster als Standardabweichung)
+      const last100Grams = gramsData.slice(0, 100).filter(g => g > 0);
+      let cvar95 = 0;
+      let cvarRisk = 'niedrig';
+
+      if (last100Grams.length >= 20) {
+        // Sortiere absteigend
+        const sortedGrams = [...last100Grams].sort((a, b) => b - a);
+        // Nimm die schlimmsten 5% (mindestens 1 Tag)
+        const percentile5 = Math.max(1, Math.ceil(sortedGrams.length * 0.05));
+        const worst5Percent = sortedGrams.slice(0, percentile5);
+        cvar95 = worst5Percent.reduce((sum, g) => sum + g, 0) / worst5Percent.length;
+
+        // Bewertung basierend auf CVaR
+        if (cvar95 > 80) cvarRisk = 'sehr hoch ⚠️ (Extremtage kritisch!)';
+        else if (cvar95 > 60) cvarRisk = 'hoch ⚠️ (Binge-Tage problematisch)';
+        else if (cvar95 > 40) cvarRisk = 'moderat (Risiko-Peaks vorhanden)';
+        else cvarRisk = 'niedrig (selbst Peaks moderat)';
       }
-      
-      let volRisk = 'stabil';
-      if (volatility > 30) volRisk = 'sehr volatil ⚠️';
-      else if (volatility > 20) volRisk = 'volatil';
-      else if (volatility > 10) volRisk = 'moderat schwankend';
-      
-      // === 6. TOLERANCE CREEP ===
+
+      // === 6. LEBER-BELASTUNGS-SCORE (Kumulative toxische Dosis) ===
+      // Modelliert metabolische Halbwertszeit: Alkohol-Toxizität nimmt exponentiell ab
+      // Lambda (λ) = ln(2) / Halbwertszeit_in_Tagen
+      // Halbwertszeit Leber-Regeneration: ~21 Tage (biologisch plausibel)
+      const lambda = Math.log(2) / 21; // ≈ 0.033
+      let liverScore = 0;
+
+      // Berechne über 365 Tage (1 Jahr)
+      for (let i = 0; i < Math.min(365, gramsData.length); i++) {
+        const grams = gramsData[i];
+        const weight = Math.exp(-lambda * i); // Exponentieller Decay
+        liverScore += grams * weight;
+      }
+
+      // Bewertung des Leber-Scores (empirische Schwellenwerte)
+      let liverRisk = 'niedrig ✅';
+      let liverWarning = '';
+
+      if (liverScore > 800) {
+        liverRisk = 'sehr hoch 🚨';
+        liverWarning = '<div style="margin-top:8px; padding:8px; background:#fee2e2; border-left:3px solid #dc2626; border-radius:4px;"><strong>🚨 KRITISCH:</strong> Kumulative Leber-Belastung sehr hoch! Deine Leber braucht DRINGEND eine längere Erholungsphase. Empfehlung: Min. 30 Tage alkoholfrei für echte Regeneration. Erwäge ärztliche Kontrolle (Leberwerte)!</div>';
+      } else if (liverScore > 500) {
+        liverRisk = 'hoch ⚠️';
+        liverWarning = '<div style="margin-top:8px; padding:8px; background:#fef3c7; border-left:3px solid #f59e0b; border-radius:4px;"><strong>⚠️ WARNUNG:</strong> Hohe kumulative Belastung. Deine Leber arbeitet am Limit. Empfehlung: Min. 14 Tage alkoholfrei für Teilregeneration. Langfristig Konsum deutlich reduzieren!</div>';
+      } else if (liverScore > 300) {
+        liverRisk = 'moderat 🟡';
+        liverWarning = '<div style="margin-top:8px; padding:8px; background:#e0f2fe; border-left:3px solid #0284c7; border-radius:4px;"><strong>💡 TIPP:</strong> Moderate Belastung erkennbar. 7-10 alkoholfreie Tage würden deiner Leber gut tun. Beobachte dein Muster!</div>';
+      } else if (liverScore > 150) {
+        liverRisk = 'leicht 🟢';
+      }
+
+      // === 7. TOLERANCE CREEP ===
       const first90 = last180Days.slice(90, 180);
       const recent90 = last180Days.slice(0, 90);
       
@@ -3261,11 +3404,25 @@
             <div style="font-weight:800; margin-bottom:12px; font-size:16px;">🔥 Cluster & Patterns</div>
             <div><strong>Längster Cluster:</strong> ${maxCluster} Tage (≥20g am Stück) ${maxCluster >= 5 ? '⚠️' : ''}</div>
             <div><strong>Cluster-Events (≥3 Tage):</strong> ${clusterEvents.length}</div>
-            <div><strong>Weekend-Binge Pattern:</strong> ${weekendBinger ? '⚠️ Ja (Fr/Sa-Fokus)' : 'Nein'} 
+            <div><strong>Weekend-Binge Pattern:</strong> ${weekendBinger ? '⚠️ Ja (Fr/Sa-Fokus)' : 'Nein'}
               <span style="font-size:12px;">(${weekendHigh}/${weekendTotal} Wochenenden)</span></div>
-            <div><strong>Volatilität (14d):</strong> ${volRisk} <span style="font-size:12px;">(σ=${volatility.toFixed(1)}g)</span></div>
+            <div>
+              <strong>CVaR 95% (Extremrisiko):</strong> ${cvarRisk}
+              <span class="tooltip-icon" data-tooltip="Conditional Value-at-Risk: Durchschnitt der schlimmsten 5% deiner Tage (100d). Robustere Metrik als Standardabweichung - zeigt die wahre Schwere deiner Binge-Tage. Aus Finance/Risk-Management.">?</span>
+              <span style="font-size:12px;">(Ø ${cvar95.toFixed(1)}g bei Peaks)</span>
+            </div>
           </div>
-          
+
+          <div style="margin-bottom:24px; padding:16px; background:#fef9f3; border-radius:8px; border:1px solid #fed7aa;">
+            <div style="font-weight:800; margin-bottom:12px; font-size:16px;">🫀 Leber-Belastungs-Score</div>
+            <div>
+              <strong>Kumulative Toxische Dosis (365d):</strong> ${liverRisk}
+              <span class="tooltip-icon" data-tooltip="Kumulative Leber-Belastung mit exponentieller Decay-Funktion (λ = ln(2)/21, Halbwertszeit 21 Tage). Modelliert biologische Regeneration. Niedrig=✅, Leicht=🟢, Moderat=🟡, Hoch=⚠️, Sehr hoch=🚨. Je höher, desto wichtiger sind alkoholfreie Phasen.">?</span>
+              <span style="font-size:12px;">(Score: ${liverScore.toFixed(0)})</span>
+            </div>
+            ${liverWarning}
+          </div>
+
           <div style="margin-bottom:24px; padding:16px; background:#f0fdf4; border-radius:8px; border:1px solid #bbf7d0;">
             <div style="font-weight:800; margin-bottom:12px; font-size:16px;">📈 Trends & Tolerance</div>
             <div>
@@ -3424,6 +3581,7 @@
           radio.closest('.settings-option').classList.add('selected');
         }
         document.getElementById('toggleGodMode').checked = godMode;
+        document.getElementById('toggleNudging').checked = nudgingEnabled;
 
         // Gender-Radio korrekt vorselektieren
         const gInput = document.querySelector(`input[name="gender"][value="${userGender}"]`);
@@ -3465,6 +3623,7 @@
       
       neutralDaysWeight = parseInt(document.getElementById('neutralWeightSlider').value) || 30;
       godMode = document.getElementById('toggleGodMode').checked;
+      nudgingEnabled = document.getElementById('toggleNudging').checked;
 
       if (storageWorking) {
         try {
@@ -3472,6 +3631,7 @@
             neutralDays: neutralDaysSetting,
             neutralDaysWeight,
             godMode,
+            nudgingEnabled,
             gender: userGender,
             weight: userWeight
           }));
@@ -3483,6 +3643,51 @@
       toggleSettingsPopup();
       updateDayInputView();
       alert('✅ Einstellungen gespeichert.');
+    }
+
+    /* ========================================
+       PREDICTIVE NUDGING
+    ======================================== */
+    function checkAndShowNudging() {
+      if (!nudgingEnabled) {
+        document.getElementById('nudgingAlert').style.display = 'none';
+        return;
+      }
+
+      // Prüfe ob Markov-Prognose für heute ≥40% Risiko zeigt
+      if (markovForecast.length === 0) {
+        document.getElementById('nudgingAlert').style.display = 'none';
+        return;
+      }
+
+      const todayForecast = markovForecast[0]; // Tag 1 = heute
+      const riskStates = ['alcohol', 'mixed', 'moderate', 'hangover'];
+      const isRiskDay = riskStates.includes(todayForecast.state);
+      const probability = parseInt(todayForecast.prob);
+
+      if (isRiskDay && probability >= 40) {
+        // Zeige Alert
+        const message = `Dein Verhaltensmuster deutet auf <strong>${probability}% Wahrscheinlichkeit</strong> für einen <strong>${getStateLabel(todayForecast.state)}</strong> hin. ` +
+                       `Jetzt ist der richtige Moment für eine bewusste Entscheidung!`;
+        document.getElementById('nudgingMessage').innerHTML = message;
+        document.getElementById('nudgingAlert').style.display = 'block';
+      } else {
+        document.getElementById('nudgingAlert').style.display = 'none';
+      }
+    }
+
+    function getStateLabel(state) {
+      const labels = {
+        alcohol: 'Alkohol-Tag',
+        mixed: 'Mixed-Tag (Schadensbegrenzung)',
+        moderate: 'Moderaten Tag',
+        hangover: 'Vollrausch'
+      };
+      return labels[state] || state;
+    }
+
+    function dismissNudging() {
+      document.getElementById('nudgingAlert').style.display = 'none';
     }
 
     /* ========================================
@@ -3576,7 +3781,21 @@
       document.getElementById('checkCrash').addEventListener('change', updateLiveCalc);
       document.getElementById('checkHangover').addEventListener('change', updateLiveCalc);
       document.getElementById('checkHangoverLight').addEventListener('change', updateLiveCalc);
-      
+
+      // Stress-Slider
+      const stressLabels = {
+        '-2': '😌 Supergechillt (-2)',
+        '-1': '😊 Relaxed (-1)',
+        '0': '😐 Normal (0)',
+        '1': '😤 Genervt (+1)',
+        '2': '😡 Alarm! (+2)'
+      };
+
+      document.getElementById('stressSlider').addEventListener('input', (e) => {
+        const value = e.target.value;
+        document.getElementById('stressValue').textContent = stressLabels[value];
+      });
+
       document.getElementById('checkDope').addEventListener('change', (e) => {
         document.getElementById('dopeDetails').style.display = e.target.checked ? 'block' : 'none';
       });
