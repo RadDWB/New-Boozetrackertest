@@ -503,10 +503,23 @@
     .assessment-description{ padding:12px; background:white; border-radius:10px; border:1px solid #e5e7eb; font-size:13px; line-height:1.6; color:var(--text); }
     .assessment-warning{ margin-top:12px; padding:10px; background:#fff7ed; border-left:4px solid #fb923c; border-radius:6px; font-size:12px; color:#9a3412; }
 
-    /* Detailanalyse Toggle (wird nicht mehr benötigt, da jetzt btn-longterm-toggle verwendet wird) */
+    /* Detailanalyse Toggle */
+    .analysis-advanced{ margin-top: 14px; }
+    .analysis-toggle{
+      appearance:none;
+      background:#f1f5f9;
+      border:1px solid #e5e7eb;
+      color:#111827;
+      padding:10px 14px;
+      border-radius:10px;
+      font-weight:700;
+      cursor:pointer;
+      width:100%;
+    }
+    .analysis-toggle:hover{ background:#e2e8f0; }
     .analysis-box{
       display:none;
-      margin-top:0;
+      margin-top:12px;
       padding:14px;
       background:#fff;
       border:1px solid #e5e7eb;
@@ -613,33 +626,6 @@
       gap:8px;
     }
     .btn-stats-toggle:hover, .btn-settings:hover{
-      background:linear-gradient(135deg,#e0e7ff,#c7d2fe);
-      border-color:#a5b4fc;
-      transform:translateY(-1px);
-      box-shadow:0 10px 20px rgba(79,70,229,.25);
-    }
-
-    /* Buttons für Langzeit-Analyse Toggles */
-    .btn-longterm-toggle{
-      appearance:none;
-      background:linear-gradient(135deg,#eef2ff,#e0e7ff);
-      border:1.5px solid #c7d2fe;
-      color:#1e3a8a;
-      padding:10px 18px;
-      border-radius:999px;
-      font-size:14px;
-      font-weight:700;
-      cursor:pointer;
-      transition: transform .08s ease, box-shadow .2s ease;
-      box-shadow:0 6px 14px rgba(79,70,229,.18);
-      display:inline-flex;
-      align-items:center;
-      gap:8px;
-      width:100%;
-      justify-content:center;
-      margin-bottom:12px;
-    }
-    .btn-longterm-toggle:hover{
       background:linear-gradient(135deg,#e0e7ff,#c7d2fe);
       border-color:#a5b4fc;
       transform:translateY(-1px);
@@ -1190,6 +1176,80 @@
         </div>
       </div>
 
+      <!-- 6-Monats-Langzeitanalyse -->
+      <button id="toggleSixMonthBtn" class="btn secondary" style="width:100%; margin-top:24px; margin-bottom:16px; background-color: #d97706; box-shadow: 0 8px 18px rgba(217, 119, 6, .2);">
+        6-Monats-Analyse anzeigen
+      </button>
+
+      <div id="sixMonthAnalysisSection" class="chart-section" style="margin-top:0; background:#fef9f3; border:1px solid #fbbf24; display:none;">  
+        <div class="chart-title">📈 6-Monats-Langzeitanalyse (180 Tage)</div>
+        <div style="font-size:13px; color:var(--muted); margin-bottom:12px; text-align:center;">
+          Langfristige Muster und Entwicklungen
+        </div>
+        <div class="chart-bars">
+          <div class="chart-bar-container">
+            <div class="chart-bar-header">
+              <div class="chart-bar-label">
+                🔴 Risikotage
+                <small>Alkohol, Schadensbegrenzung, Moderat, Katertag mit Alkohol</small>
+              </div>
+              <div class="chart-bar-value">
+                <span class="chart-bar-number" id="chart6mNegativeNum">0</span>
+                <span class="chart-bar-percent" id="chart6mNegativePct">0%</span>
+              </div>
+            </div>
+            <div class="chart-bar-wrapper">
+              <div class="chart-bar negative" id="chart6mNegative"></div>
+            </div>
+          </div>
+          <div class="chart-bar-container">
+            <div class="chart-bar-header">
+              <div class="chart-bar-label">
+                🟢 Gesunde Tage
+                <small>Supertag, Wellness, Alkoholfrei</small>
+              </div>
+              <div class="chart-bar-value">
+                <span class="chart-bar-number" id="chart6mPositiveNum">0</span>
+                <span class="chart-bar-percent" id="chart6mPositivePct">0%</span>
+              </div>
+            </div>
+            <div class="chart-bar-wrapper">
+              <div class="chart-bar positive" id="chart6mPositive"></div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- 6-Monats-Metriken -->
+        <div class="assessment-metrics" style="margin-top:16px;">
+          <div class="metric-item">
+            <div class="metric-label">
+              Trend (letztes Quartal)
+              <span class="tooltip-icon" data-tooltip="Vergleicht die letzten 90 Tage mit den 90 Tagen davor. 📈=Verbesserung (mehr positive Tage), 📉=Verschlechterung (mehr Risikotage), ➡️=Stabil">?</span>
+            </div>
+            <div class="metric-value" id="metric6mTrend">-</div>
+          </div>
+          <div class="metric-item">
+            <div class="metric-label">
+              Ø Risikotage/Monat
+              <span class="tooltip-icon" data-tooltip="Durchschnittliche Anzahl von Risikotagen (Alkohol, Mixed, Moderat, Katertag mit Alkohol) pro Monat über 6 Monate. Niedriger ist besser.">?</span>
+            </div>
+            <div class="metric-value" id="metric6mAvgRisk">0</div>
+          </div>
+          <div class="metric-item">
+            <div class="metric-label">
+              Kompensationstrinken
+              <span class="tooltip-icon" data-tooltip="Trinken nach Sport/Wellness-Aktivitäten (Checkbox 'Kompensation'). Zeigt problematisches Muster: Sport wird als 'Erlaubnis' zum Trinken missbraucht.">?</span>
+            </div>
+            <div class="metric-value" id="metric6mCompensation">0</div>
+          </div>
+        </div>
+        
+        <div style="margin-top:12px; padding:12px; background:white; border-radius:8px; font-size:12px; color:var(--muted);">
+          <strong>💡 Langzeit-Einschätzung:</strong>
+          <div id="longTermAssessment" style="margin-top:6px;"></div>
+        </div>
+      </div>
+
       <!-- Health Assessment -->
       <div class="health-assessment">
         <div class="assessment-title">🎯 Deine Gesundheitseinschätzung</div>
@@ -1235,87 +1295,13 @@
 
         <div class="assessment-description" id="assessmentDescription"></div>
         <div id="assessmentWarning" class="assessment-warning" style="display:none;"></div>
-      </div>
 
-      <!-- Langzeit-Analyse Buttons -->
-      <div style="margin-top:24px;">
-        <button id="analysisToggle" class="btn-longterm-toggle">🔍 Detaillierte Analyse anzeigen</button>
-
-        <!-- Detailanalyse Section -->
-        <div id="analysisBox" class="analysis-box" style="margin-bottom:12px;">
-          <div style="font-weight:800; margin-bottom:8px;">Feinere Analyse</div>
-          <div id="godMetricsList" style="font-size:13px; line-height:1.7;"></div>
-        </div>
-
-        <button id="toggleSixMonthBtn" class="btn-longterm-toggle">📈 6-Monats-Analyse anzeigen</button>
-
-        <!-- 6-Monats-Langzeitanalyse Section -->
-        <div id="sixMonthAnalysisSection" class="chart-section" style="margin-top:0; background:#fef9f3; border:1px solid #fbbf24; display:none;">
-          <div class="chart-title">📈 6-Monats-Langzeitanalyse (180 Tage)</div>
-          <div style="font-size:13px; color:var(--muted); margin-bottom:12px; text-align:center;">
-            Langfristige Muster und Entwicklungen
-          </div>
-          <div class="chart-bars">
-            <div class="chart-bar-container">
-              <div class="chart-bar-header">
-                <div class="chart-bar-label">
-                  🔴 Risikotage
-                  <small>Alkohol, Schadensbegrenzung, Moderat, Katertag mit Alkohol</small>
-                </div>
-                <div class="chart-bar-value">
-                  <span class="chart-bar-number" id="chart6mNegativeNum">0</span>
-                  <span class="chart-bar-percent" id="chart6mNegativePct">0%</span>
-                </div>
-              </div>
-              <div class="chart-bar-wrapper">
-                <div class="chart-bar negative" id="chart6mNegative"></div>
-              </div>
-            </div>
-            <div class="chart-bar-container">
-              <div class="chart-bar-header">
-                <div class="chart-bar-label">
-                  🟢 Gesunde Tage
-                  <small>Supertag, Wellness, Alkoholfrei</small>
-                </div>
-                <div class="chart-bar-value">
-                  <span class="chart-bar-number" id="chart6mPositiveNum">0</span>
-                  <span class="chart-bar-percent" id="chart6mPositivePct">0%</span>
-                </div>
-              </div>
-              <div class="chart-bar-wrapper">
-                <div class="chart-bar positive" id="chart6mPositive"></div>
-              </div>
-            </div>
-          </div>
-
-          <!-- 6-Monats-Metriken -->
-          <div class="assessment-metrics" style="margin-top:16px;">
-            <div class="metric-item">
-              <div class="metric-label">
-                Trend (letztes Quartal)
-                <span class="tooltip-icon" data-tooltip="Vergleicht die letzten 90 Tage mit den 90 Tagen davor. 📈=Verbesserung (mehr positive Tage), 📉=Verschlechterung (mehr Risikotage), ➡️=Stabil">?</span>
-              </div>
-              <div class="metric-value" id="metric6mTrend">-</div>
-            </div>
-            <div class="metric-item">
-              <div class="metric-label">
-                Ø Risikotage/Monat
-                <span class="tooltip-icon" data-tooltip="Durchschnittliche Anzahl von Risikotagen (Alkohol, Mixed, Moderat, Katertag mit Alkohol) pro Monat über 6 Monate. Niedriger ist besser.">?</span>
-              </div>
-              <div class="metric-value" id="metric6mAvgRisk">0</div>
-            </div>
-            <div class="metric-item">
-              <div class="metric-label">
-                Kompensationstrinken
-                <span class="tooltip-icon" data-tooltip="Trinken nach Sport/Wellness-Aktivitäten (Checkbox 'Kompensation'). Zeigt problematisches Muster: Sport wird als 'Erlaubnis' zum Trinken missbraucht.">?</span>
-              </div>
-              <div class="metric-value" id="metric6mCompensation">0</div>
-            </div>
-          </div>
-
-          <div style="margin-top:12px; padding:12px; background:white; border-radius:8px; font-size:12px; color:var(--muted);">
-            <strong>💡 Langzeit-Einschätzung:</strong>
-            <div id="longTermAssessment" style="margin-top:6px;"></div>
+        <!-- Detailanalyse -->
+        <div class="analysis-advanced">
+          <button id="analysisToggle" class="analysis-toggle">🔍 Detaillierte Analyse anzeigen</button>
+          <div id="analysisBox" class="analysis-box">
+            <div style="font-weight:800; margin-bottom:8px;">Feinere Analyse</div>
+            <div id="godMetricsList" style="font-size:13px; line-height:1.7;"></div>
           </div>
         </div>
       </div>
@@ -1511,7 +1497,7 @@
     /* ========================================
        GLOBALE VARIABLEN & KONFIGURATION
     ======================================== */
-    const APP_VERSION = 'v6.0 (04.11.2025 20:28)';
+    const APP_VERSION = 'v5.0 (03.11.2025 18:45 - Predictive Nudging: Auto-Calculate & Settings-Toggle)';
     
     let dayData = {};
     let currentInputDate = new Date();
