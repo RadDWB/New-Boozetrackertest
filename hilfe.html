@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Wissens-Hub & Erklärung der Logik des Booze-Trackers</title>
+  <title>Wissens-Hub & Erklärung der Logik des Booze-Trackers (v2.3)</title>
   <style>
     /* Farben und Styling (Minimalistisches und klares Design) */
     :root{
@@ -62,8 +62,6 @@
     
     p { margin-bottom: 15px; }
 
-    /* Badges sind hier nicht mehr nötig, da die Zelle gefärbt wird */
-
     table { 
         width: 100%; 
         border-collapse: collapse; 
@@ -74,23 +72,42 @@
     th, td { border: 1px solid var(--card-border); padding: 12px; text-align: left; }
     th { background-color: #f8fafc; font-weight: 700; color: var(--text); }
     
-    /* ⭐ FINAL: Optimierung der Spaltenbreite und Farbgebung ⭐ */
-    
+    /* ⭐ CSS: Text drehen und zentrieren ⭐ */
     /* Spalte 1: Kategorie (gefärbt) */
     table td:nth-child(1),
     table th:nth-child(1) {
-        width: 25%;
-        min-width: 100px;
+        width: 40px; 
+        min-width: 40px; 
+        max-width: 40px; 
         font-weight: 700;
-        color: white; /* Textfarbe auf weiß setzen, da Hintergrund dunkel wird */
+        color: white; 
         text-shadow: 0 1px 1px rgba(0,0,0,0.2);
-        border-right: none; /* Optische Trennung zum Text */
+        border-right: none;
+        
+        /* Rotation-Basis */
+        vertical-align: middle;
+        text-align: center;
+        overflow: hidden;
+        padding: 5px; 
+    }
+    
+    table td:nth-child(1) > * {
+        /* Element drehen und positionieren */
+        display: block;
+        transform: rotate(-90deg);
+        white-space: nowrap; /* Text nicht umbrechen */
+        width: 100%;
+        text-align: center;
+        /* Korrektur für vertikale Zentrierung */
+        position: relative;
+        left: -1px; 
+        top: 0px; 
     }
     
     /* Spalte 2: Beschreibung (maximaler Platz) */
     table td:nth-child(2),
     table th:nth-child(2) {
-        width: 75%;
+        width: calc(100% - 40px); 
         color: var(--text);
     }
 
@@ -104,8 +121,6 @@
     /* Neutral-Zelle braucht dunklen Text */
     .color-neutral { color: var(--muted); }
     
-    /* Ende Spaltenbreite Optimierung */
-
     .note { padding: 15px; background-color: #fffbe6; border-left: 5px solid #f59e0b; margin: 20px 0; color: #78350f; } 
     .code-block { background-color: #f4f6f8; padding: 10px; border-radius: 5px; overflow-x: auto; font-family: monospace; }
     ol, ul { padding-left: 25px; }
@@ -128,6 +143,11 @@
     }
     .back-button:hover {
         color: var(--primary);
+    }
+    
+    /* Container für gedrehten Text */
+    .rotated-text {
+        display: inline-block;
     }
   </style>
 </head>
@@ -153,39 +173,39 @@
 
     <table>
       <tr>
-        <th>Kategorie</th>
+        <th><div class="rotated-text">Kategorie</div></th>
         <th>Beschreibung (Score-Beitrag)</th>
       </tr>
       <tr>
-        <td class="color-super">⭐ SUPERTAG</td>
+        <td class="color-super"><div class="rotated-text">⭐ SUPERTAG</div></td>
         <td>**Hoch Positiv (++):** Ein Tag ohne Alkohol, an dem Sie zusätzlich Sport getrieben haben, zweifellos perfekt. Vielleicht auch für Sie ein Tag an dem Sie Glücklich waren und nichts getrunken haben, oder es gab was anderes, das für Sie den Tag zu einem "Supertag" gemacht hat, ein großes Ziel (z.B. Marathon, Präsentation, besonderes Workout) erreicht oder ein starker Fokus gezeigt wurde.</td>
       </tr>
       <tr>
-        <td class="color-wellness">🧘 WELLNESS</td>
+        <td class="color-wellness"><div class="rotated-text">🧘 WELLNESS</div></td>
         <td>**Positiv (+):** Ein Tag ohne Alkohol, an dem zusätzlich bewusst etwas für die körperliche oder mentale Gesundheit getan wurde (z.B. Sauna, Yoga, Meditation, gesundes Essen usw.).</td>
       </tr>
       <tr>
-        <td class="color-sober">✅ ALKOHOLFREI</td>
+        <td class="color-sober"><div class="rotated-text">✅ ALKOHOLFREI</div></td>
         <td>**Positiv (+):** Ein Tag einfach ohne Alkohol. Die Abwesenheit negativer Gewohnheiten ist ein positiver Standard.</td>
       </tr>
       <tr>
-        <td class="color-moderat">🧡 MODERAT</td>
+        <td class="color-moderat"><div class="rotated-text">🧡 MODERAT</div></td>
         <td>**Leicht Negativ (-):** Konsumierte Alkoholmenge unter den täglichen DGE-Grenzwerten (♀ ≤12g/Tag, ♂ ≤24g/Tag) – also kontrollierter, risikoarmer Konsum.</td>
       </tr>
       <tr>
-        <td class="color-mixed">❤️ "SCHADENSBEGRENZUNG"</td>
+        <td class="color-mixed"><div class="rotated-text">❤️ "SCHADENSBEGRENZUNG"</div></td>
         <td>**Negativ (—):** Alkoholmenge über Moderat, aber, hey, Sie haben doch schliesslich wenigstens Sport gemacht. Daher wird dieser Tag auch nicht ganz so "schlimm" in die Bewertung eingehen, eben "Schadensbegrenzung". Das Verhalten wird (leicht) abgemildert. ABER: Haben Sie an dem Tag VIEL getrunken, ordnet dei Ap sie trotzdem der nächst- oder übernächst schlechteren Kategorie zu". Sie fügen "Sport" durch eine der Checkboxen hinzu.</td>
       </tr>
       <tr>
-        <td class="color-alkohol">🔴 ALKOHOL</td>
+        <td class="color-alkohol"><div class="rotated-text">🔴 ALKOHOL</div></td>
         <td>**Stark Negativ (---):** Alkoholmenge über der Moderat-Grenze und keine positiven Faktoren.</td>
       </tr>
       <tr>
-        <td class="color-vollrausch">🍺💥 VOLLRAUSCH</td>
+        <td class="color-vollrausch"><div class="rotated-text">🍺💥 VOLLRAUSCH</div></td>
         <td>**Sehr Stark Negativ (----):** Extreme Alkoholmenge (>80g) – ein kritisches Warnsignal. Kombiniert mit der Checkbox "Totalabsturz" dürfte klar sein, was gemeint ist.</td>
       </tr>
       <tr>
-        <td class="color-neutral">⚪ NEUTRAL</td>
+        <td class="color-neutral"><div class="rotated-text">⚪ NEUTRAL</div></td>
         <td>**Neutral:** Ein Tag, für den keine Daten vorliegen. Der Score wird durch die Einstellung "Umgang mit leeren Tagen" angepasst.</td>
       </tr>
     </table>
@@ -206,12 +226,10 @@
       <li>**Lange Konsum-Cluster (=Konsum-Serie, -Kette) (:** Mehr als 3 aufeinanderfolgende Tage mit über 20g Alkohol.</li>
     </ul>
 
-    <h4>3. Die Erholungs-Komponente (20% Gewichtung)</h4>
-    <p>Bewertet das anschließende Verhalten nach einem riskanten Tag. Die Komponente bewertet hoch, wenn nach einem Vollrausch am Folgetag ein bewusster "Clean Hangover" (kein Alkohol) oder ein "Wellness-Day" folgt. Dies ist die sogenannte **Recovery Rate**. Die Punkte für einen "Clean Hangover" werden dabei mit einem Multiplikator erhöht, der von der Alkoholmenge des Vortages abhängt.</p>
-
     <div class="note">
         <p><strong class="strong">Wichtig:</strong> Der Tracker unterscheidet zwischen einem normalen **Katertag** und dem **Katertag MIT Weitertrinken** (Haken in der Checkbox + Alkoholmenge > 0). Letzteres ist das kritische Warnzeichen.</p>
     </div>
+    
     <h3>2.1.5. Logik-Tiefe: Der Unterschied zwischen 'Light Hangover' und 'Katertag'</h3>
     <p>Der Booze-Tracker bewertet nicht nur die physikalische Menge des Alkohols, sondern vor allem die **mentale Reaktion und das nachfolgende Verhalten**.</p>
     
@@ -230,6 +248,10 @@
         <li>Der Teufelskreis wird bewusst fortgesetzt.</li>
     </ul>
     <p>Daher führt dieser Zustand (unabhängig von der Tagesmenge) zur stärksten Abwertung und zerstört die Kontinuitäts-Komponente Ihres Risiko-Scores.</p>
+    
+    <h4>3. Die Erholungs-Komponente (20% Gewichtung)</h4>
+    <p>Bewertet das anschließende Verhalten nach einem riskanten Tag. Die Komponente bewertet hoch, wenn nach einem Vollrausch am Folgetag ein bewusster "Clean Hangover" (kein Alkohol) oder ein "Wellness-Day" folgt. Dies ist die sogenannte **Recovery Rate**. Die Punkte für einen "Clean Hangover" werden dabei mit einem Multiplikator erhöht, der von der Alkoholmenge des Vortages abhängt.</p>
+
     <h3>2.2. Erweiterte Analyse: Markov-Ketten und Korrelationen</h3>
     <p>Der Tracker nutzt moderne Analysemethoden, um über einfache Durchschnittswerte hinauszugehen. Die **Markov-Analyse** (eingebettet in die Kontinuitäts-Komponente) untersucht die Wahrscheinlichkeit, mit der ein Verhalten auf ein anderes folgt. Es misst nicht nur *wie oft* Sie trinken, sondern *wie einfach* Sie in ein Muster zurückfallen. Das macht die Analyse so fortgeschritten:</p>
     <ul>
@@ -295,6 +317,8 @@
     <a href="index.html" class="back-button" style="display: block; text-align: center; margin-top: 30px;">
         ← Zurück zur Hauptansicht (App)
     </a>
+    
+    <p style="text-align: center; font-size: 10px; margin-top: 20px; color: var(--muted);">Wissens-Hub Version 2.3</p>
 
   </div>
 </body>
