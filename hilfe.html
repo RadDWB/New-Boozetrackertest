@@ -1,0 +1,316 @@
+Das verstehe ich vollkommen\! Sie haben Recht, eine umfassende Anwendung wie der Habit-Tracker verdient eine **umfangreichere und tiefgehendere Dokumentation**.
+
+Ich habe die `hilfe.html` nun komplett überarbeitet und sie in einen ausführlichen **"Wissens-Hub"** verwandelt. Die neue Version enthält eine detaillierte Einführung in die Philosophie, die Funktionsweise des Logik-Kerns, eine erweiterte Fehlerbehebung sowie eine vollständige Anleitung zu Export/Import und zur mobilen Nutzung.
+
+Hier ist der neue, sehr ausführliche Code für Ihre **`hilfe.html`**.
+
+-----
+
+## 🛠️ Der neue, umfassende "Wissens-Hub" (`hilfe.html`)
+
+Kopieren Sie bitte diesen gesamten Code und speichern Sie ihn erneut als **`hilfe.html`** ab.
+
+```html
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Wissens-Hub & Logik-Erklärung – Booze-Tracker</title>
+  <style>
+    /* Farben und Styling (Minimalistisches und klares Design) */
+    :root{
+      --card-bg:#ffffff;
+      --card-border:#e6eaf1;
+      --text:#1f2937;
+      --muted:#64748b;
+      --primary:#4f46e5;
+      --super:#059669; /* Dunkelgrün */
+      --wellness:#22c55e; /* Hellgrün */
+      --mixed:#f59e0b; /* Orange für Mixed */
+      --danger:#ef4444; /* Rot für Danger */
+      --radius:16px;
+      --shadow:0 12px 30px rgba(31,41,55,.12);
+      --bg-grad-start:#6ea8ff;
+      --bg-grad-end:#8ee5ff;
+    }
+
+    body{
+      margin: 0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Inter, Arial, sans-serif;
+      color: var(--text);
+      background: linear-gradient(135deg, var(--bg-grad-start), var(--bg-grad-end));
+      min-height: 100vh;
+      padding: 20px;
+      line-height: 1.6;
+    }
+
+    .container{
+      max-width: 850px;
+      margin: 0 auto;
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      padding: 30px 40px;
+      box-shadow: var(--shadow);
+    }
+
+    h1{
+      color: var(--primary);
+      text-align: center;
+      margin-bottom: 5px;
+      font-size: 2.5rem;
+    }
+    
+    .subtitle {
+        text-align: center;
+        color: var(--muted);
+        margin-bottom: 40px;
+        font-size: 1.1rem;
+    }
+
+    h2{
+      color: var(--primary);
+      border-bottom: 2px solid var(--card-border);
+      padding-bottom: 8px;
+      margin-top: 50px;
+      font-size: 1.8rem;
+    }
+    
+    h3 {
+        color: var(--text);
+        margin-top: 30px;
+        font-size: 1.3rem;
+        border-left: 4px solid var(--super);
+        padding-left: 10px;
+    }
+
+    .logic-table{
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 15px;
+    }
+
+    .logic-table th, .logic-table td{
+      padding: 12px;
+      text-align: left;
+      border: 1px solid var(--card-border);
+    }
+
+    .logic-table th{
+      background-color: #f7f9fc;
+      font-weight: 700;
+      color: var(--muted);
+      text-transform: uppercase;
+      font-size: 0.9em;
+    }
+
+    .logic-table td:nth-child(1){
+      font-weight: 600;
+    }
+    
+    .logic-table tr:nth-child(even) {
+        background-color: #fcfdff;
+    }
+
+    .back-link{
+      display: block;
+      margin-top: 20px;
+      margin-bottom: 30px;
+      text-align: center;
+      font-size: 1.2rem;
+      font-weight: 600;
+    }
+    
+    .back-link a {
+        color: var(--primary);
+        text-decoration: none;
+        padding: 5px 10px;
+        border: 1px solid var(--primary);
+        border-radius: var(--radius);
+    }
+
+    .badge-super { color: var(--super); font-weight: 700; }
+    .badge-wellness { color: var(--wellness); font-weight: 700; }
+    .badge-mixed { color: var(--mixed); font-weight: 700; }
+    .badge-danger { color: var(--danger); font-weight: 700; }
+    .badge-neutral { color: var(--muted); }
+    .strong { font-weight: 700; }
+    
+    .note {
+        padding: 15px;
+        background-color: #fffbe6;
+        border-left: 5px solid #f59e0b;
+        margin: 20px 0;
+        color: #78350f;
+    }
+    
+    .code-block {
+        background-color: #f4f6f8;
+        padding: 10px;
+        border-radius: 5px;
+        overflow-x: auto;
+        font-family: monospace;
+    }
+    
+    ol, ul {
+        padding-left: 25px;
+    }
+    
+    ol li, ul li {
+        margin-bottom: 10px;
+    }
+
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Wissens-Hub & Tracker-Logik</h1>
+    <p class="subtitle">Alles zur Philosophie, Funktionsweise, Datenverwaltung und mobilen Nutzung Ihres Atomic Habit Trackers.</p>
+
+    <div class="back-link">
+        <a href="index.html">← Zurück zur Tracker-Ansicht</a>
+    </div>
+
+    <h2>1. Die Philosophie: Atomic Habits</h2>
+    <p>Dieser Tracker basiert auf den Prinzipien der **"Atomic Habits" (Die 1%-Methode)** von James Clear. Das Ziel ist es, nicht nur Ergebnisse zu erzielen, sondern eine neue **Identität** aufzubauen.</p>
+    
+    <h3>1.1. Der Habit Loop (Gewohnheitsschleife)</h3>
+    <p>Jede Gewohnheit folgt einem Kreislauf. Der Tracker unterstützt diesen Zyklus:</p>
+    <ul>
+        <li>**Auslöser (Signal):** Der Tracker selbst erinnert täglich an die Eingabe.</li>
+        <li>**Verlangen (Attraktiv):** Die Aussicht auf einen wachsenden Streak und einen grünen Tag.</li>
+        <li>**Reaktion (Einfach):** Die *Mini-Schritte* (≤2 Minuten) machen den Anfang widerstandslos.</li>
+        <li>**Belohnung (Befriedigend):** Der Tages-Score und die Streaks dienen als sofortige, positive Rückmeldung.</li>
+    </ul>
+    
+    <h3>1.2. Die 3-Stufen-Regel (Mini, Normal, Stretch)</h3>
+    <p>Die Unterteilung jeder Gewohnheit in drei Stufen hilft gegen Demotivation und Stagnation:</p>
+    <dl>
+        <dt><strong class="strong">Mini (≤2 Minuten)</strong></dt>
+        <dd>Die **Zwei-Minuten-Regel**: Der kleinste, einfachste Startschritt. Ziel ist die **Konsistenz** – selbst an schlechten Tagen.</dd>
+        <dt><strong class="strong">Normal</strong></dt>
+        <dd>Ihr Standard-Ziel. Dies ist das Niveau, das Sie an den meisten Tagen anstreben sollten.</dd>
+        <dt><strong class="strong">Stretch</strong></dt>
+        <dd>Der "God-Mode" der Gewohnheit. Für Tage mit hoher Energie oder Motivation. Er verhindert, dass Sie sich langweilen oder stagnieren.</dd>
+    </dl>
+    
+    <h2>2. Der Logik-Kern: Tages-Score und Booze-Logik-FAQ</h2>
+    <p>Der Tages-Score ist eine vereinfachte Darstellung Ihres physiologischen und mentalen Zustands. Die Logik geht davon aus, dass **Alkohol die Erholung massiv beeinträchtigt** und dieser Effekt nur gemildert, aber nicht aufgehoben werden kann.</p>
+
+    <h3>2.1. Die Logik-Dominanz: Sport vs. Alkohol</h3>
+    <table class="logic-table">
+        <thead>
+            <tr>
+                <th>Kombination</th>
+                <th>Visueller Tages-Score</th>
+                <th>Logische Auswirkung auf den Score</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Nur Sport gemacht</td>
+                <td><span class="badge-super">✅ SUPER (Dunkelgrün)</span></td>
+                <td>**Maximal Positiv (+):** Ein idealer Tag für Körper und Geist.</td>
+            </tr>
+            <tr>
+                <td>Nur Alkohol getrunken (Checkbox-Eingabe)</td>
+                <td><span class="badge-danger">⛔ DANGER (Rot)</span></td>
+                <td>**Maximal Negativ (-):** Keine ausgleichenden Maßnahmen. Starke Beeinträchtigung der Schlafqualität und Erholung.</td>
+            </tr>
+            <tr>
+                <td><strong class="strong">Beides: Sport UND Alkohol</strong></td>
+                <td><span class="badge-mixed">🟠 MIXED (Orange)</span></td>
+                <td>**Mittel bis Stark Negativ (-):** Der Sport verhindert einen "roten" Tag, aber der **Alkohol dominiert** die Gesamtbewertung. Der Tag zählt nicht als "Grün", da die Regeneration beeinträchtigt ist.</td>
+            </tr>
+            <tr>
+                <td>Keines von beidem</td>
+                <td><span class="badge-neutral">⚪ NEUTRAL (Grau)</span></td>
+                <td>**Neutral/Leicht Positiv (+):** Ein Tag ohne Extreme. Die Abwesenheit negativer Gewohnheiten ist ein kleiner positiver Effekt.</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h3>2.2. God-Mode-Logik (Differenzierte Eingabe)</h3>
+    <p>Der God-Mode ermöglicht eine präzisere Gewichtung des negativen Effekts basierend auf der Menge (z.B. in Einheiten oder Gläsern).</p>
+    <table class="logic-table">
+        <thead>
+            <tr>
+                <th>Kombination (God-Mode)</th>
+                <th>Visueller Tages-Score</th>
+                <th>Logische Auswirkung & Schwellenwert (Theorie)</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Sport + God-Mode (Niedrige Menge, z.B. 1-2 Einheiten)</td>
+                <td><span class="badge-wellness">🟢 WELLNESS (Hellgrün)</span></td>
+                <td>**Positiv (+):** Der Sport gleicht den minimalen Alkoholkonsum fast aus. Der Score ist gut, aber nicht "Super" (Dunkelgrün).</td>
+            </tr>
+            <tr>
+                <td>Sport + God-Mode (Hohe Menge, z.B. > 5 Einheiten)</td>
+                <td><span class="badge-mixed">🟠 MIXED (Orange)</span></td>
+                <td>**Mittel Negativ (-):** Die physiologische Belastung durch die hohe Alkoholmenge kann selbst durch Sport nicht negiert werden.</td>
+            </tr>
+            <tr>
+                <td>Nur God-Mode (Niedrige Menge)</td>
+                <td><span class="badge-mixed">🟠 MIXED (Orange)</span></td>
+                <td>**Leicht Negativ (-):** Eine "Warnung", aber weniger dramatisch als die rote Markierung.</td>
+            </tr>
+        </tbody>
+    </table>
+    
+    <div class="note">
+        <p><strong class="strong">Kern-Theorem der App:</strong> Die höchste Priorität hat die Aufrechterhaltung der Regeneration. Ein grüner Tag erfordert immer 0 Einheiten Alkohol, unabhängig davon, wie viel Sport getrieben wurde.</p>
+    </div>
+
+    <h2>3. Datenverwaltung, Export und Import</h2>
+    <p>Ihre Daten werden **lokal** im Browser-Speicher (Local Storage) Ihres Geräts gespeichert. Dies gewährleistet Datenschutz, erfordert aber regelmäßige Sicherungen.</p>
+
+    <h3>3.1. Funktion: Export (Sicherung)</h3>
+    <p>Die Export-Funktion erstellt eine JSON-Datei Ihrer gesamten Tracker-Historie. Diese dient als **vollständiges Backup**.</p>
+    <ol>
+        <li>Klicken Sie auf den **Export-Button**.</li>
+        <li>Ihr Browser lädt eine Datei (z.B. `tracker_backup_2024-11-05.json`) herunter.</li>
+        <li>**Aktion:** Bewahren Sie diese Datei an einem sicheren Ort (Cloud-Speicher, USB-Stick) auf, da eine Löschung des Browser-Caches (oder ein Gerätewechsel) Ihre Daten vernichtet.</li>
+    </ol>
+    
+    <h3>3.2. Funktion: Import (Wiederherstellung)</h3>
+    <p>Die Import-Funktion überschreibt die **aktuellen** lokalen Daten mit den Inhalten der gewählten JSON-Sicherungsdatei.</p>
+    <ol>
+        <li>Klicken Sie auf den **Import-Button**.</li>
+        <li>Wählen Sie Ihre zuvor exportierte `.json`-Datei aus.</li>
+        <li>**Wichtig:** Bestätigen Sie den Import. Die Daten werden sofort überschrieben.</li>
+        <li>**Zweck:** Gerätewechsel, Wiederherstellung nach Cache-Löschung oder Rollback auf einen früheren Zustand.</li>
+    </ol>
+
+    <h2>4. Mobile Nutzung (Als App auf dem Home-Bildschirm)</h2>
+    <p>Sie können den Tracker wie eine native App nutzen, indem Sie einen direkten Link auf den Home-Bildschirm Ihres Smartphones legen.</p>
+
+    <h3>4.1. Voraussetzung</h3>
+    <p>Die `index.html` muss auf dem Smartphone **lokal gespeichert** sein (z.B. im Download-Ordner oder über Google Drive/Dropbox auf dem Handy abrufbar) und über den Browser geöffnet werden.</p>
+    
+    <h3>4.2. Anleitung für iOS (Safari)</h3>
+    <ol>
+        <li>Öffnen Sie die lokale `index.html`-Datei im **Safari-Browser**.</li>
+        <li>Tippen Sie in der Navigationsleiste unten auf das **Teilen-Symbol** (Rechteck mit Pfeil nach oben).</li>
+        <li>Scrollen Sie im Menü nach unten und wählen Sie die Option **"Zum Home-Bildschirm"**.</li>
+        <li>Bestätigen Sie den Namen und tippen Sie auf **"Hinzufügen"**.</li>
+    </ol>
+
+    <h3>4.3. Anleitung für Android (Chrome)</h3>
+    <ol>
+        <li>Öffnen Sie die lokale `index.html`-Datei im **Chrome-Browser**.</li>
+        <li>Tippen Sie auf das **Dreipunkt-Menü** (⋮) oben rechts.</li>
+        <li>Wählen Sie die Option **"Zum Startbildschirm hinzufügen"** (oder "App installieren").</li>
+        <li>Bestätigen Sie den Namen und tippen Sie auf **"Hinzufügen"**.</li>
+    </ol>
+    
+    <div class="note">
+        <p><strong class="strong">Ergebnis:</strong> Der Tracker öffnet sich nun mit einem eigenen Icon direkt aus dem Home-Bildschirm, ohne die Browser-Elemente anzuzeigen.</p>
+    </div>
+    
+    <div style="height: 50px;"></div>
+  </div>
+</body>
+</html>
+```
