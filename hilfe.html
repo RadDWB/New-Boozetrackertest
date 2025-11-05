@@ -12,10 +12,10 @@
       --text:#1f2937;
       --muted:#64748b;
       --primary:#4f46e5;
-      --super:#059669; /* Dunkelgrün */
-      --wellness:#22c55e; /* Hellgrün */
-      --mixed:#f59e0b; /* Orange für Mixed */
-      --danger:#ef4444; /* Rot für Danger */
+      --super:#059669; /* Dunkelgrün für SUPER und SOBER */
+      --wellness:#22c55e; /* Hellgrün für WELLNESS */
+      --mixed:#f59e0b; /* Orange für MODERAT und MIXED */
+      --danger:#ef4444; /* Rot für ALKOHOL und VOLLRAUSCH */
       --radius:16px;
       --shadow:0 12px 30px rgba(31,41,55,.12);
       --bg-grad-start:#6ea8ff;
@@ -62,38 +62,48 @@
     
     p { margin-bottom: 15px; }
 
-    .badge-sober { color: white; background: var(--super); padding: 3px 8px; border-radius: 4px; font-weight: 700; font-size: 12px; }
-    .badge-wellness { color: white; background: var(--wellness); padding: 3px 8px; border-radius: 4px; font-weight: 700; font-size: 12px; }
-    .badge-moderate { color: white; background: var(--mixed); padding: 3px 8px; border-radius: 4px; font-weight: 700; font-size: 12px; }
-    .badge-alcohol { color: white; background: var(--danger); padding: 3px 8px; border-radius: 4px; font-weight: 700; font-size: 12px; }
-    .badge-neutral { color: var(--muted); background: #f1f5f9; padding: 3px 8px; border-radius: 4px; font-weight: 700; font-size: 12px; }
+    /* Badges sind hier nicht mehr nötig, da die Zelle gefärbt wird */
 
     table { 
         width: 100%; 
         border-collapse: collapse; 
         margin: 20px 0; 
         font-size: 14px; 
-        table-layout: fixed; /* Wichtig für die statische Spaltenbreite */
+        table-layout: fixed;
     }
     th, td { border: 1px solid var(--card-border); padding: 12px; text-align: left; }
     th { background-color: #f8fafc; font-weight: 700; color: var(--text); }
     
-    /* ⭐ FINAL: Optimierung der Spaltenbreite mit relativen Werten ⭐ */
+    /* ⭐ FINAL: Optimierung der Spaltenbreite und Farbgebung ⭐ */
+    
+    /* Spalte 1: Kategorie (gefärbt) */
     table td:nth-child(1),
     table th:nth-child(1) {
-        width: 25%; /* Kategorie-Name */
+        width: 25%;
         min-width: 100px;
+        font-weight: 700;
+        color: white; /* Textfarbe auf weiß setzen, da Hintergrund dunkel wird */
+        text-shadow: 0 1px 1px rgba(0,0,0,0.2);
+        border-right: none; /* Optische Trennung zum Text */
     }
+    
+    /* Spalte 2: Beschreibung (maximaler Platz) */
     table td:nth-child(2),
     table th:nth-child(2) {
-        width: 15%; /* Farbe/Score-Beitrag (kleiner) */
-        min-width: 80px;
+        width: 75%;
+        color: var(--text);
     }
-    table td:nth-child(3),
-    table th:nth-child(3) {
-        width: 60%; /* Beschreibung (größtenteils) */
-    }
-    td:first-child { font-weight: 600; }
+
+    /* Farb-Logik für die Zellen */
+    .color-sober, .color-super { background-color: var(--super); }
+    .color-wellness { background-color: var(--wellness); }
+    .color-moderat, .color-mixed { background-color: var(--mixed); }
+    .color-alkohol, .color-vollrausch { background-color: var(--danger); }
+    .color-neutral { background-color: #f1f5f9; color: var(--muted); }
+
+    /* Neutral-Zelle braucht dunklen Text */
+    .color-neutral { color: var(--muted); }
+    
     /* Ende Spaltenbreite Optimierung */
 
     .note { padding: 15px; background-color: #fffbe6; border-left: 5px solid #f59e0b; margin: 20px 0; color: #78350f; } 
@@ -125,7 +135,7 @@
   <div class="container">
     
     <a href="index.html" class="back-button">
-        ← Zurück zur Hauptansicht
+        ← Zurück zur Hauptansicht (App)
     </a>
     
     <h1>Wissens-Hub & Tracker-Logik – Booze-Tracker</h1>
@@ -136,55 +146,46 @@
     <h2>1. Die Philosophie des Booze-Trackers</h2>
     
     <h3>1.1. Fokus auf Verhalten (Input) statt nur Ergebnis (Output)</h3>
-    <p>Der Tracker bewertet nicht nur, <strong>wie viel</strong> Sie trinken, sondern auch, <strong>wie</strong> Sie sich dabei verhalten. Zum Beispiel zählt ein Katertag, an dem Sie nicht weitertrinken, positiv, da Sie den negativen Kreislauf bewusst stoppen. Ein Tag mit Sport und moderatem Konsum wird als "Schadensbegrenzung" eingestuft.</p>
+    <p>Der Tracker bewertet nicht nur, **wie viel** Sie trinken, sondern auch, **wie** Sie sich dabei verhalten. Zum Beispiel zählt ein Katertag, an dem Sie nicht weitertrinken, positiv, da Sie den negativen Kreislauf bewusst stoppen. Ein Tag mit Sport und moderatem Konsum wird als "Schadensbegrenzung" eingestuft.</p>
     
     <h3>1.2. Kategorien als Entscheidungs-Werkzeug</h3>
-    <p>Jede Kategorie ("Sober", "Wellness", "Moderate", etc.) repräsentiert eine bewusste Entscheidung. Der Tracker rechnet die Alkoholgramm im God-Modus in eine der Kategorien um. Ziel ist es, die Verhaltensmuster zu erkennen und zu verbessern. Die fünf Basis-Kategorien sind:</p>
+    <p>Jede Kategorie repräsentiert eine bewusste Entscheidung. Der Tracker stuft das Tagesergebnis basierend auf Alkoholmenge und Zusatzfaktoren in eine der Kategorien ein. Ziel ist es, die Verhaltensmuster zu erkennen und zu verbessern. Die acht Kategorien sind:</p>
 
     <table>
       <tr>
         <th>Kategorie</th>
-        <th>Farbe (Score-Beitrag)</th>
-        <th>Beschreibung</th>
+        <th>Beschreibung (Score-Beitrag)</th>
       </tr>
       <tr>
-        <td>⭐ Super-Day</td>
-        <td><span class="badge-sober">🟢 SUPER</span></td>
+        <td class="color-super">⭐ SUPER</td>
         <td>**Hoch Positiv (++):** Ein Tag ohne Alkohol, an dem ein großes Ziel (z.B. Marathon, Präsentation, besonderes Workout) erreicht oder ein starker Fokus gezeigt wurde.</td>
       </tr>
       <tr>
-        <td>🧘 Wellness-Day</td>
-        <td><span class="badge-wellness">🟢 WELLNESS</span></td>
+        <td class="color-wellness">🧘 WELLNESS</td>
         <td>**Positiv (+):** Ein Tag ohne Alkohol, an dem zusätzlich bewusst etwas für die körperliche oder mentale Gesundheit getan wurde (z.B. Sport, Meditation, gesundes Essen).</td>
       </tr>
       <tr>
-        <td>✅ Sober</td>
-        <td><span class="badge-sober">🟢 SOBER</span></td>
+        <td class="color-sober">✅ SOBER</td>
         <td>**Positiv (+):** Ein Tag ohne Alkohol und ohne spezifische Wellness-Aktivität. Die Abwesenheit negativer Gewohnheiten ist ein positiver Standard.</td>
       </tr>
       <tr>
-        <td>🧡 Moderat</td>
-        <td><span class="badge-moderate">🟠 MODERAT</span></td>
+        <td class="color-moderat">🧡 MODERAT</td>
         <td>**Leicht Negativ (-):** Alkoholmenge unter den täglichen DGE-Grenzwerten (♀ ≤12g/Tag, ♂ ≤24g/Tag) – also kontrollierter, risikoarmer Konsum.</td>
       </tr>
       <tr>
-        <td>❤️ Schadensbegrenzung (Mixed)</td>
-        <td><span class="badge-moderate">🟠 MIXED</span></td>
-        <td>**Negativ (—):** Alkoholmenge über Moderat, aber kombiniert mit positiven Faktoren wie Sport am selben Tag oder einer Katertag-Entscheidung gegen das Weitertrinken. Der Alkohol dominiert die Gesamtbewertung, aber das Verhalten wird abgemildert.</td>
+        <td class="color-mixed">❤️ MIXED</td>
+        <td>**Negativ (—):** Alkoholmenge über Moderat, aber kombiniert mit positiven Faktoren wie Sport am selben Tag oder einer Katertag-Entscheidung gegen das Weitertrinken ("Schadensbegrenzung"). Das Verhalten wird abgemildert.</td>
       </tr>
       <tr>
-        <td>🔴 Alkohol</td>
-        <td><span class="badge-alcohol">🔴 ALKOHOL</span></td>
+        <td class="color-alkohol">🔴 ALKOHOL</td>
         <td>**Stark Negativ (---):** Kontrollverlust, Alkoholmenge über der Moderat-Grenze und keine positiven Faktoren.</td>
       </tr>
       <tr>
-        <td>🍺💥 Vollrausch</td>
-        <td><span class="badge-alcohol">🔴 VOLLRAUSCH</span></td>
+        <td class="color-vollrausch">🍺💥 VOLLRAUSCH</td>
         <td>**Sehr Stark Negativ (----):** Extreme Alkoholmenge (>80g) – ein kritisches Warnsignal.</td>
       </tr>
       <tr>
-        <td>Keine Angabe</td>
-        <td><span class="badge-neutral">⚪ NEUTRAL (Grau)</span></td>
+        <td class="color-neutral">⚪ NEUTRAL</td>
         <td>**Neutral:** Ein Tag, für den keine Daten vorliegen. Der Score wird durch die Einstellung "Umgang mit leeren Tagen" angepasst.</td>
       </tr>
     </table>
@@ -195,7 +196,7 @@
     <h3>2.1. Die drei Score-Komponenten</h3>
     
     <h4>1. Die Kontinuitäts-Komponente (40% Gewichtung)</h4>
-    <p>Misst die Regelmäßigkeit des positiven Verhaltens. Sie basiert auf der <strong>Abstinenztage-Quote (AF-Quote)</strong>. Je höher die AF-Quote (Tage ohne Alkohol), desto besser. Die Gewichtung belohnt lange, ununterbrochene "Sober"-Phasen. Ein Tag mit 80g Alkohol ist weniger schädlich für den Score, wenn er isoliert auftritt, als eine Kette von 3 Tagen mit je 40g.</p>
+    <p>Misst die Regelmäßigkeit des positiven Verhaltens. Sie basiert auf der **Abstinenztage-Quote (AF-Quote)**. Die Gewichtung belohnt lange, ununterbrochene "Sober"-Phasen. Ein Tag mit hohem Alkoholkonsum ist weniger schädlich für den Score, wenn er isoliert auftritt, als eine Kette von Tagen mit mittlerem Konsum.</p>
 
     <h4>2. Die Risikoverhaltens-Komponente (40% Gewichtung)</h4>
     <p>Bestraft die gefährlichsten Verhaltensmuster. Die stärkste Abwertung gibt es für:</p>
@@ -206,36 +207,55 @@
     </ul>
 
     <h4>3. Die Erholungs-Komponente (20% Gewichtung)</h4>
-    <p>Bewertet das anschließende Verhalten nach einem riskanten Tag. Hier zählt die **Recovery Rate**. Die Komponente bewertet hoch, wenn nach einem Vollrausch am Folgetag ein bewusster "Clean Hangover" (kein Alkohol) oder ein "Wellness-Day" folgt. Die Punktzahl für einen "Clean Hangover" wird dabei um einen Multiplikator erhöht, der von der Alkoholmenge des Vortages abhängt (je höher der Vortags-Pegel, desto höher der Erholungs-Bonus).</p>
+    <p>Bewertet das anschließende Verhalten nach einem riskanten Tag. Die Komponente bewertet hoch, wenn nach einem Vollrausch am Folgetag ein bewusster "Clean Hangover" (kein Alkohol) oder ein "Wellness-Day" folgt. Dies ist die sogenannte **Recovery Rate**. Die Punkte für einen "Clean Hangover" werden dabei mit einem Multiplikator erhöht, der von der Alkoholmenge des Vortages abhängt.</p>
 
     <div class="note">
-        <p><strong class="strong">Wichtig:</strong> Der Tracker unterscheidet zwischen einem normalen Katertag (Status 'hangover') und dem **Hangover MIT Weitertrinken** (Checkbox 'checkHangover' + Alkoholmenge > 0). Letzteres ist das kritische Warnzeichen.</p>
+        <p><strong class="strong">Wichtig:</strong> Der Tracker unterscheidet zwischen einem normalen Katertag (Status 'hangover') und dem **Hangover MIT Weitertrinken** (Haken in der Checkbox + Alkoholmenge > 0). Letzteres ist das kritische Warnzeichen.</p>
     </div>
 
-    <h3>2.2. Long-Term-Analyse (180 Tage)</h3>
-    <p>Diese Analyse liefert langfristige Metriken und Korrelationen (CBT-fokussiert), die in der 100-Tage-Analyse nicht erfasst werden, darunter:</p>
+    <h3>2.2. Erweiterte Analyse: Markov-Ketten und Korrelationen</h3>
+    <p>Der Tracker nutzt moderne Analysemethoden, um über einfache Durchschnittswerte hinauszugehen. Die **Markov-Analyse** (eingebettet in die Kontinuitäts-Komponente) untersucht die Wahrscheinlichkeit, mit der ein Verhalten auf ein anderes folgt. Es misst nicht nur *wie oft* Sie trinken, sondern *wie einfach* Sie in ein Muster zurückfallen. Das macht die Analyse so fortgeschritten:</p>
     <ul>
-      <li>**Wöchentlicher Durchschnitt:** Durchschnittliche Gramm reinen Alkohols pro Woche.</li>
-      <li>**Stress-Korrelation:** Misst, ob Alkoholkonsum durch ein hohes Stress-Level getriggert wird (positive Korrelation) oder paradoxerweise bei Entspannung (negative Korrelation, z.B. reines Party-Muster).</li>
-      <li>**Schlaf-Korrelation:** Misst den Zusammenhang zwischen Schlafqualität und Alkoholkonsum.</li>
-      <li>**Recovery Rate:** Durchschnittliche Anzahl abstinenter Tage, die nach einem Binge-Tag (≥60g) benötigt werden, um wieder einen Sober- oder Wellness-Tag zu erreichen.</li>
+      <li>**Predictive Power:** Sie kann vorhersagen, mit welcher Wahrscheinlichkeit auf einen "Moderat"-Tag ein "Alkohol"-Tag folgt.</li>
+      <li>**Auslöser-Erkennung:** Die Korrelationen helfen, **reale Trigger** zu identifizieren (z.B. hohe Stress-Level, schlechter Schlaf), die Ihren Konsum beeinflussen.</li>
+      <li>**Ziel:** Ein realistischeres, weniger stigmatisierendes Bild Ihres Verhaltens zu liefern. Sie sollen Muster verstehen, nicht sich selbst verurteilen.</li>
     </ul>
 
-    <h2>3. Daten-Sicherheit und Portabilität</h2>
+    <h2>3. Selbst-Tracking & Ehrlichkeit (Cheating)</h2>
     
-    <h3>3.1. Lokale Speicherung</h3>
+    <h3>3.1. Die Macht der Ehrlichkeit</h3>
+    <p>Das Tracken des eigenen Konsums ist eine sehr persönliche und mutige Entscheidung. Die Genauigkeit der Analyse hängt jedoch vollständig von Ihrer **Ehrlichkeit** ab. Der Tracker ist ein Spiegel – wenn Sie lügen, belügen Sie nur sich selbst. Die Konsequenzen:</p>
+    <ul>
+      <li>**Falsche Muster:** Der Tracker lernt falsche Korrelationen und gibt Ihnen irreführende Muster zurück. Sie verstehen Ihre echten Trigger nicht.</li>
+      <li>**Verlust des Ziels:** Der Score wird künstlich hochgehalten, aber Ihr tatsächliches Risikoverhalten bleibt unentdeckt. Die App verliert ihren therapeutischen Wert.</li>
+      <li>**Es ist erlaubt zu Cheaten, aber...:** Natürlich können Sie jederzeit einen falschen Wert eingeben. Aber denken Sie daran, dass die App keine moralische Instanz ist. Sie ist Ihr Werkzeug. Wenn das Werkzeug fehlerhafte Daten erhält, werden Ihre Erfolge und Ihre Herausforderungen nicht korrekt dargestellt. Seien Sie ehrlich zu sich selbst, um die besten Ergebnisse zu erzielen.</li>
+    </ul>
+
+    <h3>3.2. Die Kommentarfunktion als Tagebuch</h3>
+    <p>Nutzen Sie die Kommentarfelder am Tagesende nicht nur für Fakten, sondern als **Tagebuch**. Notieren Sie:</p>
+    <ul>
+        <li>**Emotionen:** Wie haben Sie sich gefühlt, bevor Sie getrunken haben?</li>
+        <li>**Situationen:** Wer war dabei? Was war der Auslöser?</li>
+        <li>**Positive Alternativen:** Was haben Sie getan, wenn Sie *nicht* getrunken haben?</li>
+    </ul>
+    <p>Diese Texteinträge sind oft wertvoller als jede Zahl, da sie Ihnen helfen, die emotionalen Auslöser hinter den Mustern zu verstehen.</p>
+
+
+    <h2>4. Daten-Sicherheit und Portabilität</h2>
+    
+    <h3>4.1. Lokale Speicherung</h3>
     <p>Alle Ihre Daten (Tagebucheinträge und Einstellungen) werden ausschließlich **lokal in Ihrem Browser** gespeichert (via `localStorage`). Der Tracker überträgt Ihre Daten zu keiner Zeit an einen Server. Dies bietet maximale Privatsphäre, erfordert aber bei Browserwechsel oder -zurücksetzung eine Datensicherung.</p>
 
-    <h3>3.2. Backup & Wiederherstellung</h3>
+    <h3>4.2. Backup & Wiederherstellung</h3>
     <p>Über die Einstellungen können Sie jederzeit ein Backup Ihrer Daten als `booze-tracker-backup-JJJJ-MM-TT.json` herunterladen und später wieder importieren. Die Import-Funktion kann Daten entweder ersetzen oder mit bestehenden Daten zusammenführen (Merge), wobei ungültige/duplizierte Einträge automatisch gefiltert werden.</p>
 
-    <h2>4. Nutzung auf dem Smartphone (PWA-ähnlich)</h2>
+    <h2>5. Nutzung auf dem Smartphone (PWA-ähnlich)</h2>
     <p>Sie können den Booze-Tracker wie eine native App nutzen, indem Sie einen direkten Link auf den Home-Bildschirm Ihres Smartphones legen.</p>
 
-    <h3>4.1. Voraussetzung</h3>
+    <h3>5.1. Voraussetzung</h3>
     <p>Die `index.html` muss auf dem Smartphone **lokal gespeichert** sein (z.B. im Download-Ordner oder über Google Drive/Dropbox auf dem Handy abrufbar) und über den Browser geöffnet werden.</p>
     
-    <h3>4.2. Anleitung für iOS (Safari)</h3>
+    <h3>5.2. Anleitung für iOS (Safari)</h3>
     <ol>
         <li>Öffnen Sie die lokale `index.html`-Datei im **Safari-Browser**.</li>
         <li>Tippen Sie in der Navigationsleiste unten auf das **Teilen-Symbol** (Rechteck mit Pfeil nach oben).</li>
@@ -243,7 +263,7 @@
         <li>Bestätigen Sie den Namen und tippen Sie auf **"Hinzufügen"**.</li>
     </ol>
 
-    <h3>4.3. Anleitung für Android (Chrome)</h3>
+    <h3>5.3. Anleitung für Android (Chrome)</h3>
     <ol>
         <li>Öffnen Sie die lokale `index.html`-Datei im **Chrome-Browser**.</li>
         <li>Tippen Sie auf das **Dreipunkt-Menü** (⋮) oben rechts.</li>
@@ -254,6 +274,10 @@
     <div class="note">
         <p><strong class="strong">Ergebnis:</strong> Der Tracker startet nun direkt vom Home-Bildschirm, ohne die Browser-Steuerelemente, und verhält sich wie eine App.</p>
     </div>
+
+    <a href="index.html" class="back-button" style="display: block; text-align: center; margin-top: 30px;">
+        ← Zurück zur Hauptansicht (App)
+    </a>
 
   </div>
 </body>
