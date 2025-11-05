@@ -1,16 +1,3 @@
-Das verstehe ich vollkommen\! Sie haben Recht, eine umfassende Anwendung wie der Habit-Tracker verdient eine **umfangreichere und tiefgehendere Dokumentation**.
-
-Ich habe die `hilfe.html` nun komplett überarbeitet und sie in einen ausführlichen **"Wissens-Hub"** verwandelt. Die neue Version enthält eine detaillierte Einführung in die Philosophie, die Funktionsweise des Logik-Kerns, eine erweiterte Fehlerbehebung sowie eine vollständige Anleitung zu Export/Import und zur mobilen Nutzung.
-
-Hier ist der neue, sehr ausführliche Code für Ihre **`hilfe.html`**.
-
------
-
-## 🛠️ Der neue, umfassende "Wissens-Hub" (`hilfe.html`)
-
-Kopieren Sie bitte diesen gesamten Code und speichern Sie ihn erneut als **`hilfe.html`** ab.
-
-```html
 <!DOCTYPE html>
 <html lang="de">
 <head>
@@ -39,252 +26,163 @@ Kopieren Sie bitte diesen gesamten Code und speichern Sie ihn erneut als **`hilf
       margin: 0;
       font-family: system-ui, -apple-system, Segoe UI, Roboto, Inter, Arial, sans-serif;
       color: var(--text);
-      background: linear-gradient(135deg, var(--bg-grad-start), var(--bg-grad-end));
-      min-height: 100vh;
-      padding: 20px;
+      background: linear-gradient(135deg, var(--bg-grad-start), var(--bg-grad-end)) fixed;
       line-height: 1.6;
     }
 
-    .container{
-      max-width: 850px;
-      margin: 0 auto;
+    .container {
+      max-width: 820px;
+      margin: 32px auto;
+      padding: clamp(16px, 2.5vw, 24px);
       background: var(--card-bg);
-      border-radius: var(--radius);
-      padding: 30px 40px;
+      border: 1px solid var(--card-border);
+      border-radius: calc(var(--radius) + 4px);
       box-shadow: var(--shadow);
     }
 
-    h1{
-      color: var(--primary);
+    h1 {
+      font-size: clamp(26px, 4.2vw, 34px);
       text-align: center;
-      margin-bottom: 5px;
-      font-size: 2.5rem;
-    }
-    
-    .subtitle {
-        text-align: center;
-        color: var(--muted);
-        margin-bottom: 40px;
-        font-size: 1.1rem;
-    }
-
-    h2{
+      margin: 0 0 8px;
       color: var(--primary);
+    }
+    h2 {
+      font-size: 24px;
       border-bottom: 2px solid var(--card-border);
-      padding-bottom: 8px;
-      margin-top: 50px;
-      font-size: 1.8rem;
+      padding-bottom: 5px;
+      margin-top: 30px;
+      color: var(--text);
     }
-    
     h3 {
-        color: var(--text);
-        margin-top: 30px;
-        font-size: 1.3rem;
-        border-left: 4px solid var(--super);
-        padding-left: 10px;
-    }
-
-    .logic-table{
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 15px;
-    }
-
-    .logic-table th, .logic-table td{
-      padding: 12px;
-      text-align: left;
-      border: 1px solid var(--card-border);
-    }
-
-    .logic-table th{
-      background-color: #f7f9fc;
-      font-weight: 700;
-      color: var(--muted);
-      text-transform: uppercase;
-      font-size: 0.9em;
-    }
-
-    .logic-table td:nth-child(1){
-      font-weight: 600;
-    }
-    
-    .logic-table tr:nth-child(even) {
-        background-color: #fcfdff;
-    }
-
-    .back-link{
-      display: block;
+      font-size: 18px;
       margin-top: 20px;
-      margin-bottom: 30px;
-      text-align: center;
-      font-size: 1.2rem;
-      font-weight: 600;
+      color: var(--primary);
     }
     
-    .back-link a {
-        color: var(--primary);
-        text-decoration: none;
-        padding: 5px 10px;
-        border: 1px solid var(--primary);
-        border-radius: var(--radius);
-    }
+    p { margin-bottom: 15px; }
 
-    .badge-super { color: var(--super); font-weight: 700; }
-    .badge-wellness { color: var(--wellness); font-weight: 700; }
-    .badge-mixed { color: var(--mixed); font-weight: 700; }
-    .badge-danger { color: var(--danger); font-weight: 700; }
-    .badge-neutral { color: var(--muted); }
-    .strong { font-weight: 700; }
-    
-    .note {
-        padding: 15px;
-        background-color: #fffbe6;
-        border-left: 5px solid #f59e0b;
-        margin: 20px 0;
-        color: #78350f;
-    }
-    
-    .code-block {
-        background-color: #f4f6f8;
-        padding: 10px;
-        border-radius: 5px;
-        overflow-x: auto;
-        font-family: monospace;
-    }
-    
-    ol, ul {
-        padding-left: 25px;
-    }
-    
-    ol li, ul li {
-        margin-bottom: 10px;
-    }
+    .badge-sober { color: white; background: var(--super); padding: 3px 8px; border-radius: 4px; font-weight: 700; font-size: 12px; }
+    .badge-wellness { color: white; background: var(--wellness); padding: 3px 8px; border-radius: 4px; font-weight: 700; font-size: 12px; }
+    .badge-moderate { color: white; background: var(--mixed); padding: 3px 8px; border-radius: 4px; font-weight: 700; font-size: 12px; }
+    .badge-alcohol { color: white; background: var(--danger); padding: 3px 8px; border-radius: 4px; font-weight: 700; font-size: 12px; }
+    .badge-neutral { color: var(--muted); background: #f1f5f9; padding: 3px 8px; border-radius: 4px; font-weight: 700; font-size: 12px; }
 
+    table { width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 14px; }
+    th, td { border: 1px solid var(--card-border); padding: 12px; text-align: left; }
+    th { background-color: #f8fafc; font-weight: 700; color: var(--text); }
+    td:first-child { font-weight: 600; }
+
+    .note { padding: 15px; background-color: #fffbe6; border-left: 5px solid #f59e0b; margin: 20px 0; color: #78350f; } 
+    .code-block { background-color: #f4f6f8; padding: 10px; border-radius: 5px; overflow-x: auto; font-family: monospace; }
+    ol, ul { padding-left: 25px; }
+    ol li, ul li { margin-bottom: 10px; }
   </style>
 </head>
 <body>
   <div class="container">
-    <h1>Wissens-Hub & Tracker-Logik</h1>
-    <p class="subtitle">Alles zur Philosophie, Funktionsweise, Datenverwaltung und mobilen Nutzung Ihres Atomic Habit Trackers.</p>
+    <h1>Wissens-Hub & Tracker-Logik – Booze-Tracker</h1>
+    <p style="text-align:center; color:var(--muted);">
+      Detaillierte Erläuterung der Metriken, Logik und Funktionen des Trackers.
+    </p>
 
-    <div class="back-link">
-        <a href="index.html">← Zurück zur Tracker-Ansicht</a>
-    </div>
-
-    <h2>1. Die Philosophie: Atomic Habits</h2>
-    <p>Dieser Tracker basiert auf den Prinzipien der **"Atomic Habits" (Die 1%-Methode)** von James Clear. Das Ziel ist es, nicht nur Ergebnisse zu erzielen, sondern eine neue **Identität** aufzubauen.</p>
+    <h2>1. Die Philosophie des Booze-Trackers</h2>
     
-    <h3>1.1. Der Habit Loop (Gewohnheitsschleife)</h3>
-    <p>Jede Gewohnheit folgt einem Kreislauf. Der Tracker unterstützt diesen Zyklus:</p>
+    <h3>1.1. Fokus auf Verhalten (Input) statt nur Ergebnis (Output)</h3>
+    <p>Der Tracker bewertet nicht nur, <strong>wie viel</strong> Sie trinken, sondern auch, <strong>wie</strong> Sie sich dabei verhalten. Zum Beispiel zählt ein Katertag, an dem Sie nicht weitertrinken, positiv, da Sie den negativen Kreislauf bewusst stoppen. Ein Tag mit Sport und moderatem Konsum wird als "Schadensbegrenzung" eingestuft.</p>
+    
+    <h3>1.2. Kategorien als Entscheidungs-Werkzeug</h3>
+    <p>Jede Kategorie ("Sober", "Wellness", "Moderate", etc.) repräsentiert eine bewusste Entscheidung. Der Tracker rechnet die Alkoholgramm im God-Modus in eine der Kategorien um. Ziel ist es, die Verhaltensmuster zu erkennen und zu verbessern. Die fünf Basis-Kategorien sind:</p>
+
+    <table>
+      <tr>
+        <th>Kategorie</th>
+        <th>Farbe (Score-Beitrag)</th>
+        <th>Beschreibung</th>
+      </tr>
+      <tr>
+        <td>⭐ Super-Day</td>
+        <td><span class="badge-sober">🟢 SUPER</span></td>
+        <td>**Hoch Positiv (++):** Ein Tag ohne Alkohol, an dem ein großes Ziel (z.B. Marathon, Präsentation, besonderes Workout) erreicht oder ein starker Fokus gezeigt wurde.</td>
+      </tr>
+      <tr>
+        <td>🧘 Wellness-Day</td>
+        <td><span class="badge-wellness">🟢 WELLNESS</span></td>
+        <td>**Positiv (+):** Ein Tag ohne Alkohol, an dem zusätzlich bewusst etwas für die körperliche oder mentale Gesundheit getan wurde (z.B. Sport, Meditation, gesundes Essen).</td>
+      </tr>
+      <tr>
+        <td>✅ Sober</td>
+        <td><span class="badge-sober">🟢 SOBER</span></td>
+        <td>**Positiv (+):** Ein Tag ohne Alkohol und ohne spezifische Wellness-Aktivität. Die Abwesenheit negativer Gewohnheiten ist ein positiver Standard.</td>
+      </tr>
+      <tr>
+        <td>🧡 Moderat</td>
+        <td><span class="badge-moderate">🟠 MODERAT</span></td>
+        <td>**Leicht Negativ (-):** Alkoholmenge unter den täglichen DGE-Grenzwerten (♀ ≤12g/Tag, ♂ ≤24g/Tag) – also kontrollierter, risikoarmer Konsum.</td>
+      </tr>
+      <tr>
+        <td>❤️ Schadensbegrenzung (Mixed)</td>
+        <td><span class="badge-moderate">🟠 MIXED</span></td>
+        <td>**Negativ (—):** Alkoholmenge über Moderat, aber kombiniert mit positiven Faktoren wie Sport am selben Tag oder einer Katertag-Entscheidung gegen das Weitertrinken. Der Alkohol dominiert die Gesamtbewertung, aber das Verhalten wird abgemildert.</td>
+      </tr>
+      <tr>
+        <td>🔴 Alkohol</td>
+        <td><span class="badge-alcohol">🔴 ALKOHOL</span></td>
+        <td>**Stark Negativ (---):** Kontrollverlust, Alkoholmenge über der Moderat-Grenze und keine positiven Faktoren.</td>
+      </tr>
+      <tr>
+        <td>🍺💥 Vollrausch</td>
+        <td><span class="badge-alcohol">🔴 VOLLRAUSCH</span></td>
+        <td>**Sehr Stark Negativ (----):** Extreme Alkoholmenge (>80g) – ein kritisches Warnsignal.</td>
+      </tr>
+      <tr>
+        <td>Keine Angabe</td>
+        <td><span class="badge-neutral">⚪ NEUTRAL (Grau)</span></td>
+        <td>**Neutral:** Ein Tag, für den keine Daten vorliegen. Der Score wird durch die Einstellung "Umgang mit leeren Tagen" angepasst.</td>
+      </tr>
+    </table>
+    
+    <h2>2. Die Logik des Risiko-Scores (100-Tage-Analyse)</h2>
+    <p>Der Tracker verwendet einen komplexen gewichteten Score über die letzten 100 Tage, um ein realistisches Bild Ihres aktuellen Konsumverhaltens zu zeichnen. Der Score (0% = Maximalrisiko, 100% = Optimal) setzt sich aus drei Hauptkomponenten zusammen:</p>
+
+    <h3>2.1. Die drei Score-Komponenten</h3>
+    
+    <h4>1. Die Kontinuitäts-Komponente (40% Gewichtung)</h4>
+    <p>Misst die Regelmäßigkeit des positiven Verhaltens. Sie basiert auf der <strong>Abstinenztage-Quote (AF-Quote)</strong>. Je höher die AF-Quote (Tage ohne Alkohol), desto besser. Die Gewichtung belohnt lange, ununterbrochene "Sober"-Phasen. Ein Tag mit 80g Alkohol ist weniger schädlich für den Score, wenn er isoliert auftritt, als eine Kette von 3 Tagen mit je 40g.</p>
+
+    <h4>2. Die Risikoverhaltens-Komponente (40% Gewichtung)</h4>
+    <p>Bestraft die gefährlichsten Verhaltensmuster. Die stärkste Abwertung gibt es für:</p>
     <ul>
-        <li>**Auslöser (Signal):** Der Tracker selbst erinnert täglich an die Eingabe.</li>
-        <li>**Verlangen (Attraktiv):** Die Aussicht auf einen wachsenden Streak und einen grünen Tag.</li>
-        <li>**Reaktion (Einfach):** Die *Mini-Schritte* (≤2 Minuten) machen den Anfang widerstandslos.</li>
-        <li>**Belohnung (Befriedigend):** Der Tages-Score und die Streaks dienen als sofortige, positive Rückmeldung.</li>
+      <li>**Hangover MIT Weitertrinken:** Dies ist ein Kriterium für schwere Abhängigkeit (DSM-5) und führt zu einer sofortigen 0%-Wertung für den Tag.</li>
+      <li>**Hohe Binge-Tage-Quote:** Tage über der WHO-Binge-Schwelle (♀ ≥40g, ♂ ≥60g).</li>
+      <li>**Lange Konsum-Cluster:** Mehr als 3 aufeinanderfolgende Tage mit über 20g Alkohol.</li>
     </ul>
-    
-    <h3>1.2. Die 3-Stufen-Regel (Mini, Normal, Stretch)</h3>
-    <p>Die Unterteilung jeder Gewohnheit in drei Stufen hilft gegen Demotivation und Stagnation:</p>
-    <dl>
-        <dt><strong class="strong">Mini (≤2 Minuten)</strong></dt>
-        <dd>Die **Zwei-Minuten-Regel**: Der kleinste, einfachste Startschritt. Ziel ist die **Konsistenz** – selbst an schlechten Tagen.</dd>
-        <dt><strong class="strong">Normal</strong></dt>
-        <dd>Ihr Standard-Ziel. Dies ist das Niveau, das Sie an den meisten Tagen anstreben sollten.</dd>
-        <dt><strong class="strong">Stretch</strong></dt>
-        <dd>Der "God-Mode" der Gewohnheit. Für Tage mit hoher Energie oder Motivation. Er verhindert, dass Sie sich langweilen oder stagnieren.</dd>
-    </dl>
-    
-    <h2>2. Der Logik-Kern: Tages-Score und Booze-Logik-FAQ</h2>
-    <p>Der Tages-Score ist eine vereinfachte Darstellung Ihres physiologischen und mentalen Zustands. Die Logik geht davon aus, dass **Alkohol die Erholung massiv beeinträchtigt** und dieser Effekt nur gemildert, aber nicht aufgehoben werden kann.</p>
 
-    <h3>2.1. Die Logik-Dominanz: Sport vs. Alkohol</h3>
-    <table class="logic-table">
-        <thead>
-            <tr>
-                <th>Kombination</th>
-                <th>Visueller Tages-Score</th>
-                <th>Logische Auswirkung auf den Score</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>Nur Sport gemacht</td>
-                <td><span class="badge-super">✅ SUPER (Dunkelgrün)</span></td>
-                <td>**Maximal Positiv (+):** Ein idealer Tag für Körper und Geist.</td>
-            </tr>
-            <tr>
-                <td>Nur Alkohol getrunken (Checkbox-Eingabe)</td>
-                <td><span class="badge-danger">⛔ DANGER (Rot)</span></td>
-                <td>**Maximal Negativ (-):** Keine ausgleichenden Maßnahmen. Starke Beeinträchtigung der Schlafqualität und Erholung.</td>
-            </tr>
-            <tr>
-                <td><strong class="strong">Beides: Sport UND Alkohol</strong></td>
-                <td><span class="badge-mixed">🟠 MIXED (Orange)</span></td>
-                <td>**Mittel bis Stark Negativ (-):** Der Sport verhindert einen "roten" Tag, aber der **Alkohol dominiert** die Gesamtbewertung. Der Tag zählt nicht als "Grün", da die Regeneration beeinträchtigt ist.</td>
-            </tr>
-            <tr>
-                <td>Keines von beidem</td>
-                <td><span class="badge-neutral">⚪ NEUTRAL (Grau)</span></td>
-                <td>**Neutral/Leicht Positiv (+):** Ein Tag ohne Extreme. Die Abwesenheit negativer Gewohnheiten ist ein kleiner positiver Effekt.</td>
-            </tr>
-        </tbody>
-    </table>
+    <h4>3. Die Erholungs-Komponente (20% Gewichtung)</h4>
+    <p>Bewertet das anschließende Verhalten nach einem riskanten Tag. Hier zählt die **Recovery Rate**. Die Komponente bewertet hoch, wenn nach einem Vollrausch am Folgetag ein bewusster "Clean Hangover" (kein Alkohol) oder ein "Wellness-Day" folgt. Die Punktzahl für einen "Clean Hangover" wird dabei um einen Multiplikator erhöht, der von der Alkoholmenge des Vortages abhängt (je höher der Vortags-Pegel, desto höher der Erholungs-Bonus).</p>
 
-    <h3>2.2. God-Mode-Logik (Differenzierte Eingabe)</h3>
-    <p>Der God-Mode ermöglicht eine präzisere Gewichtung des negativen Effekts basierend auf der Menge (z.B. in Einheiten oder Gläsern).</p>
-    <table class="logic-table">
-        <thead>
-            <tr>
-                <th>Kombination (God-Mode)</th>
-                <th>Visueller Tages-Score</th>
-                <th>Logische Auswirkung & Schwellenwert (Theorie)</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>Sport + God-Mode (Niedrige Menge, z.B. 1-2 Einheiten)</td>
-                <td><span class="badge-wellness">🟢 WELLNESS (Hellgrün)</span></td>
-                <td>**Positiv (+):** Der Sport gleicht den minimalen Alkoholkonsum fast aus. Der Score ist gut, aber nicht "Super" (Dunkelgrün).</td>
-            </tr>
-            <tr>
-                <td>Sport + God-Mode (Hohe Menge, z.B. > 5 Einheiten)</td>
-                <td><span class="badge-mixed">🟠 MIXED (Orange)</span></td>
-                <td>**Mittel Negativ (-):** Die physiologische Belastung durch die hohe Alkoholmenge kann selbst durch Sport nicht negiert werden.</td>
-            </tr>
-            <tr>
-                <td>Nur God-Mode (Niedrige Menge)</td>
-                <td><span class="badge-mixed">🟠 MIXED (Orange)</span></td>
-                <td>**Leicht Negativ (-):** Eine "Warnung", aber weniger dramatisch als die rote Markierung.</td>
-            </tr>
-        </tbody>
-    </table>
-    
     <div class="note">
-        <p><strong class="strong">Kern-Theorem der App:</strong> Die höchste Priorität hat die Aufrechterhaltung der Regeneration. Ein grüner Tag erfordert immer 0 Einheiten Alkohol, unabhängig davon, wie viel Sport getrieben wurde.</p>
+        <p><strong class="strong">Wichtig:</strong> Der Tracker unterscheidet zwischen einem normalen Katertag (Status 'hangover') und dem **Hangover MIT Weitertrinken** (Checkbox 'checkHangover' + Alkoholmenge > 0). Letzteres ist das kritische Warnzeichen.</p>
     </div>
 
-    <h2>3. Datenverwaltung, Export und Import</h2>
-    <p>Ihre Daten werden **lokal** im Browser-Speicher (Local Storage) Ihres Geräts gespeichert. Dies gewährleistet Datenschutz, erfordert aber regelmäßige Sicherungen.</p>
+    <h3>2.2. Long-Term-Analyse (180 Tage)</h3>
+    <p>Diese Analyse liefert langfristige Metriken und Korrelationen (CBT-fokussiert), die in der 100-Tage-Analyse nicht erfasst werden, darunter:</p>
+    <ul>
+      <li>**Wöchentlicher Durchschnitt:** Durchschnittliche Gramm reinen Alkohols pro Woche.</li>
+      <li>**Stress-Korrelation:** Misst, ob Alkoholkonsum durch ein hohes Stress-Level getriggert wird (positive Korrelation) oder paradoxerweise bei Entspannung (negative Korrelation, z.B. reines Party-Muster).</li>
+      <li>**Schlaf-Korrelation:** Misst den Zusammenhang zwischen Schlafqualität und Alkoholkonsum.</li>
+      <li>**Recovery Rate:** Durchschnittliche Anzahl abstinenter Tage, die nach einem Binge-Tag (≥60g) benötigt werden, um wieder einen Sober- oder Wellness-Tag zu erreichen.</li>
+    </ul>
 
-    <h3>3.1. Funktion: Export (Sicherung)</h3>
-    <p>Die Export-Funktion erstellt eine JSON-Datei Ihrer gesamten Tracker-Historie. Diese dient als **vollständiges Backup**.</p>
-    <ol>
-        <li>Klicken Sie auf den **Export-Button**.</li>
-        <li>Ihr Browser lädt eine Datei (z.B. `tracker_backup_2024-11-05.json`) herunter.</li>
-        <li>**Aktion:** Bewahren Sie diese Datei an einem sicheren Ort (Cloud-Speicher, USB-Stick) auf, da eine Löschung des Browser-Caches (oder ein Gerätewechsel) Ihre Daten vernichtet.</li>
-    </ol>
+    <h2>3. Daten-Sicherheit und Portabilität</h2>
     
-    <h3>3.2. Funktion: Import (Wiederherstellung)</h3>
-    <p>Die Import-Funktion überschreibt die **aktuellen** lokalen Daten mit den Inhalten der gewählten JSON-Sicherungsdatei.</p>
-    <ol>
-        <li>Klicken Sie auf den **Import-Button**.</li>
-        <li>Wählen Sie Ihre zuvor exportierte `.json`-Datei aus.</li>
-        <li>**Wichtig:** Bestätigen Sie den Import. Die Daten werden sofort überschrieben.</li>
-        <li>**Zweck:** Gerätewechsel, Wiederherstellung nach Cache-Löschung oder Rollback auf einen früheren Zustand.</li>
-    </ol>
+    <h3>3.1. Lokale Speicherung</h3>
+    <p>Alle Ihre Daten (Tagebucheinträge und Einstellungen) werden ausschließlich **lokal in Ihrem Browser** gespeichert (via `localStorage`). Der Tracker überträgt Ihre Daten zu keiner Zeit an einen Server. Dies bietet maximale Privatsphäre, erfordert aber bei Browserwechsel oder -zurücksetzung eine Datensicherung.</p>
 
-    <h2>4. Mobile Nutzung (Als App auf dem Home-Bildschirm)</h2>
-    <p>Sie können den Tracker wie eine native App nutzen, indem Sie einen direkten Link auf den Home-Bildschirm Ihres Smartphones legen.</p>
+    <h3>3.2. Backup & Wiederherstellung</h3>
+    <p>Über die Einstellungen können Sie jederzeit ein Backup Ihrer Daten als `booze-tracker-backup-JJJJ-MM-TT.json` herunterladen und später wieder importieren. Die Import-Funktion kann Daten entweder ersetzen oder mit bestehenden Daten zusammenführen (Merge), wobei ungültige/duplizierte Einträge automatisch gefiltert werden.</p>
+
+    <h2>4. Nutzung auf dem Smartphone (PWA-ähnlich)</h2>
+    <p>Sie können den Booze-Tracker wie eine native App nutzen, indem Sie einen direkten Link auf den Home-Bildschirm Ihres Smartphones legen.</p>
 
     <h3>4.1. Voraussetzung</h3>
     <p>Die `index.html` muss auf dem Smartphone **lokal gespeichert** sein (z.B. im Download-Ordner oder über Google Drive/Dropbox auf dem Handy abrufbar) und über den Browser geöffnet werden.</p>
@@ -306,11 +204,9 @@ Kopieren Sie bitte diesen gesamten Code und speichern Sie ihn erneut als **`hilf
     </ol>
     
     <div class="note">
-        <p><strong class="strong">Ergebnis:</strong> Der Tracker öffnet sich nun mit einem eigenen Icon direkt aus dem Home-Bildschirm, ohne die Browser-Elemente anzuzeigen.</p>
+        <p><strong class="strong">Ergebnis:</strong> Der Tracker startet nun direkt vom Home-Bildschirm, ohne die Browser-Steuerelemente, und verhält sich wie eine App.</p>
     </div>
-    
-    <div style="height: 50px;"></div>
+
   </div>
 </body>
 </html>
-```
