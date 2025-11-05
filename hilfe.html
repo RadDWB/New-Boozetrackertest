@@ -85,11 +85,11 @@
         border-right: none;
         
         /* Rotation-Basis: Bottom-Ausrichtung */
-        vertical-align: bottom; 
+        vertical-align: bottom; /* Wichtig: Text soll unten beginnen */
         text-align: center;
-        overflow: visible; 
-        padding: 12px 5px; 
-        position: relative; 
+        overflow: visible; /* Wichtig für die Drehung */
+        padding: 12px 5px; /* Vertikales Padding beibehalten (12px), Horizontal reduzieren */
+        position: relative; /* Wichtig für Kindelement-Positionierung */
     }
 
     table td:nth-child(1) > * {
@@ -173,7 +173,7 @@
     <p>Der Tracker bewertet nicht nur, WIEVIEL und WANN Sie trinken, sondern auch, WIE Sie sich dabei verhalten. Zum Beispiel zählt ein Katertag, an dem Sie nicht weitertrinken, eher positiv, da Sie den negativen Kreislauf bewusst stoppen. Ein Tag an dem Sie sich entscheiden erst Sport zu treiben und z.B. Abends dann zu trinken, wird als "Schadensbegrenzung" eingestuft. Das ist aber natürlich ein Sebstbetrug, daher auch die - leicht ironischen - Anführungszeichen. Sie wissen doch, dass das die Schäden durch den Alkohol eigentlich NICHT wirklich relativiert, oder? Aber - hey - man fühlt sich trotzdem besser? </p>
     
     <h3>1.2. Kategorien als Entscheidungs-Werkzeug</h3>
-    <p>Jede Kategorie repräsentiert eine bewusste Entscheidung. Der Tracker stuft das Tagesergebnis basierend auf Alkoholmenge und Zusatzfaktoren in eine der Kategorien ein. Sie können diese jedoch auch selbst anpassen, wenn Sie das anders sehen, Sie sind ein freier Mensch. Ziel ist es, die Verhaltensmuster zu erkennen und zu verbessern. Zusätzlich haben Sie die **Möglichkeit** durch Checkboxen weitere Aspekte auszuwählen, die dann mit im Kalender erscheinen. Die acht Kategorien sind:</p>
+    <p>Jede Kategorie repräsentiert eine bewusste Entscheidung. Der Tracker stuft das Tagesergebnis basierend auf Alkoholmenge und Zusatzfaktoren in eine der Kategorien ein. Sie können diese jedoch auch selbst anpassen, wenn Sie das anders sehen, Sie sind ein freier Mensch. Ziel ist es, die Verhaltensmuster zu erkennen und zu verbessern. Zusätzlich haben Sie die möglichkeit durch Checkboxen weitere Aspekte auszuwählen, die dann mit im Kalender erscheinen. Die acht Kategorien sind:</p>
 
     <table>
       <tr>
@@ -181,35 +181,35 @@
         <th>Beschreibung (Score-Beitrag)</th>
       </tr>
       <tr>
-        <td class="color-super"><div class="rotated-text">⭐SUPERTAG</div></td>
+        <td class="color-super"><div class="rotated-text">⭐ SUPERTAG</div></td>
         <td>**Hoch Positiv (++):** Ein Tag ohne Alkohol, an dem Sie zusätzlich Sport getrieben haben, zweifellos perfekt. Vielleicht auch für Sie ein Tag an dem Sie Glücklich waren und nichts getrunken haben, oder es gab was anderes, das für Sie den Tag zu einem "Supertag" gemacht hat, ein großes Ziel (z.B. Marathon, Präsentation, besonderes Workout) erreicht oder ein starker Fokus gezeigt wurde.</td>
       </tr>
       <tr>
-        <td class="color-wellness"><div class="rotated-text">🧘WELLNESS</div></td>
+        <td class="color-wellness"><div class="rotated-text">🧘 WELLNESS</div></td>
         <td>**Positiv (+):** Ein Tag ohne Alkohol, an dem zusätzlich bewusst etwas für die körperliche oder mentale Gesundheit getan wurde (z.B. Sauna, Yoga, Meditation, gesundes Essen usw.).</td>
       </tr>
       <tr>
-        <td class="color-sober"><div class="rotated-text">✅ALKFREI</div></td>
+        <td class="color-sober"><div class="rotated-text">✅ ALKOHOLFREI</div></td>
         <td>**Positiv (+):** Ein Tag einfach ohne Alkohol. Die Abwesenheit negativer Gewohnheiten ist ein positiver Standard.</td>
       </tr>
       <tr>
-        <td class="color-moderat"><div class="rotated-text">🧡MODERAT</div></td>
+        <td class="color-moderat"><div class="rotated-text">🧡 MODERAT</div></td>
         <td>**Leicht Negativ (-):** Konsumierte Alkoholmenge unter den täglichen DGE-Grenzwerten (♀ ≤12g/Tag, ♂ ≤24g/Tag) – also kontrollierter, risikoarmer Konsum.</td>
       </tr>
       <tr>
-        <td class="color-mixed"><div class="rotated-text">❤️"SCHADENSBEGRENZUNG"</div></td>
+        <td class="color-mixed"><div class="rotated-text">❤️ "SCHADENSBEGRENZUNG"</div></td>
         <td>**Negativ (—):** Alkoholmenge über Moderat, aber, hey, Sie haben doch schliesslich wenigstens Sport gemacht. Daher wird dieser Tag auch nicht ganz so "schlimm" in die Bewertung eingehen, eben "Schadensbegrenzung". Das Verhalten wird (leicht) abgemildert. ABER: Haben Sie an dem Tag VIEL getrunken, ordnet dei Ap sie trotzdem der nächst- oder übernächst schlechteren Kategorie zu". Sie fügen "Sport" durch eine der Checkboxen hinzu.</td>
       </tr>
       <tr>
-        <td class="color-alkohol"><div class="rotated-text">🔴ALKOHOL</div></td>
+        <td class="color-alkohol"><div class="rotated-text">🔴 ALKOHOL</div></td>
         <td>**Stark Negativ (---):** Alkoholmenge über der Moderat-Grenze und keine positiven Faktoren.</td>
       </tr>
       <tr>
-        <td class="color-vollrausch"><div class="rotated-text">🍺💥VOLLRAUSCH</div></td>
+        <td class="color-vollrausch"><div class="rotated-text">🍺💥 VOLLRAUSCH</div></td>
         <td>**Sehr Stark Negativ (----):** Extreme Alkoholmenge (>80g) – ein kritisches Warnsignal. Kombiniert mit der Checkbox "Totalabsturz" dürfte klar sein, was gemeint ist.</td>
       </tr>
       <tr>
-        <td class="color-neutral"><div class="rotated-text">⚪NEUTRAL</div></td>
+        <td class="color-neutral"><div class="rotated-text">⚪ NEUTRAL</div></td>
         <td>**Neutral:** Ein Tag, für den keine Daten vorliegen. Der Score wird durch die Einstellung "Umgang mit leeren Tagen" angepasst.</td>
       </tr>
     </table>
