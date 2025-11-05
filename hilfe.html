@@ -78,16 +78,20 @@
     th, td { border: 1px solid var(--card-border); padding: 12px; text-align: left; }
     th { background-color: #f8fafc; font-weight: 700; color: var(--text); }
     
-    /* NEU: Optimierung der Spaltenbreite */
+    /* ⭐ FINAL: Optimierung der Spaltenbreite mit relativen Werten ⭐ */
     table td:nth-child(1),
     table th:nth-child(1) {
-        width: 150px; /* Feste Breite für die Kategorie-Namen */
-        min-width: 120px;
+        width: 25%; /* Kategorie-Name */
+        min-width: 100px;
     }
     table td:nth-child(2),
     table th:nth-child(2) {
-        width: 100px; /* Feste Breite für die Farbkategorie/Score */
-        min-width: 90px;
+        width: 15%; /* Farbe/Score-Beitrag (kleiner) */
+        min-width: 80px;
+    }
+    table td:nth-child(3),
+    table th:nth-child(3) {
+        width: 60%; /* Beschreibung (größtenteils) */
     }
     td:first-child { font-weight: 600; }
     /* Ende Spaltenbreite Optimierung */
@@ -97,7 +101,7 @@
     ol, ul { padding-left: 25px; }
     ol li, ul li { margin-bottom: 10px; }
     
-    /* NEU: Styling für den Zurück-Button */
+    /* Styling für den Zurück-Button */
     .back-button {
         background: none;
         border: none;
@@ -105,18 +109,16 @@
         font-size: 16px;
         font-weight: 600;
         cursor: pointer;
-        padding: 5px 10px 5px 0; /* Padding angepasst für linken Rand */
+        padding: 5px 10px 5px 0;
         margin-bottom: 15px;
         display: inline-flex;
         align-items: center;
         transition: color 0.2s;
-        text-decoration: none; /* Als a-Tag */
+        text-decoration: none;
     }
     .back-button:hover {
         color: var(--primary);
     }
-    /* Ende Zurück-Button Styling */
-
   </style>
 </head>
 <body>
