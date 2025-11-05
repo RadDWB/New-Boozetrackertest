@@ -72,8 +72,7 @@
     th, td { border: 1px solid var(--card-border); padding: 12px; text-align: left; }
     th { background-color: #f8fafc; font-weight: 700; color: var(--text); }
     
-    /* ⭐ CSS: Text drehen und zentrieren ⭐ */
-    /* Spalte 1: Kategorie (gefärbt) */
+    /* ⭐ CSS: Text drehen und ausrichten (FINAL VERSION mit writing-mode) ⭐ */
     table td:nth-child(1),
     table th:nth-child(1) {
         width: 40px; 
@@ -84,26 +83,17 @@
         text-shadow: 0 1px 1px rgba(0,0,0,0.2);
         border-right: none;
         
-        /* Rotation-Basis */
-        vertical-align: middle;
-        text-align: center;
-        overflow: hidden;
-        padding: 5px; 
+        /* Die Magie für die vertikale Ausrichtung */
+        writing-mode: vertical-rl; /* Text läuft von unten nach oben */
+        vertical-align: bottom; /* Wichtig: Text soll unten beginnen */
+        
+        /* Styling */
+        text-align: center; /* Zentrierung des Textblocks in der Zelle */
+        padding: 12px 5px; 
+        line-height: 1.2;
+        white-space: nowrap; /* Verhindert Zeilenumbruch im gedrehten Text */
     }
-    
-    table td:nth-child(1) > * {
-        /* Element drehen und positionieren */
-        display: block;
-        transform: rotate(-90deg);
-        white-space: nowrap; /* Text nicht umbrechen */
-        width: 100%;
-        text-align: center;
-        /* Korrektur für vertikale Zentrierung */
-        position: relative;
-        left: -1px; 
-        top: 0px; 
-    }
-    
+
     /* Spalte 2: Beschreibung (maximaler Platz) */
     table td:nth-child(2),
     table th:nth-child(2) {
@@ -144,11 +134,6 @@
     .back-button:hover {
         color: var(--primary);
     }
-    
-    /* Container für gedrehten Text */
-    .rotated-text {
-        display: inline-block;
-    }
   </style>
 </head>
 <body>
@@ -169,43 +154,43 @@
     <p>Der Tracker bewertet nicht nur, WIEVIEL und WANN Sie trinken, sondern auch, WIE Sie sich dabei verhalten. Zum Beispiel zählt ein Katertag, an dem Sie nicht weitertrinken, eher positiv, da Sie den negativen Kreislauf bewusst stoppen. Ein Tag an dem Sie sich entscheiden erst Sport zu treiben und z.B. Abends dann zu trinken, wird als "Schadensbegrenzung" eingestuft. Das ist aber natürlich ein Sebstbetrug, daher auch die - leicht ironischen - Anführungszeichen. Sie wissen doch, dass das die Schäden durch den Alkohol eigentlich NICHT wirklich relativiert, oder? Aber - hey - man fühlt sich trotzdem besser? </p>
     
     <h3>1.2. Kategorien als Entscheidungs-Werkzeug</h3>
-    <p>Jede Kategorie repräsentiert eine bewusste Entscheidung. Der Tracker stuft das Tagesergebnis basierend auf Alkoholmenge und Zusatzfaktoren in eine der Kategorien ein. Sie können diese jedoch auch selbst anpassen, wenn Sie das anders sehen, Sie sind ein freier Mensch. Ziel ist es, die Verhaltensmuster zu erkennen und zu verbessern. Zusätzlich haben Sie die möglichkeit durch Checkboxen weitere Aspekte auszuwählen, die dann mit im Kalender erscheinen. Die acht Kategorien sind:</p>
+    <p>Jede Kategorie repräsentiert eine bewusste Entscheidung. Der Tracker stuft das Tagesergebnis basierend auf Alkoholmenge und Zusatzfaktoren in eine der Kategorien ein. Sie können diese jedoch auch selbst anpassen, wenn Sie das anders sehen, Sie sind ein freier Mensch. Ziel ist es, die Verhaltensmuster zu erkennen und zu verbessern. Zusätzlich haben Sie die **Möglichkeit** durch Checkboxen weitere Aspekte auszuwählen, die dann mit im Kalender erscheinen. Die acht Kategorien sind:</p>
 
     <table>
       <tr>
-        <th><div class="rotated-text">Kategorie</div></th>
+        <th>Kategorie</th>
         <th>Beschreibung (Score-Beitrag)</th>
       </tr>
       <tr>
-        <td class="color-super"><div class="rotated-text">⭐ SUPERTAG</div></td>
+        <td class="color-super">⭐ SUPERTAG</td>
         <td>**Hoch Positiv (++):** Ein Tag ohne Alkohol, an dem Sie zusätzlich Sport getrieben haben, zweifellos perfekt. Vielleicht auch für Sie ein Tag an dem Sie Glücklich waren und nichts getrunken haben, oder es gab was anderes, das für Sie den Tag zu einem "Supertag" gemacht hat, ein großes Ziel (z.B. Marathon, Präsentation, besonderes Workout) erreicht oder ein starker Fokus gezeigt wurde.</td>
       </tr>
       <tr>
-        <td class="color-wellness"><div class="rotated-text">🧘 WELLNESS</div></td>
+        <td class="color-wellness">🧘 WELLNESS</td>
         <td>**Positiv (+):** Ein Tag ohne Alkohol, an dem zusätzlich bewusst etwas für die körperliche oder mentale Gesundheit getan wurde (z.B. Sauna, Yoga, Meditation, gesundes Essen usw.).</td>
       </tr>
       <tr>
-        <td class="color-sober"><div class="rotated-text">✅ ALKOHOLFREI</div></td>
+        <td class="color-sober">✅ ALKOHOLFREI</td>
         <td>**Positiv (+):** Ein Tag einfach ohne Alkohol. Die Abwesenheit negativer Gewohnheiten ist ein positiver Standard.</td>
       </tr>
       <tr>
-        <td class="color-moderat"><div class="rotated-text">🧡 MODERAT</div></td>
+        <td class="color-moderat">🧡 MODERAT</td>
         <td>**Leicht Negativ (-):** Konsumierte Alkoholmenge unter den täglichen DGE-Grenzwerten (♀ ≤12g/Tag, ♂ ≤24g/Tag) – also kontrollierter, risikoarmer Konsum.</td>
       </tr>
       <tr>
-        <td class="color-mixed"><div class="rotated-text">❤️ "SCHADENSBEGRENZUNG"</div></td>
+        <td class="color-mixed">❤️ "SCHADENSBEGRENZUNG"</td>
         <td>**Negativ (—):** Alkoholmenge über Moderat, aber, hey, Sie haben doch schliesslich wenigstens Sport gemacht. Daher wird dieser Tag auch nicht ganz so "schlimm" in die Bewertung eingehen, eben "Schadensbegrenzung". Das Verhalten wird (leicht) abgemildert. ABER: Haben Sie an dem Tag VIEL getrunken, ordnet dei Ap sie trotzdem der nächst- oder übernächst schlechteren Kategorie zu". Sie fügen "Sport" durch eine der Checkboxen hinzu.</td>
       </tr>
       <tr>
-        <td class="color-alkohol"><div class="rotated-text">🔴 ALKOHOL</div></td>
+        <td class="color-alkohol">🔴 ALKOHOL</td>
         <td>**Stark Negativ (---):** Alkoholmenge über der Moderat-Grenze und keine positiven Faktoren.</td>
       </tr>
       <tr>
-        <td class="color-vollrausch"><div class="rotated-text">🍺💥 VOLLRAUSCH</div></td>
+        <td class="color-vollrausch">🍺💥 VOLLRAUSCH</td>
         <td>**Sehr Stark Negativ (----):** Extreme Alkoholmenge (>80g) – ein kritisches Warnsignal. Kombiniert mit der Checkbox "Totalabsturz" dürfte klar sein, was gemeint ist.</td>
       </tr>
       <tr>
-        <td class="color-neutral"><div class="rotated-text">⚪ NEUTRAL</div></td>
+        <td class="color-neutral">⚪ NEUTRAL</td>
         <td>**Neutral:** Ein Tag, für den keine Daten vorliegen. Der Score wird durch die Einstellung "Umgang mit leeren Tagen" angepasst.</td>
       </tr>
     </table>
