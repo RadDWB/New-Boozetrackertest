@@ -38,7 +38,7 @@
       border: 1px solid var(--card-border);
       border-radius: calc(var(--radius) + 4px);
       box-shadow: var(--shadow);
-      position: relative; /* Für den Button */
+      position: relative;
     }
 
     h1 {
@@ -68,7 +68,13 @@
     .badge-alcohol { color: white; background: var(--danger); padding: 3px 8px; border-radius: 4px; font-weight: 700; font-size: 12px; }
     .badge-neutral { color: var(--muted); background: #f1f5f9; padding: 3px 8px; border-radius: 4px; font-weight: 700; font-size: 12px; }
 
-    table { width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 14px; }
+    table { 
+        width: 100%; 
+        border-collapse: collapse; 
+        margin: 20px 0; 
+        font-size: 14px; 
+        table-layout: fixed; /* Wichtig für die statische Spaltenbreite */
+    }
     th, td { border: 1px solid var(--card-border); padding: 12px; text-align: left; }
     th { background-color: #f8fafc; font-weight: 700; color: var(--text); }
     
@@ -99,11 +105,12 @@
         font-size: 16px;
         font-weight: 600;
         cursor: pointer;
-        padding: 5px 10px;
+        padding: 5px 10px 5px 0; /* Padding angepasst für linken Rand */
         margin-bottom: 15px;
         display: inline-flex;
         align-items: center;
         transition: color 0.2s;
+        text-decoration: none; /* Als a-Tag */
     }
     .back-button:hover {
         color: var(--primary);
@@ -115,9 +122,9 @@
 <body>
   <div class="container">
     
-    <button class="back-button" onclick="window.history.back() || (typeof closeHelpModal === 'function' ? closeHelpModal() : null)">
-        ← Zurück zur Übersicht
-    </button>
+    <a href="index.html" class="back-button">
+        ← Zurück zur Hauptansicht
+    </a>
     
     <h1>Wissens-Hub & Tracker-Logik – Booze-Tracker</h1>
     <p style="text-align:center; color:var(--muted);">
