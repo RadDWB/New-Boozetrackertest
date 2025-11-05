@@ -124,43 +124,7 @@
 
     /* Neutral-Zelle braucht dunklen Text */
     .color-neutral { color: var(--muted); }
-
-    /* ⭐ Mobile Optimierung für Tabelle ⭐ */
-    @media (max-width: 768px) {
-        /* Auf Mobil: Normale Textausrichtung ohne Rotation */
-        table td:nth-child(1),
-        table th:nth-child(1) {
-            width: 120px !important;
-            min-width: 120px !important;
-            max-width: 120px !important;
-            vertical-align: middle !important;
-            text-align: left !important;
-            padding: 10px 8px !important;
-            font-size: 12px;
-        }
-
-        table td:nth-child(1) > * {
-            /* Rotation entfernen */
-            position: static !important;
-            transform: none !important;
-            white-space: normal !important;
-            text-align: left !important;
-        }
-
-        table td:nth-child(2),
-        table th:nth-child(2) {
-            width: calc(100% - 120px) !important;
-        }
-
-        table {
-            font-size: 13px;
-        }
-
-        th, td {
-            padding: 8px;
-        }
-    }
-
+    
     .note { padding: 15px; background-color: #fffbe6; border-left: 5px solid #f59e0b; margin: 20px 0; color: #78350f; } 
     .code-block { background-color: #f4f6f8; padding: 10px; border-radius: 5px; overflow-x: auto; font-family: monospace; }
     ol, ul { padding-left: 25px; }
