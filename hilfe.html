@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!DOCTYPE html> 
 <html lang="de">
 <head>
   <meta charset="UTF-8" />
@@ -135,7 +135,7 @@
             max-width: 70px !important;
             vertical-align: middle !important;
             text-align: center !important;
-            padding: 6px 4px !important;
+            padding: 8px 6px !important; /* leicht kompakter wie gewünscht */
             font-size: 11px;
             line-height: 1.2;
         }
@@ -171,7 +171,7 @@
         th, td {
             padding: 8px 6px;
         }
-    }
+      }
 
     .note { padding: 15px; background-color: #fffbe6; border-left: 5px solid #f59e0b; margin: 20px 0; color: #78350f; } 
     .code-block { background-color: #f4f6f8; padding: 10px; border-radius: 5px; overflow-x: auto; font-family: monospace; }
@@ -223,44 +223,109 @@
     <h3>1.2. Kategorien als Entscheidungs-Werkzeug</h3>
     <p>Jede Kategorie repräsentiert eine bewusste Entscheidung. Der Tracker stuft das Tagesergebnis basierend auf Alkoholmenge und Zusatzfaktoren in eine der Kategorien ein. Sie können diese jedoch auch selbst anpassen, wenn Sie das anders sehen, Sie sind ein freier Mensch. Ziel ist es, die Verhaltensmuster zu erkennen und zu verbessern. Zusätzlich haben Sie die möglichkeit durch Checkboxen weitere Aspekte auszuwählen, die dann mit im Kalender erscheinen. Die acht Kategorien sind:</p>
 
-    <table>
-      <tr>
-        <th><div class="rotated-text" data-short="Kat.">Kategorie</div></th>
-        <th>Beschreibung (Score-Beitrag)</th>
-      </tr>
-      <tr>
-        <td class="color-super"><div class="rotated-text" data-short="⭐ SUPER">⭐ SUPERTAG</div></td>
-        <td>**Hoch Positiv (++):** Ein Tag ohne Alkohol, an dem Sie zusätzlich Sport getrieben haben, zweifellos perfekt. Vielleicht auch für Sie ein Tag an dem Sie Glücklich waren und nichts getrunken haben, oder es gab was anderes, das für Sie den Tag zu einem "Supertag" gemacht hat, ein großes Ziel (z.B. Marathon, Präsentation, besonderes Workout) erreicht oder ein starker Fokus gezeigt wurde.</td>
-      </tr>
-      <tr>
-        <td class="color-wellness"><div class="rotated-text" data-short="🧘 WELL">🧘 WELLNESS</div></td>
-        <td>**Positiv (+):** Ein Tag ohne Alkohol, an dem zusätzlich bewusst etwas für die körperliche oder mentale Gesundheit getan wurde (z.B. Sauna, Yoga, Meditation, gesundes Essen usw.).</td>
-      </tr>
-      <tr>
-        <td class="color-sober"><div class="rotated-text" data-short="✅ FREI">✅ ALKOHOLFREI</div></td>
-        <td>**Positiv (+):** Ein Tag einfach ohne Alkohol. Die Abwesenheit negativer Gewohnheiten ist ein positiver Standard.</td>
-      </tr>
-      <tr>
-        <td class="color-moderat"><div class="rotated-text" data-short="🧡 MOD">🧡 MODERAT</div></td>
-        <td>**Leicht Negativ (-):** Konsumierte Alkoholmenge unter den täglichen DGE-Grenzwerten (♀ ≤12g/Tag, ♂ ≤24g/Tag) – also kontrollierter, risikoarmer Konsum.</td>
-      </tr>
-      <tr>
-        <td class="color-mixed"><div class="rotated-text" data-short="❤️ SPORT">❤️ "SCHADENSBEGRENZUNG"</div></td>
-        <td>**Negativ (—):** Alkoholmenge über Moderat, aber, hey, Sie haben doch schliesslich wenigstens Sport gemacht. Daher wird dieser Tag auch nicht ganz so "schlimm" in die Bewertung eingehen, eben "Schadensbegrenzung". Das Verhalten wird (leicht) abgemildert. ABER: Haben Sie an dem Tag VIEL getrunken, ordnet dei Ap sie trotzdem der nächst- oder übernächst schlechteren Kategorie zu". Sie fügen "Sport" durch eine der Checkboxen hinzu.</td>
-      </tr>
-      <tr>
-        <td class="color-alkohol"><div class="rotated-text" data-short="🔴 ALK">🔴 ALKOHOL</div></td>
-        <td>**Stark Negativ (---):** Alkoholmenge über der Moderat-Grenze und keine positiven Faktoren.</td>
-      </tr>
-      <tr>
-        <td class="color-vollrausch"><div class="rotated-text" data-short="🍺 VOLL">🍺💥 VOLLRAUSCH</div></td>
-        <td>**Sehr Stark Negativ (----):** Extreme Alkoholmenge (>80g) – ein kritisches Warnsignal. Kombiniert mit der Checkbox "Totalabsturz" dürfte klar sein, was gemeint ist.</td>
-      </tr>
-      <tr>
-        <td class="color-neutral"><div class="rotated-text" data-short="⚪ LEER">⚪ NEUTRAL</div></td>
-        <td>**Neutral:** Ein Tag, für den keine Daten vorliegen. Der Score wird durch die Einstellung "Umgang mit leeren Tagen" angepasst.</td>
-      </tr>
+    <!-- 🔧 Minimalinvasiver, lokal begrenzter Reset: entfernt die vertikale Störung nur in dieser Tabelle -->
+    <style>
+      .category-table td:nth-child(1) > *,
+      .category-table th:nth-child(1) > *{
+        position: static !important;
+        transform: none !important;
+        white-space: normal !important;
+      }
+    </style>
+
+    <!-- ======= NEUE TABELLE: NUR DIESER BLOCK WURDE ERSETZT ======= -->
+    <table class="category-table" style="width:100%; border-collapse:collapse; margin:20px 0; font-size:15px;">
+      <tbody>
+        <tr>
+          <td class="color-super" style="color:#fff; font-weight:700; padding:12px 14px; border-radius:12px 12px 0 0;">
+            ⭐ SUPERTAG
+          </td>
+        </tr>
+        <tr>
+          <td style="background:#ffffff; color:var(--text); padding:12px 14px; border:1px solid var(--card-border); border-top:none; border-radius:0 0 12px 12px;">
+            <strong>Hoch Positiv (++):</strong> Ein Tag ohne Alkohol, an dem Sie zusätzlich Sport getrieben haben, zweifellos perfekt. Vielleicht auch für Sie ein Tag an dem Sie Glücklich waren und nichts getrunken haben, oder es gab was anderes, das für Sie den Tag zu einem "Supertag" gemacht hat, ein großes Ziel (z.B. Marathon, Präsentation, besonderes Workout) erreicht oder ein starker Fokus gezeigt wurde.
+          </td>
+        </tr>
+
+        <tr>
+          <td class="color-wellness" style="color:#fff; font-weight:700; padding:12px 14px; border-radius:12px 12px 0 0;">
+            🧘 WELLNESS
+          </td>
+        </tr>
+        <tr>
+          <td style="background:#ffffff; color:var(--text); padding:12px 14px; border:1px solid var(--card-border); border-top:none; border-radius:0 0 12px 12px;">
+            <strong>Positiv (+):</strong> Ein Tag ohne Alkohol, an dem zusätzlich bewusst etwas für die körperliche oder mentale Gesundheit getan wurde (z.B. Sauna, Yoga, Meditation, gesundes Essen usw.).
+          </td>
+        </tr>
+
+        <tr>
+          <td class="color-sober" style="color:#fff; font-weight:700; padding:12px 14px; border-radius:12px 12px 0 0;">
+            ✅ ALKOHOLFREI
+          </td>
+        </tr>
+        <tr>
+          <td style="background:#ffffff; color:var(--text); padding:12px 14px; border:1px solid var(--card-border); border-top:none; border-radius:0 0 12px 12px;">
+            <strong>Positiv (+):</strong> Ein Tag einfach ohne Alkohol. Die Abwesenheit negativer Gewohnheiten ist ein positiver Standard.
+          </td>
+        </tr>
+
+        <tr>
+          <td class="color-moderat" style="color:#fff; font-weight:700; padding:12px 14px; border-radius:12px 12px 0 0;">
+            🧡 MODERAT
+          </td>
+        </tr>
+        <tr>
+          <td style="background:#ffffff; color:var(--text); padding:12px 14px; border:1px solid var(--card-border); border-top:none; border-radius:0 0 12px 12px;">
+            <strong>Leicht Negativ (-):</strong> Konsumierte Alkoholmenge unter den täglichen DGE-Grenzwerten (♀ ≤12g/Tag, ♂ ≤24g/Tag) – also kontrollierter, risikoarmer Konsum.
+          </td>
+        </tr>
+
+        <tr>
+          <td class="color-mixed" style="color:#fff; font-weight:700; padding:12px 14px; border-radius:12px 12px 0 0;">
+            ❤️ "SCHADENSBEGRENZUNG"
+          </td>
+        </tr>
+        <tr>
+          <td style="background:#ffffff; color:var(--text); padding:12px 14px; border:1px solid var(--card-border); border-top:none; border-radius:0 0 12px 12px;">
+            <strong>Negativ (—):</strong> Alkoholmenge über Moderat, aber, hey, Sie haben doch schliesslich wenigstens Sport gemacht. Daher wird dieser Tag auch nicht ganz so "schlimm" in die Bewertung eingehen, eben "Schadensbegrenzung". Das Verhalten wird (leicht) abgemildert. ABER: Haben Sie an dem Tag VIEL getrunken, ordnet die App sie trotzdem der nächst- oder übernächst schlechteren Kategorie zu". Sie fügen "Sport" durch eine der Checkboxen hinzu.
+          </td>
+        </tr>
+
+        <tr>
+          <td class="color-alkohol" style="color:#fff; font-weight:700; padding:12px 14px; border-radius:12px 12px 0 0;">
+            🔴 ALKOHOL
+          </td>
+        </tr>
+        <tr>
+          <td style="background:#ffffff; color:var(--text); padding:12px 14px; border:1px solid var(--card-border); border-top:none; border-radius:0 0 12px 12px;">
+            <strong>Stark Negativ (---):</strong> Alkoholmenge über der Moderat-Grenze und keine positiven Faktoren.
+          </td>
+        </tr>
+
+        <tr>
+          <td class="color-vollrausch" style="color:#fff; font-weight:700; padding:12px 14px; border-radius:12px 12px 0 0;">
+            🍺💥 VOLLRAUSCH
+          </td>
+        </tr>
+        <tr>
+          <td style="background:#ffffff; color:var(--text); padding:12px 14px; border:1px solid var(--card-border); border-top:none; border-radius:0 0 12px 12px;">
+            <strong>Sehr Stark Negativ (----):</strong> Extreme Alkoholmenge (&gt;80g) – ein kritisches Warnsignal. Kombiniert mit der Checkbox "Totalabsturz" dürfte klar sein, was gemeint ist.
+          </td>
+        </tr>
+
+        <tr>
+          <td class="color-neutral" style="background:#f1f5f9; color:var(--muted); font-weight:700; padding:12px 14px; border-radius:12px 12px 0 0;">
+            ⚪ NEUTRAL
+          </td>
+        </tr>
+        <tr>
+          <td style="background:#ffffff; color:var(--text); padding:12px 14px; border:1px solid var(--card-border); border-top:none; border-radius:0 0 12px 12px;">
+            <strong>Neutral:</strong> Ein Tag, für den keine Daten vorliegen. Der Score wird durch die Einstellung "Umgang mit leeren Tagen" angepasst.
+          </td>
+        </tr>
+      </tbody>
     </table>
+    <!-- ======= ENDE NEUE TABELLE ======= -->
     
     <h2>2. Die Logik des Risiko-Scores (100-Tage-Analyse)</h2>
     <p>Der Tracker verwendet einen komplexen gewichteten Score über die letzten 100 Tage, um ein realistisches Bild Ihres aktuellen Konsumverhaltens zu zeichnen. Der Score (0% = Maximalrisiko, 100% = Optimal) setzt sich aus drei Hauptkomponenten zusammen:</p>
@@ -273,61 +338,61 @@
     <h4>2. Die Risikoverhaltens-Komponente (40% Gewichtung)</h4>
     <p>Bestraft die gefährlichsten Verhaltensmuster. Die stärkste Abwertung gibt es für:</p>
     <ul>
-      <li>**Hangover/ Kater MIT Weitertrinken:** Dies ist ein Kriterium für schwere Abhängigkeit (DSM-5) und führt zu einer sofortigen 0%-Wertung für den Tag.</li>
-      <li>**Hohe Binge-Tage-Quote:** Tage über der WHO-Binge-Schwelle (♀ ≥40g, ♂ ≥60g). (Die korrekte und gängige deutsche Übersetzung für "Binge-Tage" im Kontext des Alkoholkonsums ist: Rauschtrinktage, Tage mit episodisch exzessivem Konsum, Komasauf-Tage (eher umgangssprachlich). Der Begriff "Binge Drinking" selbst wird aber auch im Deutschen sehr häufig als Fachbegriff verwendet.</li>
-      <li>**Lange Konsum-Cluster (=Konsum-Serie, -Kette) (:** Mehr als 3 aufeinanderfolgende Tage mit über 20g Alkohol.</li>
+      <li><strong>Hangover/ Kater MIT Weitertrinken:</strong> Dies ist ein Kriterium für schwere Abhängigkeit (DSM-5) und führt zu einer sofortigen 0%-Wertung für den Tag.</li>
+      <li><strong>Hohe Binge-Tage-Quote:</strong> Tage über der WHO-Binge-Schwelle (♀ ≥40g, ♂ ≥60g). (Die korrekte und gängige deutsche Übersetzung für "Binge-Tage" im Kontext des Alkoholkonsums ist: Rauschtrinktage, Tage mit episodisch exzessivem Konsum, Komasauf-Tage (eher umgangssprachlich). Der Begriff "Binge Drinking" selbst wird aber auch im Deutschen sehr häufig als Fachbegriff verwendet.</li>
+      <li><strong>Lange Konsum-Cluster (=Konsum-Serie, -Kette) (:</strong> Mehr als 3 aufeinanderfolgende Tage mit über 20g Alkohol.</li>
     </ul>
 
     <div class="note">
-        <p><strong class="strong">Wichtig:</strong> Der Tracker unterscheidet zwischen einem normalen **Katertag** und dem **Katertag MIT Weitertrinken** (Haken in der Checkbox + Alkoholmenge > 0). Letzteres ist das kritische Warnzeichen.</p>
+        <p><strong class="strong">Ergebnis:</strong> Der Tracker unterscheidet zwischen einem normalen **Katertag** und dem **Katertag MIT Weitertrinken** (Haken in der Checkbox + Alkoholmenge > 0). Letzteres ist das kritische Warnzeichen.</p>
     </div>
     
     <h3>2.1.5. Logik-Tiefe: Der Unterschied zwischen 'Light Hangover' und 'Katertag'</h3>
-    <p>Der Booze-Tracker bewertet nicht nur die physikalische Menge des Alkohols, sondern vor allem die **mentale Reaktion und das nachfolgende Verhalten**.</p>
+    <p>Der Booze-Tracker bewertet nicht nur die physikalische Menge des Alkohols, sondern vor allem die <strong>mentale Reaktion und das nachfolgende Verhalten</strong>.</p>
     
     <h4>Die positive Logik des "Early Stop" (Light Hangover)</h4>
-    <p>Wenn Sie nach einer kleinen Menge (z.B. 2-3 Gläser) schnell merken, dass der Alkohol "einschlägt" oder Sie sich unwohl fühlen, und Sie deshalb den Konsum beenden, wird dies **positiv bewertet**. Es ist ein Zeichen für:</p>
+    <p>Wenn Sie nach einer kleinen Menge (z.B. 2-3 Gläser) schnell merken, dass der Alkohol "einschlägt" oder Sie sich unwohl fühlen, und Sie deshalb den Konsum beenden, wird dies <strong>positiv bewertet</strong>. Es ist ein Zeichen für:</p>
     <ul>
-        <li>**Sensibilität und Achtsamkeit:** Ihr Körper sendet frühzeitig ein klares Stoppsignal, das Sie respektieren.</li>
-        <li>**Hohe Kontrolle:** Sie akzeptieren das Gefühl und vermeiden bewusst einen Kontrollverlust oder einen Absturz.</li>
+        <li><strong>Sensibilität und Achtsamkeit:</strong> Ihr Körper sendet frühzeitig ein klares Stoppsignal, das Sie respektieren.</li>
+        <li><strong>Hohe Kontrolle:</strong> Sie akzeptieren das Gefühl und vermeiden bewusst einen Kontrollverlust oder einen Absturz.</li>
     </ul>
-    <p>Dieser Tag bleibt aufgrund des niedrigen Gesamtkonsums maximal in der Kategorie **MODERAT** (oder besser) und vermeidet eine hohe Abwertung.</p>
+    <p>Dieser Tag bleibt aufgrund des niedrigen Gesamtkonsums maximal in der Kategorie <strong>MODERAT</strong> (oder besser) und vermeidet eine hohe Abwertung.</p>
 
     <h4>Das kritische Signal: Hangover MIT Weitertrinken</h4>
-    <p>Das wirklich schädliche Muster für Ihren Score ist der **Katertag**, der mit dem Status **"Hangover MIT Weitertrinken"** (über die Checkbox in der App erfasst) versehen wird. Dieser Zustand ist das **stärkste Warnsignal** im gesamten Tracker, da es auf eine beginnende körperliche oder psychische Abhängigkeit hindeuten kann. Es bedeutet:</p>
+    <p>Das wirklich schädliche Muster für Ihren Score ist der <strong>Katertag</strong>, der mit dem Status <strong>"Hangover MIT Weitertrinken"</strong> (über die Checkbox in der App erfasst) versehen wird. Dieser Zustand ist das <strong>stärkste Warnsignal</strong> im gesamten Tracker, da es auf eine beginnende körperliche oder psychische Abhängigkeit hindeuten kann. Es bedeutet:</p>
     <ul>
-        <li>Die klaren Warnsignale und das körperliche Unwohlsein vom Vortag werden **ignoriert**.</li>
+        <li>Die klaren Warnsignale und das körperliche Unwohlsein vom Vortag werden <strong>ignoriert</strong>.</li>
         <li>Der Teufelskreis wird bewusst fortgesetzt.</li>
     </ul>
     <p>Daher führt dieser Zustand (unabhängig von der Tagesmenge) zur stärksten Abwertung und zerstört die Kontinuitäts-Komponente Ihres Risiko-Scores.</p>
     
     <h4>3. Die Erholungs-Komponente (20% Gewichtung)</h4>
-    <p>Bewertet das anschließende Verhalten nach einem riskanten Tag. Die Komponente bewertet hoch, wenn nach einem Vollrausch am Folgetag ein bewusster "Clean Hangover" (kein Alkohol) oder ein "Wellness-Day" folgt. Dies ist die sogenannte **Recovery Rate**. Die Punkte für einen "Clean Hangover" werden dabei mit einem Multiplikator erhöht, der von der Alkoholmenge des Vortages abhängt.</p>
+    <p>Bewertet das anschließende Verhalten nach einem riskanten Tag. Die Komponente bewertet hoch, wenn nach einem Vollrausch am Folgetag ein bewusster "Clean Hangover" (kein Alkohol) oder ein "Wellness-Day" folgt. Dies ist die sogenannte <strong>Recovery Rate</strong>. Die Punkte für einen "Clean Hangover" werden dabei mit einem Multiplikator erhöht, der von der Alkoholmenge des Vortages abhängt.</p>
 
     <h3>2.2. Erweiterte Analyse: Markov-Ketten und Korrelationen</h3>
-    <p>Der Tracker nutzt moderne Analysemethoden, um über einfache Durchschnittswerte hinauszugehen. Die **Markov-Analyse** (eingebettet in die Kontinuitäts-Komponente) untersucht die Wahrscheinlichkeit, mit der ein Verhalten auf ein anderes folgt. Es misst nicht nur *wie oft* Sie trinken, sondern *wie einfach* Sie in ein Muster zurückfallen. Das macht die Analyse so fortgeschritten:</p>
+    <p>Der Tracker nutzt moderne Analysemethoden, um über einfache Durchschnittswerte hinauszugehen. Die <strong>Markov-Analyse</strong> (eingebettet in die Kontinuitäts-Komponente) untersucht die Wahrscheinlichkeit, mit der ein Verhalten auf ein anderes folgt. Es misst nicht nur <em>wie oft</em> Sie trinken, sondern <em>wie einfach</em> Sie in ein Muster zurückfallen. Das macht die Analyse so fortgeschritten:</p>
     <ul>
-      <li>**Predictive Power:** Sie kann vorhersagen, mit welcher Wahrscheinlichkeit auf einen "Moderat"-Tag ein "Alkohol"-Tag folgt.</li>
-      <li>**Auslöser-Erkennung:** Die Korrelationen helfen, **reale Trigger** zu identifizieren (z.B. hohe Stress-Level, schlechter Schlaf), die Ihren Konsum beeinflussen.</li>
-      <li>**Ziel:** Ein realistischeres, weniger stigmatisierendes Bild Ihres Verhaltens zu liefern. Sie sollen Muster verstehen, nicht sich selbst verurteilen.</li>
+      <li><strong>Predictive Power:</strong> Sie kann vorhersagen, mit welcher Wahrscheinlichkeit auf einen "Moderat"-Tag ein "Alkohol"-Tag folgt.</li>
+      <li><strong>Auslöser-Erkennung:</strong> Die Korrelationen helfen, <strong>reale Trigger</strong> zu identifizieren (z.B. hohe Stress-Level, schlechter Schlaf), die Ihren Konsum beeinflussen.</li>
+      <li><strong>Ziel:</strong> Ein realistischeres, weniger stigmatisierendes Bild Ihres Verhaltens zu liefern. Sie sollen Muster verstehen, nicht sich selbst verurteilen.</li>
     </ul>
 
     <h2>3. Selbst-Tracking & Ehrlichkeit (Cheating)</h2>
     
     <h3>3.1. Die Macht der Ehrlichkeit</h3>
-    <p>Das Tracken des eigenen Konsums ist eine sehr persönliche und mutige Entscheidung. Die Genauigkeit der Analyse hängt jedoch vollständig von Ihrer **Ehrlichkeit** ab. Der Tracker ist ein Spiegel – wenn Sie lügen, belügen Sie nur sich selbst. Die Konsequenzen:</p>
+    <p>Das Tracken des eigenen Konsums ist eine sehr persönliche und mutige Entscheidung. Die Genauigkeit der Analyse hängt jedoch vollständig von Ihrer <strong>Ehrlichkeit</strong> ab. Der Tracker ist ein Spiegel – wenn Sie lügen, belügen Sie nur sich selbst. Die Konsequenzen:</p>
     <ul>
-      <li>**Falsche Muster:** Der Tracker lernt falsche Korrelationen und gibt Ihnen irreführende Muster zurück. Sie verstehen Ihre echten Trigger nicht.</li>
-      <li>**Verlust des Ziels:** Der Score wird künstlich hochgehalten, aber Ihr tatsächliches Risikoverhalten bleibt unentdeckt. Die App verliert ihren therapeutischen Wert.</li>
-      <li>**Es ist erlaubt zu Cheaten, aber...:** Natürlich können Sie jederzeit einen falschen Wert eingeben. Aber denken Sie daran, dass die App keine moralische Instanz ist. Sie ist Ihr Werkzeug. Wenn das Werkzeug fehlerhafte Daten erhält, werden Ihre Erfolge und Ihre Herausforderungen nicht korrekt dargestellt. Seien Sie ehrlich zu sich selbst, um die besten Ergebnisse zu erzielen.</li>
+      <li><strong>Falsche Muster:</strong> Der Tracker lernt falsche Korrelationen und gibt Ihnen irreführende Muster zurück. Sie verstehen Ihre echten Trigger nicht.</li>
+      <li><strong>Verlust des Ziels:</strong> Der Score wird künstlich hochgehalten, aber Ihr tatsächliches Risikoverhalten bleibt unentdeckt. Die App verliert ihren therapeutischen Wert.</li>
+      <li><strong>Es ist erlaubt zu Cheaten, aber...:</strong> Natürlich können Sie jederzeit einen falschen Wert eingeben. Aber denken Sie daran, dass die App keine moralische Instanz ist. Sie ist Ihr Werkzeug. Wenn das Werkzeug fehlerhafte Daten erhält, werden Ihre Erfolge und Ihre Herausforderungen nicht korrekt dargestellt. Seien Sie ehrlich zu sich selbst, um die besten Ergebnisse zu erzielen.</li>
     </ul>
 
     <h3>3.2. Die Kommentarfunktion als Tagebuch</h3>
-    <p>Nutzen Sie die Kommentarfelder am Tagesende nicht nur für Fakten, sondern als **Tagebuch**. Notieren Sie:</p>
+    <p>Nutzen Sie die Kommentarfelder am Tagesende nicht nur für Fakten, sondern als <strong>Tagebuch</strong>. Notieren Sie:</p>
     <ul>
-        <li>**Emotionen:** Wie haben Sie sich gefühlt, bevor Sie getrunken haben?</li>
-        <li>**Situationen:** Wer war dabei? Was war der Auslöser?</li>
-        <li>**Positive Alternativen:** Was haben Sie getan, wenn Sie *nicht* getrunken haben?</li>
+        <li><strong>Emotionen:</strong> Wie haben Sie sich gefühlt, bevor Sie getrunken haben?</li>
+        <li><strong>Situationen:</strong> Wer war dabei? Was war der Auslöser?</li>
+        <li><strong>Positive Alternativen:</strong> Was haben Sie getan, wenn Sie <em>nicht</em> getrunken haben?</li>
     </ul>
     <p>Diese Texteinträge sind oft wertvoller als jede Zahl, da sie Ihnen helfen, die emotionalen Auslöser hinter den Mustern zu verstehen.</p>
 
@@ -335,31 +400,31 @@
     <h2>4. Daten-Sicherheit und Portabilität</h2>
     
     <h3>4.1. Lokale Speicherung</h3>
-    <p>Alle Ihre Daten (Tagebucheinträge und Einstellungen) werden ausschließlich **lokal in Ihrem Browser** gespeichert (via `localStorage`). Der Tracker überträgt Ihre Daten zu keiner Zeit an einen Server. Dies bietet maximale Privatsphäre, erfordert aber bei Browserwechsel oder -zurücksetzung eine Datensicherung.</p>
+    <p>Alle Ihre Daten (Tagebucheinträge und Einstellungen) werden ausschließlich <strong>lokal in Ihrem Browser</strong> gespeichert (via <code>localStorage</code>). Der Tracker überträgt Ihre Daten zu keiner Zeit an einen Server. Dies bietet maximale Privatsphäre, erfordert aber bei Browserwechsel oder -zurücksetzung eine Datensicherung.</p>
 
     <h3>4.2. Backup & Wiederherstellung</h3>
-    <p>Über die Einstellungen können Sie jederzeit ein Backup Ihrer Daten als `booze-tracker-backup-JJJJ-MM-TT.json` herunterladen und später wieder importieren. Die Import-Funktion kann Daten entweder ersetzen oder mit bestehenden Daten zusammenführen (Merge), wobei ungültige/duplizierte Einträge automatisch gefiltert werden.</p>
+    <p>Über die Einstellungen können Sie jederzeit ein Backup Ihrer Daten als <code>booze-tracker-backup-JJJJ-MM-TT.json</code> herunterladen und später wieder importieren. Die Import-Funktion kann Daten entweder ersetzen oder mit bestehenden Daten zusammenführen (Merge), wobei ungültige/duplizierte Einträge automatisch gefiltert werden.</p>
 
     <h2>5. Nutzung auf dem Smartphone (PWA-ähnlich)</h2>
     <p>Sie können den Booze-Tracker wie eine native App nutzen, indem Sie einen direkten Link auf den Home-Bildschirm Ihres Smartphones legen.</p>
 
     <h3>5.1. Voraussetzung</h3>
-    <p>Die `index.html` muss auf dem Smartphone **lokal gespeichert** sein (z.B. im Download-Ordner oder über Google Drive/Dropbox auf dem Handy abrufbar) und über den Browser geöffnet werden.</p>
+    <p>Die <code>index.html</code> muss auf dem Smartphone <strong>lokal gespeichert</strong> sein (z.B. im Download-Ordner oder über Google Drive/Dropbox auf dem Handy abrufbar) und über den Browser geöffnet werden.</p>
     
     <h3>5.2. Anleitung für iOS (Safari)</h3>
     <ol>
-        <li>Öffnen Sie die lokale `index.html`-Datei im **Safari-Browser**.</li>
-        <li>Tippen Sie in der Navigationsleiste unten auf das **Teilen-Symbol** (Rechteck mit Pfeil nach oben).</li>
-        <li>Scrollen Sie im Menü nach unten und wählen Sie die Option **"Zum Home-Bildschirm"**.</li>
-        <li>Bestätigen Sie den Namen und tippen Sie auf **"Hinzufügen"**.</li>
+        <li>Öffnen Sie den Link, den Sie vielleicht erhalten haben, oder die lokale <code>index.html</code>-Datei in <strong>einem beliebigen Browser auf dem Gerät, z.B. dem Safari-Browser</strong>.</li>
+        <li>Tippen Sie in der Navigationsleiste unten auf das <strong>Teilen-Symbol</strong> (Rechteck mit Pfeil nach oben).</li>
+        <li>Scrollen Sie im Menü nach unten und wählen Sie die Option <strong>"Zum Home-Bildschirm"</strong>.</li>
+        <li>Bestätigen Sie den Namen und tippen Sie auf <strong>"Hinzufügen"</strong>.</li>
     </ol>
 
     <h3>5.3. Anleitung für Android (Chrome)</h3>
     <ol>
-        <li>Öffnen Sie die lokale `index.html`-Datei im **Chrome-Browser**.</li>
-        <li>Tippen Sie auf das **Dreipunkt-Menü** (⋮) oben rechts.</li>
-        <li>Wählen Sie die Option **"Zum Startbildschirm hinzufügen"** (oder "App installieren").</li>
-        <li>Bestätigen Sie den Namen und tippen Sie auf **"Hinzufügen"**.</li>
+        <li>Öffnen Sie den Link, den Sie vielleicht erhalten haben, oder die lokale <code>index.html</code>-Datei im <strong>Chrome-Browser</strong>.</li>
+        <li>Tippen Sie auf das <strong>Dreipunkt-Menü</strong> (⋮) oben rechts.</li>
+        <li>Wählen Sie die Option <strong>"Zum Startbildschirm hinzufügen"</strong> (oder "App installieren").</li>
+        <li>Bestätigen Sie den Namen und tippen Sie auf <strong>"Hinzufügen"</strong>.</li>
     </ol>
     
     <div class="note">
@@ -374,6 +439,4 @@
 
   </div>
 </body>
-
 </html>
-
