@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Wissens-Hub2 & Erklärung der Logik des Booze-Trackers (v3)</title>
+  <title>Wissens-Hub & Erklärung der Logik des Booze-Trackers (v3)</title>
   <style>
     /* Farben und Styling (Minimalistisches und klares Design) */
     :root{
@@ -218,7 +218,7 @@
     <h2>1. Die Philosophie des Booze-Trackers</h2>
     
     <h3>1.1. Fokus auf Verhalten (Input) statt nur Ergebnis (Output)</h3>
-    <p>Der Tracker bewertet nicht nur, WIEVIEL und WANN Sie trinken, sondern auch, WIE Sie sich dabei verhalten. Zum Beispiel zählt ein Katertag, an dem Sie nicht weitertrinken, eher positiv, da Sie den negativen Kreislauf bewusst stoppen. Ein Tag an dem Sie sich entscheiden erst Sport zu treiben und z.B. Abends dann zu trinken, wird als "Schadensbegrenzung" eingestuft. Das ist aber natürlich ein Sebstbetrug, daher auch die - leicht ironischen - Anführungszeichen. Sie wissen doch, dass das die Schäden durch den Alkohol eigentlich NICHT wirklich relativiert, oder? Aber - hey - man fühlt sich trotzdem besser, oder? </p>
+    <p>Der Tracker bewertet nicht nur, WIEVIEL und WANN Sie trinken, sondern auch, WIE Sie sich dabei verhalten. Zum Beispiel zählt ein Katertag, an dem Sie nicht weitertrinken, eher positiv, da Sie den negativen Kreislauf bewusst stoppen. Ein Tag, an dem Sie sich entscheiden erst Sport zu treiben und z.B. abends dann zu trinken, wird als "Schadensbegrenzung" eingestuft. Das ist aber natürlich ein Selbstbetrug, daher auch die - leicht ironischen - Anführungszeichen. Sie wissen doch, dass das die Schäden durch den Alkohol eigentlich NICHT wirklich relativiert, oder? Aber - hey - man fühlt sich trotzdem besser, oder? </p>
     
     <h3>1.2. Kategorien als Entscheidungs-Werkzeug</h3>
     <p>Jede Kategorie repräsentiert eine bewusste Entscheidung. Der Tracker stuft das Tagesergebnis basierend auf Alkoholmenge und Zusatzfaktoren in eine der Kategorien ein. Sie können diese jedoch auch selbst anpassen, wenn Sie das anders sehen, Sie sind ein freier Mensch. Ziel ist es, die Verhaltensmuster zu erkennen und zu verbessern. Zusätzlich haben Sie die Möglichkeit durch Checkboxen weitere Aspekte auszuwählen, die dann mit im Kalender erscheinen. Die acht Kategorien sind:</p>
@@ -287,7 +287,7 @@
         </tr>
         <tr>
           <td style="background:#ffffff; color:var(--text); padding:12px 14px; border:1px solid var(--card-border); border-top:none; border-radius:0 0 12px 12px;">
-            <strong>Negativ (—):</strong> Alkoholmenge über Moderat, aber, hey, Sie haben doch schliesslich wenigstens Sport gemacht. Daher wird dieser Tag auch nicht ganz so "schlimm" in die Bewertung eingehen, eben "Schadensbegrenzung". Das Verhalten wird (leicht) abgemildert. ABER: Haben Sie an dem Tag VIEL getrunken, ordnet die App sie trotzdem der nächst- oder übernächst schlechteren Kategorie zu". Sie fügen "Sport" durch eine der Checkboxen hinzu.
+            <strong>Negativ (—):</strong> Alkoholmenge über Moderat, aber, hey, Sie haben doch schließlich wenigstens Sport gemacht. Daher wird dieser Tag auch nicht ganz so "schlimm" in die Bewertung eingehen, eben "Schadensbegrenzung". Das Verhalten wird (leicht) abgemildert. ABER: Haben Sie an dem Tag VIEL getrunken, ordnet die App sie trotzdem der nächst- oder übernächst schlechteren Kategorie zu". Sie fügen "Sport" durch eine der Checkboxen hinzu.
           </td>
         </tr>
 
@@ -298,7 +298,7 @@
         </tr>
         <tr>
           <td style="background:#ffffff; color:var(--text); padding:12px 14px; border:1px solid var(--card-border); border-top:none; border-radius:0 0 12px 12px;">
-            <strong>Stark Negativ (---):</strong> Alkoholmenge über der Moderat-Grenze und keine positiven Faktoren.
+            <strong>Stark Negativ (---):</strong> Alkoholmenge über der Moderat-Grenze und keine positiven Faktoren berücksichtigt.
           </td>
         </tr>
 
@@ -333,32 +333,32 @@
     <h3>2.1. Die drei Score-Komponenten</h3>
     
     <h4>1. Die Kontinuitäts-Komponente (40% Gewichtung)</h4>
-    <p>Misst die Regelmäßigkeit des positiven Verhaltens. Sie basiert auf der **Abstinenztage-Quote (AF-Quote)**. Die Gewichtung belohnt lange, ununterbrochene "Sober"-Phasen. Ein Tag mit hohem Alkoholkonsum ist weniger schädlich für den Score, wenn er isoliert auftritt, als eine Kette von Tagen mit mittlerem Konsum.</p>
+    <p>Misst die Regelmäßigkeit des positiven Verhaltens. Sie basiert auf der <strong>Abstinenztage-Quote (AF-Quote)</strong>. Die Gewichtung belohnt lange, ununterbrochene "Nüchtern-Phasen". Ein Tag mit hohem Alkoholkonsum ist weniger schädlich für den Score, wenn er isoliert auftritt, als eine Kette von Tagen mit mittlerem Konsum.</p>
 
     <h4>2. Die Risikoverhaltens-Komponente (40% Gewichtung)</h4>
     <p>Bestraft die gefährlichsten Verhaltensmuster. Die stärkste Abwertung gibt es für:</p>
     <ul>
       <li><strong>Hangover/ Kater MIT Weitertrinken:</strong> Dies ist ein Kriterium für schwere Abhängigkeit (DSM-5) und führt zu einer sofortigen 0%-Wertung für den Tag.</li>
       <li><strong>Hohe Binge-Tage-Quote:</strong> Tage über der WHO-Binge-Schwelle (♀ ≥40g, ♂ ≥60g). (Die korrekte und gängige deutsche Übersetzung für "Binge-Tage" im Kontext des Alkoholkonsums ist: Rauschtrinktage, Tage mit episodisch exzessivem Konsum, Komasauf-Tage (eher umgangssprachlich). Der Begriff "Binge Drinking" selbst wird aber auch im Deutschen sehr häufig als Fachbegriff verwendet.</li>
-      <li><strong>Lange Konsum-Cluster (=Konsum-Serie, -Kette) (:</strong> Mehr als 3 aufeinanderfolgende Tage mit über 20g Alkohol.</li>
+      <li><strong>Lange Konsum-Cluster (=Konsum-Serie, -Kette):</strong> Mehr als 3 aufeinanderfolgende Tage mit über 20g Alkohol.</li>
     </ul>
 
     <div class="note">
-        <p><strong class="strong">Ergebnis:</strong> Der Tracker unterscheidet zwischen einem normalen **Katertag** und dem **Katertag MIT Weitertrinken** (Haken in der Checkbox + Alkoholmenge > 0). Letzteres ist das kritische Warnzeichen.</p>
+        <p><strong class="strong">Ergebnis:</strong> Der Tracker unterscheidet zwischen einem normalen <strong>"Nur" Katertag</strong> und einem Katertag, an dem Sie weiter trinken (Haken in der Checkbox + Alkoholmenge > 0). Letzteres ist das kritische Warnzeichen.</p>
     </div>
     
     <h3>2.1.5. Logik-Tiefe: Der Unterschied zwischen 'Light Hangover' und 'Katertag'</h3>
     <p>Der Booze-Tracker bewertet nicht nur die physikalische Menge des Alkohols, sondern vor allem die <strong>mentale Reaktion und das nachfolgende Verhalten</strong>.</p>
     
-    <h4>Die positive Logik des "Early Stop" (Light Hangover)</h4>
-    <p>Wenn Sie nach einer kleinen Menge (z.B. 2-3 Gläser) schnell merken, dass der Alkohol "einschlägt" oder Sie sich unwohl fühlen, und Sie deshalb den Konsum beenden, wird dies <strong>positiv bewertet</strong>. Es ist ein Zeichen für:</p>
+    <h4>Die positive Logik des "Hangover Light"</h4>
+    <p>Wenn Sie nach einer kleinen Menge (z.B. 2-3 Gläser) schnell merken, dass der Alkohol "einschlägt" oder Sie sich unwohl fühlen, wird dies <strong>positiv bewertet</strong>. Es ist ein Zeichen für:</p>
     <ul>
-        <li><strong>Sensibilität und Achtsamkeit:</strong> Ihr Körper sendet frühzeitig ein klares Stoppsignal, das Sie respektieren.</li>
-        <li><strong>Hohe Kontrolle:</strong> Sie akzeptieren das Gefühl und vermeiden bewusst einen Kontrollverlust oder einen Absturz.</li>
+        <li><strong>Sensibilität und Achtsamkeit:</strong> Ihr Körper sendet frühzeitig ein klares Signal, das Sie respektieren.</li>
+        <li><strong>Hohe Kontrolle:</strong> Sie akzeptieren das Gefühl und vermeiden bewusst einen Kontrollverlust oder einen Absturz. Gleichzeitig haben Sie wenig getrunken aber trotzdem am nächsten Morgen physische Auswirkungen.</li>
     </ul>
-    <p>Dieser Tag bleibt aufgrund des niedrigen Gesamtkonsums maximal in der Kategorie <strong>MODERAT</strong> (oder besser) und vermeidet eine hohe Abwertung.</p>
+    <p>Dieser Tag bleibt in der Bewertung aufgrund des niedrigen Gesamtkonsums ungefähr auf dem Level der Kategorie <strong>MODERAT</strong> (oder besser) und vermeidet eine hohe Abwertung.</p>
 
-    <h4>Das kritische Signal: Hangover MIT Weitertrinken</h4>
+    <h4>Das kritische Signal: Katertag MIT Weitertrinken</h4>
     <p>Das wirklich schädliche Muster für Ihren Score ist der <strong>Katertag</strong>, der mit dem Status <strong>"Hangover MIT Weitertrinken"</strong> (über die Checkbox in der App erfasst) versehen wird. Dieser Zustand ist das <strong>stärkste Warnsignal</strong> im gesamten Tracker, da es auf eine beginnende körperliche oder psychische Abhängigkeit hindeuten kann. Es bedeutet:</p>
     <ul>
         <li>Die klaren Warnsignale und das körperliche Unwohlsein vom Vortag werden <strong>ignoriert</strong>.</li>
@@ -409,7 +409,7 @@
     <p>Sie können den Booze-Tracker wie eine native App nutzen, indem Sie einen direkten Link auf den Home-Bildschirm Ihres Smartphones legen.</p>
 
     <h3>5.1. Voraussetzung</h3>
-    <p>Die <code>index.html</code> muss auf dem Smartphone <strong>lokal gespeichert</strong> sein (z.B. im Download-Ordner oder über Google Drive/Dropbox auf dem Handy abrufbar) und über den Browser geöffnet werden.</p>
+    <p>Die einfachste Möglichkeit ist, dass Sie über einen Link verfügen, den Sie zum Beispiel per WhatsApp o.ä bekommen haben. Klicken Sie diesen an und die App öffnet sich in einem Browser. Eventuell verfügen Sie auch über die <code>index.html</code>. Diese muss dann ggf. auf dem Smartphone <strong>lokal gespeichert</strong> sein (z.B. im Download-Ordner oder über Google Drive/Dropbox auf dem Handy abrufbar) und über den Browser geöffnet werden.</p>
     
     <h3>5.2. Anleitung für iOS (Safari)</h3>
     <ol>
@@ -440,6 +440,7 @@
   </div>
 </body>
 </html>
+
 
 
 
